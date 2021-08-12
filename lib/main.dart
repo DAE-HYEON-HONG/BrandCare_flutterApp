@@ -1,3 +1,4 @@
+import 'package:brandcare_mobile_flutter_v2/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +14,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      initialRoute: '/splash',
+      getPages: [...routes],
     );
   }
 }
