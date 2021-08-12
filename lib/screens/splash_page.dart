@@ -2,6 +2,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class SplashPage extends StatelessWidget {
         child: Stack(
           children: [
             Center(
-              child: SvgPicture.asset('assets/icons/title_logo.svg', width: 224, height: 48,),
+              child: SvgPicture.asset('assets/icons/title_logo.svg', width:224.w, height: 48.w, color: primaryColor,),
             ),
             Positioned(
               left: 0,
