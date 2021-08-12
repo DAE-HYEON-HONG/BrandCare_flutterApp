@@ -12,7 +12,7 @@ class DateFormatUtil{
     return DateFormat(format).format(convertDate);
   }
 
-  static String convertDateTimeForat({required String date}) {
+  static String convertDateTimeFormat({required String date}) {
     DateTime convertDate = DateFormat('YYYY-MM-DDThh:mm:ss').parse(date);
     return DateFormat('YYYY-MM-DD hh:mm').format(convertDate);
   }

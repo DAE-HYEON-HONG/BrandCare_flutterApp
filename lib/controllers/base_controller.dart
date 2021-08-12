@@ -10,4 +10,12 @@ enum NetworkStateEnum {
 class BaseController extends GetxController {
   Rx<NetworkStateEnum> networkState = NetworkStateEnum.NONE.obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+
+    ever(networkState, (_){
+      //TODO : check networkState and show/close loading popup
+    });
+  }
 }

@@ -20,3 +20,6 @@ TextStyle regular14TextStyle = _defaultTextStyle.copyWith(fontSize: _mediumFontS
 TextStyle regular12TextStyle = _defaultTextStyle.copyWith(fontSize: _smallFontSize2X, fontWeight: FontWeight.w400);
 TextStyle regular10TextStyle = _defaultTextStyle.copyWith(fontSize: _smallFontSize, fontWeight: FontWeight.w400);
 
+
+
+
