@@ -3,25 +3,36 @@ import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:flutter/material.dart';
 
 class CustomButtonOnOffWidget extends StatelessWidget {
-  const CustomButtonOnOffWidget({Key? key, required this.title, required this.onClick, required this.isOn}) : super(key: key);
+  const CustomButtonOnOffWidget({Key? key, required this.title, required this.onClick, required this.isOn, this.radius=4}) : super(key: key);
 
   final String title;
   final Function() onClick;
   final bool isOn;
+  final double radius;
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: this.onClick,
-      child: Text(title),
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(isOn ? primaryColor : gray_CCCColor),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4)),
-          ),
-          textStyle: MaterialStateProperty.all<TextStyle>(
-              medium14TextStyle.copyWith(color: whiteColor))),
+    return SizedBox(
+      width: double.infinity,
+      height: 48,
+      child: ElevatedButton(
+        onPressed: this.onClick,
+        child: Text(title),
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(isOn ? primaryColor : whiteColor),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                side: BorderSide(
+                  color: isOn ? primaryColor : gray_999Color
+                ),
+                  borderRadius: BorderRadius.circular(radius)),
+            ),
+
+            textStyle: MaterialStateProperty.all<TextStyle>(
+                medium14TextStyle.copyWith(color: isOn ? whiteColor : gray_999Color)),
+          elevation: MaterialStateProperty.all(0.0),
+        ),
+      ),
     );
   }
 }

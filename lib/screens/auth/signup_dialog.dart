@@ -37,7 +37,11 @@ class SignUpDialog extends StatelessWidget {
             _itemSignUpBtn(kakaoColor, 'join_kakao.svg'),
             _itemSignUpBtn(naverColor, 'join_naver.svg'),
             _itemSignUpBtn(facebookColor, 'join_facebook.svg'),
-            _itemSignUpBtn(whiteColor, 'join_email.svg'),
+            GestureDetector(
+                onTap: (){
+                  Get.offAndToNamed('/auth/signup');
+                },
+                child: _itemSignUpBtn(whiteColor, 'join_email.svg')),
           ],
         ),
       ),
