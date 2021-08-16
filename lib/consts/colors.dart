@@ -14,6 +14,7 @@ const grayColor = const Color(0xff8E8F95);
 const purpleColor = const Color(0xff552FC4);
 const redColor = const Color(0xffE90000);
 const primaryColor = const Color(0xff212B62);
+const backgroundColor = const Color(0xE5E5E5);
 
 
 const kakaoColor = const Color(0xffFFE812);

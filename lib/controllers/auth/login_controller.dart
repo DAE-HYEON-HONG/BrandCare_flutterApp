@@ -21,6 +21,10 @@ class LoginController extends BaseController {
     update();
   }
 
+  void notLoginMain() {
+    Get.offAllNamed('/mainPage');
+  }
+
   void openSignUpDialog() {
     Get.dialog(
       SignUpDialog(),
@@ -31,8 +35,5 @@ class LoginController extends BaseController {
   void onInit() {
     super.onInit();
     if(Platform.isIOS) snsLoginItem.insert(0, 'login_apple.svg');
-
   }
-
-
 }

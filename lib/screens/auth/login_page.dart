@@ -83,7 +83,9 @@ class LoginPage extends GetView<LoginController> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    controller.notLoginMain();
+                  },
                   child: Text(
                     '- 비회원 둘러보기 -',
                     style:
