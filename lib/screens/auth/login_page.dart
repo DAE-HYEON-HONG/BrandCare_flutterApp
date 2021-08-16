@@ -15,15 +15,15 @@ class LoginPage extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding:
-            const EdgeInsets.only(left: 16, right: 16,),
-        child: Form(
-          child: SingleChildScrollView(
+      body: SafeArea(
+        child: Padding(
+          padding:
+              const EdgeInsets.only(left: 16, right: 16,),
+          child: Form(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 106,),
                 SvgPicture.asset(
                   'assets/icons/title_logo.svg',
                   color: primaryColor,
@@ -83,7 +83,9 @@ class LoginPage extends GetView<LoginController> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    controller.notLoginMain();
+                  },
                   child: Text(
                     '- 비회원 둘러보기 -',
                     style:
@@ -127,7 +129,6 @@ class LoginPage extends GetView<LoginController> {
                         ))
                   ],
                 ),
-                const SizedBox(height: 64,),
               ],
             ),
           ),
