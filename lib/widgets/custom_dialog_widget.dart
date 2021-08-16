@@ -60,6 +60,12 @@ class CustomDialogWidget extends StatelessWidget {
                     child: GestureDetector(
                       onTap: onClick,
                       child: Container(
+                        decoration: BoxDecoration(
+                          color: whiteColor, 
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(8.0)
+                          ),
+                        ),
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         width: double.infinity,
                         child: Center(
@@ -73,7 +79,12 @@ class CustomDialogWidget extends StatelessWidget {
                        child: GestureDetector(
                          onTap: (){Get.back();},
                          child: Container(
-                           color: gray_EAColor,
+                           decoration: BoxDecoration(
+                             color: gray_EAColor,
+                             borderRadius: BorderRadius.only(
+                               bottomRight: Radius.circular(8.0)
+                             )
+                           ),
                            padding: const EdgeInsets.symmetric(vertical: 10),
                            width: double.infinity,
                            child: Center(
