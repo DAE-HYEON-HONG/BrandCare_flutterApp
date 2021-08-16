@@ -39,6 +39,8 @@ class FormInputWidget extends StatelessWidget {
             controller: controller,
             style: regular12TextStyle,
             keyboardType: textInputType,
+            onChanged: onChange,
+            onFieldSubmitted: onSubmit,
             decoration: InputDecoration(
               isDense: true,
               contentPadding: const EdgeInsets.all(15),

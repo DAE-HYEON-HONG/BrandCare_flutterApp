@@ -12,7 +12,7 @@ class LoginController extends BaseController {
 
   Rx<bool> isAutoLogin = false.obs;
 
-  List<Map<String, String>> textList = [{'아이디 찾기': ''}, {'비밀번호 찾기': ''}, { '회원가입': ''}];
+  List<Map<String, String>> textList = [{'아이디 찾기': '/auth/find'}, {'비밀번호 찾기': '/auth/find'}, { '회원가입': ''}];
 
   List snsLoginItem = ['login_kakao.svg', 'login_naver.svg', 'login_facebook.svg'];
 

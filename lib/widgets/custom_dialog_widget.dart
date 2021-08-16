@@ -8,8 +8,11 @@ class CustomDialogWidget extends StatelessWidget {
   final String content;
   final bool isSingleButton;
   final Function() onClick;
+  final Function()? onCancelClick;
+  final String okTxt;
+  final String cancelTxt;
 
-  const CustomDialogWidget({Key? key, this.title, required this.content, this.isSingleButton=true, required this.onClick}) : super(key: key);
+  const CustomDialogWidget({Key? key, this.title, required this.content, this.isSingleButton=true, required this.onClick, this.okTxt='예', this.cancelTxt='아니오', this.onCancelClick}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +61,7 @@ class CustomDialogWidget extends StatelessWidget {
                   Flexible(
                     fit: FlexFit.tight,
                     child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
                       onTap: onClick,
                       child: Container(
                         decoration: BoxDecoration(
@@ -69,7 +73,7 @@ class CustomDialogWidget extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         width: double.infinity,
                         child: Center(
-                          child: Text('예', style: medium14TextStyle.copyWith(color: primaryColor),),
+                          child: Text('$okTxt', style: medium14TextStyle.copyWith(color: primaryColor),),
                         ),
                       ),
                     )
@@ -77,7 +81,14 @@ class CustomDialogWidget extends StatelessWidget {
                    Flexible(
                        fit: FlexFit.tight,
                        child: GestureDetector(
-                         onTap: (){Get.back();},
+                         behavior: HitTestBehavior.translucent,
+                         onTap: (){
+                           if(onCancelClick != null) {
+                             onCancelClick!();
+                           }else {
+                             Get.back();
+                           }
+                           },
                          child: Container(
                            decoration: BoxDecoration(
                              color: gray_EAColor,
@@ -88,7 +99,7 @@ class CustomDialogWidget extends StatelessWidget {
                            padding: const EdgeInsets.symmetric(vertical: 10),
                            width: double.infinity,
                            child: Center(
-                             child: Text('아니오', style: medium14TextStyle.copyWith(color: primaryColor),),
+                             child: Text('$cancelTxt', style: medium14TextStyle.copyWith(color: primaryColor),),
                            ),
                          ),
                        )
