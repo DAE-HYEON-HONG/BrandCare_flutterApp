@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 
 class SplashController extends BaseController {
 
@@ -23,15 +22,14 @@ class SplashController extends BaseController {
   @override
   void onInit(){
     super.onInit();
-
-  //   Timer.periodic(splashTime, (timer) {
-  //     //TODO: Check auto login
-  //     // Get.offAllNamed('login');
-  // });
+    Timer(splashTime, (){
+      //TODO: Check auto login
+          Get.offAllNamed('/auth/login');
+    });
   }
 
   @override
   void onReady() {
-    checkAppVersion();
+    // checkAppVersion();
   }
 }

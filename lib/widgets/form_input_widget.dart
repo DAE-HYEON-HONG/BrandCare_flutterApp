@@ -11,7 +11,8 @@ class FormInputWidget extends StatelessWidget {
     this.isShowTitle=false,
     this.title,
     this.readOnly = false,
-    this.isObscureText = false
+    this.isObscureText = false,
+    this.textInputType = TextInputType.text
   }) : super(key: key);
 
   final String? hint;
@@ -22,7 +23,7 @@ class FormInputWidget extends StatelessWidget {
   final TextEditingController controller;
   final bool readOnly;
   final bool isObscureText;
-
+  final TextInputType textInputType;
 
   @override
   Widget build(BuildContext context) {
@@ -37,18 +38,19 @@ class FormInputWidget extends StatelessWidget {
             readOnly: readOnly,
             controller: controller,
             style: regular12TextStyle,
+            keyboardType: textInputType,
             decoration: InputDecoration(
               isDense: true,
               contentPadding: const EdgeInsets.all(15),
               hintText: hint ?? '',
               hintStyle: regular12TextStyle.copyWith(color: gray_999Color),
-              border: OutlineInputBorder(
+              enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(4),
                 borderSide: BorderSide(color: Color(0xffD5D7DB)),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(4),
-                borderSide: BorderSide(color: Color(0xffD5D7DB)),
+                borderSide: BorderSide(color: primaryColor),
               ),
             ),
           ),
