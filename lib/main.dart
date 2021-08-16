@@ -19,6 +19,18 @@ class MyApp extends StatelessWidget {
         title: 'Brand Care',
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          tabBarTheme: TabBarTheme(
+            indicator: UnderlineTabIndicator(
+              borderSide: BorderSide(
+                color: primaryColor,
+                width: 4.0
+              )
+            ),
+            labelColor: primaryColor,
+            unselectedLabelColor: gray_999Color,
+            labelStyle: medium14TextStyle,
+            unselectedLabelStyle: medium14TextStyle,
+          )
         ),
         initialRoute: '/splash',
         getPages: [...routes],

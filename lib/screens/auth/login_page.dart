@@ -145,8 +145,9 @@ class LoginPage extends GetView<LoginController> {
           onPressed: () {
             if(title == '회원가입'){
               controller.openSignUpDialog();
+            }else {
+              Get.toNamed(link);
             }
-            // Get.to(link);
           },
           child: Text(
             '$title',

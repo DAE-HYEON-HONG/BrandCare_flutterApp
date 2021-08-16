@@ -31,7 +31,7 @@ class CustomButtonWidget extends StatelessWidget {
         height: height,
         child: ElevatedButton(
           onPressed: this.onClick,
-          child: Text(title),
+          child: Text(title, overflow: TextOverflow.ellipsis,),
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
