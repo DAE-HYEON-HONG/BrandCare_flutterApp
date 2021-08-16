@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/mainHome_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansion_tile_main_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansion_tile_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:extended_image/extended_image.dart';
@@ -11,6 +12,8 @@ import 'package:get/get.dart';
 
 class MainHome extends StatelessWidget {
   final MainHomeController controller = Get.put(MainHomeController());
+  final String expansionTitle = "고객님의 소중한 명품의 가치를 더욱 높여드립니다.\n오랫동안 간직하고 관리할 수 있는 방법은 브랜드케어입니다.";
+  final String expansionDescription = "서울특별시 구로구 디지털로 33길 28, 1211호\n사업자등록 번호: 816-81-02299\n통신판매업신고번호: 제2021-서울구로-0433호";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -193,19 +196,58 @@ class MainHome extends StatelessWidget {
                           SizedBox(
                             height: 80,
                           ),
-                          CustomExpantionTile2(
-                            title: Text(
-                              "브랜드케어",
-                              style: medium12TextStyle.copyWith(
-                                color: gray_999Color,
-                              ),
+                          CustomExpansionTileMain(
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "브랜드케어",
+                                  style: medium12TextStyle.copyWith(
+                                    color: gray_999Color,
+                                  ),
+                                ),
+                                SizedBox(height: 12),
+                                Text(
+                                  expansionTitle,
+                                  style: regular12TextStyle.copyWith(
+                                    color: gray_999Color,
+                                  ),
+                                ),
+                              ],
                             ),
                             child: Container(
+                              padding: const EdgeInsets.only(left:10, right:8, top: 20),
                               width: double.infinity,
-                              height: 80.h,
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                              ),
                               child: Column(
-                                children: [
-
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "사업자정보\n상호 : (주)리드고\n대표 : 박명관",
+                                    style: regular12TextStyle.copyWith(
+                                      color: gray_999Color,
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        "주소 : ",
+                                        style: regular12TextStyle.copyWith(
+                                          color: gray_999Color,
+                                        ),
+                                      ),
+                                      Text(
+                                        expansionDescription,
+                                        style: regular12TextStyle.copyWith(
+                                          color: gray_999Color,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               ),
                             ),
