@@ -13,18 +13,22 @@ class CustomButtonEmptyBackgroundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: this.onClick,
-      child: Text(title),
-      style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.all<Color>(whiteColor),
-      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(radius),
-          side: BorderSide(color: primaryColor)
+    return SizedBox(
+      width: double.infinity,
+      height: 48,
+      child: ElevatedButton(
+        onPressed: this.onClick,
+        child: Text(title, style: medium14TextStyle.copyWith(color: primaryColor),),
+        style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(whiteColor),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(radius),
+            side: BorderSide(color: primaryColor)
+          ),
         ),
-      ),
-        textStyle: MaterialStateProperty.all<TextStyle>(medium14TextStyle.copyWith(color: primaryColor))
-    ),);
+          elevation: MaterialStateProperty.all(0.0)
+      ),),
+    );
   }
 }

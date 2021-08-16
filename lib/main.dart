@@ -1,3 +1,6 @@
+import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
+import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +22,9 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/splash',
         getPages: [...routes],
+        onInit: (){
+          Get.put(GlobalController());
+        },
       ),
     );
   }
