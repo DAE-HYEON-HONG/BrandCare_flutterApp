@@ -1,4 +1,5 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -16,6 +17,12 @@ class SignUpController extends BaseController {
 
   Rx<bool> agree = false.obs;
   Rx<bool> privacyAgree = false.obs;
+
+  Rx<bool> isEmail = false.obs;
+  Rx<String> emailTxt = ''.obs;
+
+  Rx<bool> isPhone = false.obs;
+  Rx<String> phoneTxt = ''.obs;
 
   void agreeUpdate() {
     agree.value = !agree.value;
@@ -41,4 +48,15 @@ class SignUpController extends BaseController {
 
 
   bool get allAgree => agree.value && privacyAgree.value;
+
+  @override
+  void onInit() {
+    super.onInit();
+    debounce(emailTxt, (_) {
+      isEmail.value = RegexUtil.checkEmailRegex(email: emailTxt.value);
+    });
+    debounce(phoneTxt, (_) {
+      isPhone.value = RegexUtil.checkPhoneRegex(phone: phoneTxt.value);
+    });
+  }
 }

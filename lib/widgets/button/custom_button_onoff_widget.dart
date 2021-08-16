@@ -12,12 +12,14 @@ class CustomButtonOnOffWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('isOn = $isOn');
     return SizedBox(
       width: double.infinity,
       height: 48,
       child: ElevatedButton(
         onPressed: this.onClick,
-        child: Text(title),
+        child: Text(title,
+            style: medium14TextStyle.copyWith(color: isOn ? whiteColor : gray_999Color)),
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(isOn ? primaryColor : whiteColor),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -27,9 +29,6 @@ class CustomButtonOnOffWidget extends StatelessWidget {
                 ),
                   borderRadius: BorderRadius.circular(radius)),
             ),
-
-            textStyle: MaterialStateProperty.all<TextStyle>(
-                medium14TextStyle.copyWith(color: isOn ? whiteColor : gray_999Color)),
           elevation: MaterialStateProperty.all(0.0),
         ),
       ),
