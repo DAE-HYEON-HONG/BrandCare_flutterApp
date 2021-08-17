@@ -190,7 +190,7 @@ class MainHome extends StatelessWidget {
                                     _useInfomation(3, "event_on.svg", "이벤트"),
                                   ],
                                 ),
-                              )
+                              ),
                             ],
                           ),
                           SizedBox(
@@ -280,21 +280,26 @@ class MainHome extends StatelessWidget {
 
   _useInfomation(int idx, String imgAdds, String title) {
     return Expanded(
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            'assets/icons/$imgAdds',
-            height: 40.h,
-            color: primaryColor,
-          ),
-          Text(
-            title,
-            style: regular12TextStyle.copyWith(color: gray_333Color),
-          ),
-        ],
+      child: InkWell(
+        onTap: () {
+          controller.useInfo();
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              'assets/icons/$imgAdds',
+              height: 40.h,
+              color: primaryColor,
+            ),
+            Text(
+              title,
+              style: regular12TextStyle.copyWith(color: gray_333Color),
+            ),
+          ],
+        ),
       ),
     );
   }

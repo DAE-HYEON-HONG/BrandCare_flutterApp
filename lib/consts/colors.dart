@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 const blackColor = const Color(0xff000000);
+const gray_f5f6f7Color = const Color(0xf5f6f7);
 const gray_333Color = const Color(0xff333333);
 const gray_666Color = const Color(0xff666666);
 const gray_999Color = const Color(0xff999999);
