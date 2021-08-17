@@ -8,6 +8,7 @@ import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/mai
 import 'package:brandcare_mobile_flutter_v2/screens/auth/login_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signup_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/main_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/notLoginUserPages/useInfoPages/useInfoMain_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/MainHome_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/splash_page.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,7 @@ final routes = [
   GetPage(name: '/splash', page: () => SplashPage(), binding: SplashBinding()),
   GetPage(name: '/auth/login', page: () => LoginPage(), binding: LoginBinding()),
   GetPage(name: '/auth/signup', page: () => SignUpPage(), binding: SignUpBinding()),
-  GetPage(name: '/auth/find', page: () => FindAccountPage(), binding: FindAccountBinding())
+  GetPage(name: '/auth/find', page: () => FindAccountPage(), binding: FindAccountBinding()),
   GetPage(name: '/mainPage', page: () => MainPage(), binding: MainPageBinding()),
+  GetPage(name: '/mainPage/useInfo/main', page: () => UseInfoMainPage(), binding: UseInfoMainBinding()),
 ];
