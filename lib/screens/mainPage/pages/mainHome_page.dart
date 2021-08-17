@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class MainHome extends StatelessWidget {
+class MainHomePage extends StatelessWidget {
   final MainHomeController controller = Get.put(MainHomeController());
   @override
   Widget build(BuildContext context) {

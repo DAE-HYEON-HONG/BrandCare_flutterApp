@@ -16,6 +16,6 @@ final routes = [
   GetPage(name: '/splash', page: () => SplashPage(), binding: SplashBinding()),
   GetPage(name: '/auth/login', page: () => LoginPage(), binding: LoginBinding()),
   GetPage(name: '/auth/signup', page: () => SignUpPage(), binding: SignUpBinding()),
-  GetPage(name: '/auth/find', page: () => FindAccountPage(), binding: FindAccountBinding())
+  GetPage(name: '/auth/find', page: () => FindAccountPage(), binding: FindAccountBinding()),
   GetPage(name: '/mainPage', page: () => MainPage(), binding: MainPageBinding()),
 ];
