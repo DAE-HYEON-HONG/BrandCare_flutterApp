@@ -17,6 +17,10 @@ class MainHomeController extends BaseController{
     update();
   }
 
+  void useInfo(){
+    Get.toNamed('/mainPage/useInfo/main');
+  }
+
   @override
   void onInit() {
     super.onInit();

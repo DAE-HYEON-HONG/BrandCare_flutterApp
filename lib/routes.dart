@@ -8,6 +8,7 @@ import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/mai
 import 'package:brandcare_mobile_flutter_v2/screens/auth/login_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signup_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/main_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/notLoginUserPages/useInfoPages/useInfoMain_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/MainHome_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/address_change_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/my_info_page.dart';
@@ -28,4 +29,5 @@ final routes = [
   GetPage(name: '/main/my/info/password', page: () => PasswordChangePage()),
   GetPage(name: '/main/my/info/phone', page: () => PhoneChangePage()),
   GetPage(name: '/main/my/info/address', page: () => AddressChangePage()),
+  GetPage(name: '/mainPage/useInfo/main', page: () => UseInfoMainPage(), binding: UseInfoMainBinding()),
 ];

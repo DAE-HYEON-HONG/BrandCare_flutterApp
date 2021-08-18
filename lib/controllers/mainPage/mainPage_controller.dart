@@ -19,20 +19,6 @@ class MainPageController extends BaseController {
 
   void onItemTaped(int idx){
     selectedIdx.value = idx;
-
-    // 대현씨 유물
-    // if(idx == 0){
-    //   selectedIdx.value = idx;
-    // } else if(idx == 1) {
-    //   selectedIdx.value = idx;
-    // } else if(idx == 2) {
-    //   selectedIdx.value = idx;
-    // } else if(idx == 3) {
-    //   selectedIdx.value = idx;
-    // }else{
-    //   selectedIdx.value = idx;
-    // }
-
     print("현재 선택된 idx: ${selectedIdx.value}");
     update();
   }

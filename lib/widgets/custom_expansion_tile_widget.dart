@@ -39,11 +39,11 @@ class _CustomExpandableState extends State<CustomExpantionTile2>
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
-        color: Colors.transparent,
         decoration: BoxDecoration(
+          color: Colors.transparent,
           boxShadow: [
             defaultBoxShadow
-          ]
+          ],
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
