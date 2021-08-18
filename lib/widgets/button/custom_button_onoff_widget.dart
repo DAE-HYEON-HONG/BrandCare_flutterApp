@@ -12,7 +12,6 @@ class CustomButtonOnOffWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('isOn = $isOn');
     return SizedBox(
       width: double.infinity,
       height: 48,

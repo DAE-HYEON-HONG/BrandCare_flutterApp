@@ -9,6 +9,11 @@ import 'package:brandcare_mobile_flutter_v2/screens/auth/login_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signup_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/main_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/MainHome_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/address_change_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/my_info_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/name_change_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/password_change_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/phone_change_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/splash_page.dart';
 import 'package:get/get.dart';
 
@@ -18,4 +23,9 @@ final routes = [
   GetPage(name: '/auth/signup', page: () => SignUpPage(), binding: SignUpBinding()),
   GetPage(name: '/auth/find', page: () => FindAccountPage(), binding: FindAccountBinding()),
   GetPage(name: '/mainPage', page: () => MainPage(), binding: MainPageBinding()),
+  GetPage(name: '/main/my/info', page: () => MyInfoPage()),
+  GetPage(name: '/main/my/info/name', page: () => NameChangePage()),
+  GetPage(name: '/main/my/info/password', page: () => PasswordChangePage()),
+  GetPage(name: '/main/my/info/phone', page: () => PhoneChangePage()),
+  GetPage(name: '/main/my/info/address', page: () => AddressChangePage()),
 ];

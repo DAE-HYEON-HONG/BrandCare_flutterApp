@@ -16,7 +16,7 @@ class RouteContainerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(route);
+        Get.toNamed(route);
       },
       behavior: HitTestBehavior.translucent,
       child: Container(

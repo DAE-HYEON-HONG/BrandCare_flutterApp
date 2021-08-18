@@ -27,6 +27,23 @@ class MyPage extends StatelessWidget {
           children: [
             _renderProfile(),
           _renderHistory(),
+            const SizedBox(height: 26,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset('assets/icons/point.svg'),
+                  SvgPicture.asset('assets/icons/coupon.svg'),
+                  GestureDetector(
+                    onTap: (){
+                      Get.toNamed('/main/my/info');
+                    },
+                      child: SvgPicture.asset('assets/icons/my_informant.svg')),
+                ],
+              ),
+            ),
             const SizedBox(height: 14,),
             Divider(
               height: 0,
@@ -43,62 +60,68 @@ class MyPage extends StatelessWidget {
 
   Widget _renderProfile() => Container(
         padding: const EdgeInsets.only(left: 16, top: 32, right: 16),
-        child: Row(
-          children: [
-            Container(
-              width: 59,
-              height: 50,
-              child: Stack(
-                children: [
-                  Positioned(
-                    child:  Container(
-                      width: 50,
-                      height: 50,
-                      child: Center(
-                        child: SvgPicture.asset(
-                          'assets/icons/mypage_on.svg',
-                          width: 25,
-                          height: 25,
+        child: GestureDetector(
+          onTap: (){
+            Get.toNamed('/main/my/info');
+          },
+          behavior: HitTestBehavior.translucent,
+          child: Row(
+            children: [
+              Container(
+                width: 59,
+                height: 50,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      child:  Container(
+                        width: 50,
+                        height: 50,
+                        child: Center(
+                          child: SvgPicture.asset(
+                            'assets/icons/mypage_on.svg',
+                            width: 25,
+                            height: 25,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: Container(
-                        width: 18,
-                        height: 18,
-                        decoration: BoxDecoration(
-                            color: primaryColor,
-                            shape: BoxShape.circle
-                        ),
-                        child: Center(child: Icon(Icons.edit_outlined, color: whiteColor,size: 8,))),
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(width: 24,),
-            Flexible(
-              child: Container(
-                height: 50,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('이재룡 님', style: medium14TextStyle,),
-                    const Spacer(),
-                    Text('최근접속 2020.12.24 20:45:13', style: regular12TextStyle.copyWith(color: gray_333Color),),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                          width: 18,
+                          height: 18,
+                          decoration: BoxDecoration(
+                              color: primaryColor,
+                              shape: BoxShape.circle
+                          ),
+                          child: Center(child: Icon(Icons.edit_outlined, color: whiteColor,size: 8,))),
+                    )
                   ],
                 ),
               ),
-            )
-          ],
+              const SizedBox(width: 24,),
+              Flexible(
+                child: Container(
+                  height: 50,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('이재룡 님', style: medium14TextStyle,),
+                      const Spacer(),
+                      Text('최근접속 2020.12.24 20:45:13', style: regular12TextStyle.copyWith(color: gray_333Color),),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       );
 
   Widget _renderHistory() => Container(
     margin: const EdgeInsets.only(left: 16, top:25, right:16),
-    padding: const EdgeInsets.only(left:24, top: 15, right: 24, bottom: 15),
+    padding: const EdgeInsets.only(top: 15, bottom: 15),
     decoration: BoxDecoration(
       color: whiteColor,
       borderRadius: BorderRadius.circular(12.h),
