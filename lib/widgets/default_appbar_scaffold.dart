@@ -26,8 +26,8 @@ class DefaultAppBarScaffold extends StatelessWidget {
             Get.back();
           },
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SvgPicture.asset('assets/icons/btn_arrow_left.svg', width: 24, height: 24,),
+            padding: const EdgeInsets.all(18.0),
+            child: SvgPicture.asset('assets/icons/btn_arrow_left.svg', width: 18, height: 18,),
           ),
         ) : null,
 
