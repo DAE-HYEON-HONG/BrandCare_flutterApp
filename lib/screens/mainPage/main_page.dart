@@ -1,7 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/mainPage_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/MainHome_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/mainHome_page.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,7 +14,7 @@ class MainPage extends GetView<MainPageController>{
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
     return Scaffold(
-      body: Container(
+      body: Obx(()=> Container(
         color: whiteColor,
         width: double.infinity,
         height: double.infinity,
@@ -41,11 +41,9 @@ class MainPage extends GetView<MainPageController>{
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     //전체를 채울 시 expanded 사용 권장
-                    Obx(() => Expanded(
+                    Expanded(
                       child: InkWell(
-                        onTap: () {
-                          controller.onItemTaped(0);
-                        },
+                        onTap: () => controller.onItemTaped(0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,12 +68,10 @@ class MainPage extends GetView<MainPageController>{
                           ],
                         ),
                       ),
-                    )),
-                    Obx(() => Expanded(
+                    ),
+                    Expanded(
                       child: InkWell(
-                        onTap: () {
-                          controller.onItemTaped(1);
-                        },
+                        onTap: () => controller.onItemTaped(1),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -100,19 +96,17 @@ class MainPage extends GetView<MainPageController>{
                           ],
                         ),
                       ),
-                    )),
-                    Obx(() => Expanded(
+                    ),
+                    Expanded(
                       child: InkWell(
-                        onTap: () {
-                          controller.onItemTaped(2);
-                        },
+                        onTap: () => controller.onItemTaped(2),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.max,
                           children: [
-                            SizedBox(
-                              height: 20.0.h,
+                            const SizedBox(
+                              height: 20,
                             ),
                             Text(
                               "케어하기",
@@ -128,12 +122,10 @@ class MainPage extends GetView<MainPageController>{
                           ],
                         ),
                       ),
-                    )),
-                    Obx(() => Expanded(
+                    ),
+                    Expanded(
                       child: InkWell(
-                        onTap: () {
-                          controller.onItemTaped(3);
-                        },
+                        onTap: () => controller.onItemTaped(3),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -158,12 +150,10 @@ class MainPage extends GetView<MainPageController>{
                           ],
                         ),
                       ),
-                    )),
-                    Obx(() => Expanded(
+                    ),
+                    Expanded(
                       child: InkWell(
-                        onTap: () {
-                          controller.onItemTaped(4);
-                        },
+                        onTap: () => controller.onItemTaped(4),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -188,7 +178,7 @@ class MainPage extends GetView<MainPageController>{
                           ],
                         ),
                       ),
-                    )),
+                    ),
                   ],
                 ),
               ),
@@ -202,9 +192,7 @@ class MainPage extends GetView<MainPageController>{
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
-                    onTap: () {
-                      controller.onItemTaped(2);
-                    },
+                    onTap: () => controller.onItemTaped(2),
                     child: Container(
                       width: 50.w,
                       height: 50.h,
@@ -229,7 +217,7 @@ class MainPage extends GetView<MainPageController>{
             ),
           ],
         ),
-      ),
+      )),
     );
   }
 }

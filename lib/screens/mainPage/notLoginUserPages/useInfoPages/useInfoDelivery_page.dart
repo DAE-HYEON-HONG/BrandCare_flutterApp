@@ -21,7 +21,7 @@ class UseInfoDeliveryPage extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 9),
+        const SizedBox(height: 9),
         Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
           child: Column(
@@ -31,17 +31,17 @@ class UseInfoDeliveryPage extends StatelessWidget {
                 "- 수선하고자 하는 물품을 아래의 주소로 보내주세요.",
                 style: regular10TextStyle,
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Text(
                 "- 보내실 때 택배 비용은 고객님 부담입니다.",
                 style: regular10TextStyle,
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Text(
                 "- 받으실 때 택배 비용은 당사 부담으로 보내드립니다.",
                 style: regular10TextStyle,
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Text(
                 "- 수선품을 보내실 때 박스에 보내는 분의 연락처와 성명, 주소를 정확하게 기재해 주세요.",
                 style: regular10TextStyle,
@@ -49,9 +49,9 @@ class UseInfoDeliveryPage extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Divider(height: 1, color: gray_f5f6f7Color),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
           child: Text(

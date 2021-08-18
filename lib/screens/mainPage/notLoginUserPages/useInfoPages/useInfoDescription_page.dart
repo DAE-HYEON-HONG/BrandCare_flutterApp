@@ -23,7 +23,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 9),
+        const SizedBox(height: 9),
         // 1. 문장
         _description(
           "1. 내가 가진 제품 등록하기",
@@ -36,7 +36,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
                 "- 홈화면 하단의 등록하기에서 나의 소중한 제품들을 등록해주세요.",
                 style: regular10TextStyle,
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Text(
                 "추가설명----",
                 style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
@@ -44,7 +44,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         // 2. 문장
         Container(
           width: double.infinity,
@@ -55,7 +55,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
                 "2. 케어 수선 받기",
                 style: medium16TextStyle.copyWith(fontWeight: FontWeight.w700),
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Obx(() => Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 child: Column(
@@ -65,17 +65,17 @@ class UseInfoDescriptionPage extends StatelessWidget {
                       "- 나의 제품들을 관리하고 수선해보세요!",
                       style: regular10TextStyle,
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       "- 케어/수선 신청하는 방법",
                       style: regular10TextStyle,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Text(
                       "추가설명----",
                       style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     controller.isOpened.value ?
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,57 +83,57 @@ class UseInfoDescriptionPage extends StatelessWidget {
                         "step1. 케어/수선 신청하기",
                         style: regular10TextStyle,
                       ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           "- 홈 화면 하단 메뉴에서 [케어/수선]을 눌러주세요.",
                           style: regular10TextStyle,
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           "step2. 택배 보내기",
                           style: regular10TextStyle,
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           "- 신청이 완료되면, 아래의 배송주소로 제품을 배송해주세요.",
                           style: regular10TextStyle,
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           "- 보내시는 택배 비용은 고객님 부담입니다.",
                           style: regular10TextStyle,
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           "- 수선품을 보내실때 박스에 보내는 분의 연락처와 성명, 주소를 정확하게 기재해주세요.",
                           style: regular10TextStyle,
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           "> 서울 구로구 디지털로 33길 28(구로동 170-5), 우림 이비지센터 1차 1211호\n(주) 리드고\n우편번호: 08377  연락처: 02-6223-6223",
                           style: regular10TextStyle.copyWith(fontSize: 8),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           "step3. 배송",
                           style: regular10TextStyle,
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           "- 서비스 완료된 제품은 신청시 작성해주신 배송지로 배송해드립니다.",
                           style: regular10TextStyle,
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           "- 받으실 택배 비용은 저희가 부담합니다.",
                           style: regular10TextStyle,
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           "- 배송 조회는 [마이페이지]에서 확인 가능합니다.",
                           style: regular10TextStyle,
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
                           "step4. 케어/수선 확인하기",
                           style: regular10TextStyle,
@@ -142,7 +142,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
                           "- [마이페이지]에서 before/ after 사진 확인을 하실 수 있습니다.",
                           style: regular10TextStyle,
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Text(
                           "> 케어 수선이 힘든 경우 브랜드케어 측에서 반려, 환불될 수 있습니다.\n> 요청하신 항목과 금액으로 주문이 접수되오니 정확하게 신청해주시기 바랍니다.\n> 요청 사항과 접수 사진이 다를 경우 주문 취소 됩니다. ",
                           style: regular10TextStyle.copyWith(fontSize: 8),
@@ -150,7 +150,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
                       ],
                     ) :
                     Container(),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -183,12 +183,12 @@ class UseInfoDescriptionPage extends StatelessWidget {
                   ],
                 ),
               )),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Divider(height: 1, color: gray_f5f6f7Color),
             ],
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         // 3. 문장
         _description(
           "3. 정품 인증 받기",
@@ -201,12 +201,12 @@ class UseInfoDescriptionPage extends StatelessWidget {
                 "- 정품인지 아닌지 아리송한 제품들 전부 구분해드립니다!",
                 style: regular10TextStyle,
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Text(
                 "- 인증서도 발급해드려요.",
                 style: regular10TextStyle,
               ),
-              SizedBox(height: 14),
+              const SizedBox(height: 14),
               Text(
                 "추가설명----",
                 style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
@@ -214,7 +214,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         // 4. 문장
         _description(
           "4. shop에 내 제품을 올리고 둘러보기",
@@ -227,7 +227,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
                 "- 손이 잘 안가는 내 제품들 올리고, 내가 찾던 제품들이 여기에!",
                 style: regular10TextStyle,
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Text(
                 "추가설명----",
                 style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
@@ -235,7 +235,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 50),
+        const SizedBox(height: 50),
       ],
     );
   }
@@ -258,14 +258,14 @@ class UseInfoDescriptionPage extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               description,
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 "$enter",
                 style: medium10TextStyle.copyWith(
@@ -277,7 +277,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Divider(height: 1, color: gray_f5f6f7Color),
       ],
     );

@@ -2,8 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>사진을 업로드하기 위해 갤러리의 권한이 필요합니다.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>동영상 촬영을 위해 마이크 권한이 필요합니다.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>촬영을 위해 카메라 권한이 필요합니다.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>BrandCare(베타)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -18,10 +26,95 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
+	<key>CFBundleURLTypes</key>
+    	<array>
+    		<dict>
+    			<key>CFBundleTypeRole</key>
+    			<string>Editor</string>
+    			<key>CFBundleURLSchemes</key>
+    			<array>
+    				<string>kakao24d578e5ec7cbcf97fe904e7b11a0ecd</string>
+    			</array>
+    		</dict>
+    		<dict>
+    			<key>CFBundleTypeRole</key>
+    			<string>Editor</string>
+    			<key>CFBundleURLName</key>
+    			<string>naverlogin</string>
+    			<key>CFBundleURLSchemes</key>
+    			<array>
+    				<string>naverlogin</string>
+    			</array>
+    		</dict>
+    		<dict>
+                <key>CFBundleURLSchemes</key>
+                <array>
+                    <string>fb000000000000</string>
+                </array>
+            </dict>
+    	</array>
+    	<key>CFBundleVersion</key>
+    	<string>$(FLUTTER_BUILD_NUMBER)</string>
+    	<!-- 네이버 로그인 부분 -->
+    	<key>LSApplicationQueriesSchemes</key>
+        <array>
+        	<string>naversearchapp</string>
+        	<string>naversearchthirdlogin</string>
+        </array>
+        <key>kServiceAppUrlScheme</key>
+        <string>naverlogin</string>
+        <key>kConsumerKey</key>
+        <string>buhEmsPN0vZnrM99jMzm</string>
+        <key>kConsumerSecret</key>
+        <string>HOdOmuUkSj</string>
+        <key>kServiceAppName</key>
+        <string>BrandCare</string>
+        <!-- 카카오 로그인 부분 -->
+    	<key>KAKAO_APP_KEY</key>
+    	<string>24d578e5ec7cbcf97fe904e7b11a0ecd</string>
+    	<key>LSRequiresIPhoneOS</key>
+    	<true/>
+    	<key>NSAppTransportSecurity</key>
+    	<!-- 네이버 로그인 부분 -->
+    	<dict>
+          <key>NSAllowsArbitraryLoads</key>
+          <true/>
+          <key>NSExceptionDomains</key>
+          <dict>
+            <key>naver.com</key>
+            <dict>
+              <key>NSExceptionAllowsInsecureHTTPLoads</key>
+              <true/>
+              <key>NSExceptionRequiresForwardSecrecy</key>
+              <false/>
+              <key>NSIncludesSubdomains</key>
+              <true/>
+            </dict>
+            <key>naver.net</key>
+            <dict>
+              <key>NSExceptionAllowsInsecureHTTPLoads</key>
+              <true/>
+              <key>NSExceptionRequiresForwardSecrecy</key>
+              <false/>
+              <key>NSIncludesSubdomains</key>
+              <true/>
+            </dict>
+          </dict>
+    </dict>
+    <!-- 네이버 로그인 부분 끝 (도메인)-->
+    <!-- 페이스북 로그인 부분 -->
+    <key>FacebookAppID</key>
+    <string>000000000000</string>
+    <key>FacebookDisplayName</key>
+    <string>BrandCare</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fbapi</string>
+        <string>fb-messenger-share-api</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
+    </array>
+    <!-- 페이스북 로그인 부분 끝 -->
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
