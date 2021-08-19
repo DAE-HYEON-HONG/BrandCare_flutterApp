@@ -10,8 +10,10 @@ import 'package:brandcare_mobile_flutter_v2/bindings/notice_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/point_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/question_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/setting_binding.dart';
+import 'package:brandcare_mobile_flutter_v2/bindings/mainShop_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/signup_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/splash_binding.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopDetail/shopDetail_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/findAccount/findAccount_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/login_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signup_page.dart';
@@ -35,6 +37,9 @@ import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/point/poin
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/my_product_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/question/question_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/setting/setting_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/mainHome_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/shopAddProductPages/shopAddProuct_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/shopDetailPages/shopDetail_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/splash_page.dart';
 import 'package:get/get.dart';
 
@@ -64,5 +69,6 @@ final routes = [
   GetPage(name: '/main/my/product', page: () => MyProductPage(), binding: MyProductBinding()),
 
   GetPage(name: '/mainPage/useInfo/main', page: () => UseInfoMainPage(), binding: UseInfoMainBinding()),
-
+  GetPage(name: '/mainShop/addProduct', page: () => ShopAddProductPage(), binding: MainShopAddProductBinding()),
+  GetPage(name: '/mainShop/Detail', page: () => ShopDetailPage(), binding: MainShopDetailBinding()),
 ];

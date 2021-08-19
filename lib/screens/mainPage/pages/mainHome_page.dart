@@ -131,8 +131,8 @@ class MainHomePage extends StatelessWidget {
                                       )),
                                     ],
                                   ),
-                                  SizedBox(
-                                    width: 10.0.w,
+                                  const SizedBox(
+                                    width: 10,
                                   ),
                                   Obx(() => Container(
                                     width: 40,
@@ -166,7 +166,7 @@ class MainHomePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("이용 안내", style: regular14TextStyle.copyWith(color: gray_333Color, fontSize: 16)),
-                              SizedBox(height: 7.0),
+                              const SizedBox(height: 7.0),
                               Container(
                                 width: double.infinity,
                                 height: 99,
@@ -193,7 +193,7 @@ class MainHomePage extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 80,
                           ),
                           CustomExpansionTileMain(
@@ -206,7 +206,7 @@ class MainHomePage extends StatelessWidget {
                                     color: gray_999Color,
                                   ),
                                 ),
-                                SizedBox(height: 12),
+                                const SizedBox(height: 12),
                                 Text(
                                   expansionTitle,
                                   style: regular12TextStyle.copyWith(

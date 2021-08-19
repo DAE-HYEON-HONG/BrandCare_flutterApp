@@ -37,12 +37,17 @@ dependencies:
   url_launcher: ^6.0.9
   package_info_plus: ^1.0.4
   image_picker: ^0.8.3+2
+  dotted_border: ^2.0.0+1
   json_annotation: ^4.0.1
   get: ^4.3.6
   http: ^0.13.3
   carousel_slider: ^4.0.0
   extended_image: ^4.1.0
   kpostal: ^0.2.0
+  kakao_flutter_sdk: ^0.7.1
+  flutter_naver_login: ^1.2.2
+  flutter_facebook_auth: ^3.5.0+1
+  permission_handler: ^8.1.4+2
 
 dev_dependencies:
   flutter_test:

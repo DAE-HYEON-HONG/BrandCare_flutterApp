@@ -21,7 +21,7 @@ class UseInfoEventPage extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 9),
+        const SizedBox(height: 9),
         Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
           child: Column(
@@ -31,7 +31,7 @@ class UseInfoEventPage extends StatelessWidget {
                 "- 내용 필요",
                 style: regular10TextStyle,
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Text(
                 "- 내용 필요(리스트 뷰 사용해야 할듯.)",
                 style: regular10TextStyle,

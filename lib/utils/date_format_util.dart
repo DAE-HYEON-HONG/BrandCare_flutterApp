@@ -13,8 +13,8 @@ class DateFormatUtil{
   }
 
   static String convertDateTimeFormat({required String date}) {
-    DateTime convertDate = DateFormat('YYYY-MM-DDThh:mm:ss').parse(date);
-    return DateFormat('YYYY-MM-DD hh:mm').format(convertDate);
+    DateTime convertDate = DateFormat('yyyy-MM-DDThh:mm:ss').parse(date);
+    return DateFormat('yyyy-MM-DD hh:mm').format(convertDate);
   }
 
 }

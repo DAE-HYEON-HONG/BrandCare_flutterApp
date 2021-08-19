@@ -23,7 +23,7 @@ class UseInfoPricePage extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 7),
+        const SizedBox(height: 7),
         Container(
           width: 177,
           child: Row(
@@ -36,7 +36,7 @@ class UseInfoPricePage extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 17),
+        const SizedBox(height: 17),
         Obx(() => _careWidget()),
       ],
     );
@@ -97,7 +97,7 @@ class UseInfoPricePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("가방", style: medium12TextStyle.copyWith(fontWeight: FontWeight.w700)),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Container(
                   width: double.infinity,
                   child: Row(
@@ -117,9 +117,9 @@ class UseInfoPricePage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 2),
+          const SizedBox(height: 2),
           Divider(height: 2, color: gray_f5f6f7Color),
-          SizedBox(height: 2),
+          const SizedBox(height: 2),
           Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: ListView.builder(
@@ -136,7 +136,7 @@ class UseInfoPricePage extends StatelessWidget {
               itemCount: controller.bagPrice.length,
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Divider(height: 2, color: gray_f5f6f7Color),
         ],
       ),
@@ -154,7 +154,7 @@ class UseInfoPricePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("지갑", style: medium12TextStyle.copyWith(fontWeight: FontWeight.w700)),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Container(
                   width: double.infinity,
                   child: Row(
@@ -174,9 +174,9 @@ class UseInfoPricePage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 2),
+          const SizedBox(height: 2),
           Divider(height: 2, color: gray_f5f6f7Color),
-          SizedBox(height: 2),
+          const SizedBox(height: 2),
           Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: ListView.builder(
@@ -193,7 +193,7 @@ class UseInfoPricePage extends StatelessWidget {
               itemCount: controller.walletPrice.length,
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Divider(height: 2, color: gray_f5f6f7Color),
         ],
       ),
@@ -211,7 +211,7 @@ class UseInfoPricePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("신발", style: medium12TextStyle.copyWith(fontWeight: FontWeight.w700)),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Container(
                   width: double.infinity,
                   child: Row(
@@ -231,9 +231,9 @@ class UseInfoPricePage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 2),
+          const SizedBox(height: 2),
           Divider(height: 2, color: gray_f5f6f7Color),
-          SizedBox(height: 2),
+          const SizedBox(height: 2),
           Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: ListView.builder(
@@ -250,7 +250,7 @@ class UseInfoPricePage extends StatelessWidget {
               itemCount: controller.bagPrice.length,
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Divider(height: 2, color: gray_f5f6f7Color),
         ],
       ),
@@ -273,7 +273,7 @@ class UseInfoPricePage extends StatelessWidget {
                   isOdd == 1 ? "부위당" : isOddTitle,
                   style: regular10TextStyle,
                 ),
-                SizedBox(width: 22),
+                const SizedBox(width: 22),
                 Text(NumberFormatUtil.convertNumberFormat(number: price), style: regular10TextStyle),
               ],
             ),

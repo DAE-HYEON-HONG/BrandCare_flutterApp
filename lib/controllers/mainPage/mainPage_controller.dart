@@ -1,4 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/mainHome_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/mainShop_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/mainHome_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/my_page.dart';
 import "package:get/get.dart";
 import 'package:flutter/material.dart';
@@ -10,10 +12,10 @@ class MainPageController extends BaseController {
 
   //로딩할 위젯들
   List<Widget> widgetOptions = <Widget> [
-    MainHomePage(),
-    MainHomePage(),
-    MainHomePage(),
-    MainHomePage(),
+    MainHome(),
+    MainHome(),
+    MainHome(),
+    MainShopPage(),
     MyPage(),
   ];
 
