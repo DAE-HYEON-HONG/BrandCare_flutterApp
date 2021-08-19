@@ -35,7 +35,11 @@ class MyPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SvgPicture.asset('assets/icons/point.svg'),
-                  SvgPicture.asset('assets/icons/coupon.svg'),
+                  GestureDetector(
+                    onTap: (){
+                      Get.toNamed('/main/my/coupon');
+                    },
+                      child: SvgPicture.asset('assets/icons/coupon.svg')),
                   GestureDetector(
                     onTap: (){
                       Get.toNamed('/main/my/info');
