@@ -148,6 +148,8 @@ class MyPage extends StatelessWidget {
                   Get.toNamed('/main/my/genuine');
                 }else if(e.keys.first == '케어/수선이력') {
                   Get.toNamed('/main/my/care');
+                }else {
+                  Get.toNamed('/main/my/product');
                 }
               },
               child: Container(
