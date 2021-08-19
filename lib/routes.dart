@@ -1,8 +1,10 @@
 import 'package:brandcare_mobile_flutter_v2/bindings/findAccount_binding.dart';
+import 'package:brandcare_mobile_flutter_v2/bindings/inquiry_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/login_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/mainPage_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/notice_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/question_binding.dart';
+import 'package:brandcare_mobile_flutter_v2/bindings/setting_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/signup_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/splash_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/findAccount/findAccount_page.dart';
@@ -15,8 +17,11 @@ import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/info/my_in
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/info/name_change_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/info/password_change_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/info/phone_change_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/info/terms_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/notice/notice_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/onetoone_inquiry/onetoone_inquiry_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/question/question_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/setting/setting_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/splash_page.dart';
 import 'package:get/get.dart';
 
@@ -31,7 +36,10 @@ final routes = [
   GetPage(name: '/main/my/info/password', page: () => PasswordChangePage()),
   GetPage(name: '/main/my/info/phone', page: () => PhoneChangePage()),
   GetPage(name: '/main/my/info/address', page: () => AddressChangePage()),
-  GetPage(name: '/main/my/notice', page: () => NoticePage(), binding: NoticeBinding()),
+  GetPage(name: '/main/my/notice', page: () => NoticePage(), binding: NoticeBinding(),),
   GetPage(name: '/main/my/question', page: () => QuestionPage(), binding: QuestionBinding()),
+  GetPage(name: '/main/my/setting', page: () => SettingPage(), binding: SettingBinding()),
+  GetPage(name: '/main/my/inquiry', page: () => OneToOneInquiryPage(), binding: InquiryBinding()),
+  GetPage(name: '/main/my/term', page: () => TermsPage()),
   GetPage(name: '/mainPage/useInfo/main', page: () => UseInfoMainPage(), binding: UseInfoMainBinding()),
 ];
