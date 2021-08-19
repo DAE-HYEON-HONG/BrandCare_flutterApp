@@ -32,7 +32,7 @@ class UseInfoMainPage extends GetView<UseInfoMainController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
               Container(
                 width: double.infinity,
                 height: 99,
@@ -57,9 +57,9 @@ class UseInfoMainPage extends GetView<UseInfoMainController> {
                   ],
                 ),
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               Divider(height: 1, color: gray_f5f6f7Color),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Container(
                 child: controller.widgetOptions.elementAt(controller.currentPageIdx.value),
               ),
