@@ -4,6 +4,7 @@ import 'package:brandcare_mobile_flutter_v2/bindings/inquiry_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/login_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/mainPage_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/notice_binding.dart';
+import 'package:brandcare_mobile_flutter_v2/bindings/point_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/question_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/setting_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/signup_binding.dart';
@@ -24,6 +25,8 @@ import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/info/terms
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/invite/invite_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/notice/notice_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/onetoone_inquiry/onetoone_inquiry_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/point/add_point_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/point/point_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/question/question_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/setting/setting_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/splash_page.dart';
@@ -48,5 +51,7 @@ final routes = [
   GetPage(name: '/main/my/invite', page: () => InvitePage()),
   GetPage(name: '/main/my/coupon', page: () => CouponPage(), binding: CouponBinding()),
   GetPage(name: '/main/my/coupon/add', page: () => CouponAddPage()),
+  GetPage(name: '/main/my/point', page: () => PointPage(), binding: PointBinding()),
+  GetPage(name: '/main/my/point/add', page: () => PointAddPage()),
   GetPage(name: '/mainPage/useInfo/main', page: () => UseInfoMainPage(), binding: UseInfoMainBinding()),
 ];
