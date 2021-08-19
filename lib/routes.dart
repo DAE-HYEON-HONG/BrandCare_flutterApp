@@ -18,6 +18,7 @@ import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/info/name_
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/info/password_change_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/info/phone_change_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/info/terms_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/invite/invite_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/notice/notice_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/onetoone_inquiry/onetoone_inquiry_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/question/question_page.dart';
@@ -41,5 +42,6 @@ final routes = [
   GetPage(name: '/main/my/setting', page: () => SettingPage(), binding: SettingBinding()),
   GetPage(name: '/main/my/inquiry', page: () => OneToOneInquiryPage(), binding: InquiryBinding()),
   GetPage(name: '/main/my/term', page: () => TermsPage()),
+  GetPage(name: '/main/my/invite', page: () => InvitePage()),
   GetPage(name: '/mainPage/useInfo/main', page: () => UseInfoMainPage(), binding: UseInfoMainBinding()),
 ];

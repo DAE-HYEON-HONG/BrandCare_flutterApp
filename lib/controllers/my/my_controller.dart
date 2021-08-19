@@ -10,7 +10,7 @@ class MyController extends BaseController {
   ];
 
   Map<String, String> linkData = {
-    '친구 초대 하기': '',
+    '친구 초대 하기': '/main/my/invite',
     '제품 사용자 변경': '',
     '공지사항': '/main/my/notice',
     '자주 묻는 질문': '/main/my/question',
