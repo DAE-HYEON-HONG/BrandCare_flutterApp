@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class MainHome extends StatelessWidget {
+class MainHomePage extends StatelessWidget {
   final MainHomeController controller = Get.put(MainHomeController());
   final String expansionTitle = "고객님의 소중한 명품의 가치를 더욱 높여드립니다.\n오랫동안 간직하고 관리할 수 있는 방법은 브랜드케어입니다.";
   final String expansionDescription = "서울특별시 구로구 디지털로 33길 28, 1211호\n사업자등록 번호: 816-81-02299\n통신판매업신고번호: 제2021-서울구로-0433호";

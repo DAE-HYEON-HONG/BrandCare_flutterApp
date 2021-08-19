@@ -17,7 +17,7 @@ class GenuineBoxWidget extends StatelessWidget {
         border: isGenuine ? Border.all(color: primaryColor) : null,
         color: isGenuine ? whiteColor : gray_AFColor,
       ),
-      child: Text('${isGenuine ? '정품' : '미인증'}', style: textStyle,),
+      child: Center(child: Text('${isGenuine ? '정품' : '미인증'}', style: textStyle,)),
     );
   }
 }

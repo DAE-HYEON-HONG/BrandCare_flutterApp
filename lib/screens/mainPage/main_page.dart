@@ -7,9 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'dart:io';
 
-class MainPage extends GetView<MainPageController>{
+class MainPage extends GetView<MainPageController> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
@@ -20,8 +19,15 @@ class MainPage extends GetView<MainPageController>{
         height: double.infinity,
         child: Stack(
           children: <Widget>[
-            Container(
-              child: controller.widgetOptions.elementAt(controller.selectedIdx.value),
+            Positioned(
+              child: Obx(() => Container(
+                    child: controller.widgetOptions
+                        .elementAt(controller.selectedIdx.value),
+                  )),
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 64.h,
             ),
             Positioned(
               left: 0,
@@ -32,9 +38,14 @@ class MainPage extends GetView<MainPageController>{
                 height: 64.h,
                 decoration: BoxDecoration(
                   color: whiteColor,
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20)),
                   boxShadow: [
-                    BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 4, offset: Offset(0.0, -5.0)),
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 4,
+                        offset: Offset(0.0, -5.0)),
                   ],
                 ),
                 child: Row(
@@ -200,7 +211,9 @@ class MainPage extends GetView<MainPageController>{
                         shape: BoxShape.circle,
                         color: primaryColor,
                         boxShadow: [
-                          BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 5),
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              blurRadius: 5),
                         ],
                       ),
                       child: Center(

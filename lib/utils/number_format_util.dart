@@ -7,7 +7,7 @@ class NumberFormatUtil{
   }
 
   static String convertNegativePositiveNumber({required int number}) {
-    return number.isNegative? '- $number' : '+ $number';
+    return number.isNegative? '- ${number.abs()}P 차감' : '+ ${number}P 적립';
   }
 
   static String convertNegativePositiveNumberFormat({required int number}) {
