@@ -142,29 +142,38 @@ class MyPage extends StatelessWidget {
       children: [
         ...myController.myData.map((e) {
           return Flexible(
-            child: Container(
-              decoration: BoxDecoration(
-                border: myController.myData.indexOf(e) != 2 ? Border(
-                  right: BorderSide(
-                    width: 1,
-                    color: gray_F1F3F5Color
+            child: GestureDetector(
+              onTap: (){
+                if(e.keys.first == '정품인증이력'){
+                  Get.toNamed('/main/my/genuine');
+                }else if(e.keys.first == '케어/수선이력') {
+                  Get.toNamed('/main/my/care');
+                }
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  border: myController.myData.indexOf(e) != 2 ? Border(
+                    right: BorderSide(
+                      width: 1,
+                      color: gray_F1F3F5Color
+                    ),
+                  ) : null
+                ),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Text('${e.keys.first}', style: regular12TextStyle.copyWith(color: gray_333Color),),
+                      const SizedBox(height: 16.5,),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(text: '${e.values.first}', style: medium24TextStyle.copyWith(color: primaryColor)),
+                            TextSpan(text: ' 건', style: regular14TextStyle)
+                          ]
+                        ),
+                      )
+                    ],
                   ),
-                ) : null
-              ),
-              child: Center(
-                child: Column(
-                  children: [
-                    Text('${e.keys.first}', style: regular12TextStyle.copyWith(color: gray_333Color),),
-                    const SizedBox(height: 16.5,),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(text: '${e.values.first}', style: medium24TextStyle.copyWith(color: primaryColor)),
-                          TextSpan(text: ' 건', style: regular14TextStyle)
-                        ]
-                      ),
-                    )
-                  ],
                 ),
               ),
             ),

@@ -1,5 +1,7 @@
+import 'package:brandcare_mobile_flutter_v2/bindings/care_history_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/coupon_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/findAccount_binding.dart';
+import 'package:brandcare_mobile_flutter_v2/bindings/genuine_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/inquiry_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/login_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/mainPage_binding.dart';
@@ -14,8 +16,10 @@ import 'package:brandcare_mobile_flutter_v2/screens/auth/login_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signup_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/main_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/notLoginUserPages/useInfoPages/useInfoMain_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/care/care_history_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/coupon/add_coupon_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/coupon/coupon_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/genuine/genuine_history_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/info/address_change_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/info/my_info_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/info/name_change_page.dart';
@@ -53,5 +57,9 @@ final routes = [
   GetPage(name: '/main/my/coupon/add', page: () => CouponAddPage()),
   GetPage(name: '/main/my/point', page: () => PointPage(), binding: PointBinding()),
   GetPage(name: '/main/my/point/add', page: () => PointAddPage()),
+  GetPage(name: '/main/my/genuine', page: () => GenuineHistoryPage(), binding: GenuineBinding()),
+  GetPage(name: '/main/my/care', page: () => CareHistoryPage(), binding: CareHistoryBinding()),
+
   GetPage(name: '/mainPage/useInfo/main', page: () => UseInfoMainPage(), binding: UseInfoMainBinding()),
+
 ];

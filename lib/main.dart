@@ -43,7 +43,8 @@ class MyApp extends StatelessWidget {
                     unselectedLabelColor: gray_999Color,
                     labelStyle: medium14TextStyle,
                     unselectedLabelStyle: medium14TextStyle,
-                  )
+                  ),
+                dividerColor: gray_F1F3F5Color,
               ),
               initialRoute: '/splash',
               getPages: [...routes],
