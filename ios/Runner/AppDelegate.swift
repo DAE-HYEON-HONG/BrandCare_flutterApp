@@ -1,6 +1,6 @@
 import UIKit
 import Flutter
-import NaverThirdPartyLogin
+//import NaverThirdPartyLogin
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -13,7 +13,7 @@ import NaverThirdPartyLogin
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
     
-    override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        return NaverThirdPartyLoginConnection.getSharedInstance().application(app, open: url, options: options)
-    }
+//    override func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+//        return NaverThirdPartyLoginConnection.getSharedInstance().application(app, open: url, options: options)
+//    }
 }
