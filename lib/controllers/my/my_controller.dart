@@ -14,8 +14,8 @@ class MyController extends BaseController {
     '제품 사용자 변경': '',
     '공지사항': '/main/my/notice',
     '자주 묻는 질문': '/main/my/question',
-    '1:1 문의': '',
-    '설정': '',
+    '1:1 문의': '/main/my/inquiry',
+    '설정': '/main/my/setting',
   };
 
   Map<String, String> infoLinkData = {
