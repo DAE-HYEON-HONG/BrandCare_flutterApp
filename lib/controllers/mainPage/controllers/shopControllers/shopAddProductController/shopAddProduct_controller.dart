@@ -68,7 +68,7 @@ class ShopAddProductController extends BaseController{
   }
 
   void chkField() {
-    if(titleCtrl.text != "" && categoryCtrl.text != "" && priceCtrl.text != "" && bodyCtrl.text != ""){
+    if(titleCtrl.text != "" || categoryCtrl.text != "" || priceCtrl.text != "" || bodyCtrl.text != ""){
       this.fill.value = true;
     }
   }

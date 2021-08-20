@@ -19,6 +19,8 @@ import 'package:brandcare_mobile_flutter_v2/screens/auth/login_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signup_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/main_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/notLoginUserPages/useInfoPages/useInfoMain_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addProductPages/addProductDescription_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addProductPages/addProductImgs_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/care/care_history_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/coupon/add_coupon_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/coupon/coupon_page.dart';
@@ -42,6 +44,8 @@ import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/sho
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/shopDetailPages/shopDetail_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/splash_page.dart';
 import 'package:get/get.dart';
+
+import 'bindings/mainAddProduct_binding.dart';
 
 final routes = [
   GetPage(name: '/splash', page: () => SplashPage(), binding: SplashBinding()),
@@ -71,4 +75,6 @@ final routes = [
   GetPage(name: '/mainPage/useInfo/main', page: () => UseInfoMainPage(), binding: UseInfoMainBinding()),
   GetPage(name: '/mainShop/addProduct', page: () => ShopAddProductPage(), binding: MainShopAddProductBinding()),
   GetPage(name: '/mainShop/Detail', page: () => ShopDetailPage(), binding: MainShopDetailBinding()),
+  GetPage(name: '/mainAddProduct/addImg', page: () => AddProductImgsPage(), binding: MainAddProductBindings()),
+  GetPage(name: '/mainAddProduct/addDescription', page: () => AddProductDescriptionPage(), binding: MainAddProductBindings()),
 ];
