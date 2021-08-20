@@ -15,27 +15,44 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: Size(360, 640),
-      builder: () => GetMaterialApp(
-        title: 'Brand Care',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          tabBarTheme: TabBarTheme(
-            indicator: UnderlineTabIndicator(
-              borderSide: BorderSide(
-                color: primaryColor,
-                width: 4.0
-              )
+      builder: () => Builder(
+        builder: (context) {
+          return GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: (){
+              print('ontab ');
+              var currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+                FocusScope.of(context).requestFocus(FocusNode());
+              }
+            },
+            child: GetMaterialApp(
+              title: 'Brand Care',
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                  primarySwatch: Colors.blue,
+                  tabBarTheme: TabBarTheme(
+                    indicator: UnderlineTabIndicator(
+                        borderSide: BorderSide(
+                            color: primaryColor,
+                            width: 4.0
+                        )
+                    ),
+                    labelColor: primaryColor,
+                    unselectedLabelColor: gray_999Color,
+                    labelStyle: medium14TextStyle,
+                    unselectedLabelStyle: medium14TextStyle,
+                  ),
+                dividerColor: gray_F1F3F5Color,
+              ),
+              initialRoute: '/splash',
+              getPages: [...routes],
+              onInit: (){
+                Get.put(GlobalController());
+              },
             ),
-            labelColor: primaryColor,
-            unselectedLabelColor: gray_999Color,
-            labelStyle: medium14TextStyle,
-            unselectedLabelStyle: medium14TextStyle,
-          )
-        ),
-        initialRoute: '/splash',
-        getPages: [...routes],
-        onInit: (){
-          Get.put(GlobalController());
+          );
         },
       ),
     );

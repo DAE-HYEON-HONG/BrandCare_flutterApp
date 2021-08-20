@@ -1,6 +1,8 @@
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addProductPages/mainAddProduct_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/mainHome_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/mainShop_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/mainShop_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/my_page.dart';
 import "package:get/get.dart";
 import 'package:flutter/material.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
@@ -11,11 +13,11 @@ class MainPageController extends BaseController {
 
   //로딩할 위젯들
   List<Widget> widgetOptions = <Widget> [
-    MainHome(),
+    MainHomePage(),
     MainAddProductPage(),
-    MainHome(),
+    MainHomePage(),
     MainShopPage(),
-    MainHome(),
+    MyPage(),
   ];
 
   void onItemTaped(int idx){

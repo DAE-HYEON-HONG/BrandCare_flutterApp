@@ -6,8 +6,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 class CustomExpantionTile2 extends StatefulWidget {
   final Widget title;
   final Widget child;
+  final bool isShowShadow;
 
-  CustomExpantionTile2({required this.title, required this.child});
+  CustomExpantionTile2({required this.title, required this.child, this.isShowShadow=true});
 
   @override
   _CustomExpandableState createState() => _CustomExpandableState();
@@ -41,9 +42,9 @@ class _CustomExpandableState extends State<CustomExpantionTile2>
         width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.transparent,
-          boxShadow: [
+          boxShadow: widget.isShowShadow ? [
             defaultBoxShadow
-          ],
+          ] : null,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
