@@ -24,14 +24,17 @@ class CustomFormSubmit extends StatelessWidget {
         width: double.infinity,
         height: Platform.isIOS ? 70 : 60,
         decoration: BoxDecoration(
-          border: Border.all(color: Color(0xff212B62), width: 1),
+          border: Border.all(
+            color: this.fill == false ? gray_999Color : primaryColor,
+            width: 1,
+          ),
           color: this.fill == false ? whiteColor : primaryColor,
         ),
         child: Center(
           child: Text(
             this.title,
             style: medium14TextStyle.copyWith(
-              color: this.fill == false ? primaryColor : whiteColor,
+              color: this.fill == false ? gray_999Color : whiteColor,
             ),
           ),
         ),

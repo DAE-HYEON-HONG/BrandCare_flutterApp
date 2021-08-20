@@ -1,6 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
-import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/mainShop_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/mainShop_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/shopListPages/mainShopListAll_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/shopListPages/mainShopListInst_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/shopListPages/mainShopListMine_page.dart';
