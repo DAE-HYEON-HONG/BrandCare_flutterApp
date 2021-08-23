@@ -96,7 +96,7 @@ class AddProductImgsPage extends GetView<AddProductImgsController> {
               onTab: () => controller.nextLevel(),
               fill: controller.fill.value,
             ),
-          )
+          ),
         ],
       ),
     );

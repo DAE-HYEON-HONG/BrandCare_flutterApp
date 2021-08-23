@@ -40,6 +40,7 @@ class MainAddProductPage extends StatelessWidget {
   //바디 부분
   _body(BuildContext context) {
     return Container(
+      color: whiteColor,
       width: double.infinity,
       height: double.infinity,
       child: SingleChildScrollView(
