@@ -8,7 +8,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
    <application
         android:label="brandcare_mobile_flutter_v2"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:useCleartextTaffic="true"
+       >
        <!-- 네이버 로그인 부분 -->
        <meta-data
            android:name="com.naver.sdk.clientId"

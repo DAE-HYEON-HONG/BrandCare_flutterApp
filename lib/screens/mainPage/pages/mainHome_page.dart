@@ -158,7 +158,7 @@ class MainHomePage extends StatelessWidget {
                     //하단 이용 안내 및 브랜드 케어 설명
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.only(top: 32, bottom: 70, left: 16, right: 16),
+                      padding: const EdgeInsets.only(top: 32, left: 16, right: 16),
                       child: Column(
                         children: <Widget>[
                           //이용안내
