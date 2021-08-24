@@ -17,7 +17,7 @@ class AddCarePaymentController extends BaseController {
     Get.dialog(
       CustomDialogWidget(
         title: '케어/수선 신청 주의 사항',
-        content: '요청사항과 신청 암공의 금액으로 주문이 접수 되오니 정확하게 신청해 주시기 바랍니다.\n만약, 첨부사진과 신청항목이 다를 경우 주문이 취소되오니 이점 참고하여 주시기 바랍니다.',
+        content: '요청사항과 신청 항목의 금액으로 주문이 접수 되오니 정확하게 신청해 주시기 바랍니다.\n만약, 첨부사진과 신청항목이 다를 경우 주문이 취소되오니 이점 참고하여 주시기 바랍니다.',
         onClick: (){
           testSuccess();
           update();
@@ -37,8 +37,7 @@ class AddCarePaymentController extends BaseController {
       CustomDialogWidget(
         content: '신청이 완료되었습니다.',
         onClick: (){
-          Get.back();
-          update();
+          Get.toNamed('/mainAddCare/add/status');
         },
         isSingleButton: true,
         okTxt: "확인",

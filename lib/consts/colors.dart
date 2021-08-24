@@ -13,6 +13,7 @@ const gray_D5D7DBColor = const Color(0xffD5D7DB);
 const gray_F1F3F5Color = const Color(0xffF1F3F5);
 const gray_F5F6F7Color = const Color(0xffF5F6F7);
 const gray_727272Color = const Color(0xff727272);
+const gray_F2F5F6Color = const Color(0xffF2F5F6);
 const whiteColor = const Color(0xffffffff);
 const grayColor = const Color(0xff8E8F95);
 const purpleColor = const Color(0xff552FC4);
@@ -20,6 +21,7 @@ const redColor = const Color(0xffE90000);
 const pinkColor = const Color(0xffFF6060);
 const primaryColor = const Color(0xff212B62);
 const backgroundColor = const Color(0xE5E5E5);
+const whitePrimaryColor = const Color(0xFFE6E6FF);
 
 
 const kakaoColor = const Color(0xffFFE812);
