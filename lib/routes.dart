@@ -22,6 +22,7 @@ import 'package:brandcare_mobile_flutter_v2/screens/mainPage/notLoginUserPages/u
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addCarePages/addCareEtc_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addCarePages/addCarePayment_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addCarePages/addCarePic_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addCarePages/addCareStatus_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addProductPages/addProductDescription_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addProductPages/addProductImgs_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/care/care_history_page.dart';
@@ -84,4 +85,5 @@ final routes = [
   GetPage(name: '/mainAddCare/add/pics', page: () => AddCarePicPage(), binding: MainAddCareBinding()),
   GetPage(name: '/mainAddCare/add/etc', page: () => AddCareEtcPage(), binding: MainAddCareBinding()),
   GetPage(name: '/mainAddCare/add/payment', page: () => AddCarePaymentPage(), binding: MainAddCareBinding()),
+  GetPage(name: '/mainAddCare/add/status', page: () => AddCareStatusPage(), binding: MainAddCareBinding()),
 ];
