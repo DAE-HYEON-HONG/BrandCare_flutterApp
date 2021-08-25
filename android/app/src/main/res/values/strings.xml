@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- naver auth resource   -->
+    <string name="naver_client_id">1</string>
+    <string name="naver_client_secret">1</string>
+    <string name="naver_client_name">1</string>
+
+    <!-- kakao auth resource  -->
+    <string name="kakao_api">1</string>
+
+    <!-- facebook auth resource   -->
+    <string name="facebook_app_id">1</string>
+    <string name="fb_login_protocol_scheme">fb1</string>
+</resources>
