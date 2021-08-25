@@ -115,7 +115,7 @@ class MyPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('이재룡 님', style: medium14TextStyle,),
+                      Text(globalController.userInfoModel.nickName, style: medium14TextStyle,),
                       const Spacer(),
                       Text('최근접속 2020.12.24 20:45:13', style: regular12TextStyle.copyWith(color: gray_333Color),),
                     ],

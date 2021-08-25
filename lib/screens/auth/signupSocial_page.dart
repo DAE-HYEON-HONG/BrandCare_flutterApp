@@ -1,5 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/auth/signupSocial_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/auth/signup_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
@@ -10,96 +11,75 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-class SignUpPage extends GetView<SignUpController> {
-  const SignUpPage({Key? key}) : super(key: key);
+class SignUpSocialPage extends GetView<SignUpSocialController> {
+  const SignUpSocialPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(
       title: '회원가입',
-      child: SafeArea(
-        child: Form(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(
-                    children: [
-                      FormInputWidget(
-                        onChange: (value) {
-                          controller.emailTxt.value = controller.emailController.text;
-                        },
-                        onSubmit: (value) {},
-                        controller: controller.emailController,
-                        isShowTitle: true,
-                        title: '아이디(이메일)',
-                        hint: '이메일 주소를 입력해주세요.',
-                      ),
-                      const SizedBox(height: 16),
-                      Obx(() => CustomButtonOnOffWidget(
-                        title: '중복확인',
-                        onClick: () => controller.chkDuplicateEmail(controller.emailController.text),
-                        radius: 4,
-                        isOn: controller.isEmail.value,
-                      )),
-                      const SizedBox(height: 16),
-                      FormInputWidget(
-                        onChange: (value) {},
-                        onSubmit: (value) {},
-                        controller: controller.passwordController,
-                        isShowTitle: true,
-                        title: '비밀번호',
-                        hint: '영문, 숫자, 특수문자로 8~20자리 입력해주세요.',
-                        isObscureText: true,
-                      ),
-                      const SizedBox(height: 16),
-                      FormInputWidget(
-                        onChange: (value) {},
-                        onSubmit: (value) {},
-                        controller: controller.rePasswordController,
-                        isShowTitle: true,
-                        title: '비밀번호 확인',
-                        hint: '비밀번호를 확인하세요.',
-                        isObscureText: true,
-                      ),
-                      const SizedBox(height: 16),
-                      FormInputWidget(
-                        onChange: (value) {},
-                        onSubmit: (value) {},
-                        controller: controller.nameController,
-                        isShowTitle: true,
-                        title: '이름(닉네임)',
-                        hint: '이름(닉네임)을 입력해주세요.(8자리 이하)',
-                      ),
-                      const SizedBox(height: 16),
-                      _itemPhoneInput(),
-                      const SizedBox(height: 16),
-                      _itemAuthNumber(),
-                      const SizedBox(height: 16),
-                      FormInputWidget(
-                        onChange: (value) {},
-                        onSubmit: (value) {},
-                        controller: controller.friendCodeController,
-                        isShowTitle: true,
-                        title: '친구 초대 코드(선택)',
-                        hint: '친구에게 받은 초대 코드를 입력해주세요.',
-                        isObscureText: true,
-                      ),
-                      const SizedBox(height: 16),
-                      _itemAgreeContainer(),
-                      const SizedBox(height: 32),
-                    ],
-                  ),
+      child: Form(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  children: [
+                    FormInputWidget(
+                      onChange: (value) {
+                        controller.emailTxt.value = controller.emailController.text;
+                      },
+                      onSubmit: (value) {},
+                      controller: controller.emailController,
+                      isShowTitle: true,
+                      title: '아이디(이메일)',
+                      hint: '이메일 주소를 입력해주세요.',
+                    ),
+                    const SizedBox(height: 16),
+                    Obx(() => CustomButtonOnOffWidget(
+                      title: '중복확인',
+                      onClick: () => controller.chkDuplicateEmail(controller.emailController.text),
+                      radius: 4,
+                      isOn: controller.isEmail.value,
+                    )),
+                    const SizedBox(height: 16),
+                    FormInputWidget(
+                      onChange: (value) {},
+                      onSubmit: (value) {},
+                      controller: controller.nameController,
+                      isShowTitle: true,
+                      title: '이름(닉네임)',
+                      hint: '이름(닉네임)을 입력해주세요.(8자리 이하)',
+                    ),
+                    const SizedBox(height: 16),
+                    _itemPhoneInput(),
+                    const SizedBox(height: 16),
+                    _itemAuthNumber(),
+                    const SizedBox(height: 16),
+                    FormInputWidget(
+                      onChange: (value) {},
+                      onSubmit: (value) {},
+                      controller: controller.friendCodeController,
+                      isShowTitle: true,
+                      title: '친구 초대 코드(선택)',
+                      hint: '친구에게 받은 초대 코드를 입력해주세요.',
+                      isObscureText: true,
+                    ),
+                    const SizedBox(height: 16),
+                    _itemAgreeContainer(),
+                    const SizedBox(height: 32),
+                  ],
                 ),
-                Obx(() => CustomButtonOnOffWidget(
-                  title: '회원가입',
-                  onClick: () => controller.registerChk(),
-                  isOn: controller.allAgree,
-                  radius: 0,
-                )),
-              ],
-            ),
+              ),
+              Obx(() => CustomButtonOnOffWidget(
+                title: '회원가입',
+                onClick: () => controller.registerChk(Get.arguments['TYPE']),
+                isOn: controller.allAgree,
+                radius: 0,
+              )),
+            ],
           ),
         ),
       ),

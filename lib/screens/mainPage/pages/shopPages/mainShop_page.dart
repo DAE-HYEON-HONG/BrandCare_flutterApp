@@ -126,7 +126,7 @@ class MainShopPage extends StatelessWidget{
                             child: InkWell(
                               onTap: () {},
                               child: SvgPicture.asset(
-                                "assets/icons/shop_search.svg",
+                                "assets/icons/search.svg",
                                 height: 30,
                                 color: Colors.black,
                               ),

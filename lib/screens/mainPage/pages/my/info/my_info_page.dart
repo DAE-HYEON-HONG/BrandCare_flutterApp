@@ -1,5 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/my_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/image_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
@@ -9,8 +10,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class MyInfoPage extends StatelessWidget {
-  const MyInfoPage({Key? key}) : super(key: key);
+  MyInfoPage({Key? key}) : super(key: key);
 
+  final globalCtrl = Get.find<GlobalController>();
   @override
   Widget build(BuildContext context) {
     final myController = Get.find<MyController>();
@@ -93,7 +95,7 @@ class MyInfoPage extends StatelessWidget {
             style: medium14TextStyle,
           ),
           const Spacer(),
-          Text('test01@test.com', style: regular14TextStyle.copyWith(color: gray_999Color),)
+          Text(globalCtrl.userInfoModel.email, style: regular14TextStyle.copyWith(color: gray_999Color),)
         ],
       ),
     ), );

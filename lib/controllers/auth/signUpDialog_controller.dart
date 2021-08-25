@@ -2,36 +2,20 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signup_dialog.dart';
-import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
-import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 
-class LoginController extends BaseController {
+class SignUpDialogController extends BaseController {
 
-  final globalCtrl = Get.find<GlobalController>();
-
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
-  Rx<bool> isAutoLogin = false.obs;
 
   RxBool isKakaoTalkInstalled = false.obs;
 
-  List<Map<String, String>> textList = [{'아이디 찾기': '/auth/find'}, {'비밀번호 찾기': '/auth/find'}, { '회원가입': ''}];
 
-  List snsLoginItem = ['login_kakao.svg', 'login_naver.svg', 'login_facebook.svg'];
-
-  void changeAutoLogin() {
-    isAutoLogin.value = !isAutoLogin.value;
-    update();
-  }
 
   void notLoginMain() {
     Get.offAllNamed('/mainPage');
@@ -83,15 +67,6 @@ class LoginController extends BaseController {
             "nickName" : user.kakaoAccount!.profile!.nickname,
           },
         );
-      }else{
-        if(isAutoLogin.value){
-          SharedTokenUtil.saveBool(true, 'isAutoLogin');
-          SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
-          globalCtrl.isLoginChk(true);
-          Get.toNamed('/mainPage');
-        }else{
-          SharedTokenUtil.saveBool(false, 'isAutoLogin');
-        }
       }
     }catch(e){
       print(e.toString());
@@ -143,25 +118,15 @@ class LoginController extends BaseController {
         "NAVER",
       );
       Map<String, dynamic> jsonMap = jsonDecode(response!.body.toString());
-      print(jsonMap.toString());
       if(jsonMap['code'] == "R9721"){
         Get.toNamed(
-            '/auth/signupSocial',
-            arguments: {
-              "TYPE":"NAVER",
-              "Email" : res.account.email,
-              "nickName" : res.account.nickname,
-            },
+          '/auth/signupSocial',
+          arguments: {
+            "TYPE":"NAVER",
+            "Email" : res.account.email,
+            "nickName" : res.account.nickname,
+          },
         );
-      }else{
-        if(isAutoLogin.value){
-          SharedTokenUtil.saveBool(true, 'isAutoLogin');
-          SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
-          globalCtrl.isLoginChk(true);
-          Get.toNamed('/mainPage');
-        }else{
-          SharedTokenUtil.saveBool(false, 'isAutoLogin');
-        }
       }
     }catch(e){
       print(e.toString());
@@ -178,80 +143,15 @@ class LoginController extends BaseController {
     }
   }
 
-  //일반 로그인
-  Future<void> login() async {
-    if(emailController.text == ""){
-      Get.dialog(
-        CustomDialogWidget(content: '이메일을 입력해주세요.', onClick: (){
-          Get.back();
-          update();
-        }),
-      );
-    }else if(passwordController.text == ""){
-      Get.dialog(
-        CustomDialogWidget(content: '비밀번호를 입력해주세요.', onClick: (){
-          Get.back();
-          update();
-        }),
-      );
-    }else{
-      final res = await AuthProvider().loginUser(emailController.text, passwordController.text);
-      Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
-      print(jsonMap.toString());
-      if(jsonMap['code'] == "U003") {
-        Get.dialog(
-          CustomDialogWidget(content: '이메일 또는 비밀번호를 확인해주세요.', onClick: (){
-            Get.back();
-            update();
-          }),
-        );
-      }else{
-        if(isAutoLogin.value){
-          SharedTokenUtil.saveBool(true, 'isAutoLogin');
-          SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
-          final String? token = await SharedTokenUtil.getToken("userLogin_token");
-          final res = await AuthProvider().loginToken(token!);
-          if(res != null){
-            globalCtrl.isLoginChk(true);
-            globalCtrl.addUserInfo(res);
-            Get.offAllNamed('/mainPage');
-          }else{
-            Get.offAllNamed('/auth/login');
-            Get.dialog(
-              CustomDialogWidget(content: '이메일 또는 비밀번호를 확인해주세요.', onClick: (){
-                Get.back();
-                update();
-              }),
-            );
-          }
-        }else{
-          SharedTokenUtil.saveBool(false, 'isAutoLogin');
-        }
-      }
-    }
-  }
-
   void openSignUpDialog() {
     Get.dialog(
       SignUpDialog(),
     );
   }
 
-  // void getMe() async {
-  //   super.networkState.value = NetworkStateEnum.LOADING;
-  //   super.isShowLoading = false;
-  //   try{
-  //     Model model = await AuthProvider().getMe();
-  //   }catch(Exception)
-  //
-  //   super.networkState.value = NetworkStateEnum.DONE;
-  //
-  // }
-
   @override
   void onInit() {
     super.onInit();
-    if(Platform.isIOS) snsLoginItem.insert(0, 'login_apple.svg');
     _initKakaoInit();
   }
 }

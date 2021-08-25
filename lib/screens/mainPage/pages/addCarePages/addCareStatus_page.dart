@@ -120,7 +120,7 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
             bottom: 0,
             child: CustomButtonEmptyBackgroundWidget(
                 title: "확인",
-                onClick: () {}
+                onClick: () => controller.nextLevel(),
             ),
           ),
         ],

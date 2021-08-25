@@ -5,8 +5,11 @@ import 'package:brandcare_mobile_flutter_v2/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 
 void main() {
+  KakaoContext.clientId = "24d578e5ec7cbcf97fe904e7b11a0ecd";
+  KakaoContext.javascriptClientId = "9d475981d18440ea00a275bc035dcacf";
   runApp(MyApp());
 }
 

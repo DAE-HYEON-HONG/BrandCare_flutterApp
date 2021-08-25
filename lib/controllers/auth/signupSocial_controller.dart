@@ -5,10 +5,8 @@ import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-class SignUpController extends BaseController {
+class SignUpSocialController extends BaseController {
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController rePasswordController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController authNumberController = TextEditingController();
@@ -51,6 +49,12 @@ class SignUpController extends BaseController {
     update();
   }
 
+  void setSocialProfile(String email, String name){
+    emailController.text = email;
+    emailTxt.value = email;
+    nameController.text = name;
+  }
+
   void chkDuplicateEmail(String email)async{
     if(email == ""){
       Get.dialog(
@@ -84,7 +88,7 @@ class SignUpController extends BaseController {
     }
   }
 
-  Future<void> registerChk() async{
+  Future<void> registerChk(String type) async{
     if(emailController.text == ""){
       Get.dialog(
           CustomDialogWidget(content: '이메일이 적혀있지 않습니다.', onClick: (){
@@ -121,17 +125,17 @@ class SignUpController extends BaseController {
         }),
       );
     }else{
-      await addUser();
+      await addUser(type);
     }
   }
 
-  Future<void> addUser() async{
-    final addUser = await AuthProvider().registerUserEmail(
-        friendCodeController.text,
-        emailController.text,
-        nameController.text,
-        passwordController.text,
-        phoneController.text,
+  Future<void> addUser(String type) async{
+    final addUser = await AuthProvider().registerUserSocial(
+      friendCodeController.text,
+      emailController.text,
+      nameController.text,
+      phoneController.text,
+      type,
     );
     Get.back();
   }
@@ -141,6 +145,10 @@ class SignUpController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    setSocialProfile(
+      Get.arguments['Email'],
+      Get.arguments['nickName'],
+    );
     debounce(emailTxt, (_) {
       isEmail.value = RegexUtil.checkEmailRegex(email: emailTxt.value);
     });

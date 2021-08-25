@@ -52,6 +52,7 @@ class AddCareStatusController extends BaseController {
     },
   ];
   void nextLevel() {
+    Get.offAllNamed('/mainPage');
   }
 
   void detail() {
