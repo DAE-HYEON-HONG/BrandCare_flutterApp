@@ -80,12 +80,6 @@ class SignUpController extends BaseController {
         update();
       }else {
         duplicateEmail.value = SignUpCheckEmail.DUPLICATE;
-        // Get.dialog(
-        //     CustomDialogWidget(content: '중복되는 이메일입니다.', onClick: (){
-        //       Get.back();
-        //       update();
-        //     })
-        // );
         update();
       }
     }

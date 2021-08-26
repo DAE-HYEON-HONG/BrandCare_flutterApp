@@ -97,4 +97,19 @@ class AuthProvider {
       return UserInfoModel.fromJson(json);
     }
   }
+
+  Future<dynamic> smsAuth(String phNum) async{
+    Map<String, dynamic> body = {
+      'phNum' : phNum,
+    };
+    final bodyJson = jsonEncode(body);
+    var res = await _authApiService.phoneAuth(bodyJson);
+    if(res == null) {
+      return null;
+    }else {
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      print(json.toString());
+      return json;
+    }
+  }
 }
