@@ -18,7 +18,10 @@ class AuthProvider {
       return null;
     }else{
       Map<String, dynamic> jsonMap = jsonDecode(res.body.toString());
-      return (jsonMap['data']);
+      print(jsonMap);
+      if(jsonMap.containsKey('data'))
+        return (jsonMap['data']);
+      return jsonMap['code'];
     }
   }
 

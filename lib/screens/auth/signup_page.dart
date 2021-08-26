@@ -28,21 +28,21 @@ class SignUpPage extends GetView<SignUpController> {
                     children: [
                       FormInputWidget(
                         onChange: (value) {
-                          controller.emailTxt.value = controller.emailController.text;
+                          controller.emailTxt.value =
+                              controller.emailController.text;
+                          controller.duplicateEmail.value =
+                              SignUpCheckEmail.NONE;
                         },
                         onSubmit: (value) {},
                         controller: controller.emailController,
+                        textInputType: TextInputType.emailAddress,
                         isShowTitle: true,
                         title: '아이디(이메일)',
                         hint: '이메일 주소를 입력해주세요.',
                       ),
                       const SizedBox(height: 16),
-                      Obx(() => CustomButtonOnOffWidget(
-                        title: '중복확인',
-                        onClick: () => controller.chkDuplicateEmail(controller.emailController.text),
-                        radius: 4,
-                        isOn: controller.isEmail.value,
-                      )),
+                      Obx(() =>
+                          _emailCheckWidget(controller.duplicateEmail.value)),
                       const SizedBox(height: 16),
                       FormInputWidget(
                         onChange: (value) {},
@@ -93,11 +93,11 @@ class SignUpPage extends GetView<SignUpController> {
                   ),
                 ),
                 Obx(() => CustomButtonOnOffWidget(
-                  title: '회원가입',
-                  onClick: () => controller.registerChk(),
-                  isOn: controller.allAgree,
-                  radius: 0,
-                )),
+                      title: '회원가입',
+                      onClick: () => controller.registerChk(),
+                      isOn: controller.allAgree,
+                      radius: 0,
+                    )),
               ],
             ),
           ),
@@ -126,7 +126,8 @@ class SignUpPage extends GetView<SignUpController> {
                     style: regular12TextStyle,
                     keyboardType: TextInputType.phone,
                     onChanged: (value) {
-                      controller.phoneTxt.value = controller.phoneController.text;
+                      controller.phoneTxt.value =
+                          controller.phoneController.text;
                     },
                     decoration: InputDecoration(
                       isDense: true,
@@ -190,9 +191,7 @@ class SignUpPage extends GetView<SignUpController> {
                     controller: controller.authNumberController,
                     style: regular12TextStyle,
                     keyboardType: TextInputType.number,
-                    onChanged: (value){
-
-                    },
+                    onChanged: (value) {},
                     decoration: InputDecoration(
                       isDense: true,
                       contentPadding: const EdgeInsets.all(15),
@@ -307,4 +306,28 @@ class SignUpPage extends GetView<SignUpController> {
           ],
         ),
       );
+
+  Widget _emailCheckWidget(SignUpCheckEmail emailCheck) {
+    if (emailCheck == SignUpCheckEmail.DONE) {
+      return CustomButtonEmptyBackgroundWidget(
+        title: '사용 가능합니다',
+        radius: 4,
+        onClick: () {},
+      );
+    } else if (emailCheck == SignUpCheckEmail.DUPLICATE) {
+      return CustomButtonEmptyBackgroundWidget(
+        title: '이미 등록된 계정입니다.',
+        radius: 4,
+        onClick: () {},
+      );
+    } else {
+      return CustomButtonOnOffWidget(
+        title: '중복확인',
+        onClick: () =>
+            controller.chkDuplicateEmail(controller.emailController.text),
+        radius: 4,
+        isOn: controller.isEmail.value,
+      );
+    }
+  }
 }

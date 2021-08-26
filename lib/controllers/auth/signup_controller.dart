@@ -5,6 +5,12 @@ import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+enum SignUpCheckEmail {
+  NONE,
+  DONE,
+  DUPLICATE
+}
+
 class SignUpController extends BaseController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -22,7 +28,7 @@ class SignUpController extends BaseController {
 
   Rx<bool> isEmail = false.obs;
   Rx<String> emailTxt = ''.obs;
-  RxBool duplicateEmail = false.obs;
+  Rx<SignUpCheckEmail> duplicateEmail = SignUpCheckEmail.NONE.obs;
 
   Rx<bool> isPhone = false.obs;
   Rx<String> phoneTxt = ''.obs;
@@ -69,16 +75,16 @@ class SignUpController extends BaseController {
             })
         );
       }else if(chkEmail == "Y"){
-        duplicateEmail.value = true;
+        duplicateEmail.value = SignUpCheckEmail.DONE;
         update();
       }else {
-        duplicateEmail.value = false;
-        Get.dialog(
-            CustomDialogWidget(content: '중복되는 이메일입니다.', onClick: (){
-              Get.back();
-              update();
-            })
-        );
+        duplicateEmail.value = SignUpCheckEmail.DUPLICATE;
+        // Get.dialog(
+        //     CustomDialogWidget(content: '중복되는 이메일입니다.', onClick: (){
+        //       Get.back();
+        //       update();
+        //     })
+        // );
         update();
       }
     }
@@ -92,7 +98,7 @@ class SignUpController extends BaseController {
             update();
           }),
       );
-    } else if(!duplicateEmail.value){
+    } else if(duplicateEmail.value == SignUpCheckEmail.DUPLICATE){
       Get.dialog(
         CustomDialogWidget(content: '이메일을 중복 및 확인해주세요.', onClick: (){
           Get.back();
