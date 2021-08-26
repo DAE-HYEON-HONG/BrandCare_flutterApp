@@ -171,7 +171,8 @@ class SignUpController extends BaseController {
         phoneController.text,
     );
     super.networkState.value = NetworkStateEnum.DONE;
-    Get.back();
+    // Get.back();
+    Get.offAndToNamed('/auth/signup/complete');
   }
 
   Future<void> sendSms() async {
