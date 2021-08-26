@@ -27,8 +27,7 @@ class AuthProvider {
       "nickName" : nickName,
       "password" : password,
       "phone" : phone,
-      // "socialType" : "NORMAL"
-      "socialType" : "EMAIL"
+      "socialType" : "NORMAL"
     };
     final bodyJson = jsonEncode(body);
     var res = await _authApiService.registerUser(bodyJson);

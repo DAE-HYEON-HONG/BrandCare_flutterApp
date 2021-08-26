@@ -8,7 +8,12 @@ class SignUpBinding implements Bindings {
   @override
   void dependencies() {
     Get.put(SignUpController());
+  }
+}
+
+class SignUpSocialBinding implements Bindings {
+  @override
+  void dependencies() {
     Get.put(SignUpSocialController());
   }
-
 }

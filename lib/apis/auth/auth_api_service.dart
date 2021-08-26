@@ -5,14 +5,13 @@ class AuthApiService {
 
 
   Future<http.Response?> duplicateEmail(String email) async {
-    try{
       final uri = Uri.parse("${BaseApiService.baseApi}/auth/email?email=$email");
       final http.Response res = await http.get(uri, headers: BaseApiService.headers);
-      return res;
-    }catch(e){
-      print("접속 에러 : ${e.toString()}");
-      return null;
-    }
+      if(res.statusCode == 500 || res.statusCode == 200){
+        return res;
+      }else{
+        return null;
+      }
   }
 
   Future<http.Response?> registerUser(dynamic body) async {

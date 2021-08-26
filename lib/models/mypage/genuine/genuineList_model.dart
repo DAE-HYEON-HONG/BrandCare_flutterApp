@@ -6,11 +6,11 @@ class GenuineListModel {
   final String createdDate;
   final int id;
   final String status;
-  final String title;
-  final String brand;
-  final String category;
-  final String thumbnail;
-  final String type;
+  final String? title;
+  final String? brand;
+  final String? category;
+  final String? thumbnail;
+  final String? type;
 
   GenuineListModel(this.createdDate, this.id, this.status, this.title,
       this.brand, this.category, this.thumbnail, this.type);

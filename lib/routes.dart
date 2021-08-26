@@ -59,6 +59,7 @@ final routes = [
   GetPage(name: '/splash', page: () => SplashPage(), binding: SplashBinding()),
   GetPage(name: '/auth/login', page: () => LoginPage(), binding: LoginBinding()),
   GetPage(name: '/auth/signup', page: () => SignUpPage(), binding: SignUpBinding()),
+  GetPage(name: '/auth/signup/Social', page: () => SignUpSocialPage(), binding: SignUpSocialBinding()),
   GetPage(name: '/auth/signup/complete', page: () => SignUpCompletePage(), binding: SignUpBinding()),
   GetPage(name: '/auth/signupSocial', page: () => SignUpSocialPage(), binding: SignUpBinding()),
   GetPage(name: '/auth/find', page: () => FindAccountPage(), binding: FindAccountBinding()),

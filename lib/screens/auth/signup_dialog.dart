@@ -24,7 +24,7 @@ class SignUpDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 19,),
+            const SizedBox(height: 19),
             Align(
               alignment: Alignment.centerRight,
               child: GestureDetector(
@@ -47,10 +47,10 @@ class SignUpDialog extends StatelessWidget {
             ),
             _itemSignUpBtn(facebookColor, 'join_facebook.svg'),
             GestureDetector(
-                onTap: (){
-                  Get.offAndToNamed('/auth/signup');
-                },
-                child: _itemSignUpBtn(whiteColor, 'join_email.svg')),
+              onTap: () => controller.emailJoin(),
+              child: _itemSignUpBtn(whiteColor, 'join_email.svg'),
+            ),
+            const SizedBox(height: 19),
           ],
         ),
       ),
