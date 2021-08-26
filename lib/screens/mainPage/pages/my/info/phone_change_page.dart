@@ -50,6 +50,7 @@ class PhoneChangePage extends StatelessWidget {
                             onSubmit: (value) {},
                             readOnly: myController.isAuth.value,
                             controller: phoneController,
+                            textInputType: TextInputType.phone,
                             isShowTitle: true,
                             title: '전화번호 변경',
                             hint: '전화번호를 입력하세요',
@@ -69,7 +70,7 @@ class PhoneChangePage extends StatelessWidget {
                                   style: medium14TextStyle,
                                 ),
                                 Obx(() => CustomButtonOnOffWidget(
-                                  onClick: () {},
+                                  onClick: () async => await myController.smsAuth(),
                                   title: '인증번호 받기',
                                   radius: 4,
                                   isOn: myController.isPhone,
@@ -110,9 +111,7 @@ class PhoneChangePage extends StatelessWidget {
                                     style: medium14TextStyle,
                                   ),
                                   Obx(() => CustomButtonOnOffWidget(
-                                    onClick: () {
-                                      myController.authChangePhone();
-                                    },
+                                    onClick: () => myController.smsAuthChk(),
                                     title: '인증확인',
                                     radius: 4,
                                     isOn: myController.isCode,
@@ -133,9 +132,11 @@ class PhoneChangePage extends StatelessWidget {
 
                 const Spacer(),
 
-                CustomButtonOnOffWidget(title: '확인', onClick: (){
-                  Get.back();
-                }, isOn: myController.isAuth.value)
+                CustomButtonOnOffWidget(
+                  title: '확인',
+                  onClick: () async => await myController.changePhone(),
+                  isOn: myController.isAuth.value,
+                ),
               ],
             );
           },

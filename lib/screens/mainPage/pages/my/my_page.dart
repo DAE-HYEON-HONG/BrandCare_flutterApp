@@ -3,6 +3,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/my_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/route_container_widget.dart';
 import 'package:flutter/material.dart';
@@ -117,7 +118,10 @@ class MyPage extends StatelessWidget {
                     children: [
                       Text(myController.myProfileInfoModel.nickName, style: medium14TextStyle,),
                       const Spacer(),
-                      Text(myController.myProfileInfoModel.lastLoginData, style: regular12TextStyle.copyWith(color: gray_333Color),),
+                      Text(
+                        "최근 접속 ${DateFormatUtil.convertDateFormat(date: myController.myProfileInfoModel.lastLoginData, format: "yyyy.MM.dd")} ${DateFormatUtil.convertDateFormat(date: myController.myProfileInfoModel.lastLoginData, format: "hh:mm:ss")}",
+                        style: regular12TextStyle.copyWith(color: gray_333Color),
+                      ),
                     ],
                   ),
                 ),

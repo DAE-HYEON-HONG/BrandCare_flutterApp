@@ -1,11 +1,13 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/mypage/myInfo/myProfileInfo_model.dart';
+import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/my_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import '../global_controller.dart';
 
 class MyController extends BaseController {
@@ -50,12 +52,33 @@ class MyController extends BaseController {
   Rx<String> address = ''.obs;
   Rx<String> detailAddress = ''.obs;
   Rx<String> postcode = ''.obs;
+  String authNum = '';
+  bool authNumChk = false;
 
   TextEditingController nickNameController = TextEditingController();
-
   TextEditingController addressController = TextEditingController();
   TextEditingController addressDetailController = TextEditingController();
   TextEditingController postCodeController = TextEditingController();
+
+  Rx<File> profileImg = File('').obs;
+  final ImagePicker imgPicker = ImagePicker();
+
+  Future<void> loadAssets(ImageSource source)async{
+    try{
+      final pickedFile = await imgPicker.pickImage(
+        source: source,
+        maxWidth: 500,
+        maxHeight: 500,
+        imageQuality: 10,
+        preferredCameraDevice: CameraDevice.rear,
+      );
+      profileImg.value = File(pickedFile!.path);
+      update();
+      Get.back();
+    }catch(e){
+      print(e.toString());
+    }
+  }
 
   Rx<bool> isAuth = false.obs;
   void initMyController(){
@@ -143,16 +166,56 @@ class MyController extends BaseController {
     }
   }
 
-  Future<void> changePhone(String name) async{
-    final String? token = await SharedTokenUtil.getToken("userLogin_token");
-    final res = await MyProvider().changeName(token!, name);
-    if(res){
-      myInfo();
-      Get.back();
-      update();
-    }else{
+  Future<void> smsAuth() async {
+    final res = await AuthProvider().smsAuth(phone.value);
+    if(res == null){
       Get.dialog(
         CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    }else{
+      authNum = res['data'];
+      update();
+    }
+  }
+
+  void smsAuthChk() {
+    if(authNum == code.value){
+      isAuth.value = true;
+    }else{
+      Get.dialog(
+        CustomDialogWidget(content: '인증번호가 올바르지 않습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+      isAuth.value = false;
+    }
+    update();
+  }
+
+  Future<void> changePhone() async{
+    if(isAuth.value){
+      final String? token = await SharedTokenUtil.getToken("userLogin_token");
+      final res = await MyProvider().changeNumber(token!, phone.value);
+      print(res.toString());
+      if(res != null){
+        myInfo();
+        Get.back();
+        update();
+      }else{
+        Get.dialog(
+          CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          }),
+        );
+      }
+    }else{
+      Get.dialog(
+        CustomDialogWidget(content: '인증번호가 확인되지 않았습니다.', onClick: (){
           Get.back();
           update();
         }),
