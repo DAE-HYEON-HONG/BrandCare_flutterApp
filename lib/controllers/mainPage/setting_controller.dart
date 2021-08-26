@@ -1,4 +1,5 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:get/get.dart';
 
@@ -43,6 +44,8 @@ class SettingController extends BaseController {
     Get.dialog(
       CustomDialogWidget(content: '$content 완료되었습니다.', onClick: (){
         Get.offAllNamed('/auth/login');
+        SharedTokenUtil.saveBool(false, 'isAutoLogin');
+        SharedTokenUtil.remove('userLogin_token');
       })
     );
   }

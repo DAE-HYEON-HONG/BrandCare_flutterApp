@@ -37,7 +37,14 @@ class CareHistoryController extends BaseController {
           })
       );
     }else{
-      careList = (res['response']['list'] as List).map((e) => CareListModel.fromJson(e)).toList();
+      final list = (res['response']['list'] as List).map((e) => CareListModel.fromJson(e)).toList();
+      if (currentPage == 1) {
+        this.careList = list;
+      } else {
+        for (var e in list) {
+          this.careList!.add(e);
+        }
+      }
       careListPaging = Paging.fromJson(res['response']);
       careCompleteCount.value = (res['model']['careCompleteCount']);
     }

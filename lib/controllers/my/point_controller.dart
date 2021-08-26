@@ -38,8 +38,15 @@ class PointController extends BaseController{
           })
       );
     }else{
-      pointList = (res['response']['list'] as List).map((e) => PointListModel.fromJson(e)).toList();
+      final list = (res['response']['list'] as List).map((e) => PointListModel.fromJson(e)).toList();
       pointListPaging = Paging.fromJson(res['response']);
+      if (page == 1) {
+        this.pointList = list;
+      } else {
+        for (var e in list) {
+          this.pointList!.add(e);
+        }
+      }
       myPoint.value = (res['model']['point']);
       update();
     }

@@ -226,6 +226,22 @@ class LoginController extends BaseController {
           }
         }else{
           SharedTokenUtil.saveBool(false, 'isAutoLogin');
+          SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
+          final String? token = await SharedTokenUtil.getToken("userLogin_token");
+          final res = await AuthProvider().loginToken(token!);
+          if(res != null){
+            globalCtrl.isLoginChk(true);
+            globalCtrl.addUserInfo(res);
+            Get.offAllNamed('/mainPage');
+          }else{
+            Get.offAllNamed('/auth/login');
+            Get.dialog(
+              CustomDialogWidget(content: '이메일 또는 비밀번호를 확인해주세요.', onClick: (){
+                Get.back();
+                update();
+              }),
+            );
+          }
         }
       }
     }

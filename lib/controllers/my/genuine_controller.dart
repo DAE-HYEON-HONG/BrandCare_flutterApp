@@ -29,7 +29,8 @@ class GenuineController extends BaseController{
 
   Future<void> reqGenuineList() async {
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
-    final res =  await MyProvider().caretList(token!, currentPage, sort.value);
+    final res =  await MyProvider().genuineList(token!, currentPage, sort.value);
+    print(res.toString());
     if(res == null){
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
@@ -38,8 +39,15 @@ class GenuineController extends BaseController{
           })
       );
     }else{
-      genuineList = (res['response']['list'] as List).map((e) => GenuineListModel.fromJson(e)).toList();
+      final list = (res['response']['list'] as List).map((e) => GenuineListModel.fromJson(e)).toList();
       genuineListPaging = Paging.fromJson(res['response']);
+      if (currentPage == 1) {
+        this.genuineList = list;
+      } else {
+        for (var e in list) {
+          this.genuineList!.add(e);
+        }
+      }
       completeCount.value = (res['model']['completeCount']) ?? 0;
       notCompleteCount.value = (res['model']['notCompleteCount']) ?? 0;
     }

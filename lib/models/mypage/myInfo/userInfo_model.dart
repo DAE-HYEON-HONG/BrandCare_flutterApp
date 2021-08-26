@@ -12,7 +12,7 @@ class UserInfoModel {
     : userID = json['userId'],
       email = json['email'],
       nickName = json['nick_name'],
-      phNum = json['phone'],
+      phNum = json['phone'] ?? "",
       addressCity = json['address']['city'],
       addressStreet = json['address']['street'],
       zipCode = json['address']['zipCode'];

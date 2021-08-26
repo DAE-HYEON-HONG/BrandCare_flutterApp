@@ -38,8 +38,15 @@ class CouponController extends BaseController{
           })
       );
     }else{
-      couponList = (res['response']['list'] as List).map((e) => CouponListModel.fromJson(e)).toList();
+      final list = (res['response']['list'] as List).map((e) => CouponListModel.fromJson(e)).toList();
       couponListPaging = Paging.fromJson(res['response']);
+      if (currentPage == 1) {
+        this.couponList = list;
+      } else {
+        for (var e in list) {
+          this.couponList!.add(e);
+        }
+      }
       countCoupon.value = (res['model']['countCoupon']);
       myPoint.value = (res['model']['point']);
     }

@@ -39,7 +39,7 @@ class MyProvider{
   }
 
   Future<dynamic> genuineList(String token, int page, String sort) async {
-    var res = await _myApiService.careList(BaseApiService.authHeaders(token), page, sort);
+    var res = await _myApiService.genuineList(BaseApiService.authHeaders(token), page, sort);
     if(res == null){
       return null;
     }else{

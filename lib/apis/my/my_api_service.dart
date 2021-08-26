@@ -59,7 +59,7 @@ class MyApiService{
 
   Future<http.Response?> genuineList(dynamic headers, int page, String sort) async {
     try{
-      final uri = Uri.parse("${BaseApiService.baseApi}/care/history?page=$page&sort=$sort");
+      final uri = Uri.parse("${BaseApiService.baseApi}/activation/history?page=$page&sort=$sort");
       final http.Response res = await http.get(
         uri,
         headers: headers,

@@ -22,4 +22,9 @@ class SharedTokenUtil {
     bool? value = _prefs.getBool(valueString);
     return value;
   }
+
+  static void remove(String value) async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    _prefs.remove(value);
+  }
 }
