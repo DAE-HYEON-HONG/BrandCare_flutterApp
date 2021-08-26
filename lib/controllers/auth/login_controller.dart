@@ -195,55 +195,62 @@ class LoginController extends BaseController {
         }),
       );
     }else{
-      final res = await AuthProvider().loginUser(emailController.text, passwordController.text);
-      Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
-      print(jsonMap.toString());
-      if(jsonMap['code'] == "U003") {
-        Get.dialog(
-          CustomDialogWidget(content: '이메일 또는 비밀번호를 확인해주세요.', onClick: (){
-            Get.back();
-            update();
-          }),
-        );
-      }else{
-        if(isAutoLogin.value){
-          SharedTokenUtil.saveBool(true, 'isAutoLogin');
-          SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
-          final String? token = await SharedTokenUtil.getToken("userLogin_token");
-          final res = await AuthProvider().loginToken(token!);
-          if(res != null){
-            globalCtrl.isLoginChk(true);
-            globalCtrl.addUserInfo(res);
-            Get.offAllNamed('/mainPage');
-          }else{
-            Get.offAllNamed('/auth/login');
-            Get.dialog(
-              CustomDialogWidget(content: '이메일 또는 비밀번호를 확인해주세요.', onClick: (){
-                Get.back();
-                update();
-              }),
-            );
-          }
+      try{
+        super.networkState.value = NetworkStateEnum.LOADING;
+        final res = await AuthProvider().loginUser(emailController.text, passwordController.text);
+        Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
+        print(jsonMap.toString());
+        if(jsonMap['code'] == "U003") {
+          Get.dialog(
+            CustomDialogWidget(content: '이메일 또는 비밀번호를 확인해주세요.', onClick: (){
+              Get.back();
+              update();
+            }),
+          );
         }else{
-          SharedTokenUtil.saveBool(false, 'isAutoLogin');
-          SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
-          final String? token = await SharedTokenUtil.getToken("userLogin_token");
-          final res = await AuthProvider().loginToken(token!);
-          if(res != null){
-            globalCtrl.isLoginChk(true);
-            globalCtrl.addUserInfo(res);
-            Get.offAllNamed('/mainPage');
+          if(isAutoLogin.value){
+            SharedTokenUtil.saveBool(true, 'isAutoLogin');
+            SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
+            final String? token = await SharedTokenUtil.getToken("userLogin_token");
+            final res = await AuthProvider().loginToken(token!);
+            if(res != null){
+              globalCtrl.isLoginChk(true);
+              globalCtrl.addUserInfo(res);
+              Get.offAllNamed('/mainPage');
+            }else{
+              Get.offAllNamed('/auth/login');
+              Get.dialog(
+                CustomDialogWidget(content: '이메일 또는 비밀번호를 확인해주세요.', onClick: (){
+                  Get.back();
+                  update();
+                }),
+              );
+            }
           }else{
-            Get.offAllNamed('/auth/login');
-            Get.dialog(
-              CustomDialogWidget(content: '이메일 또는 비밀번호를 확인해주세요.', onClick: (){
-                Get.back();
-                update();
-              }),
-            );
+            SharedTokenUtil.saveBool(false, 'isAutoLogin');
+            SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
+            final String? token = await SharedTokenUtil.getToken("userLogin_token");
+            final res = await AuthProvider().loginToken(token!);
+            if(res != null){
+              globalCtrl.isLoginChk(true);
+              globalCtrl.addUserInfo(res);
+              Get.offAllNamed('/mainPage');
+            }else{
+              Get.offAllNamed('/auth/login');
+              Get.dialog(
+                CustomDialogWidget(content: '이메일 또는 비밀번호를 확인해주세요.', onClick: (){
+                  Get.back();
+                  update();
+                }),
+              );
+            }
           }
         }
+        super.networkState.value = NetworkStateEnum.DONE;
+      }catch(e) {
+        super.networkState.value = NetworkStateEnum.ERROR;
       }
+
     }
   }
 

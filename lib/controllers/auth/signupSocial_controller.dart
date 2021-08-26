@@ -49,10 +49,10 @@ class SignUpSocialController extends BaseController {
     update();
   }
 
-  void setSocialProfile(String email, String name){
-    emailController.text = email;
-    emailTxt.value = email;
-    nameController.text = name;
+  void setSocialProfile({String? email, String? name}){
+    emailController.text = email ?? '';
+    emailTxt.value = email ?? '';
+    nameController.text = name ?? '';
   }
 
   void chkDuplicateEmail(String email)async{
@@ -146,8 +146,8 @@ class SignUpSocialController extends BaseController {
   void onInit() {
     super.onInit();
     setSocialProfile(
-      Get.arguments['Email'],
-      Get.arguments['nickName'],
+      email: Get.arguments?['Email'],
+      name: Get.arguments?['nickName'],
     );
     debounce(emailTxt, (_) {
       isEmail.value = RegexUtil.checkEmailRegex(email: emailTxt.value);

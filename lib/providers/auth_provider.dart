@@ -6,26 +6,18 @@ import 'package:brandcare_mobile_flutter_v2/models/mypage/myInfo/userInfo_model.
 class AuthProvider {
   final AuthApiService _authApiService = AuthApiService();
 
-  Future<dynamic> smsAuth(String phNum) async{
-    Map<String, dynamic> body = {
-      'phNum' : phNum,
-    };
-    final bodyJson = jsonEncode(body);
-    var res = await _authApiService.phoneAuth(bodyJson);
-    if(res == null) {
-      return null;
-    }else {
-      Map<String, dynamic> json = jsonDecode(res.body.toString());
-      print(json.toString());
-      return json;
-    }
-  }
 
   Future<dynamic> chkDuplicateEmail(String email) async {
     var res = await _authApiService.duplicateEmail(email);
-    Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
-    print(jsonMap.toString());
-    return (jsonMap['data']);
+    if(res == null){
+      return null;
+    }else{
+      Map<String, dynamic> jsonMap = jsonDecode(res.body.toString());
+      print(jsonMap);
+      if(jsonMap.containsKey('data'))
+        return (jsonMap['data']);
+      return jsonMap['code'];
+    }
   }
 
   Future<dynamic> registerUserEmail(String code, String email, String nickName, String password, String phone) async{
@@ -104,6 +96,21 @@ class AuthProvider {
       Map<String, dynamic> json = jsonDecode(res.body.toString());
       print(json.toString());
       return UserInfoModel.fromJson(json);
+    }
+  }
+
+  Future<Map<String, dynamic>?> smsAuth(String phNum) async{
+    Map<String, dynamic> body = {
+      'phNum' : phNum,
+    };
+    final bodyJson = jsonEncode(body);
+    var res = await _authApiService.phoneAuth(bodyJson);
+    if(res == null) {
+      return null;
+    }else {
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      print(json.toString());
+      return json;
     }
   }
 }

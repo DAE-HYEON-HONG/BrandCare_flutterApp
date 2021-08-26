@@ -9,10 +9,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MainPage extends GetView<MainPageController> {
+  DateTime? currentBackPressTime;
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: (){
+      DateTime now = DateTime.now();
+      if (currentBackPressTime == null ||
+          now.difference(currentBackPressTime!) > Duration(seconds: 2)) {
+        currentBackPressTime = now;
+        Get.snackbar('알림', '뒤로가기버튼을 한번 더 누르면 종료됩니다.', snackPosition: SnackPosition.BOTTOM);
+        return Future.value(false);
+      }
+      return Future.value(true);
+    },
+    child: Scaffold(
       resizeToAvoidBottomInset: false,
       body: Obx(()=> Container(
         color: whiteColor,

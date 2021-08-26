@@ -18,6 +18,7 @@ import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/sho
 import 'package:brandcare_mobile_flutter_v2/screens/auth/findAccount/findAccount_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/login_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signupSocial_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/auth/signup_complete_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signup_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/main_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/notLoginUserPages/useInfoPages/useInfoMain_page.dart';
@@ -59,6 +60,8 @@ final routes = [
   GetPage(name: '/auth/login', page: () => LoginPage(), binding: LoginBinding()),
   GetPage(name: '/auth/signup', page: () => SignUpPage(), binding: SignUpBinding()),
   GetPage(name: '/auth/signup/Social', page: () => SignUpSocialPage(), binding: SignUpSocialBinding()),
+  GetPage(name: '/auth/signup/complete', page: () => SignUpCompletePage(), binding: SignUpBinding()),
+  GetPage(name: '/auth/signupSocial', page: () => SignUpSocialPage(), binding: SignUpBinding()),
   GetPage(name: '/auth/find', page: () => FindAccountPage(), binding: FindAccountBinding()),
   GetPage(name: '/mainPage', page: () => MainPage(), binding: MainPageBinding()),
   GetPage(name: '/main/my/info', page: () => MyInfoPage()),

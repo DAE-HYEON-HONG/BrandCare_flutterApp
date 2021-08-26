@@ -36,7 +36,7 @@ class MyProductPage extends GetView<MyProductController> {
                   controller: controller.pagingScroll,
                   shrinkWrap: true,
                   itemBuilder: (context, idx) => _item(
-                    imgPath: controller.myProductList![idx].thumbnail,
+                    imgPath: controller.myProductList![idx].thumbnail ?? '',
                     brand: controller.myProductList![idx].brand,
                     category: controller.myProductList![idx].category,
                     title: controller.myProductList![idx].title,

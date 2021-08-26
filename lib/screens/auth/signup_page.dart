@@ -1,6 +1,8 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/auth/signup_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_checkbox_widget.dart';
@@ -28,21 +30,21 @@ class SignUpPage extends GetView<SignUpController> {
                     children: [
                       FormInputWidget(
                         onChange: (value) {
-                          controller.emailTxt.value = controller.emailController.text;
+                          controller.emailTxt.value =
+                              controller.emailController.text;
+                          controller.duplicateEmail.value =
+                              SignUpCheckEmail.NONE;
                         },
                         onSubmit: (value) {},
                         controller: controller.emailController,
+                        textInputType: TextInputType.emailAddress,
                         isShowTitle: true,
                         title: '아이디(이메일)',
                         hint: '이메일 주소를 입력해주세요.',
                       ),
                       const SizedBox(height: 16),
-                      Obx(() => CustomButtonOnOffWidget(
-                        title: '중복확인',
-                        onClick: () => controller.chkDuplicateEmail(controller.emailController.text),
-                        radius: 4,
-                        isOn: controller.isEmail.value,
-                      )),
+                      Obx(() =>
+                          _emailCheckWidget(controller.duplicateEmail.value)),
                       const SizedBox(height: 16),
                       FormInputWidget(
                         onChange: (value) {},
@@ -75,7 +77,7 @@ class SignUpPage extends GetView<SignUpController> {
                       const SizedBox(height: 16),
                       _itemPhoneInput(),
                       const SizedBox(height: 16),
-                      _itemAuthNumber(),
+                      Obx(() => _itemAuthNumber()),
                       const SizedBox(height: 16),
                       FormInputWidget(
                         onChange: (value) {},
@@ -93,11 +95,11 @@ class SignUpPage extends GetView<SignUpController> {
                   ),
                 ),
                 Obx(() => CustomButtonOnOffWidget(
-                  title: '회원가입',
-                  onClick: () => controller.registerChk(),
-                  isOn: controller.allAgree,
-                  radius: 0,
-                )),
+                      title: '회원가입',
+                      onClick: () => controller.registerChk(),
+                      isOn: controller.allAgree,
+                      radius: 0,
+                    )),
               ],
             ),
           ),
@@ -118,7 +120,8 @@ class SignUpPage extends GetView<SignUpController> {
                   style: medium14TextStyle,
                 )),
             Row(
-              children: [
+
+            children: [
                 Flexible(
                   flex: 3,
                   child: TextFormField(
@@ -126,7 +129,8 @@ class SignUpPage extends GetView<SignUpController> {
                     style: regular12TextStyle,
                     keyboardType: TextInputType.phone,
                     onChanged: (value) {
-                      controller.phoneTxt.value = controller.phoneController.text;
+                      controller.phoneTxt.value =
+                          controller.phoneController.text;
                     },
                     decoration: InputDecoration(
                       isDense: true,
@@ -148,12 +152,27 @@ class SignUpPage extends GetView<SignUpController> {
                 const SizedBox(
                   width: 8,
                 ),
-                Flexible(
-                    flex: 2,
-                    child: Obx(() => CustomButtonOnOffWidget(
-                        title: '인증번호 받기',
-                        onClick: () {},
-                        isOn: controller.isPhone.value)))
+              Obx(
+                    () => AnimatedContainer(
+                  duration: Duration(milliseconds: 500),
+                  width: ((!controller.authCode.value ? 2 : 0 ) *
+                      (Get.width - 32)) / ((!controller.authCode.value ? 2:0) + 3),
+                  child: CustomButtonOnOffWidget(
+                      title: '인증번호 받기',
+                      onClick: () {
+                        controller.sendSms();
+                      },
+                      isOn: controller.isPhone.value),
+                ),
+              ),
+                // Flexible(
+                //     flex: 2,
+                //     child: Obx(() => CustomButtonOnOffWidget(
+                //         title: '인증번호 받기',
+                //         onClick: () {
+                //           controller.sendSms();
+                //         },
+                //         isOn: controller.isPhone.value)))
               ],
             ),
           ],
@@ -161,68 +180,79 @@ class SignUpPage extends GetView<SignUpController> {
       );
 
   Widget _itemAuthNumber() => Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                    margin: const EdgeInsets.only(right: 16),
-                    child: Text(
-                      '인증번호',
-                      style: medium14TextStyle,
-                    )),
-                Text(
-                  '3:00:00',
-                  style: medium14TextStyle.copyWith(color: redColor),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Row(
-              children: [
-                Flexible(
-                  flex: 2,
-                  child: TextFormField(
-                    controller: controller.authNumberController,
-                    style: regular12TextStyle,
-                    keyboardType: TextInputType.number,
-                    onChanged: (value){
-
-                    },
-                    decoration: InputDecoration(
-                      isDense: true,
-                      contentPadding: const EdgeInsets.all(15),
-                      hintText: '인증번호를 입력하세요',
-                      hintStyle:
-                          regular12TextStyle.copyWith(color: gray_999Color),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                        borderSide: BorderSide(color: Color(0xffD5D7DB)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4),
-                        borderSide: BorderSide(color: primaryColor),
-                      ),
-                    ),
+        child: controller.authCode.value
+            ? Container(
+                width: double.infinity,
+                child: Text(
+                  '인증되었습니다.',
+                  style: medium14TextStyle.copyWith(color: Color(0xff169F00)),
+                  textAlign: TextAlign.start,
+                ),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                          margin: const EdgeInsets.only(right: 16),
+                          child: Text(
+                            '인증번호',
+                            style: medium14TextStyle,
+                          )),
+                      Obx(() => Text(
+                            '${DateFormatUtil.convertTimer(timer: controller.smsTime.value)}',
+                            style: medium14TextStyle.copyWith(color: redColor),
+                          ))
+                    ],
                   ),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                Flexible(
-                    flex: 1,
-                    child: CustomButtonOnOffWidget(
-                        title: '인증확인',
-                        onClick: () {},
-                        isOn: controller.authCode.value))
-              ],
-            ),
-          ],
-        ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Row(
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: TextFormField(
+                          controller: controller.authNumberController,
+                          style: regular12TextStyle,
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) {
+                            controller.authCodeTxt.value = value;
+                          },
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.all(15),
+                            hintText: '인증번호를 입력하세요',
+                            hintStyle: regular12TextStyle.copyWith(
+                                color: gray_999Color),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4),
+                              borderSide: BorderSide(color: Color(0xffD5D7DB)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4),
+                              borderSide: BorderSide(color: primaryColor),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Flexible(
+                          flex: 1,
+                          child: Obx(() => CustomButtonOnOffWidget(
+                              title: '인증확인',
+                              onClick: () {
+                                controller.checkAuthCode();
+                              },
+                              isOn: controller.isAuthCode.value)))
+                    ],
+                  ),
+                ],
+              ),
       );
 
   Widget _itemAgreeContainer() => Container(
@@ -307,4 +337,28 @@ class SignUpPage extends GetView<SignUpController> {
           ],
         ),
       );
+
+  Widget _emailCheckWidget(SignUpCheckEmail emailCheck) {
+    if (emailCheck == SignUpCheckEmail.DONE) {
+      return CustomButtonEmptyBackgroundWidget(
+        title: '사용 가능합니다',
+        radius: 4,
+        onClick: () {},
+      );
+    } else if (emailCheck == SignUpCheckEmail.DUPLICATE) {
+      return CustomButtonEmptyBackgroundWidget(
+        title: '이미 등록된 계정입니다.',
+        radius: 4,
+        onClick: () {},
+      );
+    } else {
+      return CustomButtonOnOffWidget(
+        title: '중복확인',
+        onClick: () =>
+            controller.chkDuplicateEmail(controller.emailController.text),
+        radius: 4,
+        isOn: controller.isEmail.value,
+      );
+    }
+  }
 }

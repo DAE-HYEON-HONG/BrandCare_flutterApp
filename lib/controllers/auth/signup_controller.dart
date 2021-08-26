@@ -1,9 +1,17 @@
+import 'dart:async';
+
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+
+enum SignUpCheckEmail {
+  NONE,
+  DONE,
+  DUPLICATE
+}
 
 class SignUpController extends BaseController {
   final TextEditingController emailController = TextEditingController();
@@ -22,11 +30,23 @@ class SignUpController extends BaseController {
 
   Rx<bool> isEmail = false.obs;
   Rx<String> emailTxt = ''.obs;
-  RxBool duplicateEmail = false.obs;
+  Rx<SignUpCheckEmail> duplicateEmail = SignUpCheckEmail.NONE.obs;
 
   Rx<bool> isPhone = false.obs;
   Rx<String> phoneTxt = ''.obs;
-  bool phoneChecked = true; // false로 꼭 바꿔주세요.
+  bool phoneChecked = false; // false로 꼭 바꿔주세요.
+  String smsCode = '';
+
+  Rx<bool> isAuthCode = false.obs;
+  Rx<String> authCodeTxt = ''.obs;
+
+  Rx<int> smsTime = 180.obs;
+
+  Rx<bool> phoneReadOnly = false.obs;
+
+  final _authApiProvider = AuthProvider();
+
+
 
 
   void agreeUpdate() {
@@ -52,6 +72,7 @@ class SignUpController extends BaseController {
   }
 
   void chkDuplicateEmail(String email)async{
+    super.networkState.value = NetworkStateEnum.LOADING;
     if(email == ""){
       Get.dialog(
           CustomDialogWidget(content: '이메일을 입력해주세요.', onClick: (){
@@ -69,19 +90,14 @@ class SignUpController extends BaseController {
             })
         );
       }else if(chkEmail == "Y"){
-        duplicateEmail.value = true;
+        duplicateEmail.value = SignUpCheckEmail.DONE;
         update();
       }else {
-        duplicateEmail.value = false;
-        Get.dialog(
-            CustomDialogWidget(content: '중복되는 이메일입니다.', onClick: (){
-              Get.back();
-              update();
-            })
-        );
+        duplicateEmail.value = SignUpCheckEmail.DUPLICATE;
         update();
       }
     }
+    super.networkState.value = NetworkStateEnum.NONE;
   }
 
   Future<void> registerChk() async{
@@ -92,7 +108,26 @@ class SignUpController extends BaseController {
             update();
           }),
       );
-    } else if(!duplicateEmail.value){
+    } else if(passwordController.text == "") {
+      Get.dialog(
+        CustomDialogWidget(content: '비밀번호를 입력해주세요.', onClick: (){
+          Get.back();
+        }),
+      );
+    }else if(!RegexUtil.checkPasswordRegex(password: passwordController.text)) {
+      Get.dialog(
+        CustomDialogWidget(content: '비밀번호 형식을 확인해주세요.', onClick: (){
+          Get.back();
+        }),
+      );
+    }else if(passwordController.text != rePasswordController.text){
+      Get.dialog(
+        CustomDialogWidget(content: '비밀번호가 일치하지 않습니다.', onClick: (){
+          Get.back();
+        }),
+      );
+    }
+    else if(duplicateEmail.value == SignUpCheckEmail.DUPLICATE){
       Get.dialog(
         CustomDialogWidget(content: '이메일을 중복 및 확인해주세요.', onClick: (){
           Get.back();
@@ -106,7 +141,8 @@ class SignUpController extends BaseController {
           update();
         }),
       );
-    } else if (phoneChecked == false) {
+    // } else if (phoneChecked == false) {
+    } else if (authCode.value == false) {
       Get.dialog(
         CustomDialogWidget(content: '전화번호가 확인되지 않았습니다.', onClick: (){
           Get.back();
@@ -126,14 +162,63 @@ class SignUpController extends BaseController {
   }
 
   Future<void> addUser() async{
-    final addUser = await AuthProvider().registerUserEmail(
+    super.networkState.value = NetworkStateEnum.LOADING;
+    final addUser = await _authApiProvider.registerUserEmail(
         friendCodeController.text,
         emailController.text,
         nameController.text,
         passwordController.text,
         phoneController.text,
     );
-    Get.back();
+    super.networkState.value = NetworkStateEnum.DONE;
+    // Get.back();
+    Get.offAndToNamed('/auth/signup/complete');
+  }
+
+  Future<void> sendSms() async {
+    if(phoneController.text.isEmpty) return null;
+    if(!RegexUtil.checkPhoneRegex(phone: phoneController.text)) return null;
+    var response = await _authApiProvider.smsAuth(phoneController.text);
+    if(response != null) {
+      sendPhoneCode.value = true;
+      smsCode = response["data"];
+      checkSmsAuthTimer();
+      update();
+    }
+  }
+
+  checkAuthCode() {
+    String code = authNumberController.text;
+    if(smsTime.value == 0) {
+      Get.dialog(
+        CustomDialogWidget(content: '인증시간이 초과되었습니다.\n다시 시도 부탁드립니다.', onClick: (){
+          Get.back();
+        })
+      );
+    }
+    if(code == smsCode){
+      authCode.value = true;
+      phoneReadOnly.value = true;
+      update();
+      return;
+    }else {
+      Get.dialog(
+          CustomDialogWidget(content: '인증번호가 올바르지 않습니다.', onClick: (){
+            Get.back();
+          })
+      );
+    }
+  }
+
+  checkSmsAuthTimer(){
+    // Duration defaultDuration = Duration(minutes: 3);
+    smsTime.value = 180;
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      smsTime.value--;
+      if(smsTime.value == 0){
+        timer.cancel();
+      }
+    });
   }
 
   bool get allAgree => agree.value && privacyAgree.value;
@@ -146,6 +231,11 @@ class SignUpController extends BaseController {
     });
     debounce(phoneTxt, (_) {
       isPhone.value = RegexUtil.checkPhoneRegex(phone: phoneTxt.value);
+    });
+    debounce(authCodeTxt, (_) {
+      print('autCode txt = $authCodeTxt');
+      isAuthCode.value = RegexUtil.checkSMSCodeRegex(code: authCodeTxt.value);
+      print('isAuthCode = ${isAuthCode.value}');
     });
   }
 }
