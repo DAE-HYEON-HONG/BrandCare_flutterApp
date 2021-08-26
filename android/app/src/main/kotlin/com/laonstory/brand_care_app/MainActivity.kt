@@ -1,4 +1,4 @@
-package com.example.brandcare_mobile_flutter_v2
+package com.laonstory.brand_care_app
 
 import io.flutter.embedding.android.FlutterActivity
 
