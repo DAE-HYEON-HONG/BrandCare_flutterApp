@@ -4,14 +4,14 @@ part 'userInfo_model.g.dart';
 
 @JsonSerializable()
 class UserInfoModel {
-  final int userID;
+  final int userId;
   final String email;
   @JsonKey(defaultValue: 'nick_name')
   final String nickName;
   @JsonKey(defaultValue: 'phone')
-  final String phNum;
+  final String? phNum;
   final AddressModel? address;
-  UserInfoModel(this.userID, this.email, this.nickName, this.phNum, this.address);
+  UserInfoModel(this.userId, this.email, this.nickName, this.phNum, this.address);
 
 
   factory UserInfoModel.fromJson(Map<String, dynamic> json) => _$UserInfoModelFromJson(json);
