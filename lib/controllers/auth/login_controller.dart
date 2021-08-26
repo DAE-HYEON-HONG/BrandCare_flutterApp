@@ -195,6 +195,7 @@ class LoginController extends BaseController {
         }),
       );
     }else{
+      super.networkState.value = NetworkStateEnum.LOADING;
       final res = await AuthProvider().loginUser(emailController.text, passwordController.text);
       Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
       print(jsonMap.toString());
@@ -228,6 +229,7 @@ class LoginController extends BaseController {
           SharedTokenUtil.saveBool(false, 'isAutoLogin');
         }
       }
+      super.networkState.value = NetworkStateEnum.DONE;
     }
   }
 
