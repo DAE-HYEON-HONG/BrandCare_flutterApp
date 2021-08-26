@@ -28,7 +28,6 @@ class BaseController extends GetxController {
       ..textColor = primaryColor;
 
     ever(networkState, (_) {
-      print('ever');
       switch (networkState.value) {
         case NetworkStateEnum.LOADING:
           if (isShowLoading) {

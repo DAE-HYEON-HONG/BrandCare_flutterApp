@@ -244,6 +244,7 @@ class MainPage extends GetView<MainPageController> {
           ],
         ),
       )),
+    )
     );
   }
 }

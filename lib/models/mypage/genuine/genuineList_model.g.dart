@@ -11,11 +11,11 @@ GenuineListModel _$GenuineListModelFromJson(Map<String, dynamic> json) {
     json['createdDate'] as String,
     json['id'] as int,
     json['status'] as String,
-    json['title'] as String,
-    json['brand'] as String,
-    json['category'] as String,
-    json['thumbnail'] as String,
-    json['type'] as String,
+    json['title'] as String?,
+    json['brand'] as String?,
+    json['category'] as String?,
+    json['thumbnail'] as String?,
+    json['type'] as String?,
   );
 }
 

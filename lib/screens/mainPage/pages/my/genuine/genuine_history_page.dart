@@ -35,12 +35,12 @@ class GenuineHistoryPage extends GetView<GenuineController> {
                   child: GetBuilder<GenuineController>(builder: (_) => ListView.separated(
                     controller: controller.pagingScroll,
                     itemBuilder: (context, idx) => _item(
-                      title: controller.genuineList![idx].title,
+                      title: controller.genuineList![idx].title ?? '',
                       status: controller.genuineList![idx].status,
                       time: DateFormatUtil.convertDateFormat(date: controller.genuineList![idx].createdDate),
                       date: DateFormatUtil.convertOnlyTime(date: controller.genuineList![idx].createdDate),
-                      brand: controller.genuineList![idx].brand,
-                      category: controller.genuineList![idx].category,
+                      brand: controller.genuineList![idx].brand ?? '',
+                      category: controller.genuineList![idx].category ?? '',
                     ),
                     separatorBuilder: (context, idx) => const Divider(height: 0, thickness: 1,),
                     itemCount: controller.genuineList!.length,
