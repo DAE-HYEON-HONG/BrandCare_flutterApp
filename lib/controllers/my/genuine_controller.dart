@@ -52,4 +52,10 @@ class GenuineController extends BaseController{
     pagingScroll.addListener(pagingScrollListener);
     super.onInit();
   }
+
+  @override
+  void dispose() {
+    pagingScroll.dispose();
+    super.dispose();
+  }
 }

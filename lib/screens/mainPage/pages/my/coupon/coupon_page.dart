@@ -29,7 +29,7 @@ class CouponPage extends GetView<CouponController> {
                     height: 32,
                   ),
                   Text(
-                    '보유 쿠폰 ${controller.couponList.length}장',
+                    '보유 쿠폰 ${controller.couponList!.length}장',
                     style: medium14TextStyle,
                   ),
                   const SizedBox(
@@ -40,7 +40,7 @@ class CouponPage extends GetView<CouponController> {
                     thickness: 1,
                     color: gray_F1F3F5Color,
                   ),
-                  controller.couponList.isNotEmpty
+                  controller.couponList!.isNotEmpty
                       ? _couponList()
                       : Expanded(
                           child: Center(
@@ -56,18 +56,18 @@ class CouponPage extends GetView<CouponController> {
   }
 
   Widget _couponList() => Flexible(
-        child: ListView.builder(
+        child: GetBuilder<CouponController>(builder: (_) => ListView.builder(
           itemBuilder: (_, idx) {
             return Padding(
               padding: EdgeInsets.only(
                   top: 16.0,
-                  bottom: idx == controller.couponList.length - 1 ? 16 : 0),
+                  bottom: idx == controller.couponList!.length - 1 ? 16 : 0),
               child: _couponItem(),
             );
           },
-          itemCount: controller.couponList.length,
+          itemCount: controller.couponList!.length,
           shrinkWrap: true,
-        ),
+        )),
       );
 
   Widget _couponItem() => Container(

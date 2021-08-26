@@ -8,6 +8,7 @@ import 'package:brandcare_mobile_flutter_v2/widgets/route_container_widget.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MyInfoPage extends StatelessWidget {
   MyInfoPage({Key? key}) : super(key: key);
@@ -58,7 +59,7 @@ class MyInfoPage extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () async {
-          await ImageUtil().getImage();
+          await _loadAssetsMode();
         },
         behavior: HitTestBehavior.translucent,
         child: Container(
@@ -78,6 +79,34 @@ class MyInfoPage extends StatelessWidget {
           ),
         ),
       ), );
+
+  _loadAssetsMode(){
+    return Get.bottomSheet(
+      Container(
+        width: double.infinity,
+        height: 150,
+        color: whiteColor,
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              onTap: () async => await myController.loadAssets(ImageSource.camera),
+              title: Text(
+                "직접 촬영",
+                style: medium14TextStyle,
+              ),
+            ),
+            ListTile(
+              onTap: () async => await myController.loadAssets(ImageSource.gallery),
+              title: Text(
+                "갤러리에서 사진 선택",
+                style: medium14TextStyle,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _renderEmailContainer(String title) => Container(
     padding: const EdgeInsets.symmetric(vertical: 16),
