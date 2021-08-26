@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/mainAddCare_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_chk_address.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_otherTitle_widget.dart';
@@ -75,9 +76,11 @@ class MainAddCarePage extends StatelessWidget {
                     children: [
                       Expanded(
                         child: FormInputWidget(
-                          onChange: (value) {},
+                          onChange: (value) {
+                            controller.senderPhTxt.value = controller.senderPhNum.text;
+                          },
                           onSubmit: (value) {},
-                          controller: controller.senderName,
+                          controller: controller.senderPhNum,
                           isShowTitle: true,
                           title: "전화번호",
                           hint: "전화번호를 입력하세요.",
@@ -85,11 +88,11 @@ class MainAddCarePage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      _authBtn(
-                        onTap: () {},
-                        fill: false,
+                      Obx(() => _authBtn(
+                        onTap: () async  => await controller.smsAuth(),
+                        fill: controller.senderPhNumFill.value,
                         title: '인증번호 받기',
-                      )
+                      )),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -120,10 +123,13 @@ class MainAddCarePage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      _authBtn(
-                        onTap: () {},
-                        fill: false,
-                        title: '인증확인',
+                      Container(
+                        width: 120,
+                        child: CustomButtonEmptyBackgroundWidget(
+                          title: '인증확인',
+                          onClick: () => controller.smsAuthChk(),
+                          radius: 5,
+                        ),
                       ),
                     ],
                   ),

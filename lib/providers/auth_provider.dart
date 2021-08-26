@@ -23,12 +23,9 @@ class AuthProvider {
 
   Future<dynamic> chkDuplicateEmail(String email) async {
     var res = await _authApiService.duplicateEmail(email);
-    if(res == null){
-      return null;
-    }else{
-      Map<String, dynamic> jsonMap = jsonDecode(res.body.toString());
-      return (jsonMap['data']);
-    }
+    Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
+    print(jsonMap.toString());
+    return (jsonMap['data']);
   }
 
   Future<dynamic> registerUserEmail(String code, String email, String nickName, String password, String phone) async{

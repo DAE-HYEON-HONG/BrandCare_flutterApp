@@ -13,7 +13,6 @@ class MainPage extends GetView<MainPageController> {
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
     return Scaffold(
-      //탭바를 밀려서 올라가게 하지 않게 하기 위한 방법
       resizeToAvoidBottomInset: false,
       body: Obx(()=> Container(
         color: whiteColor,
@@ -29,7 +28,7 @@ class MainPage extends GetView<MainPageController> {
               top: 0,
               left: 0,
               right: 0,
-              bottom: 64.h,
+              bottom: MediaQuery.of(context).viewInsets.bottom == 0 ? 45 : 0,
             ),
             Positioned(
               left: 0,

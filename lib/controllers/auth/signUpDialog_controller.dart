@@ -21,6 +21,10 @@ class SignUpDialogController extends BaseController {
     Get.offAllNamed('/mainPage');
   }
 
+  void emailJoin(){
+    Get.toNamed('/auth/signup');
+  }
+
   void loginButton(String type)async{
     if(type == "login_kakao.svg"){
       if(isKakaoTalkInstalled.value){
@@ -60,7 +64,7 @@ class SignUpDialogController extends BaseController {
       Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
       if(jsonMap['code'] == "R9721"){
         Get.toNamed(
-          '/auth/signupSocial',
+          '/auth/signup/Social',
           arguments: {
             "TYPE":"KAKAO",
             "Email" : user.kakaoAccount!.email,
@@ -120,7 +124,7 @@ class SignUpDialogController extends BaseController {
       Map<String, dynamic> jsonMap = jsonDecode(response!.body.toString());
       if(jsonMap['code'] == "R9721"){
         Get.toNamed(
-          '/auth/signupSocial',
+          '/auth/signup/Social',
           arguments: {
             "TYPE":"NAVER",
             "Email" : res.account.email,
