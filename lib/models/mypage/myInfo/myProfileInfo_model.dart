@@ -6,11 +6,11 @@ class MyProfileInfoModel {
   final int activationCount;
   final int careCount;
   final int productCount;
-  final String lastLoginData;
+  final String lastLoginDate;
   final String nickName;
   final String? profileImg;
 
-  MyProfileInfoModel(this.activationCount, this.careCount, this.productCount, this.lastLoginData, this.nickName, this.profileImg);
+  MyProfileInfoModel(this.activationCount, this.careCount, this.productCount, this.lastLoginDate, this.nickName, this.profileImg);
 
   factory MyProfileInfoModel.fromJson(Map<String, dynamic> json) => _$MyProfileInfoModelFromJson(json);
   Map<String, dynamic> toJson() => _$MyProfileInfoModelToJson(this);

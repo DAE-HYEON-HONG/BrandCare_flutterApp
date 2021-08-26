@@ -248,6 +248,7 @@ class LoginController extends BaseController {
         }
         super.networkState.value = NetworkStateEnum.DONE;
       }catch(e) {
+        print(e);
         super.networkState.value = NetworkStateEnum.ERROR;
       }
 
