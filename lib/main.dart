@@ -3,6 +3,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk/all.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
               }
             },
             child: GetMaterialApp(
+              builder: EasyLoading.init(),
               title: 'Brand Care',
               debugShowCheckedModeBanner: false,
               theme: ThemeData(

@@ -58,6 +58,7 @@ class SignUpController extends BaseController {
   }
 
   void chkDuplicateEmail(String email)async{
+    super.networkState.value = NetworkStateEnum.LOADING;
     if(email == ""){
       Get.dialog(
           CustomDialogWidget(content: '이메일을 입력해주세요.', onClick: (){
@@ -88,6 +89,7 @@ class SignUpController extends BaseController {
         update();
       }
     }
+    super.networkState.value = NetworkStateEnum.NONE;
   }
 
   Future<void> registerChk() async{
