@@ -59,7 +59,7 @@ class MyApiService{
 
   Future<http.Response?> genuineList(dynamic headers, int page, String sort) async {
     try{
-      final uri = Uri.parse("${BaseApiService.baseApi}/care/history?page=$page&sort=$sort");
+      final uri = Uri.parse("${BaseApiService.baseApi}/activation/history?page=$page&sort=$sort");
       final http.Response res = await http.get(
         uri,
         headers: headers,
@@ -131,6 +131,63 @@ class MyApiService{
           uri,
           headers: headers,
           body: body
+      );
+      return res;
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> pointHistory(dynamic headers, int page) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/point?page=$page");
+      final http.Response res = await http.get(
+          uri,
+          headers: headers,
+      );
+      return res;
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> couponHistory(dynamic headers, int page) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/coupon?page=$page");
+      final http.Response res = await http.get(
+        uri,
+        headers: headers,
+      );
+      return res;
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> noticeList(dynamic headers, int page) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/notice/list?page=$page");
+      final http.Response res = await http.get(
+        uri,
+        headers: headers,
+      );
+      return res;
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> addInquiry(dynamic headers, dynamic body) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/inquiry");
+      final http.Response res = await http.post(
+        uri,
+        headers: headers,
+        body: body,
       );
       return res;
     }catch(e){

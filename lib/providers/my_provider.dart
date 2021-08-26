@@ -39,7 +39,7 @@ class MyProvider{
   }
 
   Future<dynamic> genuineList(String token, int page, String sort) async {
-    var res = await _myApiService.careList(BaseApiService.authHeaders(token), page, sort);
+    var res = await _myApiService.genuineList(BaseApiService.authHeaders(token), page, sort);
     if(res == null){
       return null;
     }else{
@@ -102,6 +102,51 @@ class MyProvider{
       return false;
     }else{
       return true;
+    }
+  }
+
+  Future<dynamic> pointHistory(String token, int page) async {
+    var res = await _myApiService.pointHistory(BaseApiService.authHeaders(token), page);
+    if(res == null){
+      return null;
+    }else{
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      return json;
+    }
+  }
+
+  Future<dynamic> couponHistory(String token, int page) async {
+    var res = await _myApiService.couponHistory(BaseApiService.authHeaders(token), page);
+    if(res == null){
+      return null;
+    }else{
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      return json;
+    }
+  }
+
+  Future<dynamic> noticeList(String token, int page) async {
+    var res = await _myApiService.noticeList(BaseApiService.authHeaders(token), page);
+    if(res == null){
+      return null;
+    }else{
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      return json;
+    }
+  }
+
+  Future<dynamic> addInquiry(String token, String title, String content) async {
+    Map<String, dynamic> body = {
+      'content' : content,
+      'title': title,
+    };
+    final bodyJson = jsonEncode(body);
+    var res = await _myApiService.changeAddress(BaseApiService.authHeaders(token), bodyJson);
+    if(res == null){
+      return null;
+    }else{
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      return json;
     }
   }
 }

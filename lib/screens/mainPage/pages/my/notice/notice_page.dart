@@ -1,6 +1,8 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/notice_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/models/mypage/notice/noticeList_model.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansion_tile_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -18,28 +20,28 @@ class NoticePage extends GetView<NoticeController> {
           height: double.infinity,
           color: whiteColor,
           child: SingleChildScrollView(
+            controller: controller.pagingScroll,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ListView.separated(
-                  physics: NeverScrollableScrollPhysics(),
-                  separatorBuilder: (context, idx) {
-                    return Divider(
-                      height: 0,
-                      thickness: 1,
-                      color: gray_F5F6F7Color,
-                    );
-                  },
+                GetBuilder<NoticeController>(builder: (_) => ListView.separated(
+                    physics: NeverScrollableScrollPhysics(),
+                    separatorBuilder: (context, idx) {
+                      return Divider(
+                        height: 0,
+                        thickness: 1,
+                        color: gray_F5F6F7Color,
+                      );
+                    },
                     shrinkWrap: true,
                     itemBuilder: (context, idx) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0, top: 16.0),
-                    child: _item(),
-                  );
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0, top: 16.0),
+                        child: _item(controller.noticeList![idx]),
+                      );
 
-                }, itemCount: 15),
-
+                    }, itemCount: controller.noticeList!.length)),
                 Padding(
                   padding: const EdgeInsets.only(left: 16, top: 50, bottom: 40),
                   child: Text('Copyright © 2021 BrandCare Inc. All Rights Reserved.', style: regular10TextStyle.copyWith(color: gray_999Color),),
@@ -50,7 +52,7 @@ class NoticePage extends GetView<NoticeController> {
         ));
   }
 
-  Widget _item() => Container(
+  Widget _item(NoticeListModel model) => Container(
         child: CustomExpantionTile2(
           isShowShadow: false,
           title: Container(
@@ -58,14 +60,14 @@ class NoticePage extends GetView<NoticeController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '01.28 3:00a.m.',
+                  '${DateFormatUtil.convertDateFormat(date: model.createdDate, format: "MM.dd")} ${DateFormatUtil.convertDateFormat(date: model.createdDate, format: "hh:mma")}',
                   style: regular12TextStyle.copyWith(color: gray_999Color),
                 ),
                 const SizedBox(
                   height: 4,
                 ),
                 Text(
-                  '시스템 정기점검 알림',
+                  model.title,
                   style: medium14TextStyle,
                 )
               ],
@@ -74,12 +76,7 @@ class NoticePage extends GetView<NoticeController> {
           child: Container(
             color: whiteColor,
             padding: EdgeInsets.only(left: 16, right: 16, top: 16),
-            child: Text('''금주 주말에 시스템 정기 점검이 있습니다.
-작업 시간 동안 시스템 접속이 원활하지 않을 수 있습니다.
-
-*작업일정 : 2021.02.02(화)
-*작업시간 : 02~07시
-''', style: regular14TextStyle.copyWith(color: gray_666Color),),
+            child: Text(model.content, style: regular14TextStyle.copyWith(color: gray_666Color),),
           ),
         ),
       );

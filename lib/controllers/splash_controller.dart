@@ -27,6 +27,7 @@ class SplashController extends BaseController {
     final bool isLogin = await SharedTokenUtil.getBool('isAutoLogin') ?? false;
     if(isLogin){
       final String? token = await SharedTokenUtil.getToken("userLogin_token");
+      print(token);
       final res = await AuthProvider().loginToken(token!);
       if(res != null){
         globalCtrl.isLoginChk(true);

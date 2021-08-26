@@ -6,6 +6,21 @@ import 'package:brandcare_mobile_flutter_v2/models/mypage/myInfo/userInfo_model.
 class AuthProvider {
   final AuthApiService _authApiService = AuthApiService();
 
+  Future<dynamic> smsAuth(String phNum) async{
+    Map<String, dynamic> body = {
+      'phNum' : phNum,
+    };
+    final bodyJson = jsonEncode(body);
+    var res = await _authApiService.phoneAuth(bodyJson);
+    if(res == null) {
+      return null;
+    }else {
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      print(json.toString());
+      return json;
+    }
+  }
+
   Future<dynamic> chkDuplicateEmail(String email) async {
     var res = await _authApiService.duplicateEmail(email);
     if(res == null){
