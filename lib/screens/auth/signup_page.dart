@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/auth/signup_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_checkbox_widget.dart';
@@ -45,8 +46,10 @@ class SignUpPage extends GetView<SignUpController> {
                           _emailCheckWidget(controller.duplicateEmail.value)),
                       const SizedBox(height: 16),
                       FormInputWidget(
-                        onChange: (value) {},
-                        onSubmit: (value) {},
+                        onChange: (value) {
+                        },
+                        onSubmit: (value) {
+                        },
                         controller: controller.passwordController,
                         isShowTitle: true,
                         title: '비밀번호',

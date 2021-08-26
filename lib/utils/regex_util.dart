@@ -9,4 +9,10 @@ class RegexUtil {
     phone = phone.replaceAll('-', '');
     return GetUtils.isLengthEqualTo(phone, 11);
   }
+
+  static bool checkPasswordRegex({required String password}) {
+    String regex = r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$";
+    print(GetUtils.hasMatch(password, regex));
+    return GetUtils.hasMatch(password, regex);
+  }
 }

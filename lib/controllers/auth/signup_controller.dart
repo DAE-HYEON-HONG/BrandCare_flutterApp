@@ -100,7 +100,26 @@ class SignUpController extends BaseController {
             update();
           }),
       );
-    } else if(duplicateEmail.value == SignUpCheckEmail.DUPLICATE){
+    } else if(passwordController.text == "") {
+      Get.dialog(
+        CustomDialogWidget(content: '비밀번호를 입력해주세요.', onClick: (){
+          Get.back();
+        }),
+      );
+    }else if(!RegexUtil.checkPasswordRegex(password: passwordController.text)) {
+      Get.dialog(
+        CustomDialogWidget(content: '비밀번호 형식을 확인해주세요.', onClick: (){
+          Get.back();
+        }),
+      );
+    }else if(passwordController.text != rePasswordController.text){
+      Get.dialog(
+        CustomDialogWidget(content: '비밀번호가 일치하지 않습니다.', onClick: (){
+          Get.back();
+        }),
+      );
+    }
+    else if(duplicateEmail.value == SignUpCheckEmail.DUPLICATE){
       Get.dialog(
         CustomDialogWidget(content: '이메일을 중복 및 확인해주세요.', onClick: (){
           Get.back();
