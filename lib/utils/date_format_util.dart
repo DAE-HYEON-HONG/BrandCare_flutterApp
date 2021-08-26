@@ -3,12 +3,12 @@ import 'package:intl/intl.dart';
 class DateFormatUtil{
 
   static String getTimeAtDateTime(String date) {
-    DateTime convertDate = DateFormat('YYYY-MM-DDThh:mm:ss').parse(date);
+    DateTime convertDate = DateFormat('yyyy-MM-DDThh:mm:ss').parse(date);
     return DateFormat('hh:mm').format(convertDate);
   }
 
-  static String convertDateFormat({required String date, String format='YYYY-MM-DD'}) {
-    DateTime convertDate = DateFormat('YYYY-MM-DDThh:mm:ss').parse(date);
+  static String convertDateFormat({required String date, String format='yyyy-MM-DD'}) {
+    DateTime convertDate = DateFormat('yyyy-MM-DDThh:mm:ss').parse(date);
     return DateFormat(format).format(convertDate);
   }
 
