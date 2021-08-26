@@ -10,6 +10,10 @@ class RegexUtil {
     return GetUtils.isLengthEqualTo(phone, 11);
   }
 
+  static bool checkSMSCodeRegex({required String code}) {
+    return GetUtils.isLengthEqualTo(code, 6);
+  }
+
   static bool checkPasswordRegex({required String password}) {
     String regex = r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$";
     print(GetUtils.hasMatch(password, regex));

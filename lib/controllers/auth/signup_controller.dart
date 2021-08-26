@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
@@ -32,7 +34,19 @@ class SignUpController extends BaseController {
 
   Rx<bool> isPhone = false.obs;
   Rx<String> phoneTxt = ''.obs;
-  bool phoneChecked = true; // false로 꼭 바꿔주세요.
+  bool phoneChecked = false; // false로 꼭 바꿔주세요.
+  String smsCode = '';
+
+  Rx<bool> isAuthCode = false.obs;
+  Rx<String> authCodeTxt = ''.obs;
+
+  Rx<int> smsTime = 180.obs;
+
+  Rx<bool> phoneReadOnly = false.obs;
+
+  final _authApiProvider = AuthProvider();
+
+
 
 
   void agreeUpdate() {
@@ -127,7 +141,8 @@ class SignUpController extends BaseController {
           update();
         }),
       );
-    } else if (phoneChecked == false) {
+    // } else if (phoneChecked == false) {
+    } else if (authCode.value == false) {
       Get.dialog(
         CustomDialogWidget(content: '전화번호가 확인되지 않았습니다.', onClick: (){
           Get.back();
@@ -147,14 +162,62 @@ class SignUpController extends BaseController {
   }
 
   Future<void> addUser() async{
-    final addUser = await AuthProvider().registerUserEmail(
+    super.networkState.value = NetworkStateEnum.LOADING;
+    final addUser = await _authApiProvider.registerUserEmail(
         friendCodeController.text,
         emailController.text,
         nameController.text,
         passwordController.text,
         phoneController.text,
     );
+    super.networkState.value = NetworkStateEnum.DONE;
     Get.back();
+  }
+
+  Future<void> sendSms() async {
+    if(phoneController.text.isEmpty) return null;
+    if(!RegexUtil.checkPhoneRegex(phone: phoneController.text)) return null;
+    var response = await _authApiProvider.smsAuth(phoneController.text);
+    if(response != null) {
+      sendPhoneCode.value = true;
+      smsCode = response["data"];
+      checkSmsAuthTimer();
+      update();
+    }
+  }
+
+  checkAuthCode() {
+    String code = authNumberController.text;
+    if(smsTime.value == 0) {
+      Get.dialog(
+        CustomDialogWidget(content: '인증시간이 초과되었습니다.\n다시 시도 부탁드립니다.', onClick: (){
+          Get.back();
+        })
+      );
+    }
+    if(code == smsCode){
+      authCode.value = true;
+      phoneReadOnly.value = true;
+      update();
+      return;
+    }else {
+      Get.dialog(
+          CustomDialogWidget(content: '인증번호가 올바르지 않습니다.', onClick: (){
+            Get.back();
+          })
+      );
+    }
+  }
+
+  checkSmsAuthTimer(){
+    // Duration defaultDuration = Duration(minutes: 3);
+    smsTime.value = 180;
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      smsTime.value--;
+      if(smsTime.value == 0){
+        timer.cancel();
+      }
+    });
   }
 
   bool get allAgree => agree.value && privacyAgree.value;
@@ -167,6 +230,11 @@ class SignUpController extends BaseController {
     });
     debounce(phoneTxt, (_) {
       isPhone.value = RegexUtil.checkPhoneRegex(phone: phoneTxt.value);
+    });
+    debounce(authCodeTxt, (_) {
+      print('autCode txt = $authCodeTxt');
+      isAuthCode.value = RegexUtil.checkSMSCodeRegex(code: authCodeTxt.value);
+      print('isAuthCode = ${isAuthCode.value}');
     });
   }
 }

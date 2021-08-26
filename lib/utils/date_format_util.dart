@@ -26,4 +26,10 @@ class DateFormatUtil{
     DateTime convertDate = DateFormat('yyyy-MM-DDThh:mm:ss').parse(date);
     return DateFormat('hh:mm').format(convertDate);
   }
+
+  static String convertTimer({required int timer}) {
+    int min = (timer / 60).floor();
+    int second = timer % 60;
+    return '$min:$second';
+  }
 }

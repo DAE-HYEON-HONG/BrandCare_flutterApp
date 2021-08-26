@@ -98,7 +98,7 @@ class AuthProvider {
     }
   }
 
-  Future<dynamic> smsAuth(String phNum) async{
+  Future<Map<String, dynamic>?> smsAuth(String phNum) async{
     Map<String, dynamic> body = {
       'phNum' : phNum,
     };
