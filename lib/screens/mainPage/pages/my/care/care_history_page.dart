@@ -1,15 +1,17 @@
 import 'package:brandcare_mobile_flutter_v2/consts/box_shadow.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/care_history_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class CareHistoryPage extends GetView<CareHistoryController> {
-  const CareHistoryPage({Key? key}) : super(key: key);
-
+  CareHistoryPage({Key? key}) : super(key: key);
+  final globalCtrl = Get.find<GlobalController>();
   @override
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(
@@ -29,10 +31,20 @@ class CareHistoryPage extends GetView<CareHistoryController> {
                 thickness: 1,
               ),
               Flexible(
-                  child: ListView.separated(
-                      itemBuilder: (context, idx) => _item(),
+                  child: GetBuilder<CareHistoryController>(
+                    builder: (_) => ListView.separated(
+                      controller: controller.pagingScroll,
+                      itemBuilder: (context, idx) => _item(
+                        title: controller.careList![idx].title,
+                        status: controller.careList![idx].status,
+                        time: DateFormatUtil.convertDateFormat(date: controller.careList![idx].createdDate),
+                        date: DateFormatUtil.convertOnlyTime(date: controller.careList![idx].createdDate),
+                      ),
                       separatorBuilder: (context, idx) => const Divider(height: 0, thickness: 1,),
-                      itemCount: 10))
+                      itemCount: controller.careList!.length,
+                    ),
+                  ),
+              ),
             ],
           ),
         ));
@@ -63,12 +75,12 @@ class CareHistoryPage extends GetView<CareHistoryController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '이재룡 님',
+                  '${globalCtrl.userInfoModel.nickName} 님',
                   style: medium14TextStyle.copyWith(color: primaryColor),
                 ),
                 const Spacer(),
                 Text(
-                  '케어/수선 완료 10건',
+                  '케어/수선 완료 ${controller.careCompleteCount}건',
                   style: regular12TextStyle.copyWith(color: primaryColor),
                 ),
               ],
@@ -79,14 +91,18 @@ class CareHistoryPage extends GetView<CareHistoryController> {
     ),
   );
 
-  Widget _item() => Container(
+  Widget _item({
+  required String title,
+  required String status,
+  required String time,
+  required String date}) => Container(
     padding: const EdgeInsets.symmetric(vertical: 16),
     child: Column(
       children: [
         Row(
           children: [
             Text(
-              'xx외 n건',
+              title,
               style: medium14TextStyle,
             ),
             const Spacer(),
@@ -107,7 +123,7 @@ class CareHistoryPage extends GetView<CareHistoryController> {
             ),
             const Spacer(),
             Text(
-              '17:30 | 2021-02-05',
+              '$time | $date',
               style: regular14TextStyle.copyWith(color: gray_333Color),
             )
           ],

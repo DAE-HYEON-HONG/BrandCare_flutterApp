@@ -1,3 +1,4 @@
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/my_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
@@ -11,6 +12,7 @@ class NameChangePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final myController = Get.find<MyController>();
+    final globalCtrl = Get.find<GlobalController>();
     myController.initMyController();
     return DefaultAppBarScaffold(
         title: '이름(닉네임) 변경',
@@ -21,10 +23,11 @@ class NameChangePage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: FormInputWidget(
-                    onChange: (value) {},
-                    onSubmit: (value) {},
-                    controller: TextEditingController(),
-                    isShowTitle: true,
+                  onChange: (value) {},
+                  onSubmit: (value) {},
+                  controller: TextEditingController(),
+                  isShowTitle: true,
+                  hint: myController.myProfileInfoModel.nickName,
                   title: '현재 이름(닉네임)',
                   readOnly: true,
                 ),
@@ -37,15 +40,17 @@ class NameChangePage extends StatelessWidget {
                     myController.name.value = value;
                   },
                   onSubmit: (value) {},
-                  controller: TextEditingController(),
+                  controller: myController.nickNameController,
                   isShowTitle: true,
                   title: '변경할 이름(닉네임)',
                 ),
               ),
               const Spacer(),
-              Obx(() =>CustomButtonOnOffWidget(title: '확인', onClick: (){
-                Get.back();
-              }, isOn: myController.name.value.isNotEmpty))
+              Obx(() =>CustomButtonOnOffWidget(
+                  title: '확인',
+                  onClick: () async => await myController.changeNickName(myController.nickNameController.text),
+                  isOn: myController.name.value.isNotEmpty),
+              ),
             ],
           ),
         ));

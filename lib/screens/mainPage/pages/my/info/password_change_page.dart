@@ -64,9 +64,11 @@ class PasswordChangePage extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              Obx(() =>CustomButtonOnOffWidget(title: '확인', onClick: (){
-                Get.back();
-              }, isOn: myController.passwordIsOn))
+              Obx(() =>CustomButtonOnOffWidget(
+                title: '확인',
+                onClick: () async => myController.changePassword(),
+                isOn: myController.passwordIsOn,
+              )),
             ],
           ),
         ));
