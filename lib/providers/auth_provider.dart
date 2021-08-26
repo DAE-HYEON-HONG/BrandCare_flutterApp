@@ -1,17 +1,11 @@
 import 'dart:convert';
 import 'package:brandcare_mobile_flutter_v2/apis/auth/auth_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
-import 'package:brandcare_mobile_flutter_v2/models/UserInfo_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/mypage/myInfo/userInfo_model.dart';
 
 class AuthProvider {
   final AuthApiService _authApiService = AuthApiService();
 
-  // Future<Model> getMe() async {
-  //   var response = await _authApiService.asdads();
-  //   toJson
-  //   fromJson
-  // 모델로 리턴 해주어야 함.
-  // }
   Future<dynamic> chkDuplicateEmail(String email) async {
     var res = await _authApiService.duplicateEmail(email);
     if(res == null){

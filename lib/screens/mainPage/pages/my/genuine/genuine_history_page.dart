@@ -1,15 +1,18 @@
 import 'package:brandcare_mobile_flutter_v2/consts/box_shadow.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/genuine_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get/get.dart';
 
 class GenuineHistoryPage extends GetView<GenuineController> {
-  const GenuineHistoryPage({Key? key}) : super(key: key);
-
+  GenuineHistoryPage({Key? key}) : super(key: key);
+  final globalCtrl = Get.find<GlobalController>();
   @override
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(
@@ -29,10 +32,20 @@ class GenuineHistoryPage extends GetView<GenuineController> {
                 thickness: 1,
               ),
               Flexible(
-                  child: ListView.separated(
-                      itemBuilder: (context, idx) => _item(),
-                      separatorBuilder: (context, idx) => const Divider(height: 0, thickness: 1,),
-                      itemCount: 10))
+                  child: GetBuilder<GenuineController>(builder: (_) => ListView.separated(
+                    controller: controller.pagingScroll,
+                    itemBuilder: (context, idx) => _item(
+                      title: controller.genuineList![idx].title,
+                      status: controller.genuineList![idx].status,
+                      time: DateFormatUtil.convertDateFormat(date: controller.genuineList![idx].createdDate),
+                      date: DateFormatUtil.convertOnlyTime(date: controller.genuineList![idx].createdDate),
+                      brand: controller.genuineList![idx].brand,
+                      category: controller.genuineList![idx].category,
+                    ),
+                    separatorBuilder: (context, idx) => const Divider(height: 0, thickness: 1,),
+                    itemCount: controller.genuineList!.length,
+                  )),
+              ),
             ],
           ),
         ));
@@ -63,14 +76,14 @@ class GenuineHistoryPage extends GetView<GenuineController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '이재룡 님',
+                      '${globalCtrl.userInfoModel.nickName} 님',
                       style: medium14TextStyle.copyWith(color: primaryColor),
                     ),
                     const Spacer(),
-                    Text(
-                      '인증 완료 제품 10개 | 미인증 제품 3개',
+                    Obx(() => Text(
+                      '인증 완료 제품 ${controller.completeCount.value}개 | 미인증 제품 ${controller.notCompleteCount.value}개',
                       style: regular12TextStyle.copyWith(color: primaryColor),
-                    ),
+                    )),
                   ],
                 ),
               ),
@@ -79,14 +92,20 @@ class GenuineHistoryPage extends GetView<GenuineController> {
         ),
       );
 
-  Widget _item() => Container(
+  Widget _item({
+    required String title,
+    required String status,
+    required String time,
+    required String date,
+    required String brand,
+    required String category}) => Container(
         padding: const EdgeInsets.symmetric(vertical: 16),
         child: Column(
           children: [
             Row(
               children: [
                 Text(
-                  '루이비통 | 가방',
+                  '$brand | $category',
                   style: regular12TextStyle.copyWith(color: gray_333Color),
                 ),
                 const Spacer(),
@@ -102,12 +121,12 @@ class GenuineHistoryPage extends GetView<GenuineController> {
             Row(
               children: [
                 Text(
-                  '나의 예쁜이',
+                  '$title',
                   style: medium14TextStyle,
                 ),
                 const Spacer(),
                 Text(
-                  '17:30 | 2021-02-05',
+                  '$time | $date',
                   style: regular14TextStyle.copyWith(color: gray_333Color),
                 )
               ],

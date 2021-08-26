@@ -15,7 +15,7 @@ class MyPage extends StatelessWidget {
   MyPage({Key? key}) : super(key: key);
 
   final myController = Get.put(MyController());
-  final globalController = Get.find<GlobalController>();
+  final globalCtrl = Get.find<GlobalController>();
 
   @override
   Widget build(BuildContext context) {
@@ -115,9 +115,9 @@ class MyPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(globalController.userInfoModel.nickName, style: medium14TextStyle,),
+                      Text(myController.myProfileInfoModel.nickName, style: medium14TextStyle,),
                       const Spacer(),
-                      Text('최근접속 2020.12.24 20:45:13', style: regular12TextStyle.copyWith(color: gray_333Color),),
+                      Text(myController.myProfileInfoModel.lastLoginData, style: regular12TextStyle.copyWith(color: gray_333Color),),
                     ],
                   ),
                 ),

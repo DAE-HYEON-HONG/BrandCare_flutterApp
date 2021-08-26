@@ -56,6 +56,9 @@ class AddressChangePage extends StatelessWidget {
                               callback: (Kpostal result){
                                 print(result.address);
                                 myController.addressController.text = result.address;
+                                myController.city.value = result.sido;
+                                myController.sigungu.value = result.sigungu;
+                                myController.street.value = result.roadAddress;
                                 myController.address.value = result.address;
                                 myController.postCodeController.text = result.postCode;
                                 myController.postcode.value = result.postCode;
@@ -136,9 +139,11 @@ class AddressChangePage extends StatelessWidget {
         const SizedBox(height: 32,),
         _changeAddress('변경할 주소'),
         const Spacer(),
-        Obx(() =>CustomButtonOnOffWidget(title: '확인', onClick: (){
-          Get.back();
-        }, isOn: myController.isAddress))
+        Obx(() =>CustomButtonOnOffWidget(
+          title: '확인',
+          onClick: () async => await myController.changeAddress(),
+          isOn: myController.isAddress,
+        ))
       ],
     ),
   );
