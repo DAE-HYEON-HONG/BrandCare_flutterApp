@@ -43,6 +43,7 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
   }
 
   Future<void> reqShopDetail() async {
+    super.networkState.value = NetworkStateEnum.LOADING;
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     var res = await ShopProvider().shopDetail(token!, idx);
     if(res == null){
@@ -52,8 +53,10 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
             update();
           })
       );
+      super.networkState.value = NetworkStateEnum.ERROR;
     }else{
       model = res;
+      super.networkState.value = NetworkStateEnum.DONE;
       update();
     }
   }

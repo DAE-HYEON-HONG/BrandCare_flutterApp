@@ -9,15 +9,13 @@ import 'package:flutter_svg/svg.dart';
 class CustomExpansionListField extends StatefulWidget {
   String hintText;
   final Function onTap;
-  final List<Map<String, dynamic>> items;
+  final List<String> items;
   final ValueChanged<String> onChange;
-  final ValueChanged<int> onPriceChange;
   CustomExpansionListField({
     required this.onTap,
     required this.hintText,
     required this.items,
     required this.onChange,
-    required this.onPriceChange,
   });
   @override
   _CustomExpansionListFieldState createState() => _CustomExpansionListFieldState();
@@ -60,9 +58,6 @@ class _CustomExpansionListFieldState extends State<CustomExpansionListField> wit
     _handleTap();
   }
 
-  void changePriceValue(int value){
-    widget.onPriceChange(value);
-  }
 
   @override
   void dispose() {
@@ -126,8 +121,7 @@ class _CustomExpansionListFieldState extends State<CustomExpansionListField> wit
                     itemBuilder: (context, idx) {
                       return GestureDetector(
                         onTap: () {
-                          changeValue(widget.items[idx].keys.first);
-                          changePriceValue(widget.items[idx].values.first);
+                          changeValue(widget.items[idx]);
                         },
                         child: Container(
                           width: double.infinity,
@@ -135,37 +129,12 @@ class _CustomExpansionListFieldState extends State<CustomExpansionListField> wit
                           padding: EdgeInsets.only(left: 16, right: 16),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                widget.items[idx].keys.first,
+                                widget.items[idx],
                                 style: regular14TextStyle.copyWith(
                                     color: gray_999Color),
-                              ),
-                              Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      widget.items[idx].values.last == 1 ? "부위당" :
-                                      widget.items[idx].values.last == 0 ? "" :
-                                      int.tryParse(widget.items[idx].values.last) != null ?
-                                      NumberFormatUtil.convertNumberFormat(
-                                      number: int.parse(widget.items[idx].values.last)):
-                                      widget.items[idx].values.last,
-                                      style: regular14TextStyle.copyWith(
-                                          color: gray_999Color),
-                                    ),
-                                    const SizedBox(width: 22),
-                                    Text(
-                                      widget.items[idx].values.first != 0 ?
-                                      NumberFormatUtil.convertNumberFormat(number: widget.items[idx].values.first) :
-                                      "",
-                                      style: regular14TextStyle.copyWith(
-                                          color: gray_999Color),
-                                    ),
-                                  ],
-                                ),
                               ),
                             ],
                           ),

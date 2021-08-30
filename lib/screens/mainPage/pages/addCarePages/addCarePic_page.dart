@@ -1,7 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/addCarePic_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansionList_feild.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/care_expansionList_feild.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -53,7 +53,7 @@ class AddCarePicPage extends GetView<AddCarePicController> {
                     style: medium14TextStyle,
                   ),
                   const SizedBox(height: 9),
-                  CustomExpansionListField(
+                  CareExpansionListField(
                       onTap: () => controller.chkFill(),
                       hintText: "1. 카테고리를 선택하세요.(가방, 지갑, 신발)",
                       items: controller.careList,
@@ -61,7 +61,7 @@ class AddCarePicPage extends GetView<AddCarePicController> {
                       onPriceChange: (value) {},
                   ),
                   const SizedBox(height: 8),
-                  Obx(() => CustomExpansionListField(
+                  Obx(() => CareExpansionListField(
                     onTap: () => controller.chkFill(),
                     hintText: "2. 케어/수선 항목을 선택하세요.",
                     items: controller.checkType(controller.firstCareCategory.value),

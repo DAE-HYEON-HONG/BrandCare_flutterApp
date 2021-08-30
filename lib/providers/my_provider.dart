@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:brandcare_mobile_flutter_v2/apis/my/my_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
@@ -146,6 +147,16 @@ class MyProvider{
       return null;
     }else{
       Map<String, dynamic> json = jsonDecode(res.body.toString());
+      return json;
+    }
+  }
+
+  Future<dynamic> changeProfileImg(String token, File img) async {
+    var res = await _myApiService.changeUserProfile(BaseApiService.authHeaders(token), img);
+    if(res == null){
+      return null;
+    }else{
+      Map<String, dynamic> json = jsonDecode(res.toString());
       return json;
     }
   }
