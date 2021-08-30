@@ -8,44 +8,6 @@ import 'package:http_parser/http_parser.dart';
 
 class ProductApiService {
 
-  Future<http.Response?> brandCategory(dynamic headers) async{
-    try{
-      final uri = Uri.parse("${BaseApiService.baseApi}/product/brand");
-      final http.Response res = await http.get(
-        uri,
-        headers: headers,
-      );
-      print(res.body.toString());
-      if(res.statusCode == 200){
-        return res;
-      }else{
-        return null;
-      }
-    }catch(e){
-      print("접속 에러 : ${e.toString()}");
-      return null;
-    }
-  }
-
-  Future<http.Response?> categoryNameList(dynamic headers) async{
-    try{
-      final uri = Uri.parse("${BaseApiService.baseApi}/product/category");
-      final http.Response res = await http.get(
-        uri,
-        headers: headers,
-      );
-      print(res.body.toString());
-      if(res.statusCode == 200){
-        return res;
-      }else{
-        return null;
-      }
-    }catch(e){
-      print("접속 에러 : ${e.toString()}");
-      return null;
-    }
-  }
-
   Future<dynamic> addProduct(
       dynamic headers,
       dynamic body,
@@ -55,7 +17,7 @@ class ProductApiService {
       File leftImg,
       File rightImg) async {
     try {
-      final uri = Uri.parse("${BaseApiService.baseApi}/product/apply");
+      final uri = Uri.parse("${BaseApiService.baseApi}/shop");
       var req = http.MultipartRequest('POST', uri);
       req.files.add(
         http.MultipartFile.fromBytes(
@@ -115,7 +77,6 @@ class ProductApiService {
       );
       req.headers.addAll(headers);
       http.StreamedResponse res = await req.send();
-      print(res.statusCode);
       final resReturn = await res.stream.bytesToString();
       if (res.statusCode == 200) {
         return resReturn;
@@ -124,6 +85,123 @@ class ProductApiService {
       }
     } catch (e) {
       print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+
+  Future<http.Response?> getMyProduct(String token) async {
+    late http.Response res;
+    try{
+      res = await http.get(Uri.parse('${BaseApiService.baseApi}/product/mine?page=1&sort=LATEST'),
+          headers: BaseApiService.authHeaders(token));
+      if(res.statusCode == 200) {
+        return res;
+      }
+    }catch(e){
+      return null;
+    }
+  }
+
+  changeProduct({required String token, required Map<String, dynamic> data}) async {
+    late http.Response res;
+    try {
+      res = await http.post(Uri.parse('${BaseApiService.baseApi}/product/apply/change'),
+          headers: BaseApiService.authHeaders(token),
+          body: json.encode(data)
+      );
+      print('changeProdyct');
+      print(res.body);
+      if(res.statusCode == 200) {
+        return res;
+      }
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+  changeProductAccept(String token, Map<String, dynamic> data) async {
+    late http.Response res;
+    try {
+      res = await http.post(Uri.parse('${BaseApiService.baseApi}/product/apply/change/accept'),
+          headers: BaseApiService.authHeaders(token),
+          body: json.encode(data)
+      );
+      print('changeProdyct');
+      print(res.body);
+      if(res.statusCode == 200) {
+        return res;
+      }
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+  changeProductCancel(String token, Map<String, dynamic> data) async {
+    late http.Response res;
+    try {
+      res = await http.post(Uri.parse('${BaseApiService.baseApi}/product/apply/change/cancel'),
+          headers: BaseApiService.authHeaders(token),
+          body: json.encode(data)
+      );
+      print('changeProdyct');
+      print(res.body);
+      if(res.statusCode == 200) {
+        return res;
+      }
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+  getProductChangeList(String token, String status) async {
+    late http.Response res;
+    try {
+      res = await http.get(Uri.parse('${BaseApiService.baseApi}/product/change?status=$status'),
+          headers: BaseApiService.authHeaders(token),
+      );
+      print(res.body);
+      if(res.statusCode == 200) {
+        return res;
+      }
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+
+  getProductChangeOnce(String token, int id, String status) async {
+    late http.Response res;
+    try {
+      res = await http.get(Uri.parse('${BaseApiService.baseApi}/product/change/$id?status=$status'),
+        headers: BaseApiService.authHeaders(token),
+      );
+      print(res.body);
+      if(res.statusCode == 200) {
+        return res;
+      }
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+  getProductDetail(String token, int id) async {
+    late http.Response res;
+    try {
+      res = await http.get(Uri.parse('${BaseApiService.baseApi}/product/$id'),
+        headers: BaseApiService.authHeaders(token),
+      );
+      print(res.body);
+      if(res.statusCode == 200) {
+        return res;
+      }
+    }catch(e){
+      print(e);
       return null;
     }
   }

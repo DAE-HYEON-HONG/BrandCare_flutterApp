@@ -36,6 +36,65 @@ class ProductProvider {
     }
   }
 
+  Future<Map<String, dynamic>?> getMyProduct() async {
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    final res = await _productApiService.getMyProduct(token!);
+    if(res != null) {
+      return jsonDecode(res.body);
+    }
+    return null;
+  }
+
+  Future<Map<String, dynamic>?> changeProduct(Map<String, dynamic> data) async {
+  final String? token = await SharedTokenUtil.getToken("userLogin_token");
+  final res = await _productApiService.changeProduct(token: token!, data: data);
+  if(res != null) {
+    return jsonDecode(res.body);
+  }
+  return null;
+  }
+
+  Future<Map<String, dynamic>?> changeProductCancel(Map<String, dynamic> data) async {
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    final res = await _productApiService.changeProductCancel(token!, data);
+    if(res != null) {
+      return jsonDecode(res.body);
+    }
+    return null;
+  }
+  Future<Map<String, dynamic>?> changeProductAccept(Map<String, dynamic> data) async {
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    final res = await _productApiService.changeProductAccept(token!, data);
+    if(res != null) {
+      return jsonDecode(res.body);
+    }
+    return null;
+  }
+  Future<Map<String, dynamic>?> getChangeProduct(String status) async {
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    final res = await _productApiService.getProductChangeList(token!, status);
+    if(res != null) {
+      return jsonDecode(res.body);
+    }
+    return null;
+  }
+  Future<Map<String, dynamic>?> getChangeProductOnce(int id, String status) async {
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    final res = await _productApiService.getProductChangeOnce(token!, id, status);
+    if(res != null) {
+      return jsonDecode(res.body);
+    }
+    return null;
+  }
+  Future<Map<String, dynamic>?> getProductDetail(int id) async {
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    final res = await _productApiService.getProductDetail(token!, id);
+    if(res != null) {
+      return jsonDecode(res.body);
+    }
+    return null;
+  }
+
   Future<dynamic> brandNameList() async {
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     final res = await _productApiService.brandCategory(BaseApiService.authHeaders(token!));
