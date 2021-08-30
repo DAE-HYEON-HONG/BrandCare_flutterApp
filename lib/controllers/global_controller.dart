@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class GlobalController extends GetxController{
   RxBool isLogin = false.obs;
   RxString token = "".obs;
-  late UserInfoModel userInfoModel;
+  UserInfoModel? userInfoModel;
 
   void isLoginChk(bool isChk){
     if(isChk){

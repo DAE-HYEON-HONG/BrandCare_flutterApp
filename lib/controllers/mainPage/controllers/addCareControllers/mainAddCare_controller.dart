@@ -55,9 +55,9 @@ class MainAddCareController extends BaseController {
   }
 
   void chkNormalAddress() {
-    if(globalCtrl.userInfoModel.address!.city != "" &&
-        globalCtrl.userInfoModel.address!.street != "" &&
-        globalCtrl.userInfoModel.address!.zipCode != ""
+    if(globalCtrl.userInfoModel?.address!.city != "" &&
+        globalCtrl.userInfoModel?.address!.street != "" &&
+        globalCtrl.userInfoModel?.address!.zipCode != ""
     ){
       normalAddress.value = true;
       update();
@@ -121,10 +121,10 @@ class MainAddCareController extends BaseController {
   void senderNormalAddressSet() {
     senderNormalAddress.value = !senderNormalAddress.value;
     if(senderNormalAddress.value){
-      senderPostCode.text = globalCtrl.userInfoModel.address!.zipCode;
-      senderAddress.text = globalCtrl.userInfoModel.address!.city;
-      senderAddressDetail.value = globalCtrl.userInfoModel.address!.street;
-      senderAddressDetailCtrl.text = globalCtrl.userInfoModel.address!.street;
+      senderPostCode.text = globalCtrl.userInfoModel!.address!.zipCode;
+      senderAddress.text = globalCtrl.userInfoModel!.address!.city;
+      senderAddressDetail.value = globalCtrl.userInfoModel!.address!.street;
+      senderAddressDetailCtrl.text = globalCtrl.userInfoModel!.address!.street;
     }
     update();
   }
@@ -165,10 +165,10 @@ class MainAddCareController extends BaseController {
   void receiverNormalAddressSet() {
     receiverNormalAddress.value = !receiverNormalAddress.value;
     if(receiverNormalAddress.value){
-      senderPostCode.text = globalCtrl.userInfoModel.address!.zipCode;
-      senderAddress.text = globalCtrl.userInfoModel.address!.city;
-      senderAddressDetail.value = globalCtrl.userInfoModel.address!.street;
-      senderAddressDetailCtrl.text = globalCtrl.userInfoModel.address!.street;
+      senderPostCode.text = globalCtrl.userInfoModel!.address!.zipCode;
+      senderAddress.text = globalCtrl.userInfoModel!.address!.city;
+      senderAddressDetail.value = globalCtrl.userInfoModel!.address!.street;
+      senderAddressDetailCtrl.text = globalCtrl.userInfoModel!.address!.street;
     }
     update();
   }

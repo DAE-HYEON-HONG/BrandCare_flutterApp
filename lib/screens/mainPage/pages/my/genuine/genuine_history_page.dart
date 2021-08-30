@@ -76,7 +76,7 @@ class GenuineHistoryPage extends GetView<GenuineController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${globalCtrl.userInfoModel.nickName} 님',
+                      '${globalCtrl.userInfoModel?.nickName} 님',
                       style: medium14TextStyle.copyWith(color: primaryColor),
                     ),
                     const Spacer(),

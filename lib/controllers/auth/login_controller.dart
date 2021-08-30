@@ -34,6 +34,7 @@ class LoginController extends BaseController {
   }
 
   void notLoginMain() {
+    globalCtrl.isLoginChk(false);
     Get.offAllNamed('/mainPage');
   }
 

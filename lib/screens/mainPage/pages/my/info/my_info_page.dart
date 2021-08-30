@@ -128,7 +128,7 @@ class MyInfoPage extends StatelessWidget {
             style: medium14TextStyle,
           ),
           const Spacer(),
-          Text(globalCtrl.userInfoModel.email, style: regular14TextStyle.copyWith(color: gray_999Color),)
+          Text(globalCtrl.userInfoModel?.email ?? '', style: regular14TextStyle.copyWith(color: gray_999Color),)
         ],
       ),
     ), );

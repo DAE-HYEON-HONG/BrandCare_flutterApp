@@ -21,6 +21,7 @@ import 'package:brandcare_mobile_flutter_v2/screens/auth/signupSocial_page.dart'
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signup_complete_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signup_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/main_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/notLoginUserPages/not_login_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/notLoginUserPages/useInfoPages/useInfoMain_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addCarePages/addCareEtc_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addCarePages/addCarePayment_page.dart';
@@ -64,6 +65,7 @@ final routes = [
   GetPage(name: '/auth/signupSocial', page: () => SignUpSocialPage(), binding: SignUpBinding()),
   GetPage(name: '/auth/find', page: () => FindAccountPage(), binding: FindAccountBinding()),
   GetPage(name: '/mainPage', page: () => MainPage(), binding: MainPageBinding()),
+  GetPage(name: '/notLoginPage', page: ()=> NotLoginPage()),
   GetPage(name: '/main/my/info', page: () => MyInfoPage()),
   GetPage(name: '/main/my/info/name', page: () => NameChangePage()),
   GetPage(name: '/main/my/info/password', page: () => PasswordChangePage()),

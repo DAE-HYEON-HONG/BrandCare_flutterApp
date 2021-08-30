@@ -9,15 +9,20 @@ class RouteContainerWidget extends StatelessWidget {
   final String title;
 
   final Map? arguments;
+  final bool isRoot;
 
   const RouteContainerWidget(
-      {Key? key, required this.route, required this.title, this.arguments})
+      {Key? key, required this.route, required this.title, this.arguments, this.isRoot=false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        if(isRoot){
+          Get.offAllNamed(route, arguments: arguments);
+          return;
+        }
         Get.toNamed(route, arguments: arguments);
       },
       behavior: HitTestBehavior.translucent,
