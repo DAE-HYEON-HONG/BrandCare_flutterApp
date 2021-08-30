@@ -78,11 +78,10 @@ class MyProvider{
   }
 
   Future<dynamic> changeNumber(String token, String number) async {
-    Map<String, dynamic> body = {
+    var body = jsonEncode({
       'phone' : number,
-    };
-    final bodyJson = jsonEncode(body);
-    var res = await _myApiService.changePassword(BaseApiService.authHeaders(token), bodyJson);
+    });
+    var res = await _myApiService.changeNumber(BaseApiService.authHeaders(token), body);
     if(res == null){
       return null;
     }else{

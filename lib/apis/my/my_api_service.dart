@@ -200,7 +200,7 @@ class MyApiService{
 
   Future<dynamic> changeUserProfile(dynamic headers, File profileImg)async{
     try{
-      final uri = Uri.parse("${BaseApiService.baseApi}/care");
+      final uri = Uri.parse("${BaseApiService.baseApi}/user/profile");
       var req = http.MultipartRequest('POST', uri);
       req.files.add(
         http.MultipartFile.fromBytes(
