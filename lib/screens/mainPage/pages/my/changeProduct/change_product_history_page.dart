@@ -1,3 +1,4 @@
+import 'package:brandcare_mobile_flutter_v2/apis/global_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/change_product_controller.dart';
@@ -6,6 +7,7 @@ import 'package:brandcare_mobile_flutter_v2/models/product/product_model.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/change_product_enum.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/genuine_box_widget.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -108,11 +110,20 @@ class ChangeProductHistoryPage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            Image.asset(
-              'assets/icons/sample_product.png',
-              width: 72,
-              height: 72,
-            ),
+            if(productModel != null &&
+                productModel.image != null)
+              ExtendedImage.network(GlobalApiService.getImage(
+                  productModel.image!),
+                width: 72,
+                height: 72,
+                cache: true,
+              )
+            else
+              Image.asset(
+                'assets/icons/sample_product.png',
+                width: 72,
+                height: 72,
+              ),
             const SizedBox(
               width: 32,
             ),

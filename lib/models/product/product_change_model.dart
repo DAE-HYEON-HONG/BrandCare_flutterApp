@@ -9,7 +9,7 @@ class ProductChangeModel {
   final String category;
   final String title;
   final String genuine;
-  final String image;
+  final String? image;
   final String? currentEmail;
   final String? beforeEmail;
 

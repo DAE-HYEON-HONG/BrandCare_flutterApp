@@ -1,3 +1,4 @@
+import 'package:brandcare_mobile_flutter_v2/apis/global_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/change_product_controller.dart';
@@ -7,6 +8,7 @@ import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_b
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/genuine_box_widget.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -65,7 +67,7 @@ class ChangeProductHistoryDetailPage extends StatelessWidget {
   }
   Widget _item() => GestureDetector(
     onTap: (){
-      Get.toNamed('/main/my/change_product/history/product/info');
+      Get.toNamed('/main/my/change_product/history/product/info', arguments: {'id': controller.historyOnceProductData!.id});
     },
     child: Container(
       height: 120,
@@ -77,7 +79,20 @@ class ChangeProductHistoryDetailPage extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Image.asset('assets/icons/sample_product.png', width: 72, height: 72,),
+          if(controller.historyOnceProductData != null &&
+              controller.historyOnceProductData!.image != null)
+            ExtendedImage.network(GlobalApiService.getImage(
+                controller.historyOnceProductData!.image!),
+              width: 72,
+              height: 72,
+              cache: true,
+            )
+          else
+            Image.asset(
+              'assets/icons/sample_product.png',
+              width: 72,
+              height: 72,
+            ),
           const SizedBox(width: 16,),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,

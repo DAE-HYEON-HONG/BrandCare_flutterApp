@@ -79,5 +79,12 @@ class ProductProvider {
     }
     return null;
   }
-
+  Future<Map<String, dynamic>?> getProductDetail(int id) async {
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    final res = await _productApiService.getProductDetail(token!, id);
+    if(res != null) {
+      return jsonDecode(res.body);
+    }
+    return null;
+  }
 }

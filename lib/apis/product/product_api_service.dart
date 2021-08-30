@@ -189,4 +189,20 @@ class ProductApiService {
     }
   }
 
+  getProductDetail(String token, int id) async {
+    late http.Response res;
+    try {
+      res = await http.get(Uri.parse('${BaseApiService.baseApi}/product/$id'),
+        headers: BaseApiService.authHeaders(token),
+      );
+      print(res.body);
+      if(res.statusCode == 200) {
+        return res;
+      }
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
+
 }
