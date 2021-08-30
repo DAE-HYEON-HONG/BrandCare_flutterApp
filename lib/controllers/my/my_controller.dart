@@ -73,6 +73,7 @@ class MyController extends BaseController {
         preferredCameraDevice: CameraDevice.rear,
       );
       profileImg.value = File(pickedFile!.path);
+      await changeProfileImg();
       update();
       Get.back();
     }catch(e){
@@ -100,6 +101,21 @@ class MyController extends BaseController {
     final res = await MyProvider().chkMyProfile(token!);
     if(res != null){
       myPageInfo(res);
+    }else{
+      Get.dialog(
+        CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    }
+  }
+
+  Future<void> changeProfileImg() async {
+    final String? token = await SharedTokenUtil.getToken('userLogin_token');
+    final res = await MyProvider().changeProfileImg(token!, profileImg.value);
+    if(res != null){
+      myInfo();
     }else{
       Get.dialog(
         CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
@@ -201,10 +217,12 @@ class MyController extends BaseController {
       final String? token = await SharedTokenUtil.getToken("userLogin_token");
       final res = await MyProvider().changeNumber(token!, phone.value);
       print(res.toString());
-      if(res != null){
+      if(res['data'] == "Y"){
+        globalCtrl.userInfoModel!.phNum = phone.value;
+        globalCtrl.update();
         myInfo();
-        Get.back();
         update();
+        Get.back();
       }else{
         Get.dialog(
           CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
