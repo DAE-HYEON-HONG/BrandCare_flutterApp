@@ -37,6 +37,7 @@ class MyProductController extends BaseController {
           })
       );
     }else{
+      print(res['list']);
       myProductList = (res['list'] as List).map((e) => MyProduct.fromJson(e)).toList();
       productListPaging = Paging.fromJson(res);
     }

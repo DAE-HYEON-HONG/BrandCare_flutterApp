@@ -10,8 +10,8 @@ UserInfoModel _$UserInfoModelFromJson(Map<String, dynamic> json) {
   return UserInfoModel(
     json['userId'] as int,
     json['email'] as String,
-    json['nickName'] as String? ?? 'nick_name',
-    json['phNum'] as String? ?? 'phone',
+    json['nick_name'] as String,
+    json['phone'] as String?,
     json['address'] == null
         ? null
         : AddressModel.fromJson(json['address'] as Map<String, dynamic>),
@@ -22,7 +22,7 @@ Map<String, dynamic> _$UserInfoModelToJson(UserInfoModel instance) =>
     <String, dynamic>{
       'userId': instance.userId,
       'email': instance.email,
-      'nickName': instance.nickName,
-      'phNum': instance.phNum,
+      'nick_name': instance.nickName,
+      'phone': instance.phNum,
       'address': instance.address,
     };

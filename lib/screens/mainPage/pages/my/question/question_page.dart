@@ -45,7 +45,9 @@ class QuestionPage extends GetView<QuestionController> {
 
                     }, itemCount: 15 + 1),
               ),
-              CustomButtonEmptyBackgroundWidget(title: '1:1 문의', onClick: (){}),
+              CustomButtonEmptyBackgroundWidget(title: '1:1 문의', onClick: (){
+                Get.offAndToNamed('/main/my/inquiry');
+              }),
             ],
           ),
         ));

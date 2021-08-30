@@ -11,8 +11,9 @@ class MyProduct {
   final String title;
   final String brand;
   final String category;
-  final String createdDate;
+  final String? createdDate;
   final String genuine;
+  @JsonKey(name: 'id')
   final int productId;
 
   MyProduct(

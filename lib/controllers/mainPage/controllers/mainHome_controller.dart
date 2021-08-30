@@ -17,8 +17,8 @@ class MainHomeController extends BaseController{
     update();
   }
 
-  void useInfo(){
-    Get.toNamed('/mainPage/useInfo/main');
+  void useInfo(int index){
+    Get.toNamed('/mainPage/useInfo/main', arguments: {'index': index});
   }
 
   @override

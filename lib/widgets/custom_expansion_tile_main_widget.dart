@@ -51,7 +51,7 @@ class _CustomExpansionTileMainState extends State<CustomExpansionTileMain> with 
               });
             },
             child: Container(
-              padding: const EdgeInsets.only(left:10, right:8),
+              // padding: const EdgeInsets.only(left:10, right:8),
               decoration: const BoxDecoration(
                 color: Color(0xffffffff),
               ),
@@ -62,7 +62,7 @@ class _CustomExpansionTileMainState extends State<CustomExpansionTileMain> with 
                   const Spacer(),
                   RotationTransition(
                     turns: Tween(begin: 0.0, end: 0.5).animate(_aniController),
-                    child: SvgPicture.asset('assets/icons/btn_up.svg', color: gray_666Color,),
+                    child: SvgPicture.asset('assets/icons/btn_up.svg', color: gray_999Color,),
                   ),
                 ],
               ),
@@ -80,6 +80,7 @@ class _CustomExpansionTileMainState extends State<CustomExpansionTileMain> with 
               ),
             ),
           ),
+          const SizedBox(height: 32,),
         ],
       ),
     );

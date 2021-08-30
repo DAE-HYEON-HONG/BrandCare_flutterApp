@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:io';
 
 class LoginPage extends GetView<LoginController> {
   const LoginPage({Key? key}) : super(key: key);
@@ -143,6 +144,7 @@ class LoginPage extends GetView<LoginController> {
                       ),
                     ),
                   ),
+                  if(Platform.isAndroid) const SizedBox(height: 64,)
                 ],
               ),
             ),

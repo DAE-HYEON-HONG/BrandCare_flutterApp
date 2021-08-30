@@ -216,7 +216,8 @@ class MainHomePage extends StatelessWidget {
                               ],
                             ),
                             child: Container(
-                              padding: const EdgeInsets.only(left:10, right:8, top: 20),
+                              // padding: const EdgeInsets.only(left:10, right:8, top: 20),
+                              padding: const EdgeInsets.only(top: 20),
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 color: Colors.transparent,
@@ -283,7 +284,7 @@ class MainHomePage extends StatelessWidget {
     return Expanded(
       child: InkWell(
         onTap: () {
-          controller.useInfo();
+          controller.useInfo(idx);
         },
         child: Column(
           mainAxisSize: MainAxisSize.max,

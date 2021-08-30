@@ -14,6 +14,7 @@ class UseInfoMainPage extends GetView<UseInfoMainController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.currentPageIdx.value = Get.arguments['index'] ?? 0;
     return Obx(() =>DefaultAppBarScaffold(
       title: controller.currentAppBarTitle.value,
       child: _body(),

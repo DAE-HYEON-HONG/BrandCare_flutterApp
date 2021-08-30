@@ -6,9 +6,9 @@ part 'userInfo_model.g.dart';
 class UserInfoModel {
   final int userId;
   final String email;
-  @JsonKey(defaultValue: 'nick_name')
+  @JsonKey(name: 'nick_name')
   final String nickName;
-  @JsonKey(defaultValue: 'phone')
+  @JsonKey(name: 'phone')
   final String? phNum;
   final AddressModel? address;
   UserInfoModel(this.userId, this.email, this.nickName, this.phNum, this.address);

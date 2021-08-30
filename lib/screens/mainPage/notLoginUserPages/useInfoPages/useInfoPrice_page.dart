@@ -5,6 +5,7 @@ import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UseInfoPricePage extends StatelessWidget {
   final UseInfoPriceController controller = Get.put(UseInfoPriceController());
@@ -64,10 +65,11 @@ class UseInfoPricePage extends StatelessWidget {
     return Obx(() => GestureDetector(
       onTap: () => controller.changeCurrentIdx(isSelected),
       child: Container(
-        width: 39,
-        height: 19,
+        width: 39.w,
+        height: 19.w,
+        // padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(19),
+          borderRadius: BorderRadius.circular(19.w),
           border: Border.all(
             color: isSelected != controller.currentIdx.value ? primaryColor : whiteColor,
           ),
@@ -274,7 +276,7 @@ class UseInfoPricePage extends StatelessWidget {
                   style: regular10TextStyle,
                 ),
                 const SizedBox(width: 22),
-                Text(NumberFormatUtil.convertNumberFormat(number: price), style: regular10TextStyle),
+                Text(price == 0 ? '' : NumberFormatUtil.convertNumberFormat(number: price), style: regular10TextStyle),
               ],
             ),
           ),
