@@ -1,3 +1,4 @@
+import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
@@ -5,6 +6,7 @@ import 'package:brandcare_mobile_flutter_v2/controllers/my/my_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/image_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/route_container_widget.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -72,9 +74,26 @@ class MyInfoPage extends StatelessWidget {
                 style: medium14TextStyle,
               ),
               const Spacer(),
+              myController.myProfileInfoModel.profileImg == null ?
               SvgPicture.asset(
                 'assets/icons/mypage_on.svg',
-              )
+              ):
+              ExtendedImage.network(
+                BaseApiService.imageApi+myController.myProfileInfoModel.profileImg!,
+                fit: BoxFit.cover,
+                cache: true,
+                // ignore: missing_return
+                loadStateChanged: (ExtendedImageState state) {
+                  switch(state.extendedImageLoadState) {
+                    case LoadState.loading :
+                      break;
+                    case LoadState.completed :
+                      break;
+                    case LoadState.failed :
+                      break;
+                  }
+                },
+              ),
             ],
           ),
         ),

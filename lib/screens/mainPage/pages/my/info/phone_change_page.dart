@@ -1,4 +1,5 @@
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/my_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_widget.dart';
@@ -13,6 +14,7 @@ class PhoneChangePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final myController = Get.find<MyController>();
+    final globalCtrl = Get.find<GlobalController>();
     myController.initMyController();
     final phoneController = TextEditingController();
     final codeController = TextEditingController();
@@ -32,6 +34,7 @@ class PhoneChangePage extends StatelessWidget {
                     readOnly: true,
                     isShowTitle: true,
                     title: '등록된 전화번호',
+                    hint: globalCtrl.userInfoModel!.phNum,
                   ),
                 ),
                 Padding(

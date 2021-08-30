@@ -9,7 +9,7 @@ class UserInfoModel {
   @JsonKey(name: 'nick_name')
   final String nickName;
   @JsonKey(name: 'phone')
-  final String? phNum;
+  late final String? phNum;
   final AddressModel? address;
   UserInfoModel(this.userId, this.email, this.nickName, this.phNum, this.address);
 
