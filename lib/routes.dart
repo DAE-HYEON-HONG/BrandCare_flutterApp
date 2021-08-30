@@ -31,6 +31,7 @@ import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addCarePages/
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addProductPages/addProductDescription_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addProductPages/addProductImgs_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/care/care_history_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/change_product_apply_change_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/change_product_apply_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/change_product_history_detail_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/change_product_history_page.dart';
@@ -95,6 +96,7 @@ final routes = [
   GetPage(name: '/main/my/change_product/history/detail', page: () => ChangeProductHistoryDetailPage()),
   GetPage(name: '/main/my/change_product/history/product/info', page: () => ProductInfoPage()),
   GetPage(name: '/main/my/change_product/apply', page: () => ChangeProductApplyPage()),
+  GetPage(name: '/main/my/change_product/apply/complete', page: () => ChangeProductApplyChangePage()),
 
   GetPage(name: '/mainPage/useInfo/main', page: () => UseInfoMainPage(), binding: UseInfoMainBinding()),
   GetPage(name: '/mainShop/addProduct', page: () => ShopAddProductPage(), binding: MainShopAddProductBinding()),

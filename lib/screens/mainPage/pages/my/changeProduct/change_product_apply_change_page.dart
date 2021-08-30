@@ -1,5 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/change_product_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
@@ -15,8 +16,10 @@ class ChangeProductApplyChangePage extends StatelessWidget {
   ChangeProductApplyChangePage({Key? key}) : super(key: key);
 
   final controller = Get.find<ChangeProductController>();
+  final globalController = Get.find<GlobalController>();
   late Widget customExpansionTile;
   late BuildContext context;
+
   @override
   Widget build(BuildContext context) {
     this.context = context;
@@ -35,16 +38,12 @@ class ChangeProductApplyChangePage extends StatelessWidget {
                 children: [
                   Text('나의 제품', style: medium14TextStyle,),
                   const SizedBox(height: 10,),
-                  // GetBuilder<ChangeProductController>(builder: (_){
-                  //   print('my product builder');
-                  //   return _my_product();
-                  // }),
                   _my_product(),
                   const SizedBox(height: 16,),
                   FormInputWidget(onChange: (value){}, onSubmit: (value){}, controller: TextEditingController(),
                     title: '현재 사용자 아이디(이메일)',
                     isShowTitle: true,
-                    hint: 'test01@test.com',
+                    hint: '${globalController.userInfoModel!.email}',
                     readOnly: true,
                   ),
                   const SizedBox(height: 16,),
@@ -60,6 +59,7 @@ class ChangeProductApplyChangePage extends StatelessWidget {
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: (){
+                      Get.back();
                       Get.back();
                     },
                     child: Row(
@@ -84,8 +84,12 @@ class ChangeProductApplyChangePage extends StatelessWidget {
             const SizedBox(height: 34,),
             CustomButtonEmptyBackgroundWidget(
               title: '확인 중',
-              onClick: (){
+              onClick: () async {
                 // Get.back();
+                if(await controller.cancel(controller.selectProductModel!.id)){
+                  Get.back();
+                  Get.snackbar('알림', '변경 요청이 취소되었습니다.', snackPosition: SnackPosition.BOTTOM);
+                }
               },
               radius: 0,
             ),
@@ -112,7 +116,7 @@ class ChangeProductApplyChangePage extends StatelessWidget {
   );
 
   Widget _title() => Container(
-    child:_titleItem(1),
+    child:_titleItem(),
     // child: Text('123'),
   );
 
@@ -131,7 +135,7 @@ class ChangeProductApplyChangePage extends StatelessWidget {
   Widget _item(int idx) => GestureDetector(
     behavior: HitTestBehavior.translucent,
     onTap: (){
-      controller.updateSelectIdx(idx);
+      // controller.updateSelectIdx(idx);
     },
     child: Container(
       padding: const EdgeInsets.only(left: 24, right: 48),
@@ -177,51 +181,51 @@ class ChangeProductApplyChangePage extends StatelessWidget {
     ),
   );
 
- Widget _titleItem(int idx) => GestureDetector(
-   behavior: HitTestBehavior.translucent,
-   onTap: (){
-     Get.toNamed('/main/my/change_product/history/product/info');
-   },
-   child: Container(
-     padding: const EdgeInsets.only(left: 24 - 16, right: 48 - 16),
-     height: 72,
-     child: Row(
-       children: [
-         Image.asset(
-           'assets/icons/sample_product.png',
-           width: 72,
-           height: 72,
-         ),
-         const SizedBox(
-           width: 16,
-         ),
-         Column(
-           crossAxisAlignment: CrossAxisAlignment.start,
-           mainAxisAlignment: MainAxisAlignment.start,
-           children: [
-             Row(
-               children: [
-                 Text(
-                   '루이비통 | 가방',
-                   style: regular12TextStyle.copyWith(color: gray_333Color),
-                 ),
-                 // const Spacer(),
-                 const SizedBox(width: 19),
-                 if(idx != 3)
-                   GenuineBoxWidget(isGenuine: idx.isEven),
-               ],
-             ),
-             const SizedBox(
-               height: 16,
-             ),
-             Text(
-               '나의 에쁜이$idx',
-               style: medium14TextStyle,
-             )
-           ],
-         )
-       ],
-     ),
-   ),
- );
+  Widget _titleItem() => GestureDetector(
+    behavior: HitTestBehavior.translucent,
+    onTap: (){
+      Get.toNamed('/main/my/change_product/history/product/info');
+    },
+    child: Container(
+      padding: const EdgeInsets.only(left: 24 - 16, right: 48 - 16),
+      height: 72,
+      child: Row(
+        children: [
+          Image.asset(
+            'assets/icons/sample_product.png',
+            width: 72,
+            height: 72,
+          ),
+          const SizedBox(
+            width: 16,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    '${controller.selectProductModel!.brand} | ${controller.selectProductModel!.category}',
+                    style: regular12TextStyle.copyWith(color: gray_333Color),
+                  ),
+                  // const Spacer(),
+                  const SizedBox(width: 19),
+                  GenuineBoxWidget(isGenuine: controller.selectProductModel!.genuine != 'UNCERTIFIED'),
+                ],
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Text(
+                '${controller.selectProductModel!.title}',
+                style: medium14TextStyle,
+                overflow: TextOverflow.ellipsis,
+              )
+            ],
+          )
+        ],
+      ),
+    ),
+  );
 }

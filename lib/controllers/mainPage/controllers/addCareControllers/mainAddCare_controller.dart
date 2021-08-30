@@ -55,9 +55,9 @@ class MainAddCareController extends BaseController {
   }
 
   void chkNormalAddress() {
-    if(globalCtrl.userInfoModel?.address!.city != "" &&
-        globalCtrl.userInfoModel?.address!.street != "" &&
-        globalCtrl.userInfoModel?.address!.zipCode != ""
+    if(globalCtrl.userInfoModel?.address?.city != "" &&
+        globalCtrl.userInfoModel?.address?.street != "" &&
+        globalCtrl.userInfoModel?.address?.zipCode != ""
     ){
       normalAddress.value = true;
       update();

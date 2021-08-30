@@ -1,6 +1,8 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/change_product_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/models/product/product_change_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/product/product_model.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/change_product_enum.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/genuine_box_widget.dart';
@@ -30,91 +32,119 @@ class ChangeProductHistoryPage extends StatelessWidget {
               ]),
             ),
             Flexible(
-              child: TabBarView(
-                controller: controller.tabController,
-                children: [
-                  ListView.separated(itemBuilder: (context, idx) => GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: (){
-                      Get.toNamed('/main/my/change_product/history/detail', arguments: {'type': ChangeProductEnum.REQUEST});
-                    },
-                      child: _item(idx)),
-                    separatorBuilder: (context, idx) => const Divider(thickness: 1,height: 0,),
-                    itemCount: 10,
+                child: TabBarView(
+              controller: controller.tabController,
+              children: [
+                GetBuilder<ChangeProductController>(
+                  builder: (_) => ListView.separated(
+                    itemBuilder: (context, idx) => GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          Get.toNamed('/main/my/change_product/history/detail',
+                              arguments: {'type': ChangeProductEnum.REQUEST, 'id': controller.sendProductChangeList[idx].id, 'status': 'SEND'});
+                        },
+                        child: _item(controller.sendProductChangeList[idx])),
+                    separatorBuilder: (context, idx) => const Divider(
+                      thickness: 1,
+                      height: 0,
+                    ),
+                    itemCount: controller.sendProductChangeList.length,
                     shrinkWrap: true,
                   ),
-                  ListView.separated(itemBuilder: (context, idx) => GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: (){
-                        Get.toNamed('/main/my/change_product/history/detail', arguments: {'type': ChangeProductEnum.RECEIVED});
-                      },
-                      child: _item(idx)),
-                    separatorBuilder: (context, idx) => const Divider(thickness: 1,height: 0,),
-                    itemCount: 10,
+                ),
+                GetBuilder<ChangeProductController>(
+                  builder: (_) => ListView.separated(
+                    itemBuilder: (context, idx) => GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          Get.toNamed('/main/my/change_product/history/detail',
+                              arguments: {'type': ChangeProductEnum.RECEIVED, 'id': controller.receiveProductChangeList[idx].id, 'status': 'RECEIVE'});
+                        },
+                        child: _item(controller.receiveProductChangeList[idx])),
+                    separatorBuilder: (context, idx) => const Divider(
+                      thickness: 1,
+                      height: 0,
+                    ),
+                    itemCount: controller.receiveProductChangeList.length,
                     shrinkWrap: true,
                   ),
-                  ListView.separated(itemBuilder: (context, idx) => GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: (){
-                        Get.toNamed('/main/my/change_product/history/detail', arguments: {'type': ChangeProductEnum.COMPLETE});
-                      },
-                      child: _item(idx)),
-                    separatorBuilder: (context, idx) => const Divider(thickness: 1,height: 0,),
-                    itemCount: 10,
+                ),
+                GetBuilder<ChangeProductController>(
+                  builder: (_) => ListView.separated(
+                    itemBuilder: (context, idx) => GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          Get.toNamed('/main/my/change_product/history/detail',
+                              arguments: {'type': ChangeProductEnum.COMPLETE, 'id': controller.completeProductChangeList[idx].id, 'status': 'COMPLETE'});
+                        },
+                        child: _item(controller.completeProductChangeList[idx])),
+                    separatorBuilder: (context, idx) => const Divider(
+                      thickness: 1,
+                      height: 0,
+                    ),
+                    itemCount: controller.completeProductChangeList.length,
                     shrinkWrap: true,
                   ),
-                  ListView.separated(itemBuilder: (context, idx) => _item(idx),
-                    separatorBuilder: (context, idx) => const Divider(thickness: 1,height: 0,),
-                    itemCount: 10,
+                ),
+                GetBuilder<ChangeProductController>(
+                  builder: (_) => ListView.separated(
+                    itemBuilder: (context, idx) =>
+                        _item(controller.cancelProductChangeList[idx]),
+                    separatorBuilder: (context, idx) => const Divider(
+                      thickness: 1,
+                      height: 0,
+                    ),
+                    itemCount: controller.cancelProductChangeList.length,
                     shrinkWrap: true,
                   ),
-                ],
-              )
-            ),
+                )
+              ],
+            )),
           ],
         ));
   }
 
-  Widget _item(int idx) => Container(
-    padding: const EdgeInsets.all(16),
-    child: Row(
-      children: [
-        Image.asset(
-          'assets/icons/sample_product.png',
-          width: 72,
-          height: 72,
-        ),
-        const SizedBox(
-          width: 32,
-        ),
-        Flexible(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
+  Widget _item(ProductChangeModel productModel) => Container(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Image.asset(
+              'assets/icons/sample_product.png',
+              width: 72,
+              height: 72,
+            ),
+            const SizedBox(
+              width: 32,
+            ),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
-                    '루이비통 | 가방',
-                    style: regular12TextStyle.copyWith(color: gray_333Color),
+                  Row(
+                    children: [
+                      Text(
+                        '${productModel.brand} | ${productModel.category}',
+                        style:
+                            regular12TextStyle.copyWith(color: gray_333Color),
+                      ),
+                      const Spacer(),
+                      GenuineBoxWidget(
+                          isGenuine: productModel.genuine != 'UNCERTIFIED'),
+                    ],
                   ),
-                  const Spacer(),
-                  if(idx != 3)
-                    GenuineBoxWidget(isGenuine: idx.isEven),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Text(
+                    '${productModel.title}',
+                    style: medium14TextStyle,
+                    overflow: TextOverflow.ellipsis,
+                  )
                 ],
               ),
-              const SizedBox(
-                height: 16,
-              ),
-              Text(
-                '나의 에쁜이$idx',
-                style: medium14TextStyle,
-              )
-            ],
-          ),
-        )
-      ],
-    ),
-  );
-
+            )
+          ],
+        ),
+      );
 }

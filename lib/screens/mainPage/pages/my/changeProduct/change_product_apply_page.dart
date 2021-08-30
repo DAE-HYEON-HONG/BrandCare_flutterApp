@@ -1,6 +1,8 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/change_product_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/models/product/product_model.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansion_tile_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
@@ -13,12 +15,14 @@ class ChangeProductApplyPage extends StatelessWidget {
  ChangeProductApplyPage({Key? key}) : super(key: key);
 
   final controller = Get.find<ChangeProductController>();
+  final globalController = Get.find<GlobalController>();
   late Widget customExpansionTile;
   late BuildContext context;
   @override
   Widget build(BuildContext context) {
     controller.selectIdx.value = -1;
     controller.userEmail.value = '';
+    controller.getMyProduct();
     this.context = context;
     return DefaultAppBarScaffold(
       title: '제품 사용자 변경',
@@ -43,7 +47,7 @@ class ChangeProductApplyPage extends StatelessWidget {
                     FormInputWidget(onChange: (value){}, onSubmit: (value){}, controller: TextEditingController(),
                       title: '현재 사용자 아이디(이메일)',
                       isShowTitle: true,
-                      hint: 'test01@test.com',
+                      hint: '${globalController.userInfoModel?.email}',
                       readOnly: true,
                     ),
                     const SizedBox(height: 16,),
@@ -54,6 +58,7 @@ class ChangeProductApplyPage extends StatelessWidget {
                       title: '변경할 사용자 아이디(이메일)',
                       isShowTitle: true,
                       hint: '변경할 사용자 아이디(이메일)를 입력해주세요.',
+                      textInputType: TextInputType.emailAddress,
                     ),
                     const SizedBox(height: 60,),
                   ],
@@ -93,8 +98,8 @@ class ChangeProductApplyPage extends StatelessWidget {
   );
 
   Widget _title() => Container(
-    child: controller.selectIdx == -1 ? Text('등록된 제품을 선택해주세요.', style: regular14TextStyle.copyWith(color: gray_999Color)):
-     _titleItem(1),
+    child: controller.selectProductModel == null ? Text('등록된 제품을 선택해주세요.', style: regular14TextStyle.copyWith(color: gray_999Color)):
+     _titleItem(),
     // child: Text('123'),
   );
 
@@ -103,28 +108,34 @@ class ChangeProductApplyPage extends StatelessWidget {
       maxHeight: 72 * 4 + 25,
     ),
     child: ListView.builder(
-      itemCount: 5,
+      itemCount: controller.myProductData.length,
       itemBuilder: (context, idx) => Padding(
       padding: EdgeInsets.only(bottom: 8.0, top: idx ==0 ? 18 : 0),
-      child: _item(idx),
+      child: _item(controller.myProductData[idx]),
     ), shrinkWrap: true,),
   );
 
-  Widget _item(int idx) => GestureDetector(
+  Widget _item(ProductModel data) => GestureDetector(
     behavior: HitTestBehavior.translucent,
     onTap: (){
-      controller.updateSelectIdx(idx);
+      controller.selectMyProduct(data);
     },
     child: Container(
       padding: const EdgeInsets.only(left: 24, right: 48),
       height: 72,
       child: Row(
         children: [
-          Image.asset(
-            'assets/icons/sample_product.png',
-            width: 72,
-            height: 72,
-          ),
+          if(data.thumbnail == null)
+            Image.asset(
+              'assets/icons/sample_product.png',
+              width: 72,
+              height: 72,
+            )
+          else
+            Container(
+                width: 72,
+              height: 72,
+            ),
           const SizedBox(
             width: 32,
           ),
@@ -136,20 +147,20 @@ class ChangeProductApplyPage extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '루이비통 | 가방',
+                      '${data.brand} | ${data.category}',
                       style: regular12TextStyle.copyWith(color: gray_333Color),
                     ),
                     const Spacer(),
-                    if(idx != 3)
-                      GenuineBoxWidget(isGenuine: idx.isEven),
+                    GenuineBoxWidget(isGenuine: data.genuine != 'UNCERTIFIED'),
                   ],
                 ),
                 const SizedBox(
                   height: 16,
                 ),
                 Text(
-                  '나의 에쁜이$idx',
+                  '${data.title}',
                   style: medium14TextStyle,
+                  overflow: TextOverflow.ellipsis,
                 )
               ],
             ),
@@ -159,7 +170,7 @@ class ChangeProductApplyPage extends StatelessWidget {
     ),
   );
 
- Widget _titleItem(int idx) => GestureDetector(
+ Widget _titleItem() => GestureDetector(
    behavior: HitTestBehavior.translucent,
    onTap: (){
      Get.toNamed('/main/my/change_product/history/product/info');
@@ -184,21 +195,21 @@ class ChangeProductApplyPage extends StatelessWidget {
              Row(
                children: [
                  Text(
-                   '루이비통 | 가방',
+                   '${controller.selectProductModel!.brand} | ${controller.selectProductModel!.category}',
                    style: regular12TextStyle.copyWith(color: gray_333Color),
                  ),
                  // const Spacer(),
                  const SizedBox(width: 19),
-                 if(idx != 3)
-                   GenuineBoxWidget(isGenuine: idx.isEven),
+                 GenuineBoxWidget(isGenuine: controller.selectProductModel!.genuine != 'UNCERTIFIED'),
                ],
              ),
              const SizedBox(
                height: 16,
              ),
              Text(
-               '나의 에쁜이$idx',
+               '${controller.selectProductModel!.title}',
                style: medium14TextStyle,
+               overflow: TextOverflow.ellipsis,
              )
            ],
          )
