@@ -67,6 +67,7 @@ class AuthApiService {
         headers: headers,
       );
       if(res.statusCode == 200){
+        print(res.body.toString());
         return res;
       }else{
         return null;

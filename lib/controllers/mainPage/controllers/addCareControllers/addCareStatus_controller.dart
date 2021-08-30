@@ -1,11 +1,15 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/models/careStatus_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/addCare/careStatus_model.dart';
+import 'package:brandcare_mobile_flutter_v2/providers/care_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addCarePages/addCareDetail_page.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:get/get.dart';
 
 class AddCareStatusController extends BaseController {
 
   RxBool fill = true.obs;
+  late CareStatusModel careStatus;
 
   List<Map<dynamic, dynamic>> careStatusJson = [
     {
@@ -58,8 +62,34 @@ class AddCareStatusController extends BaseController {
   void detail() {
     Get.to(AddCareDetailPage());
   }
+
+  Future<void> reqCareStatus() async {
+    try{
+      super.networkState.value = NetworkStateEnum.LOADING;
+      final String? token = await SharedTokenUtil.getToken("userLogin_token");
+      final res =  await CareProvider().careStatus(token!, Get.arguments);
+      if(res == null){
+        Get.dialog(
+            CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
+              Get.back();
+              update();
+            })
+        );
+      }else{
+        careStatus = res;
+        super.networkState.value = NetworkStateEnum.DONE;
+        update();
+      }
+    }catch(e){
+      print(e);
+      super.networkState.value = NetworkStateEnum.ERROR;
+    }
+  }
+
   @override
-  void onInit() {
+  void onInit() async{
+    await reqCareStatus();
     super.onInit();
   }
 }
+//${controller.careStatus.careProduct[0].category}

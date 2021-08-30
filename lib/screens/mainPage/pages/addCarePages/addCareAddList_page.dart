@@ -10,10 +10,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddCarePicPage extends GetView<AddCarePicController> {
+class AddCareAddListPage extends GetView<AddCarePicController> {
   @override
   Widget build(BuildContext context) {
-    controller.initInfo();
+    Future.delayed(Duration.zero, () async {
+      controller.initInfo();
+    });
     return DefaultAppBarScaffold(
       title: "케어/수선 신청",
       child: _renderBody(),
@@ -79,7 +81,7 @@ class AddCarePicPage extends GetView<AddCarePicController> {
             bottom: 0,
             child: CustomFormSubmit(
               title: "다음",
-              onTab: () => controller.nextLevel(),
+              onTab: () => controller.addList(),
               fill: controller.fill.value,
             ),
           )),

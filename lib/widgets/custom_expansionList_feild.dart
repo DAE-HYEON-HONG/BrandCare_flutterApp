@@ -1,26 +1,29 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:delayed_widget/delayed_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 
-class CustomExpansionListFeild extends StatefulWidget {
+class CustomExpansionListField extends StatefulWidget {
   String hintText;
   final Function onTap;
-  final List<String> items;
+  final List<Map<String, dynamic>> items;
   final ValueChanged<String> onChange;
-  CustomExpansionListFeild({
+  final ValueChanged<int> onPriceChange;
+  CustomExpansionListField({
     required this.onTap,
     required this.hintText,
     required this.items,
     required this.onChange,
+    required this.onPriceChange,
   });
   @override
-  _CustomExpansionListFeildState createState() => _CustomExpansionListFeildState();
+  _CustomExpansionListFieldState createState() => _CustomExpansionListFieldState();
 }
 
-class _CustomExpansionListFeildState extends State<CustomExpansionListFeild> with SingleTickerProviderStateMixin{
+class _CustomExpansionListFieldState extends State<CustomExpansionListField> with SingleTickerProviderStateMixin{
 
   late AnimationController _rotateCtrl;
   late Animation<double> _animation;
@@ -55,6 +58,10 @@ class _CustomExpansionListFeildState extends State<CustomExpansionListFeild> wit
     });
     widget.onChange(value);
     _handleTap();
+  }
+
+  void changePriceValue(int value){
+    widget.onPriceChange(value);
   }
 
   @override
@@ -118,18 +125,47 @@ class _CustomExpansionListFeildState extends State<CustomExpansionListFeild> wit
                     itemCount: widget.items.length,
                     itemBuilder: (context, idx) {
                       return GestureDetector(
-                        onTap: () => changeValue(widget.items[idx]),
+                        onTap: () {
+                          changeValue(widget.items[idx].keys.first);
+                          changePriceValue(widget.items[idx].values.first);
+                        },
                         child: Container(
                           width: double.infinity,
                           height: 40,
                           padding: EdgeInsets.only(left: 16, right: 16),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                widget.items[idx],
+                                widget.items[idx].keys.first,
                                 style: regular14TextStyle.copyWith(
                                     color: gray_999Color),
+                              ),
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      widget.items[idx].values.last == 1 ? "부위당" :
+                                      widget.items[idx].values.last == 0 ? "" :
+                                      int.tryParse(widget.items[idx].values.last) != null ?
+                                      NumberFormatUtil.convertNumberFormat(
+                                      number: int.parse(widget.items[idx].values.last)):
+                                      widget.items[idx].values.last,
+                                      style: regular14TextStyle.copyWith(
+                                          color: gray_999Color),
+                                    ),
+                                    const SizedBox(width: 22),
+                                    Text(
+                                      widget.items[idx].values.first != 0 ?
+                                      NumberFormatUtil.convertNumberFormat(number: widget.items[idx].values.first) :
+                                      "",
+                                      style: regular14TextStyle.copyWith(
+                                          color: gray_999Color),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),

@@ -9,11 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
-class AddCarePicPage extends GetView<AddCarePicController> {
+class AddCareModifiedPage extends GetView<AddCarePicController> {
+  final String category;
+  final String secondCategory;
+  final int idx;
+  final File img;
+  AddCareModifiedPage({required this.category, required this.secondCategory, required this.idx, required this.img});
+
   @override
   Widget build(BuildContext context) {
-    controller.initInfo();
+    controller.modifiedInit(img, category, secondCategory);
     return DefaultAppBarScaffold(
       title: "케어/수선 신청",
       child: _renderBody(),
@@ -55,7 +62,7 @@ class AddCarePicPage extends GetView<AddCarePicController> {
                   const SizedBox(height: 9),
                   CustomExpansionListField(
                       onTap: () => controller.chkFill(),
-                      hintText: "1. 카테고리를 선택하세요.(가방, 지갑, 신발)",
+                      hintText: "$category",
                       items: controller.careList,
                       onChange: (value) => controller.firstCategory(value),
                       onPriceChange: (value) {},
@@ -63,7 +70,7 @@ class AddCarePicPage extends GetView<AddCarePicController> {
                   const SizedBox(height: 8),
                   Obx(() => CustomExpansionListField(
                     onTap: () => controller.chkFill(),
-                    hintText: "2. 케어/수선 항목을 선택하세요.",
+                    hintText: "$secondCategory",
                     items: controller.checkType(controller.firstCareCategory.value),
                     onChange: (value) => controller.secondCategory(value),
                     onPriceChange: (value) => controller.choicePrice(value),
@@ -78,8 +85,8 @@ class AddCarePicPage extends GetView<AddCarePicController> {
             right: 0,
             bottom: 0,
             child: CustomFormSubmit(
-              title: "다음",
-              onTab: () => controller.nextLevel(),
+              title: "수정",
+              onTab: () => controller.modifiedList(idx),
               fill: controller.fill.value,
             ),
           )),
@@ -108,7 +115,7 @@ class AddCarePicPage extends GetView<AddCarePicController> {
                 ),
                 const SizedBox(height: 13),
                 Text(
-                  "이미지 추가",
+                  "이미지를 수정 시 눌러주세요.",
                   style: medium14TextStyle.copyWith(color: gray_333Color),
                 ),
               ],

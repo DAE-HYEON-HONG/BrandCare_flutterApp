@@ -9,10 +9,8 @@ class CustomChkAddress extends StatelessWidget {
   final String address;
   final String detail;
   final bool isChecked;
-  final Function onTap;
 
   CustomChkAddress({
-    required this.onTap,
     required this.title,
     required this.postCode,
     required this.address,

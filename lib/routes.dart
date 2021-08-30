@@ -91,5 +91,5 @@ final routes = [
   GetPage(name: '/mainAddCare/add/pics', page: () => AddCarePicPage(), binding: MainAddCareBinding()),
   GetPage(name: '/mainAddCare/add/etc', page: () => AddCareEtcPage(), binding: MainAddCareBinding()),
   GetPage(name: '/mainAddCare/add/payment', page: () => AddCarePaymentPage(), binding: MainAddCareBinding()),
-  GetPage(name: '/mainAddCare/add/status', page: () => AddCareStatusPage(), binding: MainAddCareBinding()),
+  GetPage(name: '/mainAddCare/add/status', page: () => AddCareStatusPage(), binding: CareStatusBinding()),
 ];

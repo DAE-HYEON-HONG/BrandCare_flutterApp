@@ -1,7 +1,9 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/mainAddCare_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_chk_address.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_otherTitle_widget.dart';
@@ -16,11 +18,12 @@ class MainAddCarePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    controller.initSettings();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: _appBar(),
-        body: _renderBody(),
+        body: _renderBody(context),
       ),
     );
   }
@@ -44,7 +47,7 @@ class MainAddCarePage extends StatelessWidget {
     );
   }
 
-  _renderBody(){
+  _renderBody(BuildContext context){
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -70,78 +73,25 @@ class MainAddCarePage extends StatelessWidget {
                     hint: "이름을 입력해주세요.",
                   ),
                   const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: FormInputWidget(
-                          onChange: (value) {
-                            controller.senderPhTxt.value = controller.senderPhNum.text;
-                          },
-                          onSubmit: (value) {},
-                          controller: controller.senderPhNum,
-                          isShowTitle: true,
-                          title: "전화번호",
-                          hint: "전화번호를 입력하세요.",
-                          textInputType: TextInputType.number,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Obx(() => _authBtn(
-                        onTap: () async  => await controller.smsAuth(),
-                        fill: controller.senderPhNumFill.value,
-                        title: '인증번호 받기',
-                      )),
-                    ],
-                  ),
+                  _itemPhoneInput(),
                   const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                  Obx(() => _itemAuthNumber(context)),
+                  const SizedBox(height: 24),
+                  Obx(() => Column(
                     children: [
-                      Expanded(
-                        child: FormInputTitleWidget(
-                          onChange: (value) {},
-                          onSubmit: (value) {},
-                          controller: controller.senderName,
-                          isShowTitle: true,
-                          title: Row(
-                            children: [
-                              Text(
-                                "인증번호",
-                                style: regular14TextStyle,
-                              ),
-                              const SizedBox(width: 16),
-                              Text(
-                                "3:00",
-                                style: regular14TextStyle.copyWith(color: redColor),
-                              ),
-                            ],
-                          ),
-                          hint: "전화번호를 입력하세요.",
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        width: 120,
-                        child: CustomButtonEmptyBackgroundWidget(
-                          title: '인증확인',
-                          onClick: () => controller.smsAuthChk(),
-                          radius: 5,
+                      if(controller.normalAddress.value)
+                      GestureDetector(
+                        onTap: () => controller.senderNormalAddressSet(),
+                        child: CustomChkAddress(
+                          title: '기본주소로 입력 하시겠습니까?',
+                          postCode: controller.globalCtrl.userInfoModel.address!.zipCode,
+                          address: controller.globalCtrl.userInfoModel.address!.city,
+                          detail: controller.globalCtrl.userInfoModel.address!.street,
+                          isChecked: controller.senderNormalAddress.value,
                         ),
                       ),
                     ],
-                  ),
-                  const SizedBox(height: 24),
-                  CustomChkAddress(
-                    onTap: (){},
-                    title: '기본주소로 입력 하시겠습니까?',
-                    postCode: '10587',
-                    address: "경기도 고양시 덕양구 덕수천 1로 삼송마을 18단지",
-                    detail: "1807동 1101호",
-                    isChecked: false,
-                  ),
+                  )),
                   const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -176,22 +126,24 @@ class MainAddCarePage extends StatelessWidget {
                     hint: "주소를 입력하세요.",
                   ),
                   const SizedBox(height: 8),
-                  FormInputWidget(
-                    onChange: (value) => controller.senderPostSaveChk(),
+                  Obx(() => FormInputWidget(
+                    readOnly: controller.senderNormalAddress.value,
+                    onChange: (value) {
+                      controller.senderAddressDetail.value = controller.senderAddressDetailCtrl.text;
+                    },
                     onSubmit: (value) => controller.senderPostSaveChk(),
-                    controller: controller.senderAddressDetail,
+                    controller: controller.senderAddressDetailCtrl,
                     hint: "나머지 주소를 입력해주세요.",
-                  ),
+                  )),
                   const SizedBox(height: 8),
                   Obx(() => Container(
-                    child: controller.saveSenderPost.value ?
+                    child: controller.senderPostSet.value ?
                     CustomChkAddress(
-                      onTap: (){},
                       title: '위 주소를 마이페이지에 등록하시겠습니까?',
                       postCode: controller.senderPostCode.text,
                       address: controller.senderAddress.text,
-                      detail: controller.senderAddressDetail.text,
-                      isChecked: false,
+                      detail: controller.senderAddressDetail.value,
+                      isChecked: controller.senderPostSet.value,
                     ):
                     Container(),
                   )),
@@ -211,17 +163,20 @@ class MainAddCarePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("받는 분", style: medium14TextStyle),
-                        Row(
-                          children: [
-                            SvgPicture.asset(
-                              controller.samePost.value ?
-                              "assets/icons/check_on.svg" : "assets/icons/check_off.svg",
-                              height: 20,
-                            ),
-                            const SizedBox(width: 2),
-                            Text("보내는 분과 동일", style: medium14TextStyle),
-                          ],
-                        ),
+                        Obx(() => GestureDetector(
+                          onTap: () => controller.receiverSamePost(),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                controller.samePost.value ?
+                                "assets/icons/check_on.svg" : "assets/icons/check_off.svg",
+                                height: 20,
+                              ),
+                              const SizedBox(width: 2),
+                              Text("보내는 분과 동일", style: medium14TextStyle),
+                            ],
+                          ),
+                        )),
                       ],
                     ),
                     hint: "이름을 입력해주세요.",
@@ -230,21 +185,33 @@ class MainAddCarePage extends StatelessWidget {
                   FormInputWidget(
                     onChange: (value) {},
                     onSubmit: (value) {},
-                    controller: controller.senderName,
+                    controller: controller.receiverPhNum,
                     isShowTitle: true,
                     title: "전화번호",
                     hint: "전화번호를 입력하세요.",
                     textInputType: TextInputType.number,
                   ),
                   const SizedBox(height: 24),
-                  CustomChkAddress(
-                    onTap: (){},
-                    title: '기본주소로 입력 하시겠습니까?',
-                    postCode: '10587',
-                    address: "경기도 고양시 덕양구 덕수천 1로 삼송마을 18단지",
-                    detail: "1807동 1101호",
-                    isChecked: false,
-                  ),
+                  Obx(() => Column(
+                    children: [
+                      controller.samePost.value ? Container():
+                      Column(
+                        children: [
+                          if(controller.normalAddress.value)
+                            GestureDetector(
+                              onTap: () => controller.senderNormalAddressSet(),
+                              child: CustomChkAddress(
+                                title: '기본주소로 입력 하시겠습니까?',
+                                postCode: controller.globalCtrl.userInfoModel.address!.zipCode,
+                                address: controller.globalCtrl.userInfoModel.address!.city,
+                                detail: controller.globalCtrl.userInfoModel.address!.street,
+                                isChecked: controller.receiverNormalAddress.value,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
+                  )),
                   const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -279,22 +246,22 @@ class MainAddCarePage extends StatelessWidget {
                     hint: "주소를 입력하세요.",
                   ),
                   const SizedBox(height: 8),
-                  FormInputWidget(
+                  Obx(() => FormInputWidget(
+                    readOnly: controller.senderNormalAddress.value,
                     onChange: (value) => controller.senderPostSaveChk(),
                     onSubmit: (value) => controller.senderPostSaveChk(),
-                    controller: controller.receiverAddressDetail,
+                    controller: controller.receiverAddressDetailCtrl,
                     hint: "나머지 주소를 입력해주세요.",
-                  ),
+                  )),
                   const SizedBox(height: 8),
                   Obx(() => Container(
-                    child: controller.saveReceiverPost.value ?
+                    child: controller.receiverPostSet.value ?
                     CustomChkAddress(
-                      onTap: (){},
                       title: '위 주소를 마이페이지에 등록하시겠습니까?',
                       postCode: controller.receiverPostCode.text,
                       address: controller.receiverAddress.text,
-                      detail: controller.receiverAddressDetail.text,
-                      isChecked: controller.saveReceiverPostChk.value,
+                      detail: controller.receiverAddressDetail.value,
+                      isChecked: controller.receiverPostSet.value,
                     ):
                     Container(),
                   )),
@@ -303,21 +270,25 @@ class MainAddCarePage extends StatelessWidget {
               const SizedBox(height: 16),
               Text("택배 반송 주소", style: regular14TextStyle),
               const SizedBox(height: 9),
-              Row(
+              Obx(() => Row(
                 children: [
-                  _postSendChoiceBtn(
-                    onTap: () {},
-                    fill: false,
-                    title: "보내는 분",
+                  GestureDetector(
+                    onTap: () => controller.changeReturnPost("sender"),
+                    child: _postSendChoiceBtn(
+                      fill: controller.returnSender.value,
+                      title: "보내는 분",
+                    ),
                   ),
                   const SizedBox(width: 47),
-                  _postSendChoiceBtn(
-                    onTap: () {},
-                    fill: true,
-                    title: "받는 분",
+                  GestureDetector(
+                    onTap: () => controller.changeReturnPost("receiver"),
+                    child: _postSendChoiceBtn(
+                      fill: controller.returnReceiver.value,
+                      title: "받는 분",
+                    ),
                   ),
                 ],
-              ),
+              )),
               const SizedBox(height: 25),
               CustomFormSubmit(
                 title: "다음",
@@ -332,7 +303,7 @@ class MainAddCarePage extends StatelessWidget {
     );
   }
 
-  _postSendChoiceBtn({required Function onTap, required bool fill, required String title}){
+  _postSendChoiceBtn({required bool fill, required String title}){
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -354,18 +325,19 @@ class MainAddCarePage extends StatelessWidget {
   _searchPost({required Function onTap, required bool search, required String title, required String type}){
     return GestureDetector(
       onTap: () {
-        if(search){
-          print("실행됨");
-          Get.to(KpostalView(
-            callback: (Kpostal result){
-              if (type == "sender"){
-                controller.changeSenderPost(result.postCode, result.address);
-              }else{
-                controller.changeReceiverPost(result.postCode, result.address);
-              }
-              onTap();
-            },
-          ));
+        if(!controller.senderNormalAddress.value || controller.samePost.value || !controller.receiverNormalAddress.value){
+          if(search){
+            Get.to(KpostalView(
+              callback: (Kpostal result){
+                if (type == "sender"){
+                  controller.changeSenderPost(result.postCode, result.address);
+                }else{
+                  controller.changeReceiverPost(result.postCode, result.address);
+                }
+                onTap();
+              },
+            ));
+          }
         }
       },
       child: Container(
@@ -384,23 +356,139 @@ class MainAddCarePage extends StatelessWidget {
     );
   }
 
-  _authBtn({required Function onTap, required bool fill, required String title}){
-    return GestureDetector(
-      onTap: () => onTap(),
-      child: Container(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 13, bottom: 13),
-        decoration: BoxDecoration(
-          color: fill ? primaryColor : whiteColor,
-          border: Border.all(color: fill ? primaryColor : gray_999Color),
-          borderRadius: BorderRadius.circular(4),
+  Widget _itemPhoneInput() => Container(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+            margin: const EdgeInsets.only(bottom: 8),
+            child: Text(
+              '전화번호',
+              style: medium14TextStyle,
+            )),
+        Row(
+
+          children: [
+            Flexible(
+              flex: 3,
+              child: TextFormField(
+                readOnly: controller.phoneChecked.value ? true : false,
+                controller: controller.senderPhNum,
+                style: regular12TextStyle,
+                keyboardType: TextInputType.phone,
+                onChanged: (value) {
+                  controller.senderPhTxt.value = controller.senderPhNum.text;
+                },
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(15),
+                  hintText: '전화번호를 입력하세요.',
+                  hintStyle:
+                  regular12TextStyle.copyWith(color: gray_999Color),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4),
+                    borderSide: BorderSide(color: Color(0xffD5D7DB)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4),
+                    borderSide: BorderSide(color: primaryColor),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            Obx(() => AnimatedContainer(
+              duration: Duration(milliseconds: 500),
+              width: ((!controller.phoneChecked.value ? 2 : 0 ) * (Get.width - 32)) / ((!controller.phoneChecked.value ? 2:0) + 3),
+              child: CustomButtonOnOffWidget(
+                title: '인증번호 받기',
+                onClick: () => controller.smsAuth(),
+                isOn: controller.senderPhNumFill.value,
+              ),
+            )),
+          ],
         ),
-        child: Text(
-          title,
-          style: regular14TextStyle.copyWith(
-            color: fill ? whiteColor : gray_999Color,
-          ),
-        ),
+      ],
+    ),
+  );
+
+  Widget _itemAuthNumber(BuildContext context) => Container(
+    child: controller.phoneChecked.value
+        ? Container(
+      width: double.infinity,
+      child: Text(
+        '인증되었습니다.',
+        style: medium14TextStyle.copyWith(color: Color(0xff169F00)),
+        textAlign: TextAlign.start,
       ),
-    );
-  }
+    )
+        : Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Container(
+                margin: const EdgeInsets.only(right: 16),
+                child: Text(
+                  '인증번호',
+                  style: medium14TextStyle,
+                )),
+            Obx(() => Text(
+              '${DateFormatUtil.convertTimer(timer: controller.smsTime.value)}',
+              style: medium14TextStyle.copyWith(color: redColor),
+            ))
+          ],
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Row(
+          children: [
+            Flexible(
+              flex: 2,
+              child: TextFormField(
+                controller: controller.authNum,
+                style: regular12TextStyle,
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  controller.authNumTxt.value = value;
+                },
+                decoration: InputDecoration(
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(15),
+                  hintText: '인증번호를 입력하세요',
+                  hintStyle: regular12TextStyle.copyWith(
+                      color: gray_999Color),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4),
+                    borderSide: BorderSide(color: Color(0xffD5D7DB)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4),
+                    borderSide: BorderSide(color: primaryColor),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 8,
+            ),
+            Flexible(
+                flex: 1,
+                child: Obx(() => CustomButtonOnOffWidget(
+                    title: '인증확인',
+                    onClick: () {
+                      controller.smsAuthChk();
+                      FocusScope.of(context).unfocus();
+                    },
+                    isOn: controller.authNumFill.value)))
+          ],
+        ),
+      ],
+    ),
+  );
 }

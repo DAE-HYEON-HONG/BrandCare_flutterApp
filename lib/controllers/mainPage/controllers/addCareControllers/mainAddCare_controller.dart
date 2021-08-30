@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
@@ -6,6 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MainAddCareController extends BaseController {
+
+  final globalCtrl = Get.find<GlobalController>();
+
+  Rx<int> smsTime = 180.obs;
+  RxBool normalAddress = false.obs;
 
   TextEditingController senderName = TextEditingController();
   TextEditingController senderPhNum = TextEditingController();
@@ -19,9 +27,11 @@ class MainAddCareController extends BaseController {
 
   TextEditingController senderPostCode = TextEditingController();
   TextEditingController senderAddress = TextEditingController();
-  TextEditingController senderAddressDetail = TextEditingController();
-  RxBool saveSenderPost = false.obs;
+  TextEditingController senderAddressDetailCtrl = TextEditingController();
+  RxString senderAddressDetail = "".obs;
+  RxBool senderNormalAddress = false.obs;
   RxBool saveSenderPostChk = false.obs;
+  RxBool senderPostSet = false.obs;
 
   TextEditingController receiverName = TextEditingController();
   TextEditingController receiverPhNum = TextEditingController();
@@ -29,12 +39,33 @@ class MainAddCareController extends BaseController {
   RxBool samePost = false.obs;
   TextEditingController receiverPostCode = TextEditingController();
   TextEditingController receiverAddress = TextEditingController();
-  TextEditingController receiverAddressDetail = TextEditingController();
-  RxBool saveReceiverPost = false.obs;
+  TextEditingController receiverAddressDetailCtrl = TextEditingController();
+  RxString receiverAddressDetail = "".obs;
+  RxBool receiverNormalAddress = false.obs;
   RxBool saveReceiverPostChk = false.obs;
+  RxBool receiverPostSet = false.obs;
 
-  // RxString senderPostCode = "10587".obs;
-  // RxString senderAddress = "경기도 고양시 덕양구 덕수천 1로 37".obs;
+  RxBool returnSender = true.obs;
+  RxBool returnReceiver = false.obs;
+
+
+
+  void initSettings() {
+    chkNormalAddress();
+  }
+
+  void chkNormalAddress() {
+    if(globalCtrl.userInfoModel.address!.city != "" &&
+        globalCtrl.userInfoModel.address!.street != "" &&
+        globalCtrl.userInfoModel.address!.zipCode != ""
+    ){
+      normalAddress.value = true;
+      update();
+    }else {
+      normalAddress.value = false;
+      update();
+    }
+  }
 
   Future<void> smsAuth() async {
     if(senderPhTxt.value == ""){
@@ -54,6 +85,7 @@ class MainAddCareController extends BaseController {
           }),
         );
       }else{
+        checkSmsAuthTimer();
         phAuth = res['data'];
         update();
       }
@@ -75,6 +107,28 @@ class MainAddCareController extends BaseController {
     update();
   }
 
+  checkSmsAuthTimer(){
+    // Duration defaultDuration = Duration(minutes: 3);
+    smsTime.value = 180;
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      smsTime.value--;
+      if(smsTime.value == 0){
+        timer.cancel();
+      }
+    });
+  }
+
+  void senderNormalAddressSet() {
+    senderNormalAddress.value = !senderNormalAddress.value;
+    if(senderNormalAddress.value){
+      senderPostCode.text = globalCtrl.userInfoModel.address!.zipCode;
+      senderAddress.text = globalCtrl.userInfoModel.address!.city;
+      senderAddressDetail.value = globalCtrl.userInfoModel.address!.street;
+      senderAddressDetailCtrl.text = globalCtrl.userInfoModel.address!.street;
+    }
+    update();
+  }
+
   void changeSenderPost(String postCode, String address){
     senderPostCode.text = postCode;
     senderAddress.text = address;
@@ -82,25 +136,51 @@ class MainAddCareController extends BaseController {
   }
 
   void senderPostSaveChk(){
-    if (senderPostCode.text != ""
-        || senderAddress.text != ""
-        || senderAddressDetail.text != ""){
-      saveSenderPost.value = true;
-      update();
-    }else{
-      saveSenderPost.value = false;
-      update();
+    if(!senderNormalAddress.value) {
+      if (senderPostCode.text != ""
+          || senderAddress.text != ""
+          || senderAddressDetail.value != "") {
+        senderPostSet.value = true;
+        update();
+      } else {
+        senderPostSet.value = false;
+        update();
+      }
     }
+  }
+
+  void receiverSamePost() {
+    samePost.value = !samePost.value;
+    if(samePost.value){
+      receiverName.text = senderName.text;
+      receiverPhNum.text = senderPhNum.text;
+      receiverPostCode.text = senderPostCode.text;
+      receiverAddress.text = senderAddress.text;
+      receiverAddressDetailCtrl.text = senderAddressDetailCtrl.text;
+      receiverAddressDetail.value = senderAddressDetail.value;
+    }
+    update();
+  }
+
+  void receiverNormalAddressSet() {
+    receiverNormalAddress.value = !receiverNormalAddress.value;
+    if(receiverNormalAddress.value){
+      senderPostCode.text = globalCtrl.userInfoModel.address!.zipCode;
+      senderAddress.text = globalCtrl.userInfoModel.address!.city;
+      senderAddressDetail.value = globalCtrl.userInfoModel.address!.street;
+      senderAddressDetailCtrl.text = globalCtrl.userInfoModel.address!.street;
+    }
+    update();
   }
 
   void receiverPostSaveChk(){
     if (receiverPostCode.text != ""
         || receiverAddress.text != ""
-        || receiverAddressDetail.text != ""){
-      saveReceiverPost.value = true;
+        || receiverAddressDetail.value != ""){
+      saveReceiverPostChk.value = true;
       update();
     }else{
-      saveReceiverPost.value = false;
+      saveReceiverPostChk.value = false;
       update();
     }
   }
@@ -111,15 +191,113 @@ class MainAddCareController extends BaseController {
     update();
   }
 
+  void changeReturnPost(String person){
+    if(person == "sender"){
+      returnSender.value = true;
+      returnReceiver.value = false;
+    }else{
+      returnSender.value = false;
+      returnReceiver.value = true;
+    }
+    update();
+  }
+
+
+
   void nextLevel(){
-    Get.toNamed('/mainAddCare/add/pics');
+    if(senderName.text.isEmpty){
+      Get.dialog(
+        CustomDialogWidget(content: '보내는 분의 이름이 없습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    }else if(senderPhNum.text.isEmpty){
+      Get.dialog(
+        CustomDialogWidget(content: '보내는 분의 전화번호가 없습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    }else if(phoneChecked.value == false){
+      Get.dialog(
+        CustomDialogWidget(content: '인증번호가 확인되지 않았습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    }else if(senderPostCode.text.isEmpty){
+      Get.dialog(
+        CustomDialogWidget(content: '보내는 분의 주소가 올바르지 않습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    }else if(senderAddress.text.isEmpty){
+      Get.dialog(
+        CustomDialogWidget(content: '보내는 분의 주소가 올바르지 않습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    }else if(senderAddressDetailCtrl.text.isEmpty){
+      Get.dialog(
+        CustomDialogWidget(content: '보내는 분의 주소가 올바르지 않습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    }else if(receiverName.text.isEmpty){
+      Get.dialog(
+        CustomDialogWidget(content: '받는 분의 이름이 없습니다..', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    }else if(receiverPhNum.text.isEmpty){
+      Get.dialog(
+        CustomDialogWidget(content: '받는 분의 전화번호가 없습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    }else if(receiverPostCode.text.isEmpty){
+      Get.dialog(
+        CustomDialogWidget(content: '받는 분의 주소가 올바르지 않습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    }else if(receiverAddress.text.isEmpty){
+      Get.dialog(
+        CustomDialogWidget(content: '받는 분의 주소가 올바르지 않습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    }else if(receiverAddressDetailCtrl.text.isEmpty){
+      Get.dialog(
+        CustomDialogWidget(content: '받는 분의 주소가 올바르지 않습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    }else{
+      Get.toNamed('/mainAddCare/add/pics');
+    }
   }
 
   @override
   void onInit() {
     super.onInit();
+    chkNormalAddress();
     debounce(senderPhTxt, (_) {
       senderPhNumFill.value = RegexUtil.checkPhoneRegex(phone: senderPhTxt.value);
+    });
+    debounce(authNumTxt, (_) {
+      print('autCode txt = $authNumTxt');
+      authNumFill.value = RegexUtil.checkSMSCodeRegex(code: authNumTxt.value);
+      print('isAuthCode = ${authNumFill.value}');
     });
   }
 }

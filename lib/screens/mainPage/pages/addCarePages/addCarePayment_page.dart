@@ -1,6 +1,9 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/addCareEtc_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/addCarePayment_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/mainAddCare_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +11,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class AddCarePaymentPage extends GetView<AddCarePaymentController> {
+  final addCareMainCtrl = Get.find<MainAddCareController>();
+  final addCareEtcCtrl = Get.find<AddCareEtcController>();
   @override
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(
@@ -37,6 +42,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                   ),
                   const SizedBox(height: 9),
                   Container(
+                    width: double.infinity,
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: gray_D5D7DBColor,
@@ -48,11 +54,11 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('하현수', style: regular14TextStyle),
+                        Text(addCareMainCtrl.senderName.text, style: regular14TextStyle),
                         const SizedBox(height: 2),
-                        Text('010-1234-5678', style: regular14TextStyle),
+                        Text(addCareMainCtrl.senderPhNum.text, style: regular14TextStyle),
                         const SizedBox(height: 2),
-                        Text(controller.testAddress, style: regular14TextStyle),
+                        Text('${addCareMainCtrl.senderAddress.text} ${addCareMainCtrl.senderAddressDetail.value}', style: regular14TextStyle),
                       ],
                     ),
                   ),
@@ -64,6 +70,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                   ),
                   const SizedBox(height: 9),
                   Container(
+                    width: double.infinity,
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: gray_D5D7DBColor,
@@ -75,11 +82,11 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('하현수', style: regular14TextStyle),
+                        Text(addCareMainCtrl.receiverName.text, style: regular14TextStyle),
                         const SizedBox(height: 2),
-                        Text('010-1234-5678', style: regular14TextStyle),
+                        Text(addCareMainCtrl.receiverPhNum.text, style: regular14TextStyle),
                         const SizedBox(height: 2),
-                        Text(controller.testAddress, style: regular14TextStyle),
+                        Text('${addCareMainCtrl.receiverAddress.text} ${addCareMainCtrl.receiverAddressDetail.value}', style: regular14TextStyle),
                       ],
                     ),
                   ),
@@ -104,9 +111,9 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        _backPost(true, "보내는 분"),
+                        _backPost(addCareMainCtrl.returnSender.value, "보내는 분"),
                         const SizedBox(width: 47),
-                        _backPost(false, "받는 분")
+                        _backPost(addCareMainCtrl.returnReceiver.value, "받는 분")
                       ],
                     ),
                   ),
@@ -132,28 +139,36 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 18),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '1. 가방',
-                                style: medium14TextStyle,
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: addCareEtcCtrl.addCareList!.length,
+                            itemBuilder: (context, idx){
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '2. 끈길이 줄임',
+                                    '1. ${addCareEtcCtrl.addCareList![idx].category}',
                                     style: medium14TextStyle,
                                   ),
-                                  Text(
-                                    '+ 25,000원',
-                                    style: medium14TextStyle,
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '2. ${addCareEtcCtrl.addCareList![idx].secondCategory}',
+                                        style: medium14TextStyle,
+                                      ),
+                                      Text(
+                                        '+ ${NumberFormatUtil.convertNumberFormat(number: addCareEtcCtrl.addCareList![idx].price)}원',
+                                        style: medium14TextStyle,
+                                      ),
+                                    ],
                                   ),
+                                  const SizedBox(height: 10),
                                 ],
-                              ),
-                            ],
+                              );
+                            },
                           ),
                         ),
                         Container(
@@ -167,7 +182,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '1개 선택됨',
+                                '${addCareEtcCtrl.addCareList!.length}개 선택됨',
                                 style: medium14TextStyle,
                               ),
                               Row(
@@ -179,7 +194,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                                   ),
                                   const SizedBox(width: 27),
                                   Text(
-                                    '25,000원',
+                                    '${NumberFormatUtil.convertNumberFormat(number: controller.addPrices())}원',
                                     style: medium16TextStyle.copyWith(color: redColor),
                                   ),
                                 ],
@@ -231,20 +246,57 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                '1. 가방',
-                                style: medium14TextStyle,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '케어/수선 신청',
+                                    style: medium14TextStyle,
+                                  ),
+                                  Text(
+                                    '+ ${NumberFormatUtil.convertNumberFormat(number: controller.addPrices())}원',
+                                    style: medium14TextStyle,
+                                  ),
+                                ],
                               ),
                               const SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    '2. 끈길이 줄임',
+                                    '배송비',
                                     style: medium14TextStyle,
                                   ),
                                   Text(
-                                    '+ 25,000원',
+                                    '+ 3,000원',
+                                    style: medium14TextStyle,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '쿠폰',
+                                    style: medium14TextStyle,
+                                  ),
+                                  Text(
+                                    '- ${NumberFormatUtil.convertNumberFormat(number: controller.couponDiscount.value)}원',
+                                    style: medium14TextStyle,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '포인트 사용',
+                                    style: medium14TextStyle,
+                                  ),
+                                  Text(
+                                    '- ${NumberFormatUtil.convertNumberFormat(number: controller.pointDiscount.value)}원',
                                     style: medium14TextStyle,
                                   ),
                                 ],
@@ -267,7 +319,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                                 style: medium14TextStyle,
                               ),
                               Text(
-                                '25,000원',
+                                '${NumberFormatUtil.convertNumberFormat(number: controller.allPrice())}원',
                                 style: medium16TextStyle.copyWith(color: redColor),
                               ),
                             ],

@@ -1,17 +1,65 @@
+import 'dart:convert';
+import 'package:brandcare_mobile_flutter_v2/models/addCare/addCareList_model.dart';
 import 'package:http/http.dart' as http;
-
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:http_parser/http_parser.dart';
 import '../base_api_service.dart';
 
 class CareApiService{
-  Future<http.Response?> addCare(dynamic headers, dynamic body)async{
+  Future<http.StreamedResponse?> addCare(dynamic headers, dynamic body, List<AddCareListModel> list)async{
     try{
-      final uri = Uri.parse("${BaseApiService.baseApi}/inquiry");
-      final http.Response res = await http.post(
+      final uri = Uri.parse("${BaseApiService.baseApi}/care");
+      var req = http.MultipartRequest('POST', uri);
+      req.files.add(
+        http.MultipartFile.fromBytes(
+          'json',
+          utf8.encode(body),
+          contentType: MediaType(
+            'application',
+            'json',
+            {'charset': 'utf-8'},
+          ),
+        ),
+      );
+      for(var file in list) {
+        List<int> imageData = file.picture.readAsBytesSync();
+        req.files.add(
+          http.MultipartFile.fromBytes(
+            'images',
+            imageData,
+            filename: file.picture.path.split("/").last,
+          ),
+        );
+      }
+      req.headers.addAll(headers);
+      http.StreamedResponse res = await req.send();
+      print(await res.stream.bytesToString());
+      if(res.statusCode == 200){
+        return res;
+      }else{
+       return null;
+      }
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> careStatus(dynamic headers, int id) async{
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/care/$id");
+      final http.Response res = await http.get(
         uri,
         headers: headers,
-        body: body,
       );
-      return res;
+      print(res.body.toString());
+      if(res.statusCode == 200){
+        return res;
+      }else{
+        return null;
+      }
     }catch(e){
       print("접속 에러 : ${e.toString()}");
       return null;

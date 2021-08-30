@@ -4,10 +4,8 @@ import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/add
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
-import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class AddCareStatusPage extends GetView<AddCareStatusController> {
@@ -19,7 +17,8 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
         child: _renderBody(),
         isLeadingShow: false,
       ),
-      onWillPop: () => Future(() => false),
+      //onWillPop: () => Future(() => false),
+      onWillPop: () => Future(() => true),
     );
   }
 
@@ -39,7 +38,7 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                   const SizedBox(height: 32),
                   _productInfo(
                     imgPath: 'imgPath',
-                    title: "끈길이 조절 외 n건",
+                    title: " 외 n건",
                     type: "케어/수선 신청",
                     clock: DateFormatUtil.convertOnlyTime(date: "2021-06-02T17:11:59.040906"),
                     date: DateFormatUtil.convertOnlyDate(date: "2021-06-02T17:11:59.040906"),

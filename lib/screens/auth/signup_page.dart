@@ -152,34 +152,23 @@ class SignUpPage extends GetView<SignUpController> {
                 const SizedBox(
                   width: 8,
                 ),
-              Obx(
-                    () => AnimatedContainer(
+              Obx(() => AnimatedContainer(
                   duration: Duration(milliseconds: 500),
-                  width: ((!controller.authCode.value ? 2 : 0 ) *
-                      (Get.width - 32)) / ((!controller.authCode.value ? 2:0) + 3),
+                  width: ((!controller.authCode.value ? 2 : 0 ) * (Get.width - 32)) / ((!controller.authCode.value ? 2:0) + 3),
                   child: CustomButtonOnOffWidget(
-                      title: '인증번호 받기',
-                      onClick: () {
-                        controller.sendSms();
-                      },
-                      isOn: controller.isPhone.value),
-                ),
-              ),
-                // Flexible(
-                //     flex: 2,
-                //     child: Obx(() => CustomButtonOnOffWidget(
-                //         title: '인증번호 받기',
-                //         onClick: () {
-                //           controller.sendSms();
-                //         },
-                //         isOn: controller.isPhone.value)))
+                    title: '인증번호 받기',
+                    onClick: () => controller.sendSms(),
+                    isOn: controller.isPhone.value,
+                  ),
+                )),
               ],
             ),
           ],
         ),
       );
 
-  Widget _itemAuthNumber() => Container(
+  Widget
+  _itemAuthNumber() => Container(
         child: controller.authCode.value
             ? Container(
                 width: double.infinity,
