@@ -125,6 +125,7 @@ class ShopAddProductPage extends GetView<ShopAddProductController> {
                       onChange: (value) {},
                       onSubmit: (value) => controller.chkField(),
                       controller: controller.priceCtrl,
+                      textInputType: TextInputType.numberWithOptions(signed: false, decimal: false),
                       hint: "가격",
                     ),
                     const SizedBox(height: 12),

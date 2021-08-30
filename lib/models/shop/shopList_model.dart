@@ -8,8 +8,8 @@ class ShopListModel {
   late String category;
   late String createdDate;
   late String gi;
-  late String image;
-  late String price;
+  late String? image;
+  late int price;
   late int shopId;
   late String title;
 

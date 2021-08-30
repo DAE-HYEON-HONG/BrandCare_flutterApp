@@ -1,5 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopListController/mainShopListInst_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopListController/mainShopListMine_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/shop_list_widget.dart';
@@ -17,7 +18,8 @@ class MainShopListInstPage extends StatelessWidget {
         scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
-            ListView.separated(
+            GetBuilder<MainShopListMineController>(builder: (_) => ListView.separated(
+              controller: controller.pagingScroll,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               padding: const EdgeInsets.only(left: 16, right: 16),
@@ -27,19 +29,20 @@ class MainShopListInstPage extends StatelessWidget {
                   color: gray_f5f6f7Color,
                 );
               },
-              itemCount: 50,
+              itemCount: controller.shopList!.length,
               itemBuilder: (context, idx){
                 return ShopListWidget(
-                  title: "샤넬백 짝퉁 채널백 60사이즈",
-                  imageUrl: "",
-                  brandName: "샤넬짝퉁 채널",
-                  category: "가방",
-                  genuine: false,
-                  money: NumberFormatUtil.convertNumberFormat(number: 100000),
-                  date: DateFormatUtil.convertDateTimeFormat(date: "2021-06-02T17:11:59.040906"),
+                  title: controller.shopList![idx].title,
+                  imageUrl: controller.shopList![idx].image == null ? "" : controller.shopList![idx].image!,
+                  brandName: controller.shopList![idx].brand,
+                  category: controller.shopList![idx].category,
+                  genuine: controller.shopList![idx].gi == "UNCERTIFIED" ? false : true,
+                  money: NumberFormatUtil.convertNumberFormat(number: controller.shopList![idx].price),
+                  date: DateFormatUtil.convertDateTimeFormat(date: controller.shopList![idx].createdDate),
+                  productIdx: controller.shopList![idx].shopId,
                 );
               },
-            ),
+            )),
             Padding(
               padding: const EdgeInsets.only(right: 16, left: 16),
               child: const Divider(

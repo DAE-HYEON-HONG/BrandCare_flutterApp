@@ -110,6 +110,7 @@ class MainShopPage extends StatelessWidget{
                           Flexible(
                             flex: 2,
                             child: TextFormField(
+                              controller: controller.searchWord,
                               style: regular12TextStyle.copyWith(color: gray_999Color),
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -124,7 +125,7 @@ class MainShopPage extends StatelessWidget{
                           Flexible(
                             flex: 1,
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () => controller.reqSearchWord(),
                               child: SvgPicture.asset(
                                 "assets/icons/search.svg",
                                 height: 30,

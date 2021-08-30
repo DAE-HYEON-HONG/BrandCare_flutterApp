@@ -37,8 +37,6 @@ class AddCarePaymentController extends BaseController {
           content: '요청사항과 신청 항목의 금액으로 주문이 접수 되오니 정확하게 신청해 주시기 바랍니다.\n만약, 첨부사진과 신청항목이 다를 경우 주문이 취소되오니 이점 참고하여 주시기 바랍니다.',
           onClick: () async{
             await uploadAddCare();
-            //testSuccess();
-            //update();
           },
           onCancelClick: () {
             Get.back();
@@ -58,9 +56,9 @@ class AddCarePaymentController extends BaseController {
       "zipCode" : addCareMainCtrl.senderPostCode.text,
     };
     Map<String, String> returnAddress = {
-      "city" : addCareMainCtrl.receiverAddress.text,
-      "street" : addCareMainCtrl.receiverAddressDetail.value,
-      "zipCode" : addCareMainCtrl.receiverPostCode.text,
+      "returnCity" : addCareMainCtrl.receiverAddress.text,
+      "returnStreet" : addCareMainCtrl.receiverAddressDetail.value,
+      "returnZipCode" : addCareMainCtrl.receiverPostCode.text,
     };
     final res = await CareProvider().addCare(
       address: addressBody,
@@ -73,7 +71,7 @@ class AddCarePaymentController extends BaseController {
       senderName: addCareMainCtrl.senderName.text,
       usePointAmount: pointDiscount.value,
       couponId: null,
-      returnType: addCareMainCtrl.returnReceiver.value ? "receiver" : "sender",
+      returnType: addCareMainCtrl.returnReceiver.value ? "RECEIVER" : "SENDER",
     );
     if(res == null){
       Get.dialog(

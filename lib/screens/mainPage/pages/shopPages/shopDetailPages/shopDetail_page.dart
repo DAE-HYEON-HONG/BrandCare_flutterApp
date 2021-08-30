@@ -33,31 +33,31 @@ class ShopDetailPage extends GetView<ShopDetailController> {
             child: Column(
               children: [
                 //배너
-                Stack(
+                GetBuilder<ShopDetailController>(builder: (_) => Stack(
                   children: [
                     CarouselSlider(
                       carouselController: controller.slideCtrlBtn,
                       options: CarouselOptions(
-                          height: 240,
-                          aspectRatio: 16/9,
-                          initialPage: 0,
-                          enableInfiniteScroll: true,
-                          autoPlay: true,
-                          reverse: false,
-                          autoPlayInterval: Duration(seconds: 5),
-                          autoPlayCurve: Curves.fastOutSlowIn,
-                          scrollDirection: Axis.horizontal,
-                          viewportFraction: 1,
-                          onPageChanged: (index, reason) => controller.pageChanged(index),
+                        height: 240,
+                        aspectRatio: 16/9,
+                        initialPage: 0,
+                        enableInfiniteScroll: true,
+                        autoPlay: true,
+                        reverse: false,
+                        autoPlayInterval: Duration(seconds: 5),
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        scrollDirection: Axis.horizontal,
+                        viewportFraction: 1,
+                        onPageChanged: (index, reason) => controller.pageChanged(index),
                       ),
-                      items: (controller.testBanner).map((e) {
+                      items: (controller.model.images).map((e) {
                         return Builder(
                           builder: (context){
                             return Container(
                               width: double.infinity,
                               height: 360,
                               child: ExtendedImage.network(
-                                e,
+                                e.path,
                                 fit: BoxFit.cover,
                                 cache: true,
                                 // ignore: missing_return
@@ -96,7 +96,7 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                               ),
                               child: Obx(() => Center(
                                 child: Text(
-                                  "${controller.pageNum.value+1}/${controller.testBanner.length}",
+                                  "${controller.pageNum.value+1}/${controller.model.images.length}",
                                   style: regular12TextStyle.copyWith(color: whiteColor),
                                 ),
                               )),
@@ -111,9 +111,9 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                       left: 15,
                       child: InkWell(
                         onTap: () => controller.slideCtrlBtn.previousPage(
-                            duration: Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          ),
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        ),
                         child: Container(
                           height: double.infinity,
                           width: 25,
@@ -136,9 +136,9 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                       right: 15,
                       child: InkWell(
                         onTap: () => controller.slideCtrlBtn.nextPage(
-                            duration: Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          ),
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        ),
                         child: Container(
                           height: double.infinity,
                           width: 25,
@@ -155,10 +155,10 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                     Positioned(
                       right: 15,
                       top: 15,
-                      child: GenuineLogo(genuine: true),
+                      child: GenuineLogo(genuine: controller.model.gi == "UNCERTIFIED" ? false : true),
                     ),
                   ],
-                ),
+                )),
                 Padding(
                   padding: const EdgeInsets.only(left: 16, right: 16),
                   child: Column(
@@ -178,28 +178,28 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                           ),
                         ),
                         title: Text(
-                            "ㄹㅃㅃ"
+                          controller.model.nickName,
                         ),
                       ),
                       const Divider(color: gray_f5f6f7Color, height: 1),
                       const SizedBox(height: 24),
                       Text(
-                        "루이비통 뮬 채널백",
+                        controller.model.title,
                         style: medium16TextStyle,
                       ),
                       const SizedBox(height: 8),
                       Row(
                         children: <Widget>[
-                          Text("루이비통", style: regular12TextStyle.copyWith(color: gray_999Color)),
+                          Text(controller.model.brand, style: regular12TextStyle.copyWith(color: gray_999Color)),
                           const SizedBox(width: 8),
                           VerticalDivider(width: 1, color: Color(0xff999999)),
                           const SizedBox(width: 8),
-                          Text("가방", style: regular12TextStyle.copyWith(color: gray_999Color)),
+                          Text(controller.model.category, style: regular12TextStyle.copyWith(color: gray_999Color)),
                           const SizedBox(width: 8),
                           VerticalDivider(width: 1, color: Color(0xff999999)),
                           const SizedBox(width: 8),
                           Text(
-                            DateFormatUtil.convertDateTimeFormat(date: "2021-06-02T17:11:59.040906"),
+                            DateFormatUtil.convertDateTimeFormat(date: controller.model.createdDate),
                             style: regular12TextStyle.copyWith(color: gray_999Color),
                           ),
                         ],
@@ -211,7 +211,7 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                           minHeight: 189,
                         ),
                         child: Text(
-                          'adfadgadgasdgasdgasdgasdsdgsasadfasdsgsdgasgsgasgdasgasgdsgdgssg',
+                          controller.model.nickName,
                           maxLines: 60,
                           style: regular14TextStyle.copyWith(color: gray_333Color),
                         ),
@@ -240,8 +240,8 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Obx(() => CustomLikeBtn(
-                    isLiked: controller.isLiked.value,
+                  GetBuilder<ShopDetailController>(builder: (_) => CustomLikeBtn(
+                    isLiked: controller.model.hasLike,
                     onTap: () => controller.changeIsLiked(),
                   )),
                 ],

@@ -13,6 +13,7 @@ class ShopListWidget extends StatelessWidget {
   final bool genuine;
   final String money;
   final String date;
+  final int productIdx;
 
   const ShopListWidget({
     Key? key,
@@ -23,12 +24,13 @@ class ShopListWidget extends StatelessWidget {
     required this.genuine,
     required this.money,
     required this.date,
+    required this.productIdx,
   }) :super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.toNamed('/mainShop/Detail'),
+      onTap: () => Get.toNamed('/mainShop/Detail', arguments: this.productIdx),
       child: Container(
         width: double.infinity,
         height: 146,
