@@ -44,7 +44,7 @@ class CareProvider{
     if(res == null) {
       return null;
     }else {
-      Map<String, dynamic> json = jsonDecode(await res.stream.bytesToString());
+      Map<String, dynamic> json = jsonDecode(res.toString());
       return json;
     }
   }

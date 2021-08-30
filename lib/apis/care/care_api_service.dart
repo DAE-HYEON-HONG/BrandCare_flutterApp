@@ -8,7 +8,7 @@ import 'package:http_parser/http_parser.dart';
 import '../base_api_service.dart';
 
 class CareApiService{
-  Future<http.StreamedResponse?> addCare(dynamic headers, dynamic body, List<AddCareListModel> list)async{
+  Future<dynamic> addCare(dynamic headers, dynamic body, List<AddCareListModel> list)async{
     try{
       final uri = Uri.parse("${BaseApiService.baseApi}/care");
       var req = http.MultipartRequest('POST', uri);
@@ -35,9 +35,9 @@ class CareApiService{
       }
       req.headers.addAll(headers);
       http.StreamedResponse res = await req.send();
-      print(await res.stream.bytesToString());
+      final resReturn = await res.stream.bytesToString();
       if(res.statusCode == 200){
-        return res;
+        return resReturn;
       }else{
        return null;
       }
