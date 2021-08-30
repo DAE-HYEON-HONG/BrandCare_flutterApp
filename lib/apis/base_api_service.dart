@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 class BaseApiService {
   static String baseApi = "http://192.168.100.216:6005/api/brc";
+  static String imageApi = "http://192.168.100.216:6005/api/brc/image?path=";
   static Map<String, String> headers = {
     'Content-Type' : 'application/json',
   };

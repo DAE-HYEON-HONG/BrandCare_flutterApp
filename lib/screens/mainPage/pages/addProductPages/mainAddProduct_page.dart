@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/AddProductControllers/mainAddProduct_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/Custom_expansionList_feild.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansion_field.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
@@ -63,19 +64,19 @@ class MainAddProductPage extends StatelessWidget {
                 hint: "제품명을 입력하세요.(제품 애칭)",
               ),
               const SizedBox(height: 16),
-              CustomExpansionFeild(
-                controller: controller.categoryCtrl,
-                placeholder: "카테고리를 선택해주세요.",
-                onTap: () {},
-                readMode: true,
-              ),
-              const SizedBox(height: 16),
-              CustomExpansionFeild(
-                controller: controller.brandCtrl,
-                placeholder: "브랜드명을 선택해주세요.",
-                onTap: () {},
-                readMode: true,
-              ),
+              // CustomExpansionListField(
+              //   onTap: () {},
+              //   hintText: "카테고리를 선택해주세요.",
+              //   items: items,
+              //   onChange: (value) {},
+              // ),
+              // const SizedBox(height: 16),
+              // CustomExpansionListField(
+              //   onTap: () {},
+              //   hintText: "브랜드명을 선택해주세요.",
+              //   items: items,
+              //   onChange: (value) {},
+              // ),
               const SizedBox(height: 16),
               FormInputWidget(
                 onChange: (value) => controller.nextBtnFill(),

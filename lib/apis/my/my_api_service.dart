@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 
 import '../base_api_service.dart';
@@ -190,6 +192,31 @@ class MyApiService{
         body: body,
       );
       return res;
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<dynamic> changeUserProfile(dynamic headers, File profileImg)async{
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/care");
+      var req = http.MultipartRequest('POST', uri);
+      req.files.add(
+        http.MultipartFile.fromBytes(
+          'image',
+          profileImg.readAsBytesSync(),
+          filename: profileImg.path.split("/").last,
+        ),
+      );
+      req.headers.addAll(headers);
+      http.StreamedResponse res = await req.send();
+      final resReturn = await res.stream.bytesToString();
+      if(res.statusCode == 200){
+        return resReturn;
+      }else{
+        return null;
+      }
     }catch(e){
       print("접속 에러 : ${e.toString()}");
       return null;
