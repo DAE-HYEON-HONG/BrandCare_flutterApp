@@ -58,7 +58,7 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                               width: double.infinity,
                               height: 360,
                               child: ExtendedImage.network(
-                                BaseApiService.imageApi+e.path,
+                                BaseApiService.imageApi+e.path!,
                                 fit: BoxFit.cover,
                                 cache: true,
                                 // ignore: missing_return

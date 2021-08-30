@@ -5,15 +5,15 @@ part 'careStatus_model.g.dart';
 
 @JsonSerializable()
 class CareStatusModel {
-  late List<CareProductInfoModel> careProduct;
-  late String careProductCategory;
-  late String createdDate;
-  late int id;
-  late CarePersonInfoModel receiver;
-  late String request_term;
-  late String returnType;
-  late CarePersonInfoModel sender;
-  late String status;
+  List<CareProductInfoModel> careProduct;
+  String careProductCategory;
+  String createdDate;
+  int id;
+  CarePersonInfoModel receiver;
+  String request_term;
+  String returnType;
+  CarePersonInfoModel sender;
+  String status;
 
   CareStatusModel(
       this.careProduct,

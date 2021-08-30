@@ -1,4 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/models/categoryList_model.dart';
+import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,22 @@ class MainAddProductController extends BaseController {
   TextEditingController connectBuyCtrl = TextEditingController();
 
   RxBool nextBtn = false.obs;
+  late int brandCategoryIdx = 999;
+  late int categoryIdx = 999;
+
+  List<CategoryListModel>? brandList = <CategoryListModel>[];
+
+  List<CategoryListModel>? categoryList = <CategoryListModel>[];
+
+  void changeBrandCategory(int idx){
+    brandCategoryIdx = idx;
+    update();
+  }
+
+  void changeCategory(int idx){
+    categoryIdx = idx;
+    update();
+  }
 
   void customDialogShow({required String title, required BuildContext context}){
     showDialog(context: context, builder: (_) {
@@ -28,7 +46,15 @@ class MainAddProductController extends BaseController {
   }
 
   void nextBtnFill(){
-    if (titleCtrl.text == "" || serialCtrl.text == "" || sinceBuyCtrl.text == "" || priceCtrl.text == "" || connectBuyCtrl.text == ""){
+    if (
+        titleCtrl.text == "" ||
+        serialCtrl.text == "" ||
+        sinceBuyCtrl.text == "" ||
+        priceCtrl.text == "" ||
+        connectBuyCtrl.text == "" ||
+        categoryIdx == 999 ||
+        brandCategoryIdx == 999
+    ){
       nextBtn.value = false;
       update();
     }else {
@@ -44,8 +70,22 @@ class MainAddProductController extends BaseController {
     }
   }
 
+  Future<void> reqBrandCategory() async{
+    final res = await ProductProvider().brandNameList();
+    brandList = (res['data'] as List).map((e) => CategoryListModel.fromJson(e)).toList();
+    update();
+  }
+
+  Future<void> reqCategory() async {
+    final res = await ProductProvider().categoryNameList();
+    categoryList = (res['data'] as List).map((e) => CategoryListModel.fromJson(e)).toList();
+    update();
+  }
+
   @override
-  void onInit() {
+  void onInit() async {
+    await reqCategory();
+    await reqBrandCategory();
     super.onInit();
   }
 }

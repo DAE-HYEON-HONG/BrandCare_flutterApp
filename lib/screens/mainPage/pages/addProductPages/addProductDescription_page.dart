@@ -127,7 +127,7 @@ class AddProductDescriptionPage extends GetView<AddProductDescriptionController>
             bottom: 0,
             child: Obx(() => CustomFormSubmit(
               title: "확인",
-              onTab: () {},
+              onTab: () async => await controller.uploadAddProduct(),
               fill: controller.fill.value,
             )),
           )

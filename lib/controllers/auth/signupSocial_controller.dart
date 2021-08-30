@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
@@ -6,6 +8,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class SignUpSocialController extends BaseController {
+
+  Rx<int> smsTime = 180.obs;
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -14,6 +19,7 @@ class SignUpSocialController extends BaseController {
 
   Rx<bool> sendPhoneCode = false.obs;
   Rx<bool> authCode = false.obs;
+  RxString authNumTxt = "".obs;
 
   Rx<bool> agree = false.obs;
   Rx<bool> privacyAgree = false.obs;
@@ -142,6 +148,62 @@ class SignUpSocialController extends BaseController {
 
   bool get allAgree => agree.value && privacyAgree.value;
 
+  String phAuth = "";
+  Future<void> smsAuth() async {
+    if(phoneTxt.value == ""){
+      Get.dialog(
+        CustomDialogWidget(content: '전화번호가 입력되지 않았습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    }else{
+      final res = await AuthProvider().smsAuth(phoneTxt.value);
+      if(res == null){
+        Get.dialog(
+          CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          }),
+        );
+      }else{
+        checkSmsAuthTimer();
+        phAuth = res['data'];
+        update();
+      }
+    }
+  }
+
+  void smsAuthChk() {
+    if(phAuth == authNumberController.text){
+      phoneChecked = true;
+      isPhone.value = true;
+      update();
+    }else{
+      Get.dialog(
+        CustomDialogWidget(content: '인증번호가 올바르지 않습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+      phoneChecked = false;
+      isPhone.value = false;
+      update();
+    }
+    update();
+  }
+
+  checkSmsAuthTimer(){
+    // Duration defaultDuration = Duration(minutes: 3);
+    smsTime.value = 180;
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      smsTime.value--;
+      if(smsTime.value == 0){
+        timer.cancel();
+      }
+    });
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -154,6 +216,11 @@ class SignUpSocialController extends BaseController {
     });
     debounce(phoneTxt, (_) {
       isPhone.value = RegexUtil.checkPhoneRegex(phone: phoneTxt.value);
+    });
+    debounce(authNumTxt, (_) {
+      print('autCode txt = $authNumTxt');
+      authCode.value = RegexUtil.checkSMSCodeRegex(code: authNumTxt.value);
+      print('isAuthCode = ${authCode.value}');
     });
   }
 }

@@ -1,5 +1,7 @@
-import 'dart:io';
+import 'package:json_annotation/json_annotation.dart';
+part 'addProduct_model.g.dart';
 
+@JsonSerializable()
 class AddProductModel {
   late String title;
   late int categoryId;
@@ -25,4 +27,7 @@ class AddProductModel {
     required this.conditionId,
     required this.additionId,
   });
+
+  factory AddProductModel.fromJson(Map<String, dynamic> json) => _$AddProductModelFromJson(json);
+  Map<String, dynamic> toJson() => _$AddProductModelToJson(this);
 }

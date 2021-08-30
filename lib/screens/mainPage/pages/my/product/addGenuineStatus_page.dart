@@ -1,18 +1,16 @@
-import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/addCareStatus_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuineStatus_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
-import 'package:brandcare_mobile_flutter_v2/utils/status_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class AddCareStatusPage extends GetView<AddCareStatusController> {
+class AddGenuineStatusPage extends StatelessWidget {
+  AddGenuineStatusController controller = Get.put(AddGenuineStatusController());
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -27,7 +25,7 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
   }
 
   _renderBody(){
-    return GetBuilder<AddCareStatusController>(builder: (_) =>Container(
+    return Container(
       width: double.infinity,
       height: double.infinity,
       child: Stack(
@@ -41,11 +39,11 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                 children: [
                   const SizedBox(height: 32),
                   _productInfo(
-                    imgPath: "${_.careStatus?.careProduct[0].image}",
-                    title: "${_.careStatus?.careProduct[0].category} 외 ${_.careStatus?.careProduct.length}건",
-                    type: StatusUtil.statusChk(status: "${_.careStatus?.status}"),
-                    clock: DateFormatUtil.convertOnlyTime(date: "${_.careStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
-                    date: DateFormatUtil.convertOnlyDate(date: "${_.careStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
+                    imgPath: 'imgPath',
+                    title: " 외 n건",
+                    type: "케어/수선 신청",
+                    clock: DateFormatUtil.convertOnlyTime(date: "2021-06-02T17:11:59.040906"),
+                    date: DateFormatUtil.convertOnlyDate(date: "2021-06-02T17:11:59.040906"),
                   ),
                   const SizedBox(height: 24),
                   ListView.builder(
@@ -53,7 +51,7 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, idx){
-                      return _status(
+                     return _status(
                         title: controller.careStatusJson[idx]['statusType'],
                         date: DateFormatUtil.convertOnlyDate(date: controller.careStatusJson[idx]['date']),
                         time: DateFormatUtil.convertOnlyTime(date: controller.careStatusJson[idx]['time']),
@@ -72,64 +70,46 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                   const SizedBox(height: 24),
                   Text('물품명', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField('${_.careStatus?.careProduct[0].category} 외 ${_.careStatus?.careProduct.length}건'),
+                  _inputField('끈길이 조절 외 n건'),
                   const SizedBox(height: 24),
                   Text('케어항목', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: _.careStatus?.careProduct.length,
-                    itemBuilder: (context, idx){
-                      return _inputField("${_.careStatus?.careProduct[idx].category}");
-                    },
-                  ),
+                  _inputField('가방 - 끈길이 조절/ 가방 - 끈길이 조절'),
                   const SizedBox(height: 24),
                   Text('택배 반송 주소', style: medium14TextStyle),
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      _backPost(_.careStatus?.returnType == "SENDER" ? true : false, "보내는 분"),
+                      _backPost(true, "보내는 분"),
                       const SizedBox(width: 47),
-                      _backPost(_.careStatus?.returnType != "SENDER" ? true : false, "받는 분"),
+                      _backPost(false, "받는 분"),
                     ],
                   ),
                   const SizedBox(height: 24),
                   Text('이름', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField(_.careStatus?.returnType == "SENDER" ? "${_.careStatus?.sender.name}" : "${_.careStatus?.receiver.name}"),
+                  _inputField('홍대햔'),
                   const SizedBox(height: 24),
                   Text('전화번호', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField(_.careStatus?.returnType == "SENDER" ? "${_.careStatus?.sender.phone}" : "${_.careStatus?.receiver.phone}"),
+                  _inputField('010-3654-1528'),
                   const SizedBox(height: 24),
                   Text('주소', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField(_.careStatus?.returnType == "SENDER" ?
-                  "${_.careStatus?.sender.address.city}":
-                  "${_.careStatus?.receiver.address.city}"),
+                  _inputField('서울특별시 금천구 가산디지털1로 24'),
                   const SizedBox(height: 10),
-                  _inputField(_.careStatus?.returnType == "SENDER" ?
-                  "${_.careStatus?.sender.address.street}":
-                  "${_.careStatus?.receiver.address.street}"),
+                  _inputField('대륭테크노타운 701호'),
                   const SizedBox(height: 24),
                   Text('요청사항', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField("${_.careStatus?.request_term}"),
+                  _inputField('고객님의 요청사항을 작성하세요.'),
                   const SizedBox(height: 24),
                   Text('케어/수선 서비스 참고 사진첨부', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  ListView.builder(
-                    itemCount: _.careStatus!.careProduct.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, idx){
-                      return _carePictures(
-                          'assets/icons/sample_product.png',
-                          '케어/수선 ${idx+1}'
-                      );
-                    },
+                  _carePictures(
+                    'assets/icons/sample_product.png',
+                    '케어/수선 1'
                   ),
-
                   const SizedBox(height: 120),
                 ],
               ),
@@ -140,13 +120,13 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
             right: 0,
             bottom: 0,
             child: CustomButtonEmptyBackgroundWidget(
-              title: "확인",
-              onClick: () => controller.nextLevel(),
+                title: "확인",
+                onClick: () => controller.nextLevel(),
             ),
           ),
         ],
       ),
-    ));
+    );
   }
 
   _backPost(bool isChecked, String title){
@@ -181,36 +161,11 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
         children: [
           Text("$title", style: regular14TextStyle),
           const SizedBox(height: 10),
-          imgPath == "" ?
-          Container(
-            width: 72,
-            height: 72,
-            decoration: BoxDecoration(
-              border: Border.all(color: gray_999Color),
-            ),
-            child: Center(
-              child: SvgPicture.asset(
-                "assets/icons/header_title_logo.svg",
-                height: 10,
-              ),
-            ),
-          ):
-          ExtendedImage.network(
-            BaseApiService.imageApi+imgPath,
+          Image.asset(
+            '$imgPath',
+            height: 296,
             fit: BoxFit.cover,
-            cache: true,
-            // ignore: missing_return
-            loadStateChanged: (ExtendedImageState state) {
-              switch(state.extendedImageLoadState) {
-                case LoadState.loading :
-                  break;
-                case LoadState.completed :
-                  break;
-                case LoadState.failed :
-                  break;
-              }
-            },
-          ),
+          )
         ],
       ),
     );
@@ -256,37 +211,9 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              imgPath == "" ?
-              Container(
-                width: 72,
+              Image.asset(
+                'assets/icons/sample_product.png',
                 height: 72,
-                decoration: BoxDecoration(
-                  border: Border.all(color: gray_999Color),
-                ),
-                child: Center(
-                  child: SvgPicture.asset(
-                    "assets/icons/header_title_logo.svg",
-                    height: 10,
-                  ),
-                ),
-              ):
-              ExtendedImage.network(
-                BaseApiService.imageApi+imgPath,
-                fit: BoxFit.cover,
-                cache: true,
-                width: 72,
-                height: 72,
-                // ignore: missing_return
-                loadStateChanged: (ExtendedImageState state) {
-                  switch(state.extendedImageLoadState) {
-                    case LoadState.loading :
-                      break;
-                    case LoadState.completed :
-                      break;
-                    case LoadState.failed :
-                      break;
-                  }
-                },
               ),
               const SizedBox(width: 32),
               Text(

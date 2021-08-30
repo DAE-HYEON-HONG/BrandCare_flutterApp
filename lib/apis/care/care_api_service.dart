@@ -65,4 +65,23 @@ class CareApiService{
       return null;
     }
   }
+
+  Future<http.Response?> careResult(dynamic headers, int id) async{
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/care/result/$id");
+      final http.Response res = await http.get(
+        uri,
+        headers: headers,
+      );
+      print(res.body.toString());
+      if(res.statusCode == 200){
+        return res;
+      }else{
+        return null;
+      }
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
 }

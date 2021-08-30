@@ -3,10 +3,10 @@ part 'categoryList_model.g.dart';
 
 @JsonSerializable()
 class CategoryListModel {
-  late String category;
-  late int categoryId;
+  late int id;
+  late String title;
 
-  CategoryListModel(this.categoryId, this.category);
+  CategoryListModel(this.id, this.title);
 
   factory CategoryListModel.fromJson(Map<String, dynamic> json) => _$CategoryListModelFromJson(json);
   Map<String, dynamic> toJson() => _$CategoryListModelToJson(this);

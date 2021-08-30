@@ -8,14 +8,26 @@ class AddProductImgsController extends BaseController {
 
   final ImagePicker imgPicker = ImagePicker();
   dynamic imgPickerErr;
-  RxBool fill = true.obs;
-  List<XFile>? pickImgList = <XFile>[];
+  RxBool fill = false.obs;
+  List<File>? pickImgList = <File>[];
 
   Rx<File> frontImg = File('').obs;
   Rx<File> backImg = File('').obs;
   Rx<File> leftImg = File('').obs;
   Rx<File> rightImg = File('').obs;
 
+  void pictureChk(){
+    if(frontImg.value.path != ""&&
+        backImg.value.path != ""&&
+        leftImg.value.path != ""&&
+        rightImg.value.path != ""){
+      fill.value = true;
+      update();
+    }else{
+      fill.value = false;
+      update();
+    }
+  }
 
   Future<void> loadAssets(String chkImg, ImageSource source) async {
     try{
@@ -23,24 +35,28 @@ class AddProductImgsController extends BaseController {
         source: source,
         maxWidth: 500,
         maxHeight: 500,
-        imageQuality: 10,
+        imageQuality: 100,
         preferredCameraDevice: CameraDevice.rear,
       );
       if(chkImg == "front"){
         frontImg.value = File(pickedFile!.path);
         update();
+        pictureChk();
         Get.back();
       }else if (chkImg == "back"){
         backImg.value = File(pickedFile!.path);
         update();
+        pictureChk();
         Get.back();
       }else if (chkImg == "left"){
         leftImg.value = File(pickedFile!.path);
         update();
+        pictureChk();
         Get.back();
       }else {
         rightImg.value = File(pickedFile!.path);
         update();
+        pictureChk();
         Get.back();
       }
     }catch(e){
@@ -53,15 +69,19 @@ class AddProductImgsController extends BaseController {
     if(chkImg == "front"){
       frontImg.value = File('');
       update();
+      pictureChk();
     }else if (chkImg == "back"){
       backImg.value = File('');
       update();
+      pictureChk();
     }else if (chkImg == "left"){
       leftImg.value = File('');
       update();
+      pictureChk();
     }else {
       rightImg.value = File('');
       update();
+      pictureChk();
     }
   }
 
@@ -71,11 +91,12 @@ class AddProductImgsController extends BaseController {
         source: source,
         maxWidth: 500,
         maxHeight: 500,
-        imageQuality: 10,
+        imageQuality: 100,
         preferredCameraDevice: CameraDevice.rear,
       );
-      pickImgList!.add(pickedFile!);
+      pickImgList!.add(File(pickedFile!.path));
       update();
+      pictureChk();
       Get.back();
     }catch(e){
       print(e.toString());
@@ -97,7 +118,9 @@ class AddProductImgsController extends BaseController {
   }
 
   void nextLevel() {
-    Get.toNamed('/mainAddProduct/addDescription');
+    if(fill.value){
+      Get.toNamed('/mainAddProduct/addDescription');
+    }
   }
 
   @override

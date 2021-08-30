@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 
 class MyProductPage extends GetView<MyProductController> {
   const MyProductPage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(
@@ -41,7 +40,7 @@ class MyProductPage extends GetView<MyProductController> {
                     category: controller.myProductList![idx].category,
                     title: controller.myProductList![idx].title,
                     genuine: controller.myProductList![idx].genuine,
-                    idx: idx,
+                    idx: controller.myProductList![idx].productId,
                   ),
                   separatorBuilder: (context, idx) => const Divider(height: 0, thickness: 1,),
                   itemCount: controller.myProductList!.length,
@@ -60,73 +59,76 @@ class MyProductPage extends GetView<MyProductController> {
   required String category,
   required String title,
   required String genuine,
-  required int idx}) => Container(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            imgPath == "" ?
-            Container(
-              width: 72,
-              height: 72,
-              decoration: BoxDecoration(
-                border: Border.all(color: gray_999Color),
+  required int idx}) => GestureDetector(
+    onTap: () => Get.toNamed("/main/my/product/gi/detail", arguments: idx),
+    child: Container(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          imgPath == "" ?
+          Container(
+            width: 72,
+            height: 72,
+            decoration: BoxDecoration(
+              border: Border.all(color: gray_999Color),
+            ),
+            child: Center(
+              child: SvgPicture.asset(
+                "assets/icons/header_title_logo.svg",
+                height: 10,
               ),
-              child: Center(
-                child: SvgPicture.asset(
-                  "assets/icons/header_title_logo.svg",
-                  height: 10,
+            ),
+          ):
+          Container(
+            width: 72,
+            height: 72,
+            child: ExtendedImage.network(
+              imgPath,
+              fit: BoxFit.cover,
+              cache: true,
+              // ignore: missing_return
+              loadStateChanged: (ExtendedImageState state) {
+                switch(state.extendedImageLoadState) {
+                  case LoadState.loading :
+                    break;
+                  case LoadState.completed :
+                    break;
+                  case LoadState.failed :
+                    break;
+                }
+              },
+            ),
+          ),
+          const SizedBox(
+            width: 32,
+          ),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      '$brand | $category',
+                      style: regular12TextStyle.copyWith(color: gray_333Color),
+                    ),
+                    const Spacer(),
+                    GenuineBoxWidget(isGenuine: genuine.toLowerCase() == 'true'),
+                  ],
                 ),
-              ),
-            ):
-            Container(
-              width: 72,
-              height: 72,
-              child: ExtendedImage.network(
-                imgPath,
-                fit: BoxFit.cover,
-                cache: true,
-                // ignore: missing_return
-                loadStateChanged: (ExtendedImageState state) {
-                  switch(state.extendedImageLoadState) {
-                    case LoadState.loading :
-                      break;
-                    case LoadState.completed :
-                      break;
-                    case LoadState.failed :
-                      break;
-                  }
-                },
-              ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Text(
+                  '$title',
+                  style: medium14TextStyle,
+                )
+              ],
             ),
-            const SizedBox(
-              width: 32,
-            ),
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        '$brand | $category',
-                        style: regular12TextStyle.copyWith(color: gray_333Color),
-                      ),
-                      const Spacer(),
-                      GenuineBoxWidget(isGenuine: genuine.toLowerCase() == 'true'),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Text(
-                    '$title',
-                    style: medium14TextStyle,
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      );
+          )
+        ],
+      ),
+    ),
+  );
 }

@@ -9,6 +9,6 @@
     <string name="kakao_api">24d578e5ec7cbcf97fe904e7b11a0ecd</string>
 
     <!-- facebook auth resource   -->
-    <string name="facebook_app_id">1</string>
-    <string name="fb_login_protocol_scheme">fb1</string>
+    <string name="facebook_app_id">384304789743724</string>
+    <string name="fb_login_protocol_scheme">fb384304789743724</string>
 </resources>

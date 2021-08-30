@@ -2,6 +2,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/AddProductControllers/mainAddProduct_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/Custom_expansionList_feild.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/addProduct_expansionList_feild.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansion_field.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
@@ -64,32 +65,38 @@ class MainAddProductPage extends StatelessWidget {
                 hint: "제품명을 입력하세요.(제품 애칭)",
               ),
               const SizedBox(height: 16),
-              // CustomExpansionListField(
-              //   onTap: () {},
-              //   hintText: "카테고리를 선택해주세요.",
-              //   items: items,
-              //   onChange: (value) {},
-              // ),
-              // const SizedBox(height: 16),
-              // CustomExpansionListField(
-              //   onTap: () {},
-              //   hintText: "브랜드명을 선택해주세요.",
-              //   items: items,
-              //   onChange: (value) {},
-              // ),
+              GetBuilder<MainAddProductController>(builder: (_) =>
+                  AddProductExpansionListField(
+                    onTap: () {},
+                    hintText: "카테고리를 선택해주세요.",
+                    items: controller.categoryList!,
+                    onChange: (value) => controller.nextBtnFill(),
+                    idxChange: (value) => controller.changeCategory(value),
+                  ),
+              ),
+              const SizedBox(height: 16),
+              GetBuilder<MainAddProductController>(builder: (_) =>
+                  AddProductExpansionListField(
+                    onTap: () {},
+                    hintText: "브랜드명을 선택해주세요.",
+                    items: controller.brandList!,
+                    onChange: (value) => controller.nextBtnFill(),
+                    idxChange: (value) => controller.changeBrandCategory(value),
+                  ),
+              ),
               const SizedBox(height: 16),
               FormInputWidget(
                 onChange: (value) => controller.nextBtnFill(),
                 onSubmit: (value) {},
                 controller: controller.serialCtrl,
                 hint: "일련번호를 입력하세요.(알지 못하는 경우 '모름')",
-
               ),
               const SizedBox(height: 16),
               FormInputWidget(
                 onChange: (value) => controller.nextBtnFill(),
                 onSubmit: (value) {},
                 controller: controller.sinceBuyCtrl,
+                textInputType: TextInputType.number,
                 hint: "구입시기(예>21년 5월경이면, 2105로 입력해주세요.)",
               ),
               const SizedBox(height: 16),

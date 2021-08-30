@@ -4,7 +4,7 @@ part 'idPathImages_model.g.dart';
 @JsonSerializable()
 class IdPathImagesModel {
   late int id;
-  late String path;
+  late String? path;
 
   IdPathImagesModel(this.id, this.path);
 

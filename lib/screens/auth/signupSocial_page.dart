@@ -2,6 +2,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/auth/signupSocial_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/auth/signup_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_checkbox_widget.dart';
@@ -102,6 +103,7 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
                 Flexible(
                   flex: 3,
                   child: TextFormField(
+                    readOnly: controller.phoneChecked ? true : false,
                     controller: controller.phoneController,
                     style: regular12TextStyle,
                     keyboardType: TextInputType.phone,
@@ -128,12 +130,15 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
                 const SizedBox(
                   width: 8,
                 ),
-                Flexible(
-                    flex: 2,
-                    child: Obx(() => CustomButtonOnOffWidget(
-                        title: '인증번호 받기',
-                        onClick: () {},
-                        isOn: controller.isPhone.value)))
+                Obx(() => AnimatedContainer(
+                  duration: Duration(milliseconds: 500),
+                  width: ((!controller.phoneChecked ? 2 : 0 ) * (Get.width - 32)) / ((!controller.phoneChecked ? 2:0) + 3),
+                  child: CustomButtonOnOffWidget(
+                    title: '인증번호 받기',
+                    onClick: () => controller.smsAuth(),
+                    isOn: controller.isPhone.value,
+                  ),
+                )),
               ],
             ),
           ],
@@ -141,7 +146,16 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
       );
 
   Widget _itemAuthNumber() => Container(
-        child: Column(
+        child:
+        controller.phoneChecked ?
+        Container(
+          width: double.infinity,
+          child: Text(
+            '인증되었습니다.',
+            style: medium14TextStyle.copyWith(color: Color(0xff169F00)),
+            textAlign: TextAlign.start,
+          ),
+        ):Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -153,10 +167,10 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
                       '인증번호',
                       style: medium14TextStyle,
                     )),
-                Text(
-                  '3:00:00',
+                Obx(() => Text(
+                  '${DateFormatUtil.convertTimer(timer: controller.smsTime.value)}',
                   style: medium14TextStyle.copyWith(color: redColor),
-                )
+                ))
               ],
             ),
             const SizedBox(
@@ -171,7 +185,7 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
                     style: regular12TextStyle,
                     keyboardType: TextInputType.number,
                     onChanged: (value){
-
+                      controller.authNumTxt.value = controller.authNumberController.text;
                     },
                     decoration: InputDecoration(
                       isDense: true,
@@ -193,12 +207,13 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
                 const SizedBox(
                   width: 8,
                 ),
-                Flexible(
-                    flex: 1,
-                    child: CustomButtonOnOffWidget(
-                        title: '인증확인',
-                        onClick: () {},
-                        isOn: controller.authCode.value))
+                Obx(() => Flexible(
+                  flex: 1,
+                  child: CustomButtonOnOffWidget(
+                      title: '인증확인',
+                      onClick: () => controller.smsAuthChk(),
+                      isOn: controller.authCode.value),
+                )),
               ],
             ),
           ],

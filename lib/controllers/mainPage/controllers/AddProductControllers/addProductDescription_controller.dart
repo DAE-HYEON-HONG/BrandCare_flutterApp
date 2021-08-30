@@ -1,8 +1,16 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/AddProductControllers/addProductImgs_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/AddProductControllers/mainAddProduct_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/models/product/addProduct_model.dart';
+import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class AddProductDescriptionController extends BaseController{
+
+  final mainAddProductCtrl = Get.find<MainAddProductController>();
+  final addProductImgsCtrl = Get.find<AddProductImgsController>();
 
   TextEditingController desBody = TextEditingController();
 
@@ -12,6 +20,9 @@ class AddProductDescriptionController extends BaseController{
   RxBool dustBag = false.obs;
   RxBool guarantee = false.obs;
   RxBool notExist = false.obs;
+
+  List<int> conditionId = [];
+  List<int> additionalId = [];
 
   bool isCondition = false;
   bool products = false;
@@ -63,6 +74,61 @@ class AddProductDescriptionController extends BaseController{
     }
     update();
     return;
+  }
+
+  void addList(){
+    if(dirty.value){
+      conditionId.add(1);
+    }
+    if(broken.value){
+      conditionId.add(2);
+    }
+    if(nothing.value){
+      conditionId.add(3);
+    }
+    if(dustBag.value){
+      additionalId.add(1);
+    }
+    if(guarantee.value) {
+      additionalId.add(2);
+    }
+    if(notExist.value) {
+      additionalId.add(3);
+    }
+  }
+
+  Future<void> uploadAddProduct() async {
+    addList();
+    AddProductModel model = AddProductModel(
+        title: mainAddProductCtrl.titleCtrl.text,
+        categoryId: mainAddProductCtrl.categoryIdx,
+        brandId: mainAddProductCtrl.brandCategoryIdx,
+        etc: desBody.text,
+        price: int.parse(mainAddProductCtrl.priceCtrl.text),
+        serialCode: mainAddProductCtrl.serialCtrl.text,
+        buyRoute: mainAddProductCtrl.connectBuyCtrl.text,
+        buyDate: mainAddProductCtrl.sinceBuyCtrl.text,
+        conditionId: conditionId,
+        additionId: additionalId
+    );
+    final res = await ProductProvider().productApply(
+      model,
+      addProductImgsCtrl.pickImgList!,
+      addProductImgsCtrl.frontImg.value,
+      addProductImgsCtrl.backImg.value,
+      addProductImgsCtrl.leftImg.value,
+      addProductImgsCtrl.rightImg.value,
+    );
+    if(res == null){
+      Get.dialog(
+        CustomDialogWidget(content: '네트워크 에러입니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    }else{
+      print(res.toString());
+    }
   }
 
   @override

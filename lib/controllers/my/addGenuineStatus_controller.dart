@@ -1,16 +1,16 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/models/addCare/careProductInfo_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/addCare/careStatus_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/care_provider.dart';
+import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addCarePages/addCareDetail_page.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:get/get.dart';
 
-class AddCareStatusController extends BaseController {
+class AddGenuineStatusController extends BaseController {
 
   RxBool fill = true.obs;
-  CareStatusModel? careStatus;
+  late CareStatusModel careStatus;
   int productIdx = Get.arguments;
 
   List<Map<dynamic, dynamic>> careStatusJson = [
@@ -62,14 +62,13 @@ class AddCareStatusController extends BaseController {
   }
 
   void detail() {
-    Get.to(() => AddCareDetailPage(), arguments: productIdx);
+    Get.to(AddCareDetailPage());
   }
 
   Future<void> reqCareStatus() async {
     try{
       super.networkState.value = NetworkStateEnum.LOADING;
-      final String? token = await SharedTokenUtil.getToken("userLogin_token");
-      final res =  await CareProvider().careStatus(token!, productIdx);
+      final res =  await ProductProvider().genuineStatus(productIdx);
       if(res == null){
         Get.dialog(
             CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
@@ -78,9 +77,9 @@ class AddCareStatusController extends BaseController {
             })
         );
       }else{
-        careStatus = CareStatusModel.fromJson(res);
-        update();
+        careStatus = res;
         super.networkState.value = NetworkStateEnum.DONE;
+        update();
       }
     }catch(e){
       print(e);
@@ -94,3 +93,4 @@ class AddCareStatusController extends BaseController {
     super.onInit();
   }
 }
+//${controller.careStatus.careProduct[0].category}

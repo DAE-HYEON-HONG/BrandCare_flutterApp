@@ -34,11 +34,14 @@ class CareHistoryPage extends GetView<CareHistoryController> {
                   child: GetBuilder<CareHistoryController>(
                     builder: (_) => ListView.separated(
                       controller: controller.pagingScroll,
-                      itemBuilder: (context, idx) => _item(
-                        title: controller.careList![idx].title,
-                        status: controller.careList![idx].status,
-                        time: DateFormatUtil.convertDateFormat(date: controller.careList![idx].createdDate),
-                        date: DateFormatUtil.convertOnlyTime(date: controller.careList![idx].createdDate),
+                      itemBuilder: (context, idx) => GestureDetector(
+                        onTap: () => Get.toNamed("/mainAddCare/add/status", arguments: controller.careList![idx].id),
+                        child: _item(
+                          title: controller.careList![idx].title,
+                          status: controller.careList![idx].status,
+                          time: DateFormatUtil.convertDateFormat(date: controller.careList![idx].createdDate),
+                          date: DateFormatUtil.convertOnlyTime(date: controller.careList![idx].createdDate),
+                        ),
                       ),
                       separatorBuilder: (context, idx) => const Divider(height: 0, thickness: 1,),
                       itemCount: controller.careList!.length,

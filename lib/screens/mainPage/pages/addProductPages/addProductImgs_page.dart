@@ -82,7 +82,7 @@ class AddProductImgsPage extends GetView<AddProductImgsController> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 60),
+                  const SizedBox(height: 90),
                 ],
               ),
             ),

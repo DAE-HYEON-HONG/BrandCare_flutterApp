@@ -63,6 +63,7 @@ class LoginController extends BaseController {
   //카카오 로그인 부분
   Future<void> issueAcessToken(String authCode) async {
     try{
+      print("카카오로그인");
       var token = await AuthApi.instance.issueAccessToken(authCode);
       AccessTokenStore.instance.toStore(token);
       var user = await UserApi.instance.me();
@@ -92,6 +93,9 @@ class LoginController extends BaseController {
           Get.toNamed('/mainPage');
         }else{
           SharedTokenUtil.saveBool(false, 'isAutoLogin');
+          SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
+          globalCtrl.isLoginChk(true);
+          Get.toNamed('/mainPage');
         }
       }
     }catch(e){
@@ -103,8 +107,6 @@ class LoginController extends BaseController {
     try{
       print("카카오가 설치되어 있지 않았을때 로그인");
       var code = await AuthCodeClient.instance.request();
-      print("카카오가 설치되어 있지 않았을때 로그인");
-      print(code.toString());
       await issueAcessToken(code);
     }catch(e){
       print("카카오톡 웹뷰 에러");
@@ -116,7 +118,6 @@ class LoginController extends BaseController {
     try{
       print("카카오가 설치되어 있을 때 로그인");
       var code = await AuthCodeClient.instance.requestWithTalk();
-      print("카카오가 설치되어 있을 때 로그인");
       print(code.toString());
       await issueAcessToken(code);
     }catch(e){
@@ -162,6 +163,9 @@ class LoginController extends BaseController {
           Get.toNamed('/mainPage');
         }else{
           SharedTokenUtil.saveBool(false, 'isAutoLogin');
+          SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
+          globalCtrl.isLoginChk(true);
+          Get.toNamed('/mainPage');
         }
       }
     }catch(e){
@@ -172,8 +176,41 @@ class LoginController extends BaseController {
   //페이스북 로그인 부분
   Future<void> loginFacebook() async {
     try{
-      final result = await FacebookAuth.instance.login();
-      print(result.toString());
+      final result = await FacebookAuth.instance.login(
+        permissions: ['public_profile', 'email'],
+      );
+      final userData = await FacebookAuth.instance.getUserData();
+      print(userData.toString());
+      if(result.status == LoginStatus.success){
+        final AccessToken  accessToken = result.accessToken!;
+        print(accessToken.token);
+        final response = await AuthProvider().registerUserSocialChk(
+          accessToken.token,
+          userData['email'],
+          "FACEBOOK",
+        );
+        Map<String, dynamic> jsonMap = jsonDecode(response!.body.toString());
+        print(jsonMap.toString());
+        if(jsonMap['code'] == "R9721"){
+          Get.toNamed(
+            '/auth/signupSocial',
+            arguments: {
+              "TYPE":"FACEBOOK",
+              "Email" : userData['email'],
+              "nickName" : userData['name'],
+            },
+          );
+        }else{
+          if(isAutoLogin.value){
+            SharedTokenUtil.saveBool(true, 'isAutoLogin');
+            SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
+            globalCtrl.isLoginChk(true);
+            Get.toNamed('/mainPage');
+          }else{
+            SharedTokenUtil.saveBool(false, 'isAutoLogin');
+          }
+        }
+      }
     }catch(e){
       print(e.toString());
     }

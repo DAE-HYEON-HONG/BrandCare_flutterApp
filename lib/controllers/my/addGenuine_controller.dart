@@ -3,14 +3,17 @@ import 'dart:async';
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/addGenuineEtc_page.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class MainAddCareController extends BaseController {
+class AddGenuineController extends BaseController {
 
   final globalCtrl = Get.find<GlobalController>();
+
+  int productIdx = Get.arguments;
 
   Rx<int> smsTime = 180.obs;
   RxBool normalAddress = false.obs;
@@ -55,9 +58,9 @@ class MainAddCareController extends BaseController {
   }
 
   void chkNormalAddress() {
-    if(globalCtrl.userInfoModel?.address?.city != "" &&
-        globalCtrl.userInfoModel?.address?.street != "" &&
-        globalCtrl.userInfoModel?.address?.zipCode != ""
+    if(globalCtrl.userInfoModel?.address!.city != "" &&
+        globalCtrl.userInfoModel?.address!.street != "" &&
+        globalCtrl.userInfoModel?.address!.zipCode != ""
     ){
       normalAddress.value = true;
       update();
@@ -283,7 +286,7 @@ class MainAddCareController extends BaseController {
         }),
       );
     }else{
-      Get.toNamed('/mainAddCare/add/pics');
+      Get.to(AddGenuineEtcPage());
     }
   }
 

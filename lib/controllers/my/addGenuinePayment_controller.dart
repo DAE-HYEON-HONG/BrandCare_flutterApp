@@ -1,11 +1,13 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuineEtc_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuine_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/care_provider.dart';
+import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/addGenuineStatus_page.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:get/get.dart';
-import 'addCareEtc_controller.dart';
-import 'mainAddCare_controller.dart';
 
-class AddCarePaymentController extends BaseController {
+class AddGenuinePaymentController extends BaseController {
 
   RxInt couponDiscount = 0.obs;
   RxInt pointDiscount = 0.obs;
@@ -13,11 +15,11 @@ class AddCarePaymentController extends BaseController {
   RxBool chkUserInfo = false.obs;
   String testAddress = "서울 구로구 디지털로 33길 28(구로동 170-5)우림 이비지센터 1차 1211호 (주)리드고";
 
-  final addCareEtcCtrl = Get.find<AddCareEtcController>();
-  final addCareMainCtrl = Get.find<MainAddCareController>();
+  final addGenuineCtrl = Get.find<AddGenuineController>();
+  final addGenuineEtcCtrl = Get.find<AddGenuineEtcController>();
 
   int allPrice() {
-   int price = addPrices() + 3000 - couponDiscount.value - pointDiscount.value;
+   int price = addGenuineEtcCtrl.addPrices() + 3000 - couponDiscount.value - pointDiscount.value;
    return price;
   }
   void changeUserInfo(){
@@ -33,10 +35,10 @@ class AddCarePaymentController extends BaseController {
     if(chkUserInfo.value){
       Get.dialog(
         CustomDialogWidget(
-          title: '케어/수선 신청 주의 사항',
+          title: '정품인증 신청 주의 사항',
           content: '요청사항과 신청 항목의 금액으로 주문이 접수 되오니 정확하게 신청해 주시기 바랍니다.\n만약, 첨부사진과 신청항목이 다를 경우 주문이 취소되오니 이점 참고하여 주시기 바랍니다.',
           onClick: () async{
-            await uploadAddCare();
+            await uploadAdd();
           },
           onCancelClick: () {
             Get.back();
@@ -49,31 +51,32 @@ class AddCarePaymentController extends BaseController {
     }
   }
 
-  Future<void> uploadAddCare() async{
+  Future<void> uploadAdd() async{
     Map<String, String> addressBody = {
-      "city" : addCareMainCtrl.senderAddress.text,
-      "street" : addCareMainCtrl.senderAddressDetail.value,
-      "zipCode" : addCareMainCtrl.senderPostCode.text,
+      "city" : addGenuineCtrl.senderAddress.text,
+      "street" : addGenuineCtrl.senderAddressDetail.value,
+      "zipCode" : addGenuineCtrl.senderPostCode.text,
     };
     Map<String, String> returnAddress = {
-      "receiveCity" : addCareMainCtrl.receiverAddress.text,
-      "receiveStreet" : addCareMainCtrl.receiverAddressDetail.value,
-      "receiveZipCode" : addCareMainCtrl.receiverPostCode.text,
+      "receiveCity" : addGenuineCtrl.receiverAddress.text,
+      "receiveStreet" : addGenuineCtrl.receiverAddressDetail.value,
+      "receiveZipCode" : addGenuineCtrl.receiverPostCode.text,
     };
-    final res = await CareProvider().addCare(
+    final res = await ProductProvider().addGenuine(
       address: addressBody,
-      list: addCareEtcCtrl.addCareList!,
-      paymentAmount: allPrice(),
-      phone: addCareMainCtrl.senderPhNum.text,
-      receiverPhone: addCareMainCtrl.receiverPhNum.text,
-      receiverName: addCareMainCtrl.receiverName.text,
-      request_term: addCareEtcCtrl.etcDescription.text,
+      list: addGenuineEtcCtrl.priceList,
+      paymentAmount: addGenuineEtcCtrl.addPrices(),
+      phone: addGenuineCtrl.senderPhNum.text,
+      receiverPhone: addGenuineCtrl.receiverPhNum.text,
+      receiverName: addGenuineCtrl.receiverName.text,
+      request_term: addGenuineEtcCtrl.des.text,
       returnAddress: returnAddress,
-      senderName: addCareMainCtrl.senderName.text,
+      senderName: addGenuineCtrl.senderName.text,
       usePointAmount: pointDiscount.value,
       couponId: null,
-      returnType: addCareMainCtrl.returnReceiver.value ? "RECEIVER" : "SENDER",
+      returnType: addGenuineCtrl.returnReceiver.value ? "RECEIVER" : "SENDER",
       price: allPrice(),
+      productId: addGenuineCtrl.productIdx,
     );
     if(res == null){
       Get.dialog(
@@ -95,21 +98,12 @@ class AddCarePaymentController extends BaseController {
       CustomDialogWidget(
         content: '신청이 완료되었습니다.',
         onClick: (){
-          Get.toNamed('/mainAddCare/add/status', arguments: idx);
+          Get.to(AddGenuineStatusPage(), arguments: idx);
         },
         isSingleButton: true,
         okTxt: "확인",
       ),
     );
-  }
-
-  int addPrices(){
-    int price = 0;
-    int length = addCareEtcCtrl.addCareList!.length;
-    for(var i = 0; i < length; i++){
-      price += addCareEtcCtrl.addCareList![i].price;
-    }
-    return price;
   }
 
 

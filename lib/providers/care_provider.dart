@@ -14,6 +14,7 @@ class CareProvider{
     required List<AddCareListModel> list,
     required int paymentAmount,
     required String phone,
+    required String receiverPhone,
     required String receiverName,
     required String request_term,
     required dynamic returnAddress,
@@ -21,6 +22,7 @@ class CareProvider{
     required String returnType,
     int? couponId,
     required int usePointAmount,
+    required int price,
   })async{
     List careIdx = [];
     for(var i in list){
@@ -33,11 +35,13 @@ class CareProvider{
       'phone' : phone,
       'receiver' : receiverName,
       'request_term' : request_term,
-      'receiverAddress' : returnAddress,
+      'receiveAddress' : returnAddress,
       'sender' : senderName,
       'useCouponId' : couponId,
       'usePoint' : usePointAmount,
       'returnType' : returnType,
+      'receiverPhone' : receiverPhone,
+      'price' : price,
     });
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     var res = await _careApiService.addCare(BaseApiService.authHeaders(token!), careInfo, list);
@@ -56,7 +60,18 @@ class CareProvider{
     }else{
       Map<String, dynamic> json = jsonDecode(res.body.toString());
       print(json.toString());
-      return CareStatusModel.fromJson(json);
+      return json;
+    }
+  }
+
+  Future<dynamic> careResult(String? token, int id)async{
+    var res = await _careApiService.careResult(BaseApiService.authHeaders(token!), id);
+    if(res == null){
+      return null;
+    }else{
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      print(json.toString());
+      return json;
     }
   }
 }
