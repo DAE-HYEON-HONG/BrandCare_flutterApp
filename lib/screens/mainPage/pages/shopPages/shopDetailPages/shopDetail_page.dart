@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:io';
+import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopDetail/shopDetail_controller.dart';
@@ -26,14 +27,14 @@ class ShopDetailPage extends GetView<ShopDetailController> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      child: Stack(
+      child: GetBuilder<ShopDetailController>(builder: (_) => Stack(
         children: <Widget>[
           SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
                 //배너
-                GetBuilder<ShopDetailController>(builder: (_) => Stack(
+                Stack(
                   children: [
                     CarouselSlider(
                       carouselController: controller.slideCtrlBtn,
@@ -57,7 +58,7 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                               width: double.infinity,
                               height: 360,
                               child: ExtendedImage.network(
-                                e.path,
+                                BaseApiService.imageApi+e.path,
                                 fit: BoxFit.cover,
                                 cache: true,
                                 // ignore: missing_return
@@ -158,7 +159,7 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                       child: GenuineLogo(genuine: controller.model.gi == "UNCERTIFIED" ? false : true),
                     ),
                   ],
-                )),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 16, right: 16),
                   child: Column(
@@ -249,7 +250,7 @@ class ShopDetailPage extends GetView<ShopDetailController> {
             ),
           ),
         ],
-      ),
+      )),
     );
   }
 }

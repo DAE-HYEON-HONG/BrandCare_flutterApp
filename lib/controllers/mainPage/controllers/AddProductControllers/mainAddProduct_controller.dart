@@ -39,7 +39,9 @@ class MainAddProductController extends BaseController {
 
   void nextBtnFunc(BuildContext context) {
     FocusScope.of(context).unfocus();
-    Get.toNamed("/mainAddProduct/addImg");
+    if(nextBtn.value){
+      Get.toNamed("/mainAddProduct/addImg");
+    }
   }
 
   @override
