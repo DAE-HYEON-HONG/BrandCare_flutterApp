@@ -87,7 +87,7 @@ class AddProductImgsPage extends GetView<AddProductImgsController> {
               ),
             ),
           ),
-          Positioned(
+          Obx(() => Positioned(
             left: 0,
             right: 0,
             bottom: 0,
@@ -96,7 +96,7 @@ class AddProductImgsPage extends GetView<AddProductImgsController> {
               onTab: () => controller.nextLevel(),
               fill: controller.fill.value,
             ),
-          ),
+          )),
         ],
       ),
     );
@@ -146,13 +146,13 @@ class AddProductImgsPage extends GetView<AddProductImgsController> {
             ):
             Container(
               width: double.infinity,
-              height: 160,
+              height: 180,
               child: Stack(
                 children: [
                   Container(
                     width: double.infinity,
-                    height: 160,
-                    child: Image.file(File(img.value.path), fit: BoxFit.cover),
+                    height: 190,
+                    child: Image.file(File(img.value.path), fit: BoxFit.cover, height: 160),
                   ),
                   Positioned(
                     top: 8,

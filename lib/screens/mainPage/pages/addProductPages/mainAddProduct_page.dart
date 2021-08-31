@@ -65,24 +65,20 @@ class MainAddProductPage extends StatelessWidget {
                 hint: "제품명을 입력하세요.(제품 애칭)",
               ),
               const SizedBox(height: 16),
-              GetBuilder<MainAddProductController>(builder: (_) =>
-                  AddProductExpansionListField(
-                    onTap: () {},
-                    hintText: "카테고리를 선택해주세요.",
-                    items: controller.categoryList!,
-                    onChange: (value) => controller.nextBtnFill(),
-                    idxChange: (value) => controller.changeCategory(value),
-                  ),
+              AddProductExpansionListField(
+                onTap: () {},
+                hintText: "카테고리를 선택해주세요.",
+                items: controller.categoryList!,
+                onChange: (value) => controller.nextBtnFill(),
+                idxChange: (value) => controller.changeCategory(value),
               ),
               const SizedBox(height: 16),
-              GetBuilder<MainAddProductController>(builder: (_) =>
-                  AddProductExpansionListField(
-                    onTap: () {},
-                    hintText: "브랜드명을 선택해주세요.",
-                    items: controller.brandList!,
-                    onChange: (value) => controller.nextBtnFill(),
-                    idxChange: (value) => controller.changeBrandCategory(value),
-                  ),
+              AddProductExpansionListField(
+                onTap: () {},
+                hintText: "브랜드명을 선택해주세요.",
+                items: controller.brandList!,
+                onChange: (value) => controller.nextBtnFill(),
+                idxChange: (value) => controller.changeBrandCategory(value),
               ),
               const SizedBox(height: 16),
               FormInputWidget(

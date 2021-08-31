@@ -9,8 +9,10 @@ class CustomChkAddress extends StatelessWidget {
   final String address;
   final String detail;
   final bool isChecked;
+  final Function() onTap;
 
   CustomChkAddress({
+    required this.onTap,
     required this.title,
     required this.postCode,
     required this.address,
@@ -19,50 +21,55 @@ class CustomChkAddress extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "$title",
-                style: medium14TextStyle.copyWith(color: primaryColor),
-              ),
-              const SizedBox(height: 4),
-              Container(
-                width: double.infinity,
-                height: 1,
-                color: primaryColor,
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('내 주소', style: medium12TextStyle.copyWith(color: gray_999Color)),
-                    Text(
-                      '$postCode, $address $detail', style: regular12TextStyle.copyWith(color: gray_999Color),
-                    ),
-                  ],
+    return GestureDetector(
+      onTap: () {
+        this.onTap();
+      },
+      child: Container(
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "$title",
+                  style: medium14TextStyle.copyWith(color: primaryColor),
                 ),
-              ),
-              const SizedBox(width: 10),
-              SvgPicture.asset(
-                isChecked ? 'assets/icons/check_on.svg' : 'assets/icons/check_off.svg',
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          const Divider(height: 1, color: gray_f5f6f7Color),
-        ],
+                const SizedBox(height: 4),
+                Container(
+                  width: double.infinity,
+                  height: 1,
+                  color: primaryColor,
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('내 주소', style: medium12TextStyle.copyWith(color: gray_999Color)),
+                      Text(
+                        '$postCode, $address $detail', style: regular12TextStyle.copyWith(color: gray_999Color),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 10),
+                SvgPicture.asset(
+                  isChecked ? 'assets/icons/check_on.svg' : 'assets/icons/check_off.svg',
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            const Divider(height: 1, color: gray_f5f6f7Color),
+          ],
+        ),
       ),
     );
   }

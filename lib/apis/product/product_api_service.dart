@@ -17,7 +17,7 @@ class ProductApiService {
       File leftImg,
       File rightImg) async {
     try {
-      final uri = Uri.parse("${BaseApiService.baseApi}/shop");
+      final uri = Uri.parse("${BaseApiService.baseApi}/product/apply");
       var req = http.MultipartRequest('POST', uri);
       req.files.add(
         http.MultipartFile.fromBytes(
@@ -78,6 +78,7 @@ class ProductApiService {
       req.headers.addAll(headers);
       http.StreamedResponse res = await req.send();
       final resReturn = await res.stream.bytesToString();
+      print(res.statusCode);
       if (res.statusCode == 200) {
         return resReturn;
       } else {

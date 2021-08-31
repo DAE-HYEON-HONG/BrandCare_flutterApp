@@ -33,16 +33,28 @@ class AddProductDescriptionController extends BaseController{
   void choiceChk(String title){
     if(title == "오염"){
       dirty.value = !dirty.value;
+      nothing.value = false;
     }else if(title == "파손"){
       broken.value = !broken.value;
+      nothing.value = false;
     }else if(title == "문제 없음"){
       nothing.value = !nothing.value;
+      if(nothing.value){
+        dirty.value = false;
+        broken.value = false;
+      }
     }else if(title == "더스트백"){
       dustBag.value = !dustBag.value;
+      notExist.value = false;
     }else if(title == "보증서"){
       guarantee.value = !guarantee.value;
+      notExist.value = false;
     }else{
       notExist.value = !notExist.value;
+      if(notExist.value){
+        dustBag.value = false;
+        guarantee.value = false;
+      }
     }
     formChk();
     update();
@@ -127,7 +139,14 @@ class AddProductDescriptionController extends BaseController{
         }),
       );
     }else{
-      print(res.toString());
+      if(res['data'] == "Y"){
+        Get.dialog(
+          CustomDialogWidget(content: '제품등록이 완료되었습니다.', onClick: (){
+            Get.offAllNamed('/mainPage');
+            update();
+          }),
+        );
+      }
     }
   }
 

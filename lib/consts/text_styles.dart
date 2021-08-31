@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 
 import 'colors.dart';
 
+// const double _largeFontSize = 24;
+// const double _mediumFontSize2x = 16;
+// const double _mediumFontSize = 14;
+// const double _smallFontSize2X = 12;
+// const double _smallFontSize = 10;
+
 const double _largeFontSize = 24;
-const double _mediumFontSize2x = 16;
-const double _mediumFontSize = 14;
-const double _smallFontSize2X = 12;
-const double _smallFontSize = 10;
+const double _mediumFontSize2x = 20;
+const double _mediumFontSize = 18;
+const double _smallFontSize2X = 16;
+const double _smallFontSize = 14;
 
 const TextStyle _defaultTextStyle = TextStyle(fontFamily: 'NotoSans', color: blackColor);
 

@@ -35,7 +35,7 @@ class MyProductPage extends GetView<MyProductController> {
                   controller: controller.pagingScroll,
                   shrinkWrap: true,
                   itemBuilder: (context, idx) => _item(
-                    imgPath: controller.myProductList![idx].thumbnail ?? '',
+                    imgPath: controller.myProductList?[idx].thumbnail ?? '',
                     brand: controller.myProductList![idx].brand,
                     category: controller.myProductList![idx].category,
                     title: controller.myProductList![idx].title,
@@ -43,7 +43,7 @@ class MyProductPage extends GetView<MyProductController> {
                     idx: controller.myProductList![idx].productId,
                   ),
                   separatorBuilder: (context, idx) => const Divider(height: 0, thickness: 1,),
-                  itemCount: controller.myProductList!.length,
+                  itemCount: controller.myProductList?.length ?? 0,
                 ),
               ),
             )
