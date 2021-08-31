@@ -205,7 +205,9 @@ class AddGenuinePaymentPage extends StatelessWidget {
                   const Divider(color: gray_f5f6f7Color, height: 1),
                   const SizedBox(height: 16),
                   _saleTile(
-                    onTap: (){},
+                    onTap: (){
+                      //쿠폰
+                    },
                     title: '브랜드케어 쿠폰',
                     subTitle: 'n개 보유',
                   ),
@@ -213,7 +215,9 @@ class AddGenuinePaymentPage extends StatelessWidget {
                   const Divider(color: gray_f5f6f7Color, height: 1),
                   const SizedBox(height: 16),
                   _saleTile(
-                    onTap: (){},
+                    onTap: (){
+                      //포인트
+                    },
                     title: '브랜드케어 포인트',
                     subTitle: 'nP 사용가능',
                   ),
