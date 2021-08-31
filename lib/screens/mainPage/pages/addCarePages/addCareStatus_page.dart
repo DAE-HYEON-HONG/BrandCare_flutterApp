@@ -65,7 +65,9 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                   const SizedBox(height: 24),
                   CustomButtonOnOffWidget(
                     title: '케어/수선 결과보기',
-                    onClick: () => controller.detail(),
+                    onClick: () {
+                      controller.detail();
+                    },
                     isOn: controller.fill.value,
                     radius: 30,
                   ),

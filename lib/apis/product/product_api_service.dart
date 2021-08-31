@@ -282,4 +282,42 @@ class ProductApiService {
     }
   }
 
+  Future<http.Response?> brandCategory(dynamic headers) async{
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/product/brand");
+      final http.Response res = await http.get(
+        uri,
+        headers: headers,
+      );
+      print(res.body.toString());
+      if(res.statusCode == 200){
+        return res;
+      }else{
+        return null;
+      }
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> categoryNameList(dynamic headers) async{
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/product/category");
+      final http.Response res = await http.get(
+        uri,
+        headers: headers,
+      );
+      print(res.body.toString());
+      if(res.statusCode == 200){
+        return res;
+      }else{
+        return null;
+      }
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
 }

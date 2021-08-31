@@ -15,9 +15,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class ProductGiDetailPage extends GetView<ProductInfoController> {
+class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
   Widget build(BuildContext context) {
-    return GetBuilder<ProductInfoController>(builder: (_) => DefaultAppBarScaffold(
+    return GetBuilder<ProductInfoDetailController>(builder: (_) => DefaultAppBarScaffold(
         title: '제품 정보',
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
@@ -112,7 +112,7 @@ class ProductGiDetailPage extends GetView<ProductInfoController> {
     ));
   }
 
-  Widget _item() => GetBuilder<ProductInfoController>(builder: (_) => Container(
+  Widget _item() => GetBuilder<ProductInfoDetailController>(builder: (_) => Container(
     height: 104,
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
@@ -147,7 +147,7 @@ class ProductGiDetailPage extends GetView<ProductInfoController> {
     ),
   ));
 
-  Widget _gridPicture() => GetBuilder<ProductInfoController>(builder:(_)=>Container(
+  Widget _gridPicture() => GetBuilder<ProductInfoDetailController>(builder:(_)=>Container(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -170,7 +170,7 @@ class ProductGiDetailPage extends GetView<ProductInfoController> {
     ),
   ));
 
-  Widget _pictureItem(String title, String imgPath) => GetBuilder<ProductInfoController>(builder:(_)=>Container(
+  Widget _pictureItem(String title, String imgPath) => GetBuilder<ProductInfoDetailController>(builder:(_)=>Container(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -207,7 +207,7 @@ class ProductGiDetailPage extends GetView<ProductInfoController> {
   ));
 
   Widget _productAddInfo(String title, List<String> list, List<int> category) {
-    return GetBuilder<ProductInfoController>(builder:(_)=>Column(
+    return GetBuilder<ProductInfoDetailController>(builder:(_)=>Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title, style: medium14TextStyle,),
@@ -228,7 +228,7 @@ class ProductGiDetailPage extends GetView<ProductInfoController> {
       ],
     ));
   }
-  Widget _etc() =>   GetBuilder<ProductInfoController>(builder:(_)=>Column(
+  Widget _etc() =>   GetBuilder<ProductInfoDetailController>(builder:(_)=>Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Text('기타', style: medium14TextStyle,),

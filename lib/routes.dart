@@ -15,9 +15,6 @@ import 'package:brandcare_mobile_flutter_v2/bindings/setting_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/mainShop_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/signup_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/splash_binding.dart';
-import 'package:brandcare_mobile_flutter_v2/controllers/auth/signupSocial_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopDetail/shopDetail_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/controllers/my/productInfo_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/findAccount/findAccount_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/login_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signupSocial_page.dart';
@@ -57,7 +54,6 @@ import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/my
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/product_info_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/question/question_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/setting/setting_page.dart';
-import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/mainHome_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/shopAddProductPages/shopAddProuct_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/shopDetailPages/shopDetail_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/splash_page.dart';
@@ -94,7 +90,7 @@ final routes = [
   GetPage(name: '/main/my/genuine', page: () => GenuineHistoryPage(), binding: GenuineBinding()),
   GetPage(name: '/main/my/care', page: () => CareHistoryPage(), binding: CareHistoryBinding()),
   GetPage(name: '/main/my/product', page: () => MyProductPage(), binding: MyProductBinding()),
-  GetPage(name: '/main/my/product/gi/detail', page: () => ProductGiDetailPage(), binding: ProductInfoBinding()),
+  GetPage(name: '/main/my/product/gi/detail', page: () => ProductGiDetailPage(), binding: ProductInfoDetailBinding()),
   GetPage(name: '/main/my/change_product', page: () => ChangeProductPage(), binding: ChangeProductBinding()),
   GetPage(name: '/main/my/change_product/history', page: () => ChangeProductHistoryPage()),
   GetPage(name: '/main/my/change_product/history/detail', page: () => ChangeProductHistoryDetailPage()),
