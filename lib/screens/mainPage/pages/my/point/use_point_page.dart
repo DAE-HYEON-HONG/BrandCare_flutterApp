@@ -3,6 +3,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/point_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -87,9 +88,9 @@ class PointUsePage extends StatelessWidget {
                 ),
               ),
             ),
-            CustomButtonEmptyBackgroundWidget(title: '적용하기', onClick: (){
-
-            }),
+            CustomButtonOnOffWidget(title: '사용하기', onClick: (){
+              Get.back();
+            }, isOn: controller.usePoint.value != 0 && controller.usePoint.value <= controller.myPoint.value,),
           ],
         ),
       ),

@@ -68,9 +68,9 @@ class CouponUsePage extends GetView<CouponController> {
               ),
 
             ),
-            CustomButtonEmptyBackgroundWidget(title: '적용하기', onClick: (){
-
-            }),
+            CustomButtonOnOffWidget(title: '적용하기', onClick: (){
+              Get.back();
+            }, isOn: controller.couponId.value != 0,),
           ],
         ),
       ),
@@ -83,7 +83,7 @@ class CouponUsePage extends GetView<CouponController> {
           padding: EdgeInsets.only(
               top: 16.0,
               bottom: idx == controller.couponList!.length - 1 ? 16 : 0),
-          child: _couponItem(),
+          child: _couponItem(idx),
         );
       },
       itemCount: controller.couponList!.length,
@@ -91,18 +91,24 @@ class CouponUsePage extends GetView<CouponController> {
     )),
   );
 
-  Widget _couponItem() => Container(
-    width: double.infinity,
-    height: 120,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(12),
-      color: gray_666Color,
-    ),
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(12),
-      child: Placeholder(
-        strokeWidth: 1.0,
-        color: blackColor,
+  Widget _couponItem(int idx) => InkWell(
+    onTap: (){
+      controller.couponId.value = controller.couponList![idx].id;
+      controller.couponDiscount.value = controller.couponList![idx].discount;
+    },
+    child: Container(
+      width: double.infinity,
+      height: 120,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: gray_666Color,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Placeholder(
+          strokeWidth: 1.0,
+          color: blackColor,
+        ),
       ),
     ),
   );

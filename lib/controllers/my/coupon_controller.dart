@@ -17,6 +17,10 @@ class CouponController extends BaseController{
   RxInt myPoint = 0.obs;
   RxInt countCoupon = 0.obs;
 
+  // 추가부분
+  RxInt couponId = 0.obs;
+  RxInt couponDiscount = 0.obs;
+
   void pagingScrollListener() async {
     if(pagingScroll.position.pixels == pagingScroll.position.maxScrollExtent){
       print("스크롤이 최하단입니다. 다시 로딩합니다.");
