@@ -57,6 +57,7 @@ class CouponController extends BaseController{
     //couponList.add('');
     update();
   }
+
   bool get isValidCouponCode => couponCode.value != '' && couponCode.value.isNotEmpty && couponCode.value.length == 11;
 
   @override
