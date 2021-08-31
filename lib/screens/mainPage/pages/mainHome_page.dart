@@ -165,7 +165,7 @@ class MainHomePage extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("이용 안내", style: regular14TextStyle.copyWith(color: gray_333Color, fontSize: 16)),
+                              Text("이용 안내", style: regular14TextStyle.copyWith(color: gray_333Color, fontSize: 16.sp)),
                               const SizedBox(height: 7.0),
                               Container(
                                 width: double.infinity,
