@@ -32,7 +32,14 @@ class MyApp extends StatelessWidget {
               }
             },
             child: GetMaterialApp(
-              builder: EasyLoading.init(),
+              builder: EasyLoading.init(
+                builder: (context, widget){
+                  return MediaQuery(
+                    data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                    child: widget!,
+                  );
+                }
+              ),
               title: 'Brand Care',
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
