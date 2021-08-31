@@ -23,23 +23,25 @@ class SplashController extends BaseController {
     );
   }
 
-  void checkLogin() async {
+  Future<void> checkLogin() async {
     final bool isLogin = await SharedTokenUtil.getBool('isAutoLogin') ?? false;
     if(isLogin){
       final String? token = await SharedTokenUtil.getToken("userLogin_token");
       print(token);
       final res = await AuthProvider().loginToken(token!);
+      print(res.toString());
       if(res != null){
         globalCtrl.isLoginChk(true);
         globalCtrl.addUserInfo(res);
         Get.offAllNamed('/mainPage');
       }else{
-        Get.offAllNamed('/auth/login');
+        //Get.dialog 후 loginController 사라지는 현상 수정
         Get.dialog(
           CustomDialogWidget(content: '이메일 또는 비밀번호를 확인해주세요.', onClick: (){
-            Get.back();
+            Get.offAllNamed('/auth/login');
             update();
           }),
+          barrierDismissible: false,
         );
       }
     }else{
@@ -50,9 +52,9 @@ class SplashController extends BaseController {
   @override
   void onInit(){
     super.onInit();
-    Timer(splashTime, (){
+    Timer(splashTime, ()async{
       //TODO: Check auto login
-          checkLogin();
+          await checkLogin();
     });
   }
 

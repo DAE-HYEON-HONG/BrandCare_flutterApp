@@ -18,7 +18,6 @@ class MainAddCarePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    controller.initSettings();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -77,21 +76,19 @@ class MainAddCarePage extends StatelessWidget {
                   const SizedBox(height: 16),
                   Obx(() => _itemAuthNumber(context)),
                   const SizedBox(height: 24),
-                  Obx(() => Column(
-                    children: [
-                      if(controller.normalAddress.value)
-                      GestureDetector(
-                        onTap: () => controller.senderNormalAddressSet(),
-                        child: CustomChkAddress(
-                          title: '기본주소로 입력 하시겠습니까?',
-                          postCode: controller.globalCtrl.userInfoModel!.address!.zipCode,
-                          address: controller.globalCtrl.userInfoModel!.address!.city,
-                          detail: controller.globalCtrl.userInfoModel!.address!.street,
-                          isChecked: controller.senderNormalAddress.value,
-                        ),
+                   if(controller.globalCtrl.userInfoModel != null && controller.globalCtrl.userInfoModel!.address != null)
+                    GestureDetector(
+                      onTap: () => controller.senderNormalAddressSet(),
+                      child: CustomChkAddress(
+                        title: '기본주소로 입력 하시겠습니까?',
+                        postCode: controller.globalCtrl.userInfoModel!.address!.zipCode,
+                        address: controller.globalCtrl.userInfoModel!.address!
+                            .city,
+                        detail: controller.globalCtrl.userInfoModel!.address!
+                            .street,
+                        isChecked: controller.senderNormalAddress.value,
                       ),
-                    ],
-                  )),
+                    ),
                   const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -197,15 +194,17 @@ class MainAddCarePage extends StatelessWidget {
                       controller.samePost.value ? Container():
                       Column(
                         children: [
-                          if(controller.normalAddress.value)
+                          if(controller.globalCtrl.userInfoModel != null && controller.globalCtrl.userInfoModel!.address != null)
                             GestureDetector(
                               onTap: () => controller.senderNormalAddressSet(),
                               child: CustomChkAddress(
                                 title: '기본주소로 입력 하시겠습니까?',
-                                postCode: controller.globalCtrl.userInfoModel?.address!.zipCode ?? '',
-                                address: controller.globalCtrl.userInfoModel?.address!.city ?? '',
-                                detail: controller.globalCtrl.userInfoModel?.address!.street ?? '',
-                                isChecked: controller.receiverNormalAddress.value,
+                                postCode: controller.globalCtrl.userInfoModel!.address!.zipCode,
+                                address: controller.globalCtrl.userInfoModel!.address!
+                                    .city,
+                                detail: controller.globalCtrl.userInfoModel!.address!
+                                    .street,
+                                isChecked: controller.senderNormalAddress.value,
                               ),
                             ),
                         ],

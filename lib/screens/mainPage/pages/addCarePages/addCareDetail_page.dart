@@ -44,7 +44,7 @@ class AddCareDetailPage extends StatelessWidget {
                 ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: _.model?.results.length,
+                  itemCount: controller.model?.results.length ?? 0,
                   itemBuilder: (context, idx){
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

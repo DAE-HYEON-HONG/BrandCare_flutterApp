@@ -13,7 +13,6 @@ class MainAddCareController extends BaseController {
   final globalCtrl = Get.find<GlobalController>();
 
   Rx<int> smsTime = 180.obs;
-  RxBool normalAddress = false.obs;
 
   TextEditingController senderName = TextEditingController();
   TextEditingController senderPhNum = TextEditingController();
@@ -48,24 +47,6 @@ class MainAddCareController extends BaseController {
   RxBool returnSender = true.obs;
   RxBool returnReceiver = false.obs;
 
-
-
-  void initSettings() {
-    chkNormalAddress();
-  }
-
-  void chkNormalAddress() {
-    if(globalCtrl.userInfoModel?.address?.city != "" &&
-        globalCtrl.userInfoModel?.address?.street != "" &&
-        globalCtrl.userInfoModel?.address?.zipCode != ""
-    ){
-      normalAddress.value = true;
-      update();
-    }else {
-      normalAddress.value = false;
-      update();
-    }
-  }
 
   Future<void> smsAuth() async {
     if(senderPhTxt.value == ""){
@@ -290,7 +271,6 @@ class MainAddCareController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-    chkNormalAddress();
     debounce(senderPhTxt, (_) {
       senderPhNumFill.value = RegexUtil.checkPhoneRegex(phone: senderPhTxt.value);
     });

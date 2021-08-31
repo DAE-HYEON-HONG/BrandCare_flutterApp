@@ -41,8 +41,8 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                 children: [
                   const SizedBox(height: 32),
                   _productInfo(
-                    imgPath: "${_.careStatus?.careProduct[0].image}",
-                    title: "${_.careStatus?.careProduct[0].category} 외 ${_.careStatus?.careProduct.length}건",
+                    imgPath: "${controller.careStatus?.careProduct[0].image}",
+                    title: "${controller.careStatus?.careProduct[0].category} 외 ${controller.careStatus?.careProduct.length ?? 0}건",
                     type: StatusUtil.statusChk(status: "${_.careStatus?.status}"),
                     clock: DateFormatUtil.convertOnlyTime(date: "${_.careStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
                     date: DateFormatUtil.convertOnlyDate(date: "${_.careStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
@@ -74,13 +74,13 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                   const SizedBox(height: 24),
                   Text('물품명', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField('${_.careStatus?.careProduct[0].category} 외 ${_.careStatus?.careProduct.length}건'),
+                  _inputField('${_.careStatus?.careProduct[0].category} 외 ${controller.careStatus?.careProduct.length ?? 0}건'),
                   const SizedBox(height: 24),
                   Text('케어항목', style: medium14TextStyle),
                   const SizedBox(height: 10),
                   ListView.builder(
                     shrinkWrap: true,
-                    itemCount: _.careStatus?.careProduct.length,
+                    itemCount: controller.careStatus?.careProduct.length ?? 0,
                     itemBuilder: (context, idx){
                       return _inputField("${_.careStatus?.careProduct[idx].category}");
                     },
@@ -121,7 +121,7 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                   Text('케어/수선 서비스 참고 사진첨부', style: medium14TextStyle),
                   const SizedBox(height: 10),
                   ListView.builder(
-                    itemCount: _.careStatus!.careProduct.length,
+                    itemCount: controller.careStatus?.careProduct.length ?? 0,
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, idx){
