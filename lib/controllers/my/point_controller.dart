@@ -15,6 +15,9 @@ class PointController extends BaseController{
   RxString pointCode = RxString('');
   int page = 1;
 
+  //추가 부분
+  RxInt usePoint = 0.obs;
+
   void pagingScrollListener() async {
     if(pagingScroll.position.pixels == pagingScroll.position.maxScrollExtent){
       print('스크롤이 최하단입니다. 다시 로딩합니다.');
