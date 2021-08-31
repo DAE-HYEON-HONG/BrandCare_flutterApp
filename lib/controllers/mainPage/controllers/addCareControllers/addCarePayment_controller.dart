@@ -1,5 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/care_provider.dart';
+import 'package:brandcare_mobile_flutter_v2/providers/my_provider.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:get/get.dart';
 import 'addCareEtc_controller.dart';
@@ -75,6 +77,8 @@ class AddCarePaymentController extends BaseController {
       returnType: addCareMainCtrl.returnReceiver.value ? "RECEIVER" : "SENDER",
       price: allPrice(),
     );
+    await saveReceiverAddress();
+    await saveSenderAddress();
     if(res == null){
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
@@ -110,6 +114,48 @@ class AddCarePaymentController extends BaseController {
       price += addCareEtcCtrl.addCareList![i].price;
     }
     return price;
+  }
+
+  Future<void> saveReceiverAddress() async{
+    //받는 사람의 주소를 자동 저장
+    if(addCareMainCtrl.receiverPostSet.value){
+      final String? token = await SharedTokenUtil.getToken('userLogin_token');
+      final res = await MyProvider().changeAddress(
+          token!,
+          addCareMainCtrl.receiverAddress.text,
+          addCareMainCtrl.receiverAddressDetail.value,
+          addCareMainCtrl.receiverPostCode.text,
+      );
+      if(!res){
+        Get.dialog(
+          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          }),
+        );
+      }
+    }
+  }
+
+  Future<void> saveSenderAddress() async {
+    //보내는 사람의 주소를 자동저장
+    if(addCareMainCtrl.senderPostSet.value){
+      final String? token = await SharedTokenUtil.getToken('userLogin_token');
+      final res = await MyProvider().changeAddress(
+        token!,
+        addCareMainCtrl.senderAddress.text,
+        addCareMainCtrl.senderAddressDetail.value,
+        addCareMainCtrl.senderPostCode.text,
+      );
+      if(!res){
+        Get.dialog(
+          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          }),
+        );
+      }
+    }
   }
 
 

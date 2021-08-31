@@ -188,7 +188,7 @@ class AddCarePicController extends BaseController {
         source: source,
         maxWidth: 500,
         maxHeight: 500,
-        imageQuality: 10,
+        imageQuality: 100,
         preferredCameraDevice: CameraDevice.rear,
       );
       careImg.value = File(pickedFile!.path);

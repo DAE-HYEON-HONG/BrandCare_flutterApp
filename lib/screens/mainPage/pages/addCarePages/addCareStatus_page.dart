@@ -21,8 +21,8 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
         child: _renderBody(),
         isLeadingShow: false,
       ),
-      //onWillPop: () => Future(() => false),
-      onWillPop: () => Future(() => true),
+      onWillPop: () => Future(() => false),
+      //onWillPop: () => Future(() => true),
     );
   }
 
@@ -79,10 +79,16 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                   Text('케어항목', style: medium14TextStyle),
                   const SizedBox(height: 10),
                   ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: controller.careStatus?.careProduct.length ?? 0,
                     itemBuilder: (context, idx){
-                      return _inputField("${_.careStatus?.careProduct[idx].category}");
+                      return Column(
+                        children: [
+                          _inputField("${_.careStatus?.careProduct[idx].category}"),
+                          const SizedBox(height: 16),
+                        ],
+                      );
                     },
                   ),
                   const SizedBox(height: 24),
@@ -125,9 +131,14 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, idx){
-                      return _carePictures(
-                          'assets/icons/sample_product.png',
-                          '케어/수선 ${idx+1}'
+                      return Column(
+                        children: [
+                          _carePictures(
+                            '${controller.careStatus?.careProduct[idx].image}',
+                            '케어/수선 ${idx + 1}',
+                          ),
+                          const SizedBox(height: 10),
+                        ],
                       );
                     },
                   ),
@@ -197,21 +208,24 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
               ),
             ),
           ):
-          ExtendedImage.network(
-            BaseApiService.imageApi+imgPath,
-            fit: BoxFit.cover,
-            cache: true,
-            // ignore: missing_return
-            loadStateChanged: (ExtendedImageState state) {
-              switch(state.extendedImageLoadState) {
-                case LoadState.loading :
-                  break;
-                case LoadState.completed :
-                  break;
-                case LoadState.failed :
-                  break;
-              }
-            },
+          Expanded(
+            child: ExtendedImage.network(
+              BaseApiService.imageApi+imgPath,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              cache: true,
+              // ignore: missing_return
+              loadStateChanged: (ExtendedImageState state) {
+                switch(state.extendedImageLoadState) {
+                  case LoadState.loading :
+                    break;
+                  case LoadState.completed :
+                    break;
+                  case LoadState.failed :
+                    break;
+                }
+              },
+            ),
           ),
         ],
       ),

@@ -28,10 +28,10 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
               children: [
                 _item(),
                 const SizedBox(height: 24,),
-                controller.model.genuine == "GENUINE" ?
+                controller.model?.genuine == "GENUINE" ?
                 CustomRouteButton(title: '정품인증 결과보기', route: '/main/my/change_product/apply'):
                 CustomArrowBtn(title: '정품인증 신청하기', onTap: () => Get.to(AddGenuinePage(), arguments: controller.productIdx)),
-                if(controller.model.genuine == "REFUSAL")
+                if(controller.model?.genuine == "REFUSAL")
                   CustomRouteButton(title: '정품인증 결과보기', route: '/main/my/change_product/apply'),
                 const SizedBox(height: 16,),
                 CustomRouteButton(title: '제품 사용자 변경', route: '/main/my/change_product/history'),
@@ -46,7 +46,7 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
                     FormInputWidget(
                       onChange: (value){},
                       onSubmit: (value){},
-                      controller: TextEditingController(text: controller.model.title),
+                      controller: TextEditingController(text: controller.model?.title),
                       readOnly: true,
                       title: '제품명',
                       isShowTitle: true,
@@ -55,7 +55,7 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
                     FormInputWidget(
                       onChange: (value){},
                       onSubmit: (value){},
-                      controller: TextEditingController(text: controller.model.serialCode),
+                      controller: TextEditingController(text: controller.model?.serialCode),
                       readOnly: true,
                       title: '일련번호',
                       isShowTitle: true,
@@ -64,7 +64,7 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
                     FormInputWidget(
                       onChange: (value){},
                       onSubmit: (value){},
-                      controller: TextEditingController(text: controller.model.buyDate),
+                      controller: TextEditingController(text: controller.model?.buyDate),
                       readOnly: true,
                       title: '구입시기',
                       isShowTitle: true,
@@ -74,7 +74,7 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
                       onChange: (value){},
                       onSubmit: (value){},
                       controller: TextEditingController(text:
-                      '${NumberFormatUtil.convertNumberFormat(number: controller.model.price)}원'),
+                      '${NumberFormatUtil.convertNumberFormat(number: int.parse("${controller.model?.price ?? 0}"))}원'),
                       readOnly: true,
                       title: '구입금액',
                       isShowTitle: true,
@@ -83,7 +83,7 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
                     FormInputWidget(
                       onChange: (value){},
                       onSubmit: (value){},
-                      controller: TextEditingController(text: controller.model.buyRoute),
+                      controller: TextEditingController(text: controller.model?.buyRoute),
                       readOnly: true,
                       title: '구입경로',
                       isShowTitle: true,
@@ -133,14 +133,14 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('${controller.model.brand} | ${controller.model.category}', style: regular12TextStyle.copyWith(color: gray_333Color),),
+                Text('${controller.model?.brand} | ${controller.model?.category}', style: regular12TextStyle.copyWith(color: gray_333Color),),
                 const SizedBox(width: 19,),
-                if(controller.model.genuine != "REFUSAL")
-                  GenuineBoxWidget(isGenuine: controller.model.genuine == "GENUINE" ? true : false),
+                if(controller.model?.genuine != "REFUSAL")
+                  GenuineBoxWidget(isGenuine: controller.model?.genuine == "GENUINE" ? true : false),
               ],
             ),
             const SizedBox(height: 5,),
-            Text(controller.model.title, style: medium14TextStyle,),
+            Text("${controller.model?.title}", style: medium14TextStyle,),
           ],
         )
       ],
@@ -154,16 +154,16 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _pictureItem('정면 사진', controller.model.frontImage ?? ''),
-            _pictureItem('뒷면 사진', controller.model.backImage ?? ''),
+            _pictureItem('정면 사진', controller.model?.frontImage ?? ''),
+            _pictureItem('뒷면 사진', controller.model?.backImage ?? ''),
           ],
         ),
         const SizedBox(height: 24,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _pictureItem('좌측면 사진', controller.model.leftImage ?? ''),
-            _pictureItem('우측면 사진', controller.model.rightImage ?? ''),
+            _pictureItem('좌측면 사진', controller.model?.leftImage ?? ''),
+            _pictureItem('우측면 사진', controller.model?.rightImage ?? ''),
           ],
         ),
       ],

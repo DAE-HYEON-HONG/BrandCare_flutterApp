@@ -77,18 +77,16 @@ class MainAddCarePage extends StatelessWidget {
                   Obx(() => _itemAuthNumber(context)),
                   const SizedBox(height: 24),
                    if(controller.globalCtrl.userInfoModel != null && controller.globalCtrl.userInfoModel!.address != null)
-                    GestureDetector(
-                      onTap: () => controller.senderNormalAddressSet(),
-                      child: CustomChkAddress(
-                        title: '기본주소로 입력 하시겠습니까?',
-                        postCode: controller.globalCtrl.userInfoModel!.address!.zipCode,
-                        address: controller.globalCtrl.userInfoModel!.address!
-                            .city,
-                        detail: controller.globalCtrl.userInfoModel!.address!
-                            .street,
-                        isChecked: controller.senderNormalAddress.value,
-                      ),
-                    ),
+                     CustomChkAddress(
+                       onTap: () => controller.senderNormalAddressSet(),
+                       title: '기본주소로 입력 하시겠습니까?',
+                       postCode: controller.globalCtrl.userInfoModel!.address!.zipCode,
+                       address: controller.globalCtrl.userInfoModel!.address!
+                           .city,
+                       detail: controller.globalCtrl.userInfoModel!.address!
+                           .street,
+                       isChecked: controller.senderNormalAddress.value,
+                     ),
                   const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,8 +132,9 @@ class MainAddCarePage extends StatelessWidget {
                   )),
                   const SizedBox(height: 8),
                   Obx(() => Container(
-                    child: controller.senderPostSet.value ?
+                    child: controller.saveSenderPostChk.value ?
                     CustomChkAddress(
+                      onTap: () => controller.senderPostSave(),
                       title: '위 주소를 마이페이지에 등록하시겠습니까?',
                       postCode: controller.senderPostCode.text,
                       address: controller.senderAddress.text,
@@ -195,17 +194,15 @@ class MainAddCarePage extends StatelessWidget {
                       Column(
                         children: [
                           if(controller.globalCtrl.userInfoModel != null && controller.globalCtrl.userInfoModel!.address != null)
-                            GestureDetector(
+                            CustomChkAddress(
                               onTap: () => controller.senderNormalAddressSet(),
-                              child: CustomChkAddress(
-                                title: '기본주소로 입력 하시겠습니까?',
-                                postCode: controller.globalCtrl.userInfoModel!.address!.zipCode,
-                                address: controller.globalCtrl.userInfoModel!.address!
-                                    .city,
-                                detail: controller.globalCtrl.userInfoModel!.address!
-                                    .street,
-                                isChecked: controller.senderNormalAddress.value,
-                              ),
+                              title: '기본주소로 입력 하시겠습니까?',
+                              postCode: controller.globalCtrl.userInfoModel!.address!.zipCode,
+                              address: controller.globalCtrl.userInfoModel!.address!
+                                  .city,
+                              detail: controller.globalCtrl.userInfoModel!.address!
+                                  .street,
+                              isChecked: controller.senderNormalAddress.value,
                             ),
                         ],
                       ),
@@ -254,8 +251,9 @@ class MainAddCarePage extends StatelessWidget {
                   )),
                   const SizedBox(height: 8),
                   Obx(() => Container(
-                    child: controller.receiverPostSet.value ?
+                    child: controller.saveReceiverPostChk.value ?
                     CustomChkAddress(
+                      onTap: () => controller.receiverPostSave(),
                       title: '위 주소를 마이페이지에 등록하시겠습니까?',
                       postCode: controller.receiverPostCode.text,
                       address: controller.receiverAddress.text,

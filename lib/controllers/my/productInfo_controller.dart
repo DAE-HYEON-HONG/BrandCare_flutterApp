@@ -1,14 +1,13 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/productDetail_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
-import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:get/get.dart';
 
 class ProductInfoDetailController extends BaseController{
 
   int productIdx = Get.arguments;
-  late ProductDetailModel model;
+  ProductDetailModel? model;
 
   Future<void> reqProductInfo()async{
     print(productIdx);

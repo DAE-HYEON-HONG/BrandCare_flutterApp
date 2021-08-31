@@ -65,6 +65,7 @@ class AddGenuinePage extends StatelessWidget {
                         GestureDetector(
                           onTap: () => controller.senderNormalAddressSet(),
                           child: CustomChkAddress(
+                            onTap: (){},
                             title: '기본주소로 입력 하시겠습니까?',
                             postCode: controller.globalCtrl.userInfoModel!.address!.zipCode,
                             address: controller.globalCtrl.userInfoModel!.address!.city,
@@ -121,6 +122,7 @@ class AddGenuinePage extends StatelessWidget {
                   Obx(() => Container(
                     child: controller.senderPostSet.value ?
                     CustomChkAddress(
+                      onTap: () {},
                       title: '위 주소를 마이페이지에 등록하시겠습니까?',
                       postCode: controller.senderPostCode.text,
                       address: controller.senderAddress.text,
@@ -183,6 +185,7 @@ class AddGenuinePage extends StatelessWidget {
                             GestureDetector(
                               onTap: () => controller.senderNormalAddressSet(),
                               child: CustomChkAddress(
+                                onTap: () {},
                                 title: '기본주소로 입력 하시겠습니까?',
                                 postCode: controller.globalCtrl.userInfoModel?.address!.zipCode ?? '',
                                 address: controller.globalCtrl.userInfoModel?.address!.city ?? '',
@@ -239,6 +242,7 @@ class AddGenuinePage extends StatelessWidget {
                   Obx(() => Container(
                     child: controller.receiverPostSet.value ?
                     CustomChkAddress(
+                      onTap: () {},
                       title: '위 주소를 마이페이지에 등록하시겠습니까?',
                       postCode: controller.receiverPostCode.text,
                       address: controller.receiverAddress.text,

@@ -17,14 +17,14 @@ class AddProductImgsController extends BaseController {
   Rx<File> rightImg = File('').obs;
 
   void pictureChk(){
-    if(frontImg.value.path != ""&&
-        backImg.value.path != ""&&
-        leftImg.value.path != ""&&
-        rightImg.value.path != ""){
-      fill.value = true;
+    if(frontImg.value.path.isEmpty ||
+        backImg.value.path.isEmpty ||
+        leftImg.value.path.isEmpty ||
+        rightImg.value.path.isEmpty){
+      fill.value = false;
       update();
     }else{
-      fill.value = false;
+      fill.value = true;
       update();
     }
   }

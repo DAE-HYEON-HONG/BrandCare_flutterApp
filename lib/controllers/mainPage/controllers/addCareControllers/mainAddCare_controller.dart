@@ -121,12 +121,22 @@ class MainAddCareController extends BaseController {
       if (senderPostCode.text != ""
           || senderAddress.text != ""
           || senderAddressDetail.value != "") {
-        senderPostSet.value = true;
+        saveSenderPostChk.value = true;
         update();
       } else {
-        senderPostSet.value = false;
+        saveSenderPostChk.value = false;
         update();
       }
+    }
+  }
+
+  void senderPostSave() {
+    if(receiverPostSet.value){
+      receiverPostSet.value = false;
+      update();
+    }else{
+      senderPostSet.value = !senderPostSet.value;
+      update();
     }
   }
 
@@ -162,6 +172,16 @@ class MainAddCareController extends BaseController {
       update();
     }else{
       saveReceiverPostChk.value = false;
+      update();
+    }
+  }
+
+  void receiverPostSave() {
+    if(senderPostSet.value){
+      senderPostSet.value = false;
+      update();
+    }else{
+      receiverPostSet.value = !receiverPostSet.value;
       update();
     }
   }

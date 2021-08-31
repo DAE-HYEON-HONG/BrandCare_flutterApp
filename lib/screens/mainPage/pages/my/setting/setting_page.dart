@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SettingPage extends GetView<SettingController> {
   const SettingPage({Key? key}) : super(key: key);
@@ -79,41 +80,44 @@ class SettingPage extends GetView<SettingController> {
       );
 
   Widget _itemToggle() => Container(
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.only(top: 9.0, bottom: 9.0),
-          child: Row(
-            children: [
-              Text(
-                '알림설정',
-                style: medium14TextStyle,
-              ),
-              const Spacer(),
-              // Obx(() =>
-              //     Transform.scale(
-              //       transformHitTests: false,
-              //       scale: 0.5, child: CupertinoSwitch(
-              //         activeColor: primaryColor,
-              //         value: controller.isAlarm.value,
-              //         onChanged: (value) {
-              //           controller.isAlarm.value = value;
-              //         }),))
-              Obx(() =>
-                  SizedBox(
-                    width: 30.4,
-                    height: 20,
-                    child: Transform.scale(
-                      transformHitTests: false,
-                      scale: .7,
-                      child: CupertinoSwitch(
-                        activeColor: primaryColor,
-                        value: controller.isAlarm.value,
-                        onChanged: (value) {
-                          controller.isAlarm.value = value;
-                        }),
-                    ),
-                  ))
-            ],
+        child: GestureDetector(
+          onTap: () => openAppSettings(),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.only(top: 9.0, bottom: 9.0),
+            child: Row(
+              children: [
+                Text(
+                  '알림설정',
+                  style: medium14TextStyle,
+                ),
+                const Spacer(),
+                // Obx(() =>
+                //     Transform.scale(
+                //       transformHitTests: false,
+                //       scale: 0.5, child: CupertinoSwitch(
+                //         activeColor: primaryColor,
+                //         value: controller.isAlarm.value,
+                //         onChanged: (value) {
+                //           controller.isAlarm.value = value;
+                //         }),))
+                Obx(() =>
+                    SizedBox(
+                      width: 30.4,
+                      height: 20,
+                      child: Transform.scale(
+                        transformHitTests: false,
+                        scale: .7,
+                        child: CupertinoSwitch(
+                            activeColor: primaryColor,
+                            value: controller.isAlarm.value,
+                            onChanged: (value) {
+                              controller.isAlarm.value = value;
+                            }),
+                      ),
+                    ))
+              ],
+            ),
           ),
         ),
       );
