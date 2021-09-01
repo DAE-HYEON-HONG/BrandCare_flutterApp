@@ -3,7 +3,9 @@ import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/genuine_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/addGenuineStatus_page.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/status_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -35,6 +37,7 @@ class GenuineHistoryPage extends GetView<GenuineController> {
                   child: GetBuilder<GenuineController>(builder: (_) => ListView.separated(
                     controller: controller.pagingScroll,
                     itemBuilder: (context, idx) => _item(
+                      productIdx: controller.genuineList![idx].id,
                       title: controller.genuineList![idx].title ?? '',
                       status: controller.genuineList![idx].status,
                       time: DateFormatUtil.convertDateFormat(date: controller.genuineList![idx].createdDate),
@@ -98,40 +101,50 @@ class GenuineHistoryPage extends GetView<GenuineController> {
     required String time,
     required String date,
     required String brand,
-    required String category}) => Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Text(
-                  '$brand | $category',
-                  style: regular12TextStyle.copyWith(color: gray_333Color),
-                ),
-                const Spacer(),
-                Text(
-                  '진행중',
-                  style: medium14TextStyle.copyWith(color: gray_333Color),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 4,
-            ),
-            Row(
-              children: [
-                Text(
-                  '$title',
-                  style: medium14TextStyle,
-                ),
-                const Spacer(),
-                Text(
-                  '$time | $date',
-                  style: regular14TextStyle.copyWith(color: gray_333Color),
-                )
-              ],
-            )
-          ],
-        ),
-      );
+    required String category,
+    required int productIdx }) => GestureDetector(
+    behavior: HitTestBehavior.translucent,
+    onTap: (){
+      Get.to(() => AddGenuineStatusPage(), arguments: {
+        'back' : true,
+        'idx' : productIdx,
+      });
+    },
+    child: Container(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                '$brand | $category',
+                style: regular12TextStyle.copyWith(color: gray_333Color),
+              ),
+              const Spacer(),
+              Text(
+                StatusUtil.statusChk(status: status),
+                style: medium14TextStyle.copyWith(color: gray_333Color),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 4,
+          ),
+          Row(
+            children: [
+              Text(
+                '$title',
+                style: medium14TextStyle,
+              ),
+              const Spacer(),
+              Text(
+                '$time | $date',
+                style: regular14TextStyle.copyWith(color: gray_333Color),
+              )
+            ],
+          )
+        ],
+      ),
+    ),
+  );
 }

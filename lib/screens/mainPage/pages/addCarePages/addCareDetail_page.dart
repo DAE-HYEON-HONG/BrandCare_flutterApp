@@ -54,6 +54,7 @@ class AddCareDetailPage extends StatelessWidget {
                         _detailImage('${_.model?.results[idx].beforeImage}'),
                         const SizedBox(height: 10),
                         Text('케어/수선 ${idx+1} - 케어/수선 후'),
+                        const SizedBox(height: 10),
                         _detailImage('${_.model?.results[idx].afterImage}'),
                       ],
                     );
@@ -103,7 +104,7 @@ class AddCareDetailPage extends StatelessWidget {
   _productInfo({required String imgPath, required String title, required String type, required String clock, required String date}){
     return Container(
       width: double.infinity,
-      height: 150,
+      height: 160,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),

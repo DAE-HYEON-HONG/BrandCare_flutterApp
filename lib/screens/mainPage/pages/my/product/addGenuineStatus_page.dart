@@ -3,6 +3,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/addCareStatus_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuineStatus_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/status_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
@@ -20,7 +21,7 @@ class AddGenuineStatusPage extends StatelessWidget {
         isLeadingShow: false,
       ),
       //onWillPop: () => Future(() => false),
-      onWillPop: () => Future(() => true),
+      onWillPop: () => Future(() => controller.back),
     );
   }
 
@@ -39,11 +40,11 @@ class AddGenuineStatusPage extends StatelessWidget {
                 children: [
                   const SizedBox(height: 32),
                   _productInfo(
-                    imgPath: 'imgPath',
-                    title: " 외 n건",
-                    type: "케어/수선 신청",
-                    clock: DateFormatUtil.convertOnlyTime(date: "2021-06-02T17:11:59.040906"),
-                    date: DateFormatUtil.convertOnlyDate(date: "2021-06-02T17:11:59.040906"),
+                    imgPath: "${controller.careStatus?.careProduct[0].image}",
+                    title: "${controller.careStatus?.careProduct[0].category} 외 ${controller.careStatus?.careProduct.length ?? 0}건",
+                    type: StatusUtil.statusChk(status: "${controller.careStatus?.status}"),
+                    clock: DateFormatUtil.convertOnlyTime(date: "${controller.careStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
+                    date: DateFormatUtil.convertOnlyDate(date: "${controller.careStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
                   ),
                   const SizedBox(height: 24),
                   ListView.builder(
@@ -63,18 +64,18 @@ class AddGenuineStatusPage extends StatelessWidget {
                   const SizedBox(height: 24),
                   CustomButtonOnOffWidget(
                     title: '케어/수선 결과보기',
-                    onClick: () => controller.detail(),
-                    isOn: controller.fill.value,
+                    onClick: () {
+                      if(controller.dateStatus?.be_releasedDate != null){
+                        controller.detail();
+                      }
+                    },
+                    isOn: controller.dateStatus?.be_releasedDate == null ? false : true,
                     radius: 30,
                   ),
                   const SizedBox(height: 24),
-                  Text('물품명', style: medium14TextStyle),
+                  Text('제품명', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField('끈길이 조절 외 n건'),
-                  const SizedBox(height: 24),
-                  Text('케어항목', style: medium14TextStyle),
-                  const SizedBox(height: 10),
-                  _inputField('가방 - 끈길이 조절/ 가방 - 끈길이 조절'),
+                  _inputField('${controller.careStatus?.careProduct[0].category} 외 ${controller.careStatus?.careProduct.length ?? 0}건'),
                   const SizedBox(height: 24),
                   Text('택배 반송 주소', style: medium14TextStyle),
                   const SizedBox(height: 10),
@@ -88,28 +89,25 @@ class AddGenuineStatusPage extends StatelessWidget {
                   const SizedBox(height: 24),
                   Text('이름', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField('홍대햔'),
+                  _inputField(controller.careStatus?.returnType == "SENDER" ? "${controller.careStatus?.sender.name}" : "${controller.careStatus?.receiver.name}"),
                   const SizedBox(height: 24),
                   Text('전화번호', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField('010-3654-1528'),
+                  _inputField(controller.careStatus?.returnType == "SENDER" ? "${controller.careStatus?.sender.phone}" : "${controller.careStatus?.receiver.phone}"),
                   const SizedBox(height: 24),
                   Text('주소', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField('서울특별시 금천구 가산디지털1로 24'),
+                  _inputField(controller.careStatus?.returnType == "SENDER" ?
+                  "${controller.careStatus?.sender.address.city}":
+                  "${controller.careStatus?.receiver.address.city}"),
                   const SizedBox(height: 10),
-                  _inputField('대륭테크노타운 701호'),
+                  _inputField(controller.careStatus?.returnType == "SENDER" ?
+                  "${controller.careStatus?.sender.address.street}":
+                  "${controller.careStatus?.receiver.address.street}"),
                   const SizedBox(height: 24),
                   Text('요청사항', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField('고객님의 요청사항을 작성하세요.'),
-                  const SizedBox(height: 24),
-                  Text('케어/수선 서비스 참고 사진첨부', style: medium14TextStyle),
-                  const SizedBox(height: 10),
-                  _carePictures(
-                    'assets/icons/sample_product.png',
-                    '케어/수선 1'
-                  ),
+                  _inputField("${controller.careStatus?.request_term}"),
                   const SizedBox(height: 120),
                 ],
               ),

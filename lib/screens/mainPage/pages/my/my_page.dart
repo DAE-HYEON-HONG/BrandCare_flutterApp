@@ -116,10 +116,10 @@ class MyPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(myController.myProfileInfoModel.nickName, style: medium14TextStyle,),
+                      Text(myController.myProfileInfoModel?.nickName ?? "", style: medium14TextStyle,),
                       const Spacer(),
                       Text(
-                        "최근 접속 ${DateFormatUtil.convertDateFormat(date: myController.myProfileInfoModel.lastLoginDate, format: "yyyy.MM.dd")} ${DateFormatUtil.convertDateFormat(date: myController.myProfileInfoModel.lastLoginDate, format: "hh:mm:ss")}",
+                        "최근 접속 ${DateFormatUtil.convertDateFormat(date: "${myController.myProfileInfoModel?.lastLoginDate}", format: "yyyy.MM.dd")} ${DateFormatUtil.convertDateFormat(date: "${myController.myProfileInfoModel?.lastLoginDate}", format: "hh:mm:ss")}",
                         style: regular12TextStyle.copyWith(color: gray_333Color),
                       ),
                     ],

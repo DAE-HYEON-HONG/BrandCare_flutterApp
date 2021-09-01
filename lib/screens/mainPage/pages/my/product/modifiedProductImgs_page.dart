@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/AddProductControllers/addProductImgs_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/modifiedProductImgs_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -11,12 +12,13 @@ import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
 
-class AddProductImgsPage extends GetView<AddProductImgsController> {
+class ModifiedProductImgsPage extends StatelessWidget {
+  ModifiedProductImgsController controller = Get.put(ModifiedProductImgsController());
   @override
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(
-        title: "제품 등록",
-        child: _renderBody(),
+      title: "제품 정보 수정",
+      child: _renderBody(),
     );
   }
 
@@ -87,16 +89,16 @@ class AddProductImgsPage extends GetView<AddProductImgsController> {
               ),
             ),
           ),
-          Positioned(
+          Obx(() => Positioned(
             left: 0,
             right: 0,
             bottom: 0,
             child: CustomFormSubmit(
               title: "확인",
               onTab: () => controller.nextLevel(),
-              fill: true,
+              fill: controller.fill.value,
             ),
-          ),
+          )),
         ],
       ),
     );
@@ -264,29 +266,29 @@ class AddProductImgsPage extends GetView<AddProductImgsController> {
 
   _listMode(){
     return Get.bottomSheet(
-      Container(
-        width: double.infinity,
-        height: 150,
-        color: whiteColor,
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              onTap: () async => await controller.loadMoreAssets(ImageSource.camera),
-              title: Text(
-                "직접 촬영",
-                style: medium14TextStyle,
+        Container(
+          width: double.infinity,
+          height: 150,
+          color: whiteColor,
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                onTap: () async => await controller.loadMoreAssets(ImageSource.camera),
+                title: Text(
+                  "직접 촬영",
+                  style: medium14TextStyle,
+                ),
               ),
-            ),
-            ListTile(
-              onTap: () async => await controller.loadMoreAssets(ImageSource.gallery),
-              title: Text(
-                "갤러리에서 사진 선택",
-                style: medium14TextStyle,
+              ListTile(
+                onTap: () async => await controller.loadMoreAssets(ImageSource.gallery),
+                title: Text(
+                  "갤러리에서 사진 선택",
+                  style: medium14TextStyle,
+                ),
               ),
-            ),
-          ],
-        ),
-      )
+            ],
+          ),
+        )
     );
   }
 }

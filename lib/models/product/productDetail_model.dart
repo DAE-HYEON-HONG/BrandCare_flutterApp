@@ -6,8 +6,6 @@ part 'productDetail_model.g.dart';
 
 @JsonSerializable()
 class ProductDetailModel{
-  late List<CategoryListModel> additionList;
-
   ProductDetailModel(
       this.additionList,
       this.backImage,
@@ -35,14 +33,15 @@ class ProductDetailModel{
   late String buyRoute;
   late String category;
   late List<CategoryListModel> conditionList;
+  late List<CategoryListModel> additionList;
   late String? createdDate;
   late String etc;
   late String? frontImage;
   late String genuine;
   late int id;
-  late List<IdPathImagesModel> image;
+  late List<IdPathImagesModel>? image;
   late String? leftImage;
-  late int price;
+  late String price;
   late String? rightImage;
   late String serialCode;
   late String thumbnail;

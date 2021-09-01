@@ -7,6 +7,7 @@ import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProd
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/addGenuine_page.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/customArrowBtn.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/button/customArrowUpDown.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/genuine_box_widget.dart';
@@ -26,17 +27,26 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _item(),
+                _item("${controller.model?.thumbnail}"),
                 const SizedBox(height: 24,),
                 controller.model?.genuine == "GENUINE" ?
                 CustomRouteButton(title: '정품인증 결과보기', route: '/main/my/change_product/apply'):
-                CustomArrowBtn(title: '정품인증 신청하기', onTap: () => Get.to(AddGenuinePage(), arguments: controller.productIdx)),
+                CustomArrowBtn(title: '정품인증 신청하기', onTap: () {
+                  Get.to(() => AddGenuinePage(), arguments: controller.productIdx);
+                }),
                 if(controller.model?.genuine == "REFUSAL")
                   CustomRouteButton(title: '정품인증 결과보기', route: '/main/my/change_product/apply'),
                 const SizedBox(height: 16,),
                 CustomRouteButton(title: '제품 사용자 변경', route: '/main/my/change_product/history'),
                 const SizedBox(height: 16,),
-                CustomRouteButton(title: '제품 상세 내용', route: '/main/my/change_product/apply'),
+                Obx(() => CustomArrowUpDownBtn(
+                  onTap: () {
+                    controller.onDown();
+                  },
+                  title: '제품 상세 내용',
+                  onDown: controller.downDetail.value,
+                )),
+                if (controller.downDetail.value == true)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -93,13 +103,39 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
                     const SizedBox(height: 32,),
                     Text('추가정보', style: medium14TextStyle,),
                     const SizedBox(height: 17,),
-                    _productAddInfo('제품 컨디션', ['오염', '파손', '문제 없음'], []),
+                    _productAddInfo(
+                        '제품 컨디션',
+                        controller.model != null
+                            ? controller.model!.conditionList
+                            .map((e) => e.title)
+                            .toList()
+                            : []),
                     const SizedBox(height: 30,),
-                    _productAddInfo('제품 구성품', ['더스트백', '보증서', '없음'], []),
+                    _productAddInfo(
+                        '제품 컨디션',
+                        controller.model != null
+                            ? controller.model!.additionList
+                            .map((e) => e.title)
+                            .toList()
+                            : []),
                     const SizedBox(height: 27,),
                     _etc(),
                     const SizedBox(height: 32,),
-                    CustomRouteButton(title: '제품 정보 수정', route: '/main/my/change_product/apply'),
+                    CustomArrowBtn(title: '제품 정보 수정', onTap: () {
+                      Get.toNamed(
+                        "/modified/product/info",
+                        arguments: {
+                          'title' : controller.model?.title,
+                          "category" : controller.model?.category,
+                          "brand" : controller.model?.brand,
+                          "serial" :controller.model?.serialCode,
+                          "buyDate" : controller.model?.buyDate,
+                          "buyPrice" : controller.model?.price,
+                          "buyRoute" : controller.model?.buyRoute,
+                          "imgList" : controller.model?.image,
+                        }
+                      );
+                    }),
                     const SizedBox(height: 16,),
                     CustomArrowBtn(title: '제품 삭제', onTap: () async => await controller.removeProduct()),
                     const SizedBox(height: 32,),
@@ -112,7 +148,7 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
     ));
   }
 
-  Widget _item() => GetBuilder<ProductInfoDetailController>(builder: (_) => Container(
+  Widget _item(String imgPath) => GetBuilder<ProductInfoDetailController>(builder: (_) => Container(
     height: 104,
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
@@ -124,7 +160,40 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
     ),
     child: Row(
       children: [
-        Image.asset('assets/icons/sample_product.png', width: 72, height: 72,),
+        imgPath == "" ?
+        Container(
+          width: 72,
+          height: 72,
+          decoration: BoxDecoration(
+            border: Border.all(color: gray_999Color),
+          ),
+          child: Center(
+            child: SvgPicture.asset(
+              "assets/icons/header_title_logo.svg",
+              height: 10,
+            ),
+          ),
+        ):
+        Container(
+          width: 72,
+          height: 72,
+          child: ExtendedImage.network(
+            BaseApiService.imageApi+imgPath,
+            fit: BoxFit.cover,
+            cache: true,
+            // ignore: missing_return
+            loadStateChanged: (ExtendedImageState state) {
+              switch(state.extendedImageLoadState) {
+                case LoadState.loading :
+                  break;
+                case LoadState.completed :
+                  break;
+                case LoadState.failed :
+                  break;
+              }
+            },
+          ),
+        ),
         const SizedBox(width: 16,),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -206,7 +275,7 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
     ),
   ));
 
-  Widget _productAddInfo(String title, List<String> list, List<int> category) {
+  Widget _productAddInfo(String title, List<String> list) {
     return GetBuilder<ProductInfoDetailController>(builder:(_)=>Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -234,7 +303,7 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
       Text('기타', style: medium14TextStyle,),
       const SizedBox(height: 17,),
       TextField(
-        controller: TextEditingController(text: '상태 좋음'),
+        controller: TextEditingController(text: controller.model?.etc),
         style: regular14TextStyle.copyWith(color: gray_999Color),
         maxLines: 8,
         decoration: InputDecoration(

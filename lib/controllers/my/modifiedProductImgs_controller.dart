@@ -1,15 +1,17 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/models/idPathImages_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 
-class AddProductImgsController extends BaseController {
+class ModifiedProductImgsController extends BaseController {
 
   final ImagePicker imgPicker = ImagePicker();
   dynamic imgPickerErr;
   RxBool fill = false.obs;
   List<File>? pickImgList = <File>[];
+  List<IdPathImagesModel> imgList = Get.arguments['imgList'];
 
   Rx<File> frontImg = File('').obs;
   Rx<File> backImg = File('').obs;
@@ -118,7 +120,9 @@ class AddProductImgsController extends BaseController {
   }
 
   void nextLevel() {
-    Get.toNamed('/mainAddProduct/addDescription');
+    if(fill.value){
+      Get.toNamed('/mainAddProduct/addDescription');
+    }
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/notLoginPagesControllers/useInfoControllers/useInfoDescription_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,6 +9,7 @@ import 'package:get/instance_manager.dart';
 
 class UseInfoDescriptionPage extends StatelessWidget {
   final UseInfoDescriptionController controller = Get.put(UseInfoDescriptionController());
+  final globalCtrl = Get.find<GlobalController>();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,6 +27,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
         ),
         const SizedBox(height: 9),
         // 1. 문장
+        if(globalCtrl.isLogin.value)
         _description(
           "1. 내가 가진 제품 등록하기",
           "",
@@ -37,10 +40,10 @@ class UseInfoDescriptionPage extends StatelessWidget {
                 style: regular10TextStyle,
               ),
               const SizedBox(height: 4),
-              Text(
-                "추가설명----",
-                style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
-              ),
+              // Text(
+              //   "추가설명----",
+              //   style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
+              // ),
             ],
           ),
         ),
@@ -71,10 +74,10 @@ class UseInfoDescriptionPage extends StatelessWidget {
                       style: regular10TextStyle,
                     ),
                     const SizedBox(height: 16),
-                    Text(
-                      "추가설명----",
-                      style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
-                    ),
+                    // Text(
+                    //   "추가설명----",
+                    //   style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
+                    // ),
                     const SizedBox(height: 16),
                     controller.isOpened.value ?
                     Column(
@@ -155,6 +158,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        if(globalCtrl.isLogin.value)
                         Text(
                           "케어/수선 신청 바로가기",
                           style: medium10TextStyle.copyWith(
@@ -207,15 +211,16 @@ class UseInfoDescriptionPage extends StatelessWidget {
                 style: regular10TextStyle,
               ),
               const SizedBox(height: 14),
-              Text(
-                "추가설명----",
-                style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
-              ),
+              // Text(
+              //   "추가설명----",
+              //   style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
+              // ),
             ],
           ),
         ),
         const SizedBox(height: 8),
         // 4. 문장
+        if(globalCtrl.isLogin.value)
         _description(
           "4. shop에 내 제품을 올리고 둘러보기",
           "",
@@ -228,10 +233,10 @@ class UseInfoDescriptionPage extends StatelessWidget {
                 style: regular10TextStyle,
               ),
               const SizedBox(height: 4),
-              Text(
-                "추가설명----",
-                style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
-              ),
+              // Text(
+              //   "추가설명----",
+              //   style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
+              // ),
             ],
           ),
         ),

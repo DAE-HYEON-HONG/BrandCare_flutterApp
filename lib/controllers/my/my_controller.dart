@@ -13,14 +13,14 @@ import '../global_controller.dart';
 class MyController extends BaseController {
 
   final globalCtrl = Get.find<GlobalController>();
-  late MyProfileInfoModel myProfileInfoModel;
+  MyProfileInfoModel? myProfileInfoModel;
 
   List<Map<String, int>> myData = [];
 
   void myDataInfo(){
-    myData.add({'등록제품보기': myProfileInfoModel.productCount});
-    myData.add({'케어/수선이력': myProfileInfoModel.careCount});
-    myData.add({'정품인증이력': myProfileInfoModel.activationCount});
+    myData.add({'등록제품보기': myProfileInfoModel?.productCount ?? 0});
+    myData.add({'케어/수선이력': myProfileInfoModel?.careCount ?? 0});
+    myData.add({'정품인증이력': myProfileInfoModel?.activationCount ?? 0});
   }
   Map<String, String> linkData = {
     '친구 초대 하기': '/main/my/invite',
@@ -99,8 +99,10 @@ class MyController extends BaseController {
   Future<void> myInfo() async{
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     final res = await MyProvider().chkMyProfile(token!);
+    final resAuth = await AuthProvider().loginToken(token);
     if(res != null){
       myPageInfo(res);
+      globalCtrl.addUserInfo(resAuth);
     }else{
       Get.dialog(
         CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
@@ -114,8 +116,9 @@ class MyController extends BaseController {
   Future<void> changeProfileImg() async {
     final String? token = await SharedTokenUtil.getToken('userLogin_token');
     final res = await MyProvider().changeProfileImg(token!, profileImg.value);
+    print(res.toString());
     if(res != null){
-      myInfo();
+      await myInfo();
     }else{
       Get.dialog(
         CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
@@ -221,8 +224,8 @@ class MyController extends BaseController {
         globalCtrl.userInfoModel!.phNum = phone.value;
         globalCtrl.update();
         myInfo();
-        update();
         Get.back();
+        update();
       }else{
         Get.dialog(
           CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){

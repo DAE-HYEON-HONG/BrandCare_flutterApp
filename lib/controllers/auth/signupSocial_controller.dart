@@ -30,7 +30,7 @@ class SignUpSocialController extends BaseController {
 
   Rx<bool> isPhone = false.obs;
   Rx<String> phoneTxt = ''.obs;
-  bool phoneChecked = true; // false로 꼭 바꿔주세요.
+  bool phoneChecked = false; // false로 꼭 바꿔주세요.
 
 
   void agreeUpdate() {

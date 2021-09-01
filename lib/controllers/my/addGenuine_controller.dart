@@ -51,12 +51,6 @@ class AddGenuineController extends BaseController {
   RxBool returnSender = true.obs;
   RxBool returnReceiver = false.obs;
 
-
-
-  void initSettings() {
-    chkNormalAddress();
-  }
-
   void chkNormalAddress() {
     if(globalCtrl.userInfoModel?.address!.city != "" &&
         globalCtrl.userInfoModel?.address!.street != "" &&

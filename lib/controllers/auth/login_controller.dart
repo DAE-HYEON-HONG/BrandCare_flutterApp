@@ -238,13 +238,25 @@ class LoginController extends BaseController {
         final res = await AuthProvider().loginUser(emailController.text, passwordController.text);
         Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
         print(jsonMap.toString());
-        if(jsonMap['code'] == "U003") {
+        //아에 계정이 없을떄;;
+        if(jsonMap['code'] == "U002") {
           Get.dialog(
             CustomDialogWidget(content: '이메일 또는 비밀번호를 확인해주세요.', onClick: (){
               Get.back();
               update();
             }),
           );
+          super.networkState.value = NetworkStateEnum.DONE;
+          return;
+        }
+        if(jsonMap['code'] == "U003"){
+          Get.dialog(
+            CustomDialogWidget(content: '이메일 또는 비밀번호를 확인해주세요.', onClick: (){
+              Get.back();
+              update();
+            }),
+          );
+          super.networkState.value = NetworkStateEnum.DONE;
         }else{
           if(isAutoLogin.value){
             SharedTokenUtil.saveBool(true, 'isAutoLogin');

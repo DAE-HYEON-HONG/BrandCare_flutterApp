@@ -4,6 +4,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/care_history_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/status_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -35,7 +36,11 @@ class CareHistoryPage extends GetView<CareHistoryController> {
                     builder: (_) => ListView.separated(
                       controller: controller.pagingScroll,
                       itemBuilder: (context, idx) => GestureDetector(
-                        onTap: () => Get.toNamed("/mainAddCare/add/status", arguments: controller.careList![idx].id),
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () => Get.toNamed("/mainAddCare/add/status", arguments: {
+                          "idx" : controller.careList![idx].id,
+                          "back" : true,
+                        }),
                         child: _item(
                           title: controller.careList![idx].title,
                           status: controller.careList![idx].status,
@@ -82,10 +87,10 @@ class CareHistoryPage extends GetView<CareHistoryController> {
                   style: medium14TextStyle.copyWith(color: primaryColor),
                 ),
                 const Spacer(),
-                Text(
+                Obx(() => Text(
                   '케어/수선 완료 ${controller.careCompleteCount}건',
                   style: regular12TextStyle.copyWith(color: primaryColor),
-                ),
+                )),
               ],
             ),
           ),
@@ -110,7 +115,7 @@ class CareHistoryPage extends GetView<CareHistoryController> {
             ),
             const Spacer(),
             Text(
-              '진행중',
+              StatusUtil.statusChk(status: status),
               style: medium14TextStyle.copyWith(color: gray_333Color),
             )
           ],

@@ -7,7 +7,7 @@ import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-class AddProductDescriptionController extends BaseController{
+class ModifiedProductDesController extends BaseController{
 
   final mainAddProductCtrl = Get.find<MainAddProductController>();
   final addProductImgsCtrl = Get.find<AddProductImgsController>();

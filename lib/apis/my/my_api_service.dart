@@ -128,7 +128,7 @@ class MyApiService{
 
   Future<http.Response?> changeAddress(dynamic headers, dynamic body) async {
     try{
-      final uri = Uri.parse("${BaseApiService.baseApi}/user/phone");
+      final uri = Uri.parse("${BaseApiService.baseApi}/user/address");
       final http.Response res = await http.put(
           uri,
           headers: headers,

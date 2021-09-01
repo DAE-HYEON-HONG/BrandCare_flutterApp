@@ -155,9 +155,11 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        '2. ${addCareEtcCtrl.addCareList![idx].secondCategory}',
-                                        style: medium14TextStyle,
+                                      Expanded(
+                                        child: Text(
+                                          '2. ${addCareEtcCtrl.addCareList![idx].secondCategory}',
+                                          style: medium14TextStyle,
+                                        ),
                                       ),
                                       Text(
                                         '+ ${NumberFormatUtil.convertNumberFormat(number: addCareEtcCtrl.addCareList![idx].price)}원',
@@ -319,7 +321,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                                 style: medium14TextStyle,
                               ),
                               Text(
-                                '${NumberFormatUtil.convertNumberFormat(number: controller.allPrice())}원',
+                                '${NumberFormatUtil.convertNumberFormat(number: controller.allMountPrice())}원',
                                 style: medium16TextStyle.copyWith(color: redColor),
                               ),
                             ],

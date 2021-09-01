@@ -92,6 +92,7 @@ class _CareExpansionListFieldState extends State<CareExpansionListField> with Si
             Padding(
               padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
               child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
                 onTap: () {
                   _handleTap();
                   widget.onTap();
@@ -120,27 +121,30 @@ class _CareExpansionListFieldState extends State<CareExpansionListField> with Si
                 children: [
                   const Divider(height: 1, color: gray_f5f6f7Color),
                   ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
                     padding: const EdgeInsets.all(0),
                     shrinkWrap: true,
                     itemCount: widget.items.length,
                     itemBuilder: (context, idx) {
                       return GestureDetector(
+                        behavior: HitTestBehavior.translucent,
                         onTap: () {
                           changeValue(widget.items[idx].keys.first);
                           changePriceValue(widget.items[idx].values.first);
                         },
                         child: Container(
                           width: double.infinity,
-                          height: 40,
-                          padding: EdgeInsets.only(left: 16, right: 16),
+                          padding: EdgeInsets.only(left: 16, right: 16, top: 13, bottom: 13),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                widget.items[idx].keys.first,
-                                style: regular14TextStyle.copyWith(
-                                    color: gray_999Color),
+                              Expanded(
+                                child: Text(
+                                  widget.items[idx].keys.first,
+                                  style: regular14TextStyle.copyWith(
+                                      color: gray_999Color),
+                                ),
                               ),
                               Container(
                                 child: Row(

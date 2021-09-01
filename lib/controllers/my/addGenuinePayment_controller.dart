@@ -2,8 +2,10 @@ import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuineEtc_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuine_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/care_provider.dart';
+import 'package:brandcare_mobile_flutter_v2/providers/my_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/addGenuineStatus_page.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:get/get.dart';
 
@@ -78,6 +80,8 @@ class AddGenuinePaymentController extends BaseController {
       price: allPrice(),
       productId: addGenuineCtrl.productIdx,
     );
+    await saveReceiverAddress();
+    await saveSenderAddress();
     if(res == null){
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
@@ -98,12 +102,57 @@ class AddGenuinePaymentController extends BaseController {
       CustomDialogWidget(
         content: '신청이 완료되었습니다.',
         onClick: (){
-          Get.to(AddGenuineStatusPage(), arguments: idx);
+          Get.to(() => AddGenuineStatusPage(), arguments: {
+            "idx" : idx,
+            "back" : false,
+          });
         },
         isSingleButton: true,
         okTxt: "확인",
       ),
     );
+  }
+
+  Future<void> saveReceiverAddress() async{
+    //받는 사람의 주소를 자동 저장
+    if(addGenuineCtrl.receiverPostSet.value){
+      final String? token = await SharedTokenUtil.getToken('userLogin_token');
+      final res = await MyProvider().changeAddress(
+        token!,
+        addGenuineCtrl.receiverAddress.text,
+        addGenuineCtrl.receiverAddressDetail.value,
+        addGenuineCtrl.receiverPostCode.text,
+      );
+      if(!res){
+        Get.dialog(
+          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          }),
+        );
+      }
+    }
+  }
+
+  Future<void> saveSenderAddress() async {
+    //보내는 사람의 주소를 자동저장
+    if(addGenuineCtrl.senderPostSet.value){
+      final String? token = await SharedTokenUtil.getToken('userLogin_token');
+      final res = await MyProvider().changeAddress(
+        token!,
+        addGenuineCtrl.senderAddress.text,
+        addGenuineCtrl.senderAddressDetail.value,
+        addGenuineCtrl.senderPostCode.text,
+      );
+      if(!res){
+        Get.dialog(
+          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          }),
+        );
+      }
+    }
   }
 
 
