@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuine_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/productInfo_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/mypage/genuine/genuineList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/addGenuineList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/genuineList_model.dart';
@@ -15,6 +17,8 @@ import 'package:get/get.dart';
 class AddGenuineEtcController extends BaseController {
 
   final globalCtrl = Get.find<GlobalController>();
+  final addGenuineCtrl = Get.find<AddGenuineController>();
+  final productInfoDetailCtrl = Get.find<ProductInfoDetailController>();
 
   List<GenuinePriceListModel>? genuineList = [
     GenuinePriceListModel("정품인증", 2, 29000),

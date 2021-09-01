@@ -16,7 +16,7 @@ class ShopDetailModel {
   late bool hasLike;
   late List<IdPathImagesModel> images;
   late String nickName;
-  late int price;
+  late int? price;
   late int shopId;
   late String title;
   late String? userProfile;

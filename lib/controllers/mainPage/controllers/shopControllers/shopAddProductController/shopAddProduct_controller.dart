@@ -1,5 +1,8 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/models/mypage/product/myProduct_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/paging_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/shop/addProductShop_model.dart';
+import 'package:brandcare_mobile_flutter_v2/providers/my_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/shop_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
@@ -18,21 +21,43 @@ class ShopAddProductController extends BaseController{
   Rx<bool> fill = false.obs;
   Rx<bool> categoryModel = false.obs;
 
+  late Paging productListPaging;
+  List<MyProduct> myProductList = <MyProduct>[];
+  ScrollController pagingScroll = ScrollController();
+  int currentPage = 1;
+  int? myProductIdx;
+  int? currentIdx;
+  RxString sort = "LATEST".obs;
+
   final ImagePicker imgPicker = ImagePicker();
   dynamic imgPickerErr;
   List<File>? pickImgList = <File>[];
 
-  Future<void> loadAssets() async {
+  Future<void> loadAssets(ImageSource source) async {
     try{
-      final pickedFileList = await imgPicker.pickMultiImage(
-        maxWidth: 500,
-        maxHeight: 500,
-        imageQuality: 10,
-      );
-      for(var file in pickedFileList!){
-        pickImgList!.add(File(file.path));
+      if(source == ImageSource.camera){
+        final pickedFile = await imgPicker.pickImage(
+          source: source,
+          maxWidth: 500,
+          maxHeight: 500,
+          imageQuality: 100,
+          preferredCameraDevice: CameraDevice.rear,
+        );
+        pickImgList!.add(File(pickedFile!.path));
+        Get.back();
+        update();
+      }else{
+        final pickedFileList = await imgPicker.pickMultiImage(
+          maxWidth: 500,
+          maxHeight: 500,
+          imageQuality: 100,
+        );
+        for(var file in pickedFileList!){
+          pickImgList!.add(File(file.path));
+        }
+        Get.back();
+        update();
       }
-      update();
     }catch(e){
       imgPickerErr = e;
       update();
@@ -75,7 +100,7 @@ class ShopAddProductController extends BaseController{
   }
 
   void chkField() {
-    if(titleCtrl.text != "" || categoryCtrl.text != "" || priceCtrl.text != "" || bodyCtrl.text != ""){
+    if(titleCtrl.text != "" && myProductIdx != null && priceCtrl.text != "" && bodyCtrl.text != ""){
       this.fill.value = true;
     }
   }
@@ -91,11 +116,13 @@ class ShopAddProductController extends BaseController{
     });
   }
 
+
+
   Future<void> uploadAddProduct() async{
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     AddProductShopModel model = AddProductShopModel(
       title: titleCtrl.text,
-      productIdx: 2,
+      productIdx: myProductIdx ?? 0,
       price: int.parse(priceCtrl.text),
       content: bodyCtrl.text,
       pictures: pickImgList!,
@@ -113,7 +140,7 @@ class ShopAddProductController extends BaseController{
       if(res['data'] == "Y"){
         Get.dialog(
           CustomDialogWidget(content: '등록되었습니다.', onClick: (){
-            Get.back();
+            Get.offAllNamed('/mainPage');
             update();
           }),
         );
@@ -121,8 +148,49 @@ class ShopAddProductController extends BaseController{
     }
   }
 
+  void changeProductIdx(int idx){
+    myProductIdx = idx;
+    print("idx");
+    update();
+  }
+
+  void currentListIdx(int idx){
+    currentIdx = idx;
+    update();
+  }
+
+  void pagingScrollListener() async {
+    if(pagingScroll.position.pixels == pagingScroll.position.maxScrollExtent){
+      print("스크롤이 최하단입니다. 다시 로딩합니다.");
+      if (productListPaging.totalCount != myProductList.length) {
+        this.currentPage++;
+        await reqProductList();
+      }
+    }
+  }
+
+  Future<void> reqProductList() async {
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    final res =  await MyProvider().productList(token!, currentPage, sort.value);
+    if(res == null){
+      Get.dialog(
+          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          })
+      );
+    }else{
+      print(res['list']);
+      myProductList = (res['list'] as List).map((e) => MyProduct.fromJson(e)).toList();
+      productListPaging = Paging.fromJson(res);
+      update();
+    }
+  }
+
   @override
-  void onInit() {
+  void onInit() async{
+    await reqProductList();
+    pagingScroll.addListener(pagingScrollListener);
     _cameraPermission();
     super.onInit();
   }

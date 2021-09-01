@@ -1,3 +1,4 @@
+import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:extended_image/extended_image.dart';
@@ -41,7 +42,7 @@ class ShopListWidget extends StatelessWidget {
               width: 104,
               height: 104,
               child: imageUrl != "" ? ExtendedImage.network(
-                this.imageUrl,
+                BaseApiService.imageApi+this.imageUrl,
                 fit: BoxFit.cover,
                 cache: true,
                 // ignore: missing_return

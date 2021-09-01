@@ -27,6 +27,7 @@ class ShopProvider{
       "price": model.price,
       "productId": model.productIdx,
     });
+    print(body.toString());
     var res = await _shopApiService.addShopProduct(BaseApiService.authHeaders(token), model.pictures, body);
     if(res == null){
       return null;

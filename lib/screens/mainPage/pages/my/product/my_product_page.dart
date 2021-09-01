@@ -1,3 +1,4 @@
+import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/my_product_controller.dart';
@@ -60,6 +61,7 @@ class MyProductPage extends GetView<MyProductController> {
   required String title,
   required String genuine,
   required int idx}) => GestureDetector(
+    behavior: HitTestBehavior.translucent,
     onTap: () => Get.toNamed("/main/my/product/gi/detail", arguments: idx),
     child: Container(
       padding: const EdgeInsets.all(16),
@@ -83,7 +85,7 @@ class MyProductPage extends GetView<MyProductController> {
             width: 72,
             height: 72,
             child: ExtendedImage.network(
-              imgPath,
+              BaseApiService.imageApi+imgPath,
               fit: BoxFit.cover,
               cache: true,
               // ignore: missing_return

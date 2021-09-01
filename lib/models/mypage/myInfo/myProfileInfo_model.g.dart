@@ -12,7 +12,7 @@ MyProfileInfoModel _$MyProfileInfoModelFromJson(Map<String, dynamic> json) {
     json['careCount'] as int,
     json['productCount'] as int,
     json['lastLoginDate'] as String,
-    json['nickName'] as String,
+    json['nickName'] as String?,
     json['profileImg'] as String?,
   );
 }

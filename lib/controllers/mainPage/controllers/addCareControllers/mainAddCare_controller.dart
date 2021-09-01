@@ -47,6 +47,33 @@ class MainAddCareController extends BaseController {
   RxBool returnSender = true.obs;
   RxBool returnReceiver = false.obs;
 
+  void initInfo(){
+    senderName.text = "";
+    senderPhNum.text = "";
+    authNum.text = "";
+    senderPhNumFill.value = false;
+    authNumFill.value = false;
+    senderPhTxt.value = "";
+    authNumTxt.value = "";
+    phAuth = "";
+    phoneChecked.value = false;
+    senderPostCode.text = "";
+    senderAddress.text = "";
+    senderAddressDetailCtrl.text = "";
+    senderAddressDetail.value = "";
+    saveSenderPostChk.value = false;
+    senderPostSet.value = false;
+    receiverName.text = "";
+    receiverPostCode.text = "";
+    samePost.value = false;
+    receiverAddress.text = "";
+    receiverAddressDetailCtrl.text = "";
+    receiverAddressDetail.value = "";
+    receiverNormalAddress.value = false;
+    saveReceiverPostChk.value = false;
+    receiverPostSet.value = false;
+  }
+
 
   Future<void> smsAuth() async {
     if(senderPhTxt.value == ""){
@@ -156,10 +183,10 @@ class MainAddCareController extends BaseController {
   void receiverNormalAddressSet() {
     receiverNormalAddress.value = !receiverNormalAddress.value;
     if(receiverNormalAddress.value){
-      senderPostCode.text = globalCtrl.userInfoModel!.address!.zipCode;
-      senderAddress.text = globalCtrl.userInfoModel!.address!.city;
-      senderAddressDetail.value = globalCtrl.userInfoModel!.address!.street;
-      senderAddressDetailCtrl.text = globalCtrl.userInfoModel!.address!.street;
+      receiverPostCode.text = globalCtrl.userInfoModel!.address!.zipCode;
+      receiverAddress.text = globalCtrl.userInfoModel!.address!.city;
+      receiverAddressDetail.value = globalCtrl.userInfoModel!.address!.street;
+      receiverAddressDetailCtrl.text = globalCtrl.userInfoModel!.address!.street;
     }
     update();
   }

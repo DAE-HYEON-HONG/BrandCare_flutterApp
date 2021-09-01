@@ -6,7 +6,7 @@
     <string name="naver_client_name">BrandCare</string>
 
     <!-- kakao auth resource  -->
-    <string name="kakao_api">24d578e5ec7cbcf97fe904e7b11a0ecd</string>
+    <string name="kakao_api">kakao24d578e5ec7cbcf97fe904e7b11a0ecd</string>
 
     <!-- facebook auth resource   -->
     <string name="facebook_app_id">384304789743724</string>

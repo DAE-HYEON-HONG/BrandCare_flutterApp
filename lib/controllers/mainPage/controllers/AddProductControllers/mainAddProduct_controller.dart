@@ -17,12 +17,12 @@ class MainAddProductController extends BaseController {
   TextEditingController connectBuyCtrl = TextEditingController();
 
   RxBool nextBtn = false.obs;
-  late int brandCategoryIdx = 999;
-  late int categoryIdx = 999;
+ int? brandCategoryIdx;
+ int? categoryIdx;
 
-  List<CategoryListModel>? brandList = <CategoryListModel>[];
+  List<CategoryListModel> brandList = <CategoryListModel>[];
 
-  List<CategoryListModel>? categoryList = <CategoryListModel>[];
+  List<CategoryListModel> categoryList = <CategoryListModel>[];
 
   void changeBrandCategory(int idx){
     brandCategoryIdx = idx;

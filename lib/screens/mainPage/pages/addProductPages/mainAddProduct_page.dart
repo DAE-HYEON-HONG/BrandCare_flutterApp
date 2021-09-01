@@ -13,6 +13,7 @@ class MainAddProductPage extends StatelessWidget {
   final MainAddProductController controller = Get.put(MainAddProductController());
   @override
   Widget build(BuildContext context) {
+    print('build');
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -67,16 +68,16 @@ class MainAddProductPage extends StatelessWidget {
               const SizedBox(height: 16),
               AddProductExpansionListField(
                 onTap: () {},
-                hintText: "카테고리를 선택해주세요.",
-                items: controller.categoryList!,
+                hintText: controller.categoryIdx == null ? "카테고리를 선택해주세요." : controller.categoryList[controller.categoryIdx!].title,
+                items: controller.categoryList,
                 onChange: (value) => controller.nextBtnFill(),
                 idxChange: (value) => controller.changeCategory(value),
               ),
               const SizedBox(height: 16),
               AddProductExpansionListField(
                 onTap: () {},
-                hintText: "브랜드명을 선택해주세요.",
-                items: controller.brandList!,
+                hintText: controller.brandCategoryIdx == null ? "브랜드명을 선택해주세요." : controller.brandList[controller.brandCategoryIdx!].title,
+                items: controller.brandList,
                 onChange: (value) => controller.nextBtnFill(),
                 idxChange: (value) => controller.changeBrandCategory(value),
               ),

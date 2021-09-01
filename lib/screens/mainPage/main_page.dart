@@ -1,4 +1,4 @@
-import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
+ import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/mainPage_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/mainHome_page.dart';
@@ -37,7 +37,7 @@ class MainPage extends GetView<MainPageController> {
                 child: Obx(() => Container(
                       child: controller.widgetOptions
                           .elementAt(controller.selectedIdx.value),
-                    )),
+                )),
                 top: 0,
                 left: 0,
                 right: 0,
@@ -134,7 +134,7 @@ class MainPage extends GetView<MainPageController> {
                                 height: 20,
                               ),
                               Text(
-                                "케어하기",
+                                "케어/수선",
                                 style: controller.selectedIdx.value == 2 ?
                                 medium12TextStyle.copyWith(
                                   color: primaryColor,

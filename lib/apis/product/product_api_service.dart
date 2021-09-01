@@ -253,6 +253,7 @@ class ProductApiService {
         headers: headers,
         body: body,
       );
+      print(res.body.toString());
       if(res.statusCode == 200){
         return res;
       }else{

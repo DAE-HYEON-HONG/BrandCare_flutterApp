@@ -37,8 +37,14 @@ class MyProductController extends BaseController {
           })
       );
     }else{
-      print(res['list']);
-      myProductList = (res['list'] as List).map((e) => MyProduct.fromJson(e)).toList();
+      final list = (res['list'] as List).map((e) => MyProduct.fromJson(e)).toList();
+      if (currentPage == 1) {
+        this.myProductList = list;
+      } else {
+        for (var e in list) {
+          this.myProductList!.add(e);
+        }
+      }
       productListPaging = Paging.fromJson(res);
     }
     update();

@@ -77,7 +77,7 @@ class MainAddCarePage extends StatelessWidget {
                   Obx(() => _itemAuthNumber(context)),
                   const SizedBox(height: 24),
                    if(controller.globalCtrl.userInfoModel != null && controller.globalCtrl.userInfoModel!.address != null)
-                     CustomChkAddress(
+                     Obx(() =>CustomChkAddress(
                        onTap: () => controller.senderNormalAddressSet(),
                        title: '기본주소로 입력 하시겠습니까?',
                        postCode: controller.globalCtrl.userInfoModel!.address!.zipCode,
@@ -86,7 +86,7 @@ class MainAddCarePage extends StatelessWidget {
                        detail: controller.globalCtrl.userInfoModel!.address!
                            .street,
                        isChecked: controller.senderNormalAddress.value,
-                     ),
+                     )),
                   const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -194,16 +194,16 @@ class MainAddCarePage extends StatelessWidget {
                       Column(
                         children: [
                           if(controller.globalCtrl.userInfoModel != null && controller.globalCtrl.userInfoModel!.address != null)
-                            CustomChkAddress(
-                              onTap: () => controller.senderNormalAddressSet(),
+                            Obx(() =>CustomChkAddress(
+                              onTap: () => controller.receiverNormalAddressSet(),
                               title: '기본주소로 입력 하시겠습니까?',
                               postCode: controller.globalCtrl.userInfoModel!.address!.zipCode,
                               address: controller.globalCtrl.userInfoModel!.address!
                                   .city,
                               detail: controller.globalCtrl.userInfoModel!.address!
                                   .street,
-                              isChecked: controller.senderNormalAddress.value,
-                            ),
+                              isChecked: controller.receiverNormalAddress.value,
+                            )),
                         ],
                       ),
                     ],

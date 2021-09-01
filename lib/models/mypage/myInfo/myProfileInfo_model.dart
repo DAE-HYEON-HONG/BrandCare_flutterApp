@@ -7,7 +7,7 @@ class MyProfileInfoModel {
   final int careCount;
   final int productCount;
   final String lastLoginDate;
-  final String nickName;
+  final String? nickName;
   final String? profileImg;
 
   MyProfileInfoModel(this.activationCount, this.careCount, this.productCount, this.lastLoginDate, this.nickName, this.profileImg);

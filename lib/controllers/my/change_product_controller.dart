@@ -38,6 +38,13 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
         break;
       case ChangeProductEnum.REQUEST:
         typeComment = _receivedString;
+        break;
+      case ChangeProductEnum.CANCEL:
+        break;
+      case ChangeProductEnum.COMPLETE:
+        break;
+      case ChangeProductEnum.RECEIVED:
+        break;
     }
     return typeComment;
   }

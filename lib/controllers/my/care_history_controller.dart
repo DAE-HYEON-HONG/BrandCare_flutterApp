@@ -47,6 +47,7 @@ class CareHistoryController extends BaseController {
       }
       careListPaging = Paging.fromJson(res['response']);
       careCompleteCount.value = (res['model']['careCompleteCount']);
+      update();
     }
     update();
   }

@@ -1,4 +1,5 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/mainAddCare_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addCarePages/mainAddCare_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addProductPages/mainAddProduct_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/mainHome_page.dart';
@@ -11,7 +12,8 @@ import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 class MainPageController extends BaseController {
 
   RxInt selectedIdx = 0.obs;
-  GlobalController _globalController = Get.find<GlobalController>(); 
+  GlobalController _globalController = Get.find<GlobalController>();
+  MainAddCareController _addCareController = Get.put(MainAddCareController());
 
   //로딩할 위젯들
   List<Widget> widgetOptions = <Widget> [
@@ -26,6 +28,10 @@ class MainPageController extends BaseController {
     if(!_globalController.isLogin.value) {
       Get.toNamed('/notLoginPage');
       return;
+    }
+    if(idx == 2){
+    _addCareController.initInfo();
+    _addCareController.update();
     }
     selectedIdx.value = idx;
     print("현재 선택된 idx: ${selectedIdx.value}");

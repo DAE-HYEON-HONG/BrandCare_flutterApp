@@ -20,18 +20,18 @@ class NameChangePage extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 32,),
-              Padding(
+              GetBuilder<MyController>(builder: (_) => Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: FormInputWidget(
                   onChange: (value) {},
                   onSubmit: (value) {},
                   controller: TextEditingController(),
                   isShowTitle: true,
-                  hint: myController.myProfileInfoModel.nickName,
+                  hint: myController.myProfileInfoModel?.nickName,
                   title: '현재 이름(닉네임)',
                   readOnly: true,
                 ),
-              ),
+              )),
               const SizedBox(height: 24,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),

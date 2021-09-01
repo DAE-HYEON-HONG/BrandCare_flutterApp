@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopAddProductController/shopAddProduct_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/addShop_expansionList_feild.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansion_field.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
@@ -11,12 +12,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 
+import 'package:image_picker/image_picker.dart';
+
 class ShopAddProductPage extends GetView<ShopAddProductController> {
   @override
   Widget build(BuildContext context) {
-    return DefaultAppBarScaffold(
-      title: "거래등록",
-      child: _renderBody(context),
+    return SafeArea(
+      child: DefaultAppBarScaffold(
+        title: "거래등록",
+        child: _renderBody(context),
+      ),
     );
   }
 
@@ -31,9 +36,7 @@ class ShopAddProductPage extends GetView<ShopAddProductController> {
             height: 80,
             color: whiteColor,
             child: GestureDetector(
-              onTap: () async{
-                await controller.loadAssets();
-              },
+              onTap: () => _loadAssetsMode(),
               child: DottedBorder(
                   color: gray_D5D7DBColor,
                   strokeWidth: 1,
@@ -68,7 +71,7 @@ class ShopAddProductPage extends GetView<ShopAddProductController> {
                     child: SizedBox(
                       width: 80,
                       height: 80,
-                      child: Image.file(File(e.path)),
+                      child: Image.file(File(e.path), fit: BoxFit.fill),
                     ),
                   ),
                   Positioned(
@@ -114,12 +117,14 @@ class ShopAddProductPage extends GetView<ShopAddProductController> {
                       hint: "제목",
                     ),
                     const SizedBox(height: 12),
-                    CustomExpansionFeild(
-                      controller: controller.categoryCtrl,
-                      placeholder: "등록된 제품을 선택해주세요.",
-                      onTap: (){},
-                      readMode: true,
-                    ),
+                    GetBuilder<ShopAddProductController>(builder: (_) => AddShopExpansionListField(
+                      onTap: () {},
+                      hintText: controller.myProductIdx == null ? "등록된 제품을 선택해주세요" : controller.myProductList[controller.currentIdx!].title,
+                      items: controller.myProductList,
+                      onChange: (value) => controller.currentListIdx(value),
+                      idxChange: (value) => controller.changeProductIdx(value),
+                      controller: controller.pagingScroll,
+                    )),
                     const SizedBox(height: 12),
                     FormInputWidget(
                       onChange: (value) {},
@@ -175,6 +180,34 @@ class ShopAddProductPage extends GetView<ShopAddProductController> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  _loadAssetsMode(){
+    return Get.bottomSheet(
+      Container(
+        width: double.infinity,
+        height: 150,
+        color: whiteColor,
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              onTap: () async => await controller.loadAssets(ImageSource.camera),
+              title: Text(
+                "직접 촬영",
+                style: medium14TextStyle,
+              ),
+            ),
+            ListTile(
+              onTap: () async => await controller.loadAssets(ImageSource.gallery),
+              title: Text(
+                "갤러리에서 사진 선택",
+                style: medium14TextStyle,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

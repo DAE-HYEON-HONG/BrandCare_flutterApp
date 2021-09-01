@@ -1,4 +1,5 @@
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/my_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
@@ -12,11 +13,17 @@ class AddressChangePage extends StatelessWidget {
   AddressChangePage({Key? key}) : super(key: key);
 
   final myController = Get.find<MyController>();
+  final globalCtrl = Get.find<GlobalController>();
+
   @override
   Widget build(BuildContext context) {
     myController.initMyController();
-    // return DefaultAppBarScaffold(title: '주소 등록 / 변경', child: _renderChangeAddress());
-    return DefaultAppBarScaffold(title: '주소 등록 / 변경', child: _renderRegisterAddress());
+    if(globalCtrl.userInfoModel?.address == null){
+      return DefaultAppBarScaffold(title: '주소 등록 / 변경', child: _renderRegisterAddress());
+    }else{
+      return DefaultAppBarScaffold(title: '주소 등록 / 변경', child: _renderChangeAddress());
+    }
+
   }
 
   Widget _changeAddress(String title) => Container(
@@ -102,8 +109,8 @@ class AddressChangePage extends StatelessWidget {
       children: [
         _changeAddress('등록할 주소'),
         const Spacer(),
-        Obx(() =>CustomButtonOnOffWidget(title: '확인', onClick: (){
-          Get.back();
+        Obx(() =>CustomButtonOnOffWidget(title: '확인', onClick: ()async{
+          await myController.changeAddress();
         }, isOn: myController.isAddress))
         ,
       ],
@@ -121,7 +128,7 @@ class AddressChangePage extends StatelessWidget {
             controller: TextEditingController(),
             isShowTitle: true,
             title: '현재 주소',
-            hint: '서울시 구로구 디지털로33길 28',
+            hint: '${globalCtrl.userInfoModel?.address?.city}',
             readOnly: true,
           ),
         ),
@@ -132,7 +139,7 @@ class AddressChangePage extends StatelessWidget {
             onChange: (value) {},
             onSubmit: (value) {},
             controller: TextEditingController(),
-            hint: '우림이비지1차',
+            hint: '${globalCtrl.userInfoModel?.address?.street}',
             readOnly: true,
           ),
         ),

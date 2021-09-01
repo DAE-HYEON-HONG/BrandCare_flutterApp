@@ -21,7 +21,7 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
         child: _renderBody(),
         isLeadingShow: false,
       ),
-      onWillPop: () => Future(() => false),
+      onWillPop: () => Future(() => controller.back),
       //onWillPop: () => Future(() => true),
     );
   }
@@ -55,8 +55,8 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                     itemBuilder: (context, idx){
                       return _status(
                         title: controller.careStatusJson[idx]['statusType'],
-                        date: DateFormatUtil.convertOnlyDate(date: controller.careStatusJson[idx]['date']),
-                        time: DateFormatUtil.convertOnlyTime(date: controller.careStatusJson[idx]['time']),
+                        date: controller.careStatusJson[idx]['date'] != null ? DateFormatUtil.convertOnlyDate(date: controller.careStatusJson[idx]['date']): "",
+                        time: controller.careStatusJson[idx]['date'] != null ? DateFormatUtil.convertOnlyTime(date: controller.careStatusJson[idx]['time']): "",
                         isNext: idx == controller.careStatusJson.length - 1 ? false : true,
                         checked: controller.careStatusJson[idx]['checked'],
                       );
@@ -66,9 +66,11 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                   CustomButtonOnOffWidget(
                     title: '케어/수선 결과보기',
                     onClick: () {
-                      controller.detail();
+                      if(controller.dateStatus?.be_releasedDate != null){
+                        controller.detail();
+                      }
                     },
-                    isOn: controller.fill.value,
+                    isOn: controller.dateStatus?.be_releasedDate == null ? false : true,
                     radius: 30,
                   ),
                   const SizedBox(height: 24),
@@ -253,7 +255,7 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
   _productInfo({required String imgPath, required String title, required String type, required String clock, required String date}){
     return Container(
       width: double.infinity,
-      height: 150,
+      height: 160,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),

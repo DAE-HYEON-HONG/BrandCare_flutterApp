@@ -18,7 +18,7 @@ class AddCarePaymentController extends BaseController {
   final addCareEtcCtrl = Get.find<AddCareEtcController>();
   final addCareMainCtrl = Get.find<MainAddCareController>();
 
-  int allPrice() {
+  int allMountPrice() {
    int price = addPrices() + 3000 - couponDiscount.value - pointDiscount.value;
    return price;
   }
@@ -65,7 +65,7 @@ class AddCarePaymentController extends BaseController {
     final res = await CareProvider().addCare(
       address: addressBody,
       list: addCareEtcCtrl.addCareList!,
-      paymentAmount: allPrice(),
+      paymentAmount: allMountPrice(),
       phone: addCareMainCtrl.senderPhNum.text,
       receiverPhone: addCareMainCtrl.receiverPhNum.text,
       receiverName: addCareMainCtrl.receiverName.text,
@@ -75,7 +75,7 @@ class AddCarePaymentController extends BaseController {
       usePointAmount: pointDiscount.value,
       couponId: null,
       returnType: addCareMainCtrl.returnReceiver.value ? "RECEIVER" : "SENDER",
-      price: allPrice(),
+      price: addPrices(),
     );
     await saveReceiverAddress();
     await saveSenderAddress();
@@ -99,7 +99,10 @@ class AddCarePaymentController extends BaseController {
       CustomDialogWidget(
         content: '신청이 완료되었습니다.',
         onClick: (){
-          Get.toNamed('/mainAddCare/add/status', arguments: idx);
+          Get.toNamed('/mainAddCare/add/status', arguments: {
+            "idx" : idx,
+            "back" : false,
+          });
         },
         isSingleButton: true,
         okTxt: "확인",
@@ -126,6 +129,8 @@ class AddCarePaymentController extends BaseController {
           addCareMainCtrl.receiverAddressDetail.value,
           addCareMainCtrl.receiverPostCode.text,
       );
+      print("받는 사람 주소 저장");
+      print(res.toString());
       if(!res){
         Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
@@ -147,6 +152,8 @@ class AddCarePaymentController extends BaseController {
         addCareMainCtrl.senderAddressDetail.value,
         addCareMainCtrl.senderPostCode.text,
       );
+      print("보내는 사람 주소 저장");
+      print(res.toString());
       if(!res){
         Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){

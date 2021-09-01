@@ -19,7 +19,6 @@ class AddGenuinePage extends StatelessWidget {
   final AddGenuineController controller = Get.put(AddGenuineController());
   @override
   Widget build(BuildContext context) {
-    controller.initSettings();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: DefaultAppBarScaffold(
@@ -62,16 +61,15 @@ class AddGenuinePage extends StatelessWidget {
                   Obx(() => Column(
                     children: [
                       if(controller.normalAddress.value)
-                        GestureDetector(
-                          onTap: () => controller.senderNormalAddressSet(),
-                          child: CustomChkAddress(
-                            onTap: (){},
-                            title: '기본주소로 입력 하시겠습니까?',
-                            postCode: controller.globalCtrl.userInfoModel!.address!.zipCode,
-                            address: controller.globalCtrl.userInfoModel!.address!.city,
-                            detail: controller.globalCtrl.userInfoModel!.address!.street,
-                            isChecked: controller.senderNormalAddress.value,
-                          ),
+                        CustomChkAddress(
+                          onTap: (){
+                            controller.senderNormalAddressSet();
+                          },
+                          title: '기본주소로 입력 하시겠습니까?',
+                          postCode: controller.globalCtrl.userInfoModel!.address!.zipCode,
+                          address: controller.globalCtrl.userInfoModel!.address!.city,
+                          detail: controller.globalCtrl.userInfoModel!.address!.street,
+                          isChecked: controller.senderNormalAddress.value,
                         ),
                     ],
                   )),

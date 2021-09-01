@@ -98,6 +98,7 @@ class MyProvider{
     };
     final bodyJson = jsonEncode(body);
     var res = await _myApiService.changeAddress(BaseApiService.authHeaders(token), bodyJson);
+    print(res?.body.toString());
     if(res == null){
       return false;
     }else{
@@ -141,7 +142,7 @@ class MyProvider{
       'title': title,
     };
     final bodyJson = jsonEncode(body);
-    var res = await _myApiService.changeAddress(BaseApiService.authHeaders(token), bodyJson);
+    var res = await _myApiService.addInquiry(BaseApiService.authHeaders(token), bodyJson);
     if(res == null){
       return null;
     }else{

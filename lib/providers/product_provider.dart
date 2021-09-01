@@ -171,7 +171,7 @@ class ProductProvider {
       'receiver' : receiverName,
       'receiverPhone' : receiverPhone,
       'request_term' : request_term,
-      'receiveAddress' : returnAddress,
+      'returnAddress' : returnAddress,
       'sender' : senderName,
       'useCouponId' : couponId,
       'usePoint' : usePointAmount,
@@ -184,14 +184,14 @@ class ProductProvider {
     if(res == null) {
       return null;
     }else {
-      Map<String, dynamic> json = jsonDecode(res.toString());
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
       return json;
     }
   }
 
   Future<dynamic> genuineStatus(int idx) async {
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
-    final res = await _productApiService.productRemove(BaseApiService.authHeaders(token!), idx);
+    final res = await _productApiService.productGenuineAdd(BaseApiService.authHeaders(token!), idx);
     if(res == null) {
       return null;
     }else {

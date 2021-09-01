@@ -26,7 +26,7 @@ class UseInfoPricePage extends StatelessWidget {
         ),
         const SizedBox(height: 7),
         Container(
-          width: 177,
+          width: 177.w,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

@@ -31,6 +31,9 @@ class InquiryController extends BaseController with SingleGetTickerProviderMixin
     }else{
       final String? token = await SharedTokenUtil.getToken("userLogin_token");
       final res =  await MyProvider().addInquiry(token!, title.value, content.value);
+      title.value = "";
+      content.value = "";
+      update();
       if(res == null){
         Get.dialog(
             CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){

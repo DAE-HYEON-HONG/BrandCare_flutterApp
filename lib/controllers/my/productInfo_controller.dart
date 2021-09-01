@@ -8,6 +8,7 @@ class ProductInfoDetailController extends BaseController{
 
   int productIdx = Get.arguments;
   ProductDetailModel? model;
+  RxBool downDetail = false.obs;
 
   Future<void> reqProductInfo()async{
     print(productIdx);
@@ -43,6 +44,11 @@ class ProductInfoDetailController extends BaseController{
       super.networkState.value = NetworkStateEnum.DONE;
       update();
     }
+  }
+
+  void onDown(){
+    downDetail.value = !downDetail.value;
+    update();
   }
 
 

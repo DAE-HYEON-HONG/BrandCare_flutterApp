@@ -130,7 +130,9 @@ class AddCareEtcPage extends GetView<AddCareEtcController> {
       ),
       child: Column(
         children: [
-          Padding(
+          Container(
+            width: double.infinity,
+            height: 120,
             padding: const EdgeInsets.all(16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,14 +143,18 @@ class AddCareEtcPage extends GetView<AddCareEtcController> {
                   child: Image.file(img,fit: BoxFit.cover),
                 ),
                 const SizedBox(width: 16),
-                Column(
+                Expanded(
+                  child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(category, style: medium14TextStyle.copyWith(fontWeight: FontWeight.w700)),
                     const SizedBox(height: 10),
-                    Text("- $options", style: regular14TextStyle),
-                  ],
+                    Expanded(
+                      child: Text("- $options", style: regular14TextStyle),
+                    ),
+                   ],
+                  ),
                 ),
               ],
             ),
