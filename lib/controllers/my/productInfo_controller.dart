@@ -1,4 +1,5 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/my_product_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/productDetail_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
@@ -9,11 +10,13 @@ class ProductInfoDetailController extends BaseController{
   int productIdx = Get.arguments;
   ProductDetailModel? model;
   RxBool downDetail = false.obs;
+  MyProductController myProductCtrl = Get.find<MyProductController>();
 
   Future<void> reqProductInfo()async{
     print(productIdx);
     super.networkState.value = NetworkStateEnum.LOADING;
     var res = await ProductProvider().productDetail(productIdx);
+    print(res.toString());
     if(res == null){
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
@@ -43,6 +46,9 @@ class ProductInfoDetailController extends BaseController{
     }else{
       super.networkState.value = NetworkStateEnum.DONE;
       update();
+      await myProductCtrl.reqProductList();
+      myProductCtrl.update();
+      Get.back();
     }
   }
 

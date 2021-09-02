@@ -1,5 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/models/care/careCategory_model.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:delayed_widget/delayed_widget.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +10,13 @@ import 'package:flutter_svg/svg.dart';
 class CareExpansionListField extends StatefulWidget {
   String hintText;
   final Function onTap;
-  final List<Map<String, dynamic>> items;
+  final List<CareCategoryModel> items;
   final ValueChanged<String> onChange;
-  final ValueChanged<int> onPriceChange;
   CareExpansionListField({
     required this.onTap,
     required this.hintText,
     required this.items,
     required this.onChange,
-    required this.onPriceChange,
   });
   @override
   _CareExpansionListFieldState createState() => _CareExpansionListFieldState();
@@ -58,10 +57,6 @@ class _CareExpansionListFieldState extends State<CareExpansionListField> with Si
     });
     widget.onChange(value);
     _handleTap();
-  }
-
-  void changePriceValue(int value){
-    widget.onPriceChange(value);
   }
 
   @override
@@ -129,8 +124,7 @@ class _CareExpansionListFieldState extends State<CareExpansionListField> with Si
                       return GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
-                          changeValue(widget.items[idx].keys.first);
-                          changePriceValue(widget.items[idx].values.first);
+                          changeValue(widget.items[idx].title);
                         },
                         child: Container(
                           width: double.infinity,
@@ -141,34 +135,9 @@ class _CareExpansionListFieldState extends State<CareExpansionListField> with Si
                             children: [
                               Expanded(
                                 child: Text(
-                                  widget.items[idx].keys.first,
+                                  widget.items[idx].title,
                                   style: regular14TextStyle.copyWith(
                                       color: gray_999Color),
-                                ),
-                              ),
-                              Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      widget.items[idx].values.last == 1 ? "부위당" :
-                                      widget.items[idx].values.last == 0 ? "" :
-                                      int.tryParse(widget.items[idx].values.last) != null ?
-                                      NumberFormatUtil.convertNumberFormat(
-                                      number: int.parse(widget.items[idx].values.last)):
-                                      widget.items[idx].values.last,
-                                      style: regular14TextStyle.copyWith(
-                                          color: gray_999Color),
-                                    ),
-                                    const SizedBox(width: 22),
-                                    Text(
-                                      widget.items[idx].values.first != 0 ?
-                                      NumberFormatUtil.convertNumberFormat(number: widget.items[idx].values.first) :
-                                      "",
-                                      style: regular14TextStyle.copyWith(
-                                          color: gray_999Color),
-                                    ),
-                                  ],
                                 ),
                               ),
                             ],

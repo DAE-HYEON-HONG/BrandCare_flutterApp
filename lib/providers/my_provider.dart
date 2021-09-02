@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:brandcare_mobile_flutter_v2/apis/my/my_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
+import 'package:brandcare_mobile_flutter_v2/models/mypage/banner/banner_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/mypage/myInfo/myProfileInfo_model.dart';
 
 class MyProvider{
@@ -157,6 +158,50 @@ class MyProvider{
       return null;
     }else{
       Map<String, dynamic> json = jsonDecode(res.toString());
+      return json;
+    }
+  }
+
+  Future<dynamic> getQna(int page) async {
+    var res = await _myApiService.getQnA(page);
+    print(res!.body.toString());
+    if(res == null){
+      return null;
+    }else{
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      return json;
+    }
+  }
+
+  Future<dynamic> getBanner(String type) async{
+    var res = await _myApiService.getBanner(type);
+    if(res == null) {
+      return null;
+    }else {
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      print(json.toString());
+      return json;
+    }
+  }
+
+  Future<dynamic> getTerms() async{
+    var res = await _myApiService.getTerms();
+    if(res == null) {
+      return null;
+    }else {
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      print(json.toString());
+      return json;
+    }
+  }
+
+  Future<dynamic> getInquiry(String token, int page) async{
+    var res = await _myApiService.getInquiry(BaseApiService.authHeaders(token), page);
+    if(res == null) {
+      return null;
+    }else {
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      print(json.toString());
       return json;
     }
   }

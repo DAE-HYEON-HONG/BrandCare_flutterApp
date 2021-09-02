@@ -33,6 +33,11 @@ class ShopAddProductController extends BaseController{
   dynamic imgPickerErr;
   List<File>? pickImgList = <File>[];
 
+  double autoHeight (BuildContext context){
+    double height = MediaQuery.of(context).viewInsets.bottom == 0 ? 0 : 200;
+    return height;
+  }
+
   Future<void> loadAssets(ImageSource source) async {
     try{
       if(source == ImageSource.camera){
@@ -143,6 +148,7 @@ class ShopAddProductController extends BaseController{
             Get.offAllNamed('/mainPage');
             update();
           }),
+          barrierDismissible: false,
         );
       }
     }

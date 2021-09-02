@@ -1,4 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/my_product_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/productInfo_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/categoryList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/modifiedProductImgs_page.dart';
@@ -12,13 +14,32 @@ class ModifiedProductController extends BaseController{
   TextEditingController buyDateCtrl = TextEditingController();
   TextEditingController buyPriceCtrl = TextEditingController();
   TextEditingController buyRouteCtrl = TextEditingController();
-
+  ProductInfoDetailController myProductDetailCtrl = Get.find<ProductInfoDetailController>();
+  String category = "";
+  String brand = "";
   List<CategoryListModel>? brandList = <CategoryListModel>[];
   List<CategoryListModel>? categoryList = <CategoryListModel>[];
 
-  RxBool nextBtn = false.obs;
-  late int brandCategoryIdx = 999;
-  late int categoryIdx = 999;
+  RxBool nextBtn = true.obs; // 수정은 무조건 true로 해야 합니다.
+  int brandCategoryIdx = 0;
+  int categoryIdx = 0;
+
+  double autoHeight (BuildContext context){
+    double height = MediaQuery.of(context).viewInsets.bottom == 0 ? 0 : 200;
+    return height;
+  }
+
+  void infoInit(){
+    brand = myProductDetailCtrl.model!.brand;
+    category = myProductDetailCtrl.model!.category;
+    brandCategoryIdx = myProductDetailCtrl.model!.brandId;
+    categoryIdx = myProductDetailCtrl.model!.categoryId;
+    titleCtrl.text = myProductDetailCtrl.model!.title;
+    serialCtrl.text = myProductDetailCtrl.model!.serialCode;
+    buyDateCtrl.text = "${myProductDetailCtrl.model!.buyDate.substring(0,2)}${myProductDetailCtrl.model!.buyDate.substring(3,5)}";
+    buyPriceCtrl.text = myProductDetailCtrl.model!.price;
+    buyRouteCtrl.text = myProductDetailCtrl.model!.buyRoute;
+  }
 
   void changeBrandCategory(int idx){
     brandCategoryIdx = idx;
@@ -42,29 +63,21 @@ class ModifiedProductController extends BaseController{
     update();
   }
 
-  void nextBtnFill(){
-    if (
-    titleCtrl.text == "" ||
-        serialCtrl.text == "" ||
-        buyDateCtrl.text == "" ||
-        buyPriceCtrl.text == "" ||
-        buyRouteCtrl.text == "" ||
-        categoryIdx == 999 ||
-        brandCategoryIdx == 999
-    ){
-      nextBtn.value = false;
+  void nextBtnFill(){}
+
+  void hintText(String value, String mode){
+    if(mode == "category"){
+      category = value;
       update();
-    }else {
-      nextBtn.value = true;
+    }else{
+      brand = value;
       update();
     }
   }
 
   void nextLevel(){
     if(nextBtn.value){
-      Get.to(() => ModifiedProductImgsPage(), arguments: {
-        "imgList" : Get.arguments['imgList']
-      });
+      Get.to(() => ModifiedProductImgsPage());
     }
   }
 
@@ -72,6 +85,7 @@ class ModifiedProductController extends BaseController{
   void onInit() async {
     await reqCategory();
     await reqBrandCategory();
+    infoInit();
     super.onInit();
   }
 }

@@ -129,13 +129,12 @@ class UseInfoPricePage extends StatelessWidget {
               shrinkWrap: true,
               itemBuilder: (context, idx) {
                 return _list(
-                  controller.bagPrice[idx].keys.first,
-                  controller.bagPrice[idx].values.first,
-                  controller.bagPrice[idx].values.last,
-                  ""
+                    controller.globalCtrl.careCategory![0].subCategory[idx].title,
+                    controller.globalCtrl.careCategory![0].subCategory[idx].price,
+                    controller.globalCtrl.careCategory![0].subCategory[idx].reMark,
                 );
               },
-              itemCount: controller.bagPrice.length,
+              itemCount: controller.globalCtrl.careCategory![0].subCategory.length,
             ),
           ),
           const SizedBox(height: 16),
@@ -186,13 +185,12 @@ class UseInfoPricePage extends StatelessWidget {
               shrinkWrap: true,
               itemBuilder: (context, idx) {
                 return _list(
-                  controller.walletPrice[idx].keys.first,
-                  controller.walletPrice[idx].values.first,
-                  controller.walletPrice[idx].values.last,
-                  "",
+                  controller.globalCtrl.careCategory![1].subCategory[idx].title,
+                  controller.globalCtrl.careCategory![1].subCategory[idx].price,
+                  controller.globalCtrl.careCategory![1].subCategory[idx].reMark,
                 );
               },
-              itemCount: controller.walletPrice.length,
+              itemCount: controller.globalCtrl.careCategory![1].subCategory.length,
             ),
           ),
           const SizedBox(height: 16),
@@ -243,13 +241,12 @@ class UseInfoPricePage extends StatelessWidget {
               shrinkWrap: true,
               itemBuilder: (context, idx) {
                 return _list(
-                  controller.shoesPrice[idx].keys.first,
-                  int.parse(controller.shoesPrice[idx].values.first),
-                  controller.shoesPrice[idx].values.last,
-                  controller.shoesPrice[idx].values.last,
+                  controller.globalCtrl.careCategory![2].subCategory[idx].title,
+                  controller.globalCtrl.careCategory![2].subCategory[idx].price,
+                  controller.globalCtrl.careCategory![2].subCategory[idx].reMark,
                 );
               },
-              itemCount: controller.bagPrice.length,
+              itemCount: controller.globalCtrl.careCategory![2].subCategory.length,
             ),
           ),
           const SizedBox(height: 16),
@@ -259,7 +256,7 @@ class UseInfoPricePage extends StatelessWidget {
     );
   }
 
-  _list(String title, int price, dynamic isOdd, String isOddTitle){
+  _list(String title, int price, String? remark){
     return Container(
       padding: const EdgeInsets.only(top: 2, bottom: 2),
       width: double.infinity,
@@ -272,11 +269,11 @@ class UseInfoPricePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  isOdd == 1 ? "부위당" : isOddTitle,
+                  remark ?? "",
                   style: regular10TextStyle,
                 ),
                 const SizedBox(width: 22),
-                Text(price == 0 ? '' : NumberFormatUtil.convertNumberFormat(number: price), style: regular10TextStyle),
+                Text(NumberFormatUtil.convertNumberFormat(number: price), style: regular10TextStyle),
               ],
             ),
           ),

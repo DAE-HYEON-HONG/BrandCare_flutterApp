@@ -1,8 +1,11 @@
+import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/setting_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/my_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/route_container_widget.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,8 +13,7 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class SettingPage extends GetView<SettingController> {
-  const SettingPage({Key? key}) : super(key: key);
-
+  MyController myController = Get.find<MyController>();
   @override
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(
@@ -124,16 +126,40 @@ class SettingPage extends GetView<SettingController> {
 
   Widget _renderAdBox() => Container(
         margin: const EdgeInsets.only(left: 16, top: 50, right: 16, bottom: 32),
-        padding: const EdgeInsets.only(left: 24, top: 26, bottom: 28),
         height: 94,
         width: double.infinity,
-        decoration: BoxDecoration(
-          color: gray_AFColor,
+        child: ClipRRect(
           borderRadius: BorderRadius.circular(4),
-        ),
-        child: Text(
-          '나의 소중한 명품\n인증받고, 케어받고, 관심받고',
-          style: medium14TextStyle.copyWith(color: whiteColor),
+          child: ExtendedImage.network(
+            BaseApiService.imageApi+myController.bannerList![0].image.path!,
+            fit: BoxFit.cover,
+            cache: true,
+            width: double.infinity,
+            height: double.infinity,
+            // ignore: missing_return
+            loadStateChanged: (ExtendedImageState state) {
+              switch (state.extendedImageLoadState) {
+                case LoadState.loading:
+                  break;
+                case LoadState.completed:
+                  break;
+                case LoadState.failed:
+                  return GestureDetector(
+                    child: Center(
+                      child: Container(
+                        width: 100,
+                        height: 100,
+                        color: primaryColor,
+                      ),
+                    ),
+                    onTap: () {
+                      state.reLoadImage();
+                    },
+                  );
+                  break;
+              }
+            },
+          ),
         ),
       );
 }

@@ -1,4 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopListController/mainShopListInst_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopListController/mainShopListMine_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/idPathImages_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/shop/shopDetail_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/shop_provider.dart';
@@ -15,6 +17,7 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
   bool isLiked = false;
   int idx = Get.arguments;
   ShopDetailModel? model;
+  MainShopListInstController mainShopListInstCtrl = Get.find<MainShopListInstController>();
 
   List<IdPathImagesModel> testBanner = [
     IdPathImagesModel(0, "https://www.hdcarwallpapers.com/walls/kia_seltos_x_line_concept_2020_5k-HD.jpg"),
@@ -55,6 +58,8 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
     }else{
       model = res;
       super.networkState.value = NetworkStateEnum.DONE;
+      mainShopListInstCtrl.reqShopList();
+      mainShopListInstCtrl.update();
       update();
     }
   }

@@ -21,8 +21,9 @@ class QuestionPage extends GetView<QuestionController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Flexible(
+              GetBuilder<QuestionController>(builder: (_) => Flexible(
                 child: ListView.separated(
+                  controller: controller.pagingScroll,
                     separatorBuilder: (context, idx) {
                       return Divider(
                         height: 0,
@@ -32,7 +33,7 @@ class QuestionPage extends GetView<QuestionController> {
                     },
                     shrinkWrap: true,
                     itemBuilder: (context, idx) {
-                      if(idx == 15) {
+                      if(idx == controller.qnaList?.length) {
                         return Padding(
                           padding: const EdgeInsets.only(left: 16, top: 50, bottom: 40),
                           child: Text('Copyright © 2021 BrandCare Inc. All Rights Reserved.', style: regular10TextStyle.copyWith(color: gray_999Color),),
@@ -40,20 +41,23 @@ class QuestionPage extends GetView<QuestionController> {
                       }
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 16.0, top: 16.0),
-                        child: _item(),
+                        child: _item(
+                          controller.qnaList?[idx].question ?? "",
+                          controller.qnaList?[idx].answer ?? "",
+                        ),
                       );
 
-                    }, itemCount: 15 + 1),
-              ),
-              CustomButtonEmptyBackgroundWidget(title: '1:1 문의', onClick: (){
-                Get.offAndToNamed('/main/my/inquiry');
-              }),
+                    }, itemCount: controller.qnaList?.length ?? 0),
+              )),
+              // CustomButtonEmptyBackgroundWidget(title: '1:1 문의', onClick: (){
+              //   Get.offAndToNamed('/main/my/inquiry');
+              // }),
             ],
           ),
         ));
   }
 
-  Widget _item() => Container(
+  Widget _item(String title, String contents) => Container(
     child: CustomExpantionTile2(
       isShowShadow: false,
       title: Container(
@@ -68,7 +72,7 @@ class QuestionPage extends GetView<QuestionController> {
               width: 8,
             ),
             Text(
-              '제품 케어 신청이 무엇인가요?',
+              '$title',
               style: medium14TextStyle,
             )
           ],
@@ -77,12 +81,7 @@ class QuestionPage extends GetView<QuestionController> {
       child: Container(
         color: whiteColor,
         padding: EdgeInsets.only(left: 16, right: 16, top: 16),
-        child: Text('''금주 주말에 시스템 정기 점검이 있습니다.
-작업 시간 동안 시스템 접속이 원활하지 않을 수 있습니다.
-
-*작업일정 : 2021.02.02(화)
-*작업시간 : 02~07시
-''', style: regular14TextStyle.copyWith(color: gray_666Color),),
+        child: Text(contents, style: regular14TextStyle.copyWith(color: gray_666Color),),
       ),
     ),
   );

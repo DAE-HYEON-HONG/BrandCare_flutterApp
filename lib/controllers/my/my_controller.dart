@@ -1,4 +1,5 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/models/mypage/banner/banner_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/mypage/myInfo/myProfileInfo_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/my_provider.dart';
@@ -14,7 +15,7 @@ class MyController extends BaseController {
 
   final globalCtrl = Get.find<GlobalController>();
   MyProfileInfoModel? myProfileInfoModel;
-
+  List<BannerModel>? bannerList = <BannerModel>[];
   List<Map<String, int>> myData = [];
 
   void myDataInfo(){
@@ -280,6 +281,23 @@ class MyController extends BaseController {
     update();
   }
 
+  Future<void> reqBannerList() async {
+    final res =  await MyProvider().getBanner("MAIN");
+    if(res == null){
+      Get.dialog(
+          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          })
+      );
+    }else{
+      print(res.toString());
+      bannerList = bannerList = (res['data'] as List).map((e) => BannerModel.fromJson(e)).toList();
+      update();
+    }
+    update();
+  }
+
   bool get passwordIsOn => nowPassword.isNotEmpty && password.value.isNotEmpty && rePassword.value.isNotEmpty && password.value == rePassword.value;
   bool get isPhone => phone.value.length == 11;
   bool get isCode => code.value.length == 6;
@@ -288,6 +306,7 @@ class MyController extends BaseController {
   @override
   void onInit() async{
     await myInfo();
+    await reqBannerList();
     initMyController();
     myDataInfo();
     super.onInit();

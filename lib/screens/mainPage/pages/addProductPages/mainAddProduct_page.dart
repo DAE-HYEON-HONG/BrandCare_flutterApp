@@ -67,7 +67,9 @@ class MainAddProductPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               AddProductExpansionListField(
-                onTap: () {},
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                },
                 hintText: controller.categoryIdx == null ? "카테고리를 선택해주세요." : controller.categoryList[controller.categoryIdx!].title,
                 items: controller.categoryList,
                 onChange: (value) => controller.nextBtnFill(),
@@ -75,11 +77,18 @@ class MainAddProductPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               AddProductExpansionListField(
-                onTap: () {},
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                },
                 hintText: controller.brandCategoryIdx == null ? "브랜드명을 선택해주세요." : controller.brandList[controller.brandCategoryIdx!].title,
                 items: controller.brandList,
                 onChange: (value) => controller.nextBtnFill(),
                 idxChange: (value) => controller.changeBrandCategory(value),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                "* 모르는 항목은 입력하지 않으셔도 됩니다.(선택입력)",
+                style: medium14TextStyle.copyWith(color: redColor),
               ),
               const SizedBox(height: 16),
               FormInputWidget(
@@ -118,6 +127,7 @@ class MainAddProductPage extends StatelessWidget {
                 fill: controller.nextBtn.value,
               )),
               const SizedBox(height: 30),
+
             ],
           ),
         )

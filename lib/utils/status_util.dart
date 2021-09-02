@@ -3,7 +3,7 @@ class StatusUtil{
     if(status == "APPLICATION"){
       return "신청완료";
     }else if(status == "PICKUP"){
-      return "수건 진행중";
+      return "수거 진행중";
     } else if(status == "WAREHOUSING"){
       return "입고";
     } else if(status == "CARING"){

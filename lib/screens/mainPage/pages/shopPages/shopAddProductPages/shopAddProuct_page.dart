@@ -165,6 +165,9 @@ class ShopAddProductPage extends GetView<ShopAddProductController> {
                       ),
                     ),
                     const SizedBox(height: 100),
+                    //autoHeight
+                    GetBuilder<ShopAddProductController>(
+                        builder: (_) => SizedBox(height: controller.autoHeight(context))),
                   ],
                 ),
               ),

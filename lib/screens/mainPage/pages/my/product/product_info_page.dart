@@ -27,7 +27,7 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _item("${controller.model?.thumbnail}"),
+                _item("${controller.model?.thumbnail ?? ""}"),
                 const SizedBox(height: 24,),
                 controller.model?.genuine == "GENUINE" ?
                 CustomRouteButton(title: '정품인증 결과보기', route: '/main/my/change_product/apply'):
@@ -133,6 +133,8 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
                           "buyPrice" : controller.model?.price,
                           "buyRoute" : controller.model?.buyRoute,
                           "imgList" : controller.model?.image,
+                          "categoryId" :controller.model?.categoryId,
+                          "brandId" : controller.model?.brandId,
                         }
                       );
                     }),

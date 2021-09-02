@@ -14,12 +14,12 @@ class AddProductDescriptionPage extends GetView<AddProductDescriptionController>
       onTap: () => FocusScope.of(context).unfocus(),
       child: DefaultAppBarScaffold(
         title: "제품 등록",
-        child: _renderBody(),
+        child: _renderBody(context),
       ),
     );
   }
 
-  _renderBody() {
+  _renderBody(context) {
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -117,6 +117,8 @@ class AddProductDescriptionPage extends GetView<AddProductDescriptionController>
                     ),
                   ),
                   const SizedBox(height: 110),
+                  GetBuilder<AddProductDescriptionController>(
+                      builder: (_) => SizedBox(height: controller.autoHeight(context)))
                 ],
               ),
             ),

@@ -14,11 +14,11 @@ class ModifiedProductPage extends GetView<ModifiedProductController> {
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(
       title: "제품 정보 수정",
-      child: _renderBody(),
+      child: _renderBody(context),
     );
   }
 
-  _renderBody() {
+  _renderBody(context) {
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -32,7 +32,7 @@ class ModifiedProductPage extends GetView<ModifiedProductController> {
                 children: [
                   const SizedBox(height: 32),
                   FormInputTitleRowWidget(
-                    hint: Get.arguments['title'],
+                    hint: controller.myProductDetailCtrl.model!.title,
                     onChange: (value) => controller.nextBtnFill(),
                     onSubmit: (value){},
                     controller: controller.titleCtrl,
@@ -49,24 +49,24 @@ class ModifiedProductPage extends GetView<ModifiedProductController> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  AddProductExpansionListField(
+                  GetBuilder<ModifiedProductController>(builder: (_) => AddProductExpansionListField(
                     onTap: () => controller.nextBtnFill(),
-                    hintText: Get.arguments['category'],
+                    hintText: controller.category,
                     items: controller.categoryList!,
-                    onChange: (value) => controller.nextBtnFill(),
+                    onChange: (value) => controller.hintText(value, "category"),
                     idxChange: (value) => controller.changeCategory(value),
-                  ),
+                  )),
                   const SizedBox(height: 16),
-                  AddProductExpansionListField(
+                  GetBuilder<ModifiedProductController>(builder: (_) => AddProductExpansionListField(
                     onTap: () => controller.nextBtnFill(),
-                    hintText: Get.arguments['brand'],
+                    hintText: controller.brand,
                     items: controller.brandList!,
-                    onChange: (value) => controller.nextBtnFill(),
+                    onChange: (value) => controller.hintText(value, "brand"),
                     idxChange: (value) => controller.changeCategory(value),
-                  ),
+                  )),
                   const SizedBox(height: 16),
                   FormInputTitleRowWidget(
-                    hint: Get.arguments['serial'],
+                    hint: controller.myProductDetailCtrl.model!.serialCode,
                     onChange: (value) => controller.nextBtnFill(),
                     onSubmit: (value){},
                     controller: controller.serialCtrl,
@@ -76,7 +76,7 @@ class ModifiedProductPage extends GetView<ModifiedProductController> {
                   ),
                   const SizedBox(height: 16),
                   FormInputTitleRowWidget(
-                    hint: Get.arguments['buyDate'],
+                    hint: controller.myProductDetailCtrl.model!.buyDate,
                     onChange: (value) => controller.nextBtnFill(),
                     onSubmit: (value){},
                     controller: controller.buyDateCtrl,
@@ -86,7 +86,7 @@ class ModifiedProductPage extends GetView<ModifiedProductController> {
                   ),
                   const SizedBox(height: 16),
                   FormInputTitleRowWidget(
-                    hint: Get.arguments['buyPrice'],
+                    hint: controller.myProductDetailCtrl.model!.price,
                     onChange: (value) => controller.nextBtnFill(),
                     onSubmit: (value){},
                     controller: controller.buyPriceCtrl,
@@ -96,7 +96,7 @@ class ModifiedProductPage extends GetView<ModifiedProductController> {
                   ),
                   const SizedBox(height: 16),
                   FormInputTitleRowWidget(
-                    hint: Get.arguments['buyRoute'],
+                    hint: controller.myProductDetailCtrl.model!.buyRoute,
                     onChange: (value) => controller.nextBtnFill(),
                     onSubmit: (value){},
                     controller: controller.buyRouteCtrl,
@@ -105,6 +105,9 @@ class ModifiedProductPage extends GetView<ModifiedProductController> {
                     isShowTitle: true,
                   ),
                   const SizedBox(height: 120),
+                  //autoHeight
+                  GetBuilder<ModifiedProductController>(
+                      builder: (_) => SizedBox(height: controller.autoHeight(context)))
                 ],
               ),
             ),

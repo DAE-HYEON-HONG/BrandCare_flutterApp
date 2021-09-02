@@ -21,24 +21,22 @@ class InquiryPage extends StatelessWidget {
               top: 0,
               left: 0,
               right: 0,
+              bottom: 0,
               child: Padding(
                 padding: const EdgeInsets.only(left:16, right: 16),
                 child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
                   child: Column(
                     children: [
                       const SizedBox(height: 24,),
                       FormInputWidget(onChange: (value){
                         controller.title.value = value;
-                      }, onSubmit: (value){}, controller: TextEditingController(
-                          text: controller.title.value
-                      ),
+                      }, onSubmit: (value){}, controller: controller.titleCtrl,
                         hint: '제목',
                       ),
                       const SizedBox(height: 16,),
                       TextFormField(
-                        controller: TextEditingController(
-                            text: controller.content.value
-                        ),
+                        controller: controller.contentsCtrl,
                         style: regular12TextStyle,
                         onChanged: (value){
                           controller.content.value = value;
@@ -64,6 +62,8 @@ class InquiryPage extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 28, bottom: 32),
                         child: Text('Copyright © 2021 BrandCare Inc. All Rights Reserved.', style: regular10TextStyle.copyWith(color: gray_999Color),),
                       ),
+                      GetBuilder<InquiryController>(
+                          builder: (_) => SizedBox(height: controller.autoHeight(context))),
                     ],
                   ),
                 ),

@@ -24,6 +24,16 @@ class MainAddProductController extends BaseController {
 
   List<CategoryListModel> categoryList = <CategoryListModel>[];
 
+  void initInfo(){
+    titleCtrl.text = "";
+    categoryCtrl.text = "";
+    brandCtrl.text = "";
+    serialCtrl.text = "";
+    sinceBuyCtrl.text = "";
+    priceCtrl.text = "";
+    connectBuyCtrl.text = "";
+  }
+
   void changeBrandCategory(int idx){
     brandCategoryIdx = idx;
     update();
@@ -48,10 +58,6 @@ class MainAddProductController extends BaseController {
   void nextBtnFill(){
     if (
         titleCtrl.text == "" ||
-        serialCtrl.text == "" ||
-        sinceBuyCtrl.text == "" ||
-        priceCtrl.text == "" ||
-        connectBuyCtrl.text == "" ||
         categoryIdx == 999 ||
         brandCategoryIdx == 999
     ){

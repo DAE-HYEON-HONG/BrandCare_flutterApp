@@ -1,7 +1,14 @@
+import 'dart:io';
+
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/AddProductControllers/addProductImgs_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/AddProductControllers/mainAddProduct_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/modifiedProductImgs_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/modified_product_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/productInfo_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/models/categoryList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/addProduct_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/product/updateProduct_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,8 +16,9 @@ import 'package:get/get.dart';
 
 class ModifiedProductDesController extends BaseController{
 
-  final mainAddProductCtrl = Get.find<MainAddProductController>();
-  final addProductImgsCtrl = Get.find<AddProductImgsController>();
+  final productInfoDetailCtrl = Get.find<ProductInfoDetailController>();
+  final updateDetailCtrl = Get.find<ModifiedProductController>();
+  final updateImgCtrl = Get.find<ModifiedProductImgsController>();
 
   TextEditingController desBody = TextEditingController();
 
@@ -28,7 +36,42 @@ class ModifiedProductDesController extends BaseController{
   bool products = false;
   bool description = false;
 
-  RxBool fill = false.obs;
+  RxBool fill = true.obs;
+
+  void infoInit(){
+    infoAutoChk(productInfoDetailCtrl.model!.additionList);
+    infoAutoChk(productInfoDetailCtrl.model!.conditionList);
+    desBody.text = productInfoDetailCtrl.model!.etc;
+  }
+
+  double autoHeight (BuildContext context){
+    double height = MediaQuery.of(context).viewInsets.bottom == 0 ? 0 : 200;
+    return height;
+  }
+
+  void infoAutoChk(List<CategoryListModel> list){
+    for(var addValue in list){
+      if(addValue.title == "오염"){
+        dirty.value = true;
+        nothing.value = false;
+      }else if(addValue.title == "파손"){
+        broken.value = true;
+        nothing.value = false;
+      }else if(addValue.title == "문제 없음"){
+        nothing.value = true;
+      }else if(addValue.title == "더스트백"){
+        dustBag.value = true;
+        notExist.value = false;
+      }else if(addValue.title == "보증서"){
+        guarantee.value = true;
+        notExist.value = false;
+      }else{
+        notExist.value = true;
+        dustBag.value = false;
+        guarantee.value = false;
+      }
+    }
+  }
 
   void choiceChk(String title){
     if(title == "오염"){
@@ -111,25 +154,31 @@ class ModifiedProductDesController extends BaseController{
 
   Future<void> uploadAddProduct() async {
     addList();
-    AddProductModel model = AddProductModel(
-        title: mainAddProductCtrl.titleCtrl.text,
-        categoryId: mainAddProductCtrl.categoryIdx ?? 0,
-        brandId: mainAddProductCtrl.brandCategoryIdx ?? 0,
-        etc: desBody.text,
-        price: int.parse(mainAddProductCtrl.priceCtrl.text),
-        serialCode: mainAddProductCtrl.serialCtrl.text,
-        buyRoute: mainAddProductCtrl.connectBuyCtrl.text,
-        buyDate: mainAddProductCtrl.sinceBuyCtrl.text,
-        conditionId: conditionId,
-        additionId: additionalId
+    UpdateProductModel model = UpdateProductModel(
+      title: updateDetailCtrl.titleCtrl.text,
+      categoryId: updateDetailCtrl.categoryIdx,
+      brandId: updateDetailCtrl.brandCategoryIdx,
+      etc: desBody.text,
+      price: updateDetailCtrl.buyPriceCtrl.text != "" ? int.parse(updateDetailCtrl.buyPriceCtrl.text) : 0,
+      serialCode: updateDetailCtrl.serialCtrl.text,
+      buyRoute: updateDetailCtrl.buyRouteCtrl.text,
+      buyDate: updateDetailCtrl.buyDateCtrl.text,
+      conditionId: conditionId,
+      additionId: additionalId,
+      id: productInfoDetailCtrl.model!.id,
+      deleteImageId: updateImgCtrl.removeImgIdx!,
     );
-    final res = await ProductProvider().productApply(
+    List<File> images = <File>[];
+    for(var file in updateImgCtrl.imgList!){
+      images.add(file.file!);
+    }
+    final res = await ProductProvider().productUpdate(
       model,
-      addProductImgsCtrl.pickImgList!,
-      addProductImgsCtrl.frontImg.value,
-      addProductImgsCtrl.backImg.value,
-      addProductImgsCtrl.leftImg.value,
-      addProductImgsCtrl.rightImg.value,
+      images,
+      updateImgCtrl.frontImg.value,
+      updateImgCtrl.backImg.value,
+      updateImgCtrl.leftImg.value,
+      updateImgCtrl.rightImg.value,
     );
     if(res == null){
       Get.dialog(
@@ -141,10 +190,11 @@ class ModifiedProductDesController extends BaseController{
     }else{
       if(res['data'] == "Y"){
         Get.dialog(
-          CustomDialogWidget(content: '제품등록이 완료되었습니다.', onClick: (){
+          CustomDialogWidget(content: '제품수정이 완료되었습니다.', onClick: (){
             Get.offAllNamed('/mainPage');
             update();
           }),
+          barrierDismissible: false,
         );
       }
     }
@@ -152,6 +202,7 @@ class ModifiedProductDesController extends BaseController{
 
   @override
   void onInit() {
+    infoInit();
     super.onInit();
   }
 }

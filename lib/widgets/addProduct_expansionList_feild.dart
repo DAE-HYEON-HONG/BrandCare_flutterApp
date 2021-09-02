@@ -94,6 +94,7 @@ class _AddProductExpansionListFieldState extends State<AddProductExpansionListFi
             Padding(
               padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
               child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
                 onTap: () {
                   _handleTap();
                   widget.onTap();

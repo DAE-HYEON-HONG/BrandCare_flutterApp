@@ -1,5 +1,8 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/productInfo_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/models/idPathFileImages_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/idPathImages_model.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/modifiedProductDes_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:get/get.dart';
@@ -7,28 +10,36 @@ import 'dart:io';
 
 class ModifiedProductImgsController extends BaseController {
 
+  final productInfoDetailCtrl = Get.find<ProductInfoDetailController>();
   final ImagePicker imgPicker = ImagePicker();
   dynamic imgPickerErr;
-  RxBool fill = false.obs;
-  List<File>? pickImgList = <File>[];
-  List<IdPathImagesModel> imgList = Get.arguments['imgList'];
-
+  RxBool fill = true.obs;
+  List<IdPathFileImagesModel>? imgList = <IdPathFileImagesModel>[];
+  List<int>? removeImgIdx = [];
   Rx<File> frontImg = File('').obs;
   Rx<File> backImg = File('').obs;
   Rx<File> leftImg = File('').obs;
   Rx<File> rightImg = File('').obs;
 
-  void pictureChk(){
-    if(frontImg.value.path.isEmpty ||
-        backImg.value.path.isEmpty ||
-        leftImg.value.path.isEmpty ||
-        rightImg.value.path.isEmpty){
-      fill.value = false;
-      update();
-    }else{
-      fill.value = true;
-      update();
+  String frontImgPath = "";
+  String backImgPath = "";
+  String leftImgPath = "";
+  String rightImgPath = "";
+
+  void initImages(){
+    //이미지들 초기화
+    if(productInfoDetailCtrl.model!.image != null){
+      for(var file in productInfoDetailCtrl.model!.image!){
+        imgList!.add(
+            IdPathFileImagesModel(file.id, file.path, File(''))
+        );
+      }
     }
+    print(imgList!.length);
+    frontImgPath = productInfoDetailCtrl.model!.frontImage ?? "";
+    backImgPath = productInfoDetailCtrl.model!.backImage ?? "";
+    leftImgPath = productInfoDetailCtrl.model!.leftImage ?? "";
+    rightImgPath = productInfoDetailCtrl.model!.rightImage ?? "";
   }
 
   Future<void> loadAssets(String chkImg, ImageSource source) async {
@@ -43,22 +54,18 @@ class ModifiedProductImgsController extends BaseController {
       if(chkImg == "front"){
         frontImg.value = File(pickedFile!.path);
         update();
-        pictureChk();
         Get.back();
       }else if (chkImg == "back"){
         backImg.value = File(pickedFile!.path);
         update();
-        pictureChk();
         Get.back();
       }else if (chkImg == "left"){
         leftImg.value = File(pickedFile!.path);
         update();
-        pictureChk();
         Get.back();
       }else {
         rightImg.value = File(pickedFile!.path);
         update();
-        pictureChk();
         Get.back();
       }
     }catch(e){
@@ -71,19 +78,31 @@ class ModifiedProductImgsController extends BaseController {
     if(chkImg == "front"){
       frontImg.value = File('');
       update();
-      pictureChk();
     }else if (chkImg == "back"){
       backImg.value = File('');
       update();
-      pictureChk();
     }else if (chkImg == "left"){
       leftImg.value = File('');
       update();
-      pictureChk();
     }else {
       rightImg.value = File('');
       update();
-      pictureChk();
+    }
+  }
+
+  void removeUploadedImg(String chkImg){
+    if(chkImg == "front"){
+      frontImgPath = "";
+      update();
+    }else if (chkImg == "back"){
+      backImgPath = "";
+      update();
+    }else if (chkImg == "left"){
+      leftImgPath = "";
+      update();
+    }else {
+      rightImgPath = "";
+      update();
     }
   }
 
@@ -96,17 +115,19 @@ class ModifiedProductImgsController extends BaseController {
         imageQuality: 100,
         preferredCameraDevice: CameraDevice.rear,
       );
-      pickImgList!.add(File(pickedFile!.path));
+      imgList!.add(IdPathFileImagesModel(null, "", File(pickedFile!.path)));
       update();
-      pictureChk();
       Get.back();
     }catch(e){
       print(e.toString());
     }
   }
 
-  void removeListAssets(dynamic obj){
-    pickImgList!.remove(obj);
+  void removeListAssets(IdPathFileImagesModel obj){
+    imgList!.remove(obj);
+    if(obj.id != null){
+      removeImgIdx!.add(obj.id!);
+    }
     update();
   }
 
@@ -121,12 +142,13 @@ class ModifiedProductImgsController extends BaseController {
 
   void nextLevel() {
     if(fill.value){
-      Get.toNamed('/mainAddProduct/addDescription');
+      Get.to(() => ModifiedProductDesPage());
     }
   }
 
   @override
   void onInit() {
+    initImages();
     _cameraPermission();
     super.onInit();
   }

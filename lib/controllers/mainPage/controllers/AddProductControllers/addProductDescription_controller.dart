@@ -30,6 +30,11 @@ class AddProductDescriptionController extends BaseController{
 
   RxBool fill = false.obs;
 
+  double autoHeight (BuildContext context){
+    double height = MediaQuery.of(context).viewInsets.bottom == 0 ? 0 : 200;
+    return height;
+  }
+
   void choiceChk(String title){
     if(title == "오염"){
       dirty.value = !dirty.value;
@@ -116,7 +121,7 @@ class AddProductDescriptionController extends BaseController{
         categoryId: mainAddProductCtrl.categoryIdx ?? 0,
         brandId: mainAddProductCtrl.brandCategoryIdx ?? 0,
         etc: desBody.text,
-        price: int.parse(mainAddProductCtrl.priceCtrl.text),
+        price: mainAddProductCtrl.priceCtrl.text != "" ? int.parse(mainAddProductCtrl.priceCtrl.text) : 0,
         serialCode: mainAddProductCtrl.serialCtrl.text,
         buyRoute: mainAddProductCtrl.connectBuyCtrl.text,
         buyDate: mainAddProductCtrl.sinceBuyCtrl.text,
@@ -145,6 +150,7 @@ class AddProductDescriptionController extends BaseController{
             Get.offAllNamed('/mainPage');
             update();
           }),
+          barrierDismissible: false,
         );
       }
     }

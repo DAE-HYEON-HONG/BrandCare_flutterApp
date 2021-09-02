@@ -1,3 +1,4 @@
+import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/mainHome_controller.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainHomePage extends StatelessWidget {
   final MainHomeController controller = Get.put(MainHomeController());
@@ -40,14 +42,14 @@ class MainHomePage extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     //배너
-                    Container(
+                    GetBuilder<MainHomeController>(builder: (_) => Container(
                       width: double.infinity,
-                      height: 360,
+                      height: 320,
                       child: Stack(
                         children: [
                           CarouselSlider(
                             options: CarouselOptions(
-                                height: 360,
+                                height: 320,
                                 aspectRatio: 16 / 9,
                                 initialPage: 0,
                                 enableInfiniteScroll: true,
@@ -60,39 +62,46 @@ class MainHomePage extends StatelessWidget {
                                 onPageChanged: (index, reason) {
                                   controller.changeBannerImg(index);
                                 }),
-                            items: (controller.bannerImageList).map((e) {
+                            items: (controller.bannerList!).map((e) {
                               return Builder(
                                 builder: (context) {
-                                  return Container(
-                                    width: double.infinity,
-                                    height: 360,
-                                    child: ExtendedImage.network(
-                                      e,
-                                      fit: BoxFit.cover,
-                                      cache: true,
-                                      // ignore: missing_return
-                                      loadStateChanged: (ExtendedImageState state) {
-                                        switch (state.extendedImageLoadState) {
-                                          case LoadState.loading:
-                                            break;
-                                          case LoadState.completed:
-                                            break;
-                                          case LoadState.failed:
-                                            return GestureDetector(
-                                              child: Center(
-                                                child: Container(
-                                                  width: 100,
-                                                  height: 100,
-                                                  color: primaryColor,
+                                  return GestureDetector(
+                                    onTap: () {
+                                      if(e.isUrl){
+                                        launch(e.url!);
+                                      }
+                                    },
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: 320,
+                                      child: ExtendedImage.network(
+                                        BaseApiService.imageApi+e.image.path!,
+                                        fit: BoxFit.fitWidth,
+                                        cache: true,
+                                        // ignore: missing_return
+                                        loadStateChanged: (ExtendedImageState state) {
+                                          switch (state.extendedImageLoadState) {
+                                            case LoadState.loading:
+                                              break;
+                                            case LoadState.completed:
+                                              break;
+                                            case LoadState.failed:
+                                              return GestureDetector(
+                                                child: Center(
+                                                  child: Container(
+                                                    width: 100,
+                                                    height: 100,
+                                                    color: primaryColor,
+                                                  ),
                                                 ),
-                                              ),
-                                              onTap: () {
-                                                state.reLoadImage();
-                                              },
-                                            );
-                                            break;
-                                        }
-                                      },
+                                                onTap: () {
+                                                  state.reLoadImage();
+                                                },
+                                              );
+                                              break;
+                                          }
+                                        },
+                                      ),
                                     ),
                                   );
                                 },
@@ -154,7 +163,7 @@ class MainHomePage extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
+                    )),
                     //하단 이용 안내 및 브랜드 케어 설명
                     Container(
                       width: double.infinity,
@@ -194,7 +203,7 @@ class MainHomePage extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(
-                            height: 80,
+                            height: 24,
                           ),
                           CustomExpansionTileMain(
                             title: Column(

@@ -13,7 +13,7 @@ MyProfileInfoModel _$MyProfileInfoModelFromJson(Map<String, dynamic> json) {
     json['productCount'] as int,
     json['lastLoginDate'] as String,
     json['nickName'] as String?,
-    json['profileImg'] as String?,
+    json['profile'] as String?,
   );
 }
 
@@ -24,5 +24,5 @@ Map<String, dynamic> _$MyProfileInfoModelToJson(MyProfileInfoModel instance) =>
       'productCount': instance.productCount,
       'lastLoginDate': instance.lastLoginDate,
       'nickName': instance.nickName,
-      'profileImg': instance.profileImg,
+      'profile': instance.profile,
     };

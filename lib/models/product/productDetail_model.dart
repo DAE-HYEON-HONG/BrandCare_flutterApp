@@ -10,6 +10,8 @@ class ProductDetailModel{
       this.additionList,
       this.backImage,
       this.brand,
+      this.categoryId,
+      this.brandId,
       this.buyDate,
       this.buyRoute,
       this.category,
@@ -29,9 +31,11 @@ class ProductDetailModel{
 
   late String? backImage;
   late String brand;
+  late int brandId;
   late String buyDate;
   late String buyRoute;
   late String category;
+  late int categoryId;
   late List<CategoryListModel> conditionList;
   late List<CategoryListModel> additionList;
   late String? createdDate;
@@ -44,7 +48,7 @@ class ProductDetailModel{
   late String price;
   late String? rightImage;
   late String serialCode;
-  late String thumbnail;
+  late String? thumbnail;
   late String title;
 
   factory ProductDetailModel.fromJson(Map<String, dynamic> json) => _$ProductDetailModelFromJson(json);

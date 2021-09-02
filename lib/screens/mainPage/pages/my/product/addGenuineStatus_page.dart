@@ -16,7 +16,7 @@ class AddGenuineStatusPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: DefaultAppBarScaffold(
-        title: "제품 케어 신청현황",
+        title: "정품인증 신청현황",
         child: _renderBody(),
         isLeadingShow: false,
       ),
@@ -26,7 +26,7 @@ class AddGenuineStatusPage extends StatelessWidget {
   }
 
   _renderBody(){
-    return Container(
+    return GetBuilder<AddGenuineStatusController>(builder: (_) => Container(
       width: double.infinity,
       height: double.infinity,
       child: Stack(
@@ -40,24 +40,24 @@ class AddGenuineStatusPage extends StatelessWidget {
                 children: [
                   const SizedBox(height: 32),
                   _productInfo(
-                    imgPath: "${controller.careStatus?.careProduct[0].image}",
-                    title: "${controller.careStatus?.careProduct[0].category} 외 ${controller.careStatus?.careProduct.length ?? 0}건",
-                    type: StatusUtil.statusChk(status: "${controller.careStatus?.status}"),
-                    clock: DateFormatUtil.convertOnlyTime(date: "${controller.careStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
-                    date: DateFormatUtil.convertOnlyDate(date: "${controller.careStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
+                    imgPath: "${controller.genuineStatus?.product_image}",
+                    title: "${controller.genuineStatus?.title}",
+                    type: StatusUtil.statusChk(status: "${controller.genuineStatus?.status}"),
+                    clock: DateFormatUtil.convertOnlyTime(date: "${controller.genuineStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
+                    date: DateFormatUtil.convertOnlyDate(date: "${controller.genuineStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
                   ),
                   const SizedBox(height: 24),
                   ListView.builder(
-                    itemCount: controller.careStatusJson.length,
+                    itemCount: controller.genuineStatusJson.length,
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, idx){
-                     return _status(
-                        title: controller.careStatusJson[idx]['statusType'],
-                        date: DateFormatUtil.convertOnlyDate(date: controller.careStatusJson[idx]['date']),
-                        time: DateFormatUtil.convertOnlyTime(date: controller.careStatusJson[idx]['time']),
-                        isNext: idx == controller.careStatusJson.length - 1 ? false : true,
-                        checked: controller.careStatusJson[idx]['checked'],
+                      return _status(
+                        title: controller.genuineStatusJson[idx]['statusType'],
+                        date: DateFormatUtil.convertOnlyDate(date: controller.genuineStatusJson[idx]['date']),
+                        time: DateFormatUtil.convertOnlyTime(date: controller.genuineStatusJson[idx]['time']),
+                        isNext: idx == controller.genuineStatusJson.length - 1 ? false : true,
+                        checked: controller.genuineStatusJson[idx]['checked'],
                       );
                     },
                   ),
@@ -75,7 +75,7 @@ class AddGenuineStatusPage extends StatelessWidget {
                   const SizedBox(height: 24),
                   Text('제품명', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField('${controller.careStatus?.careProduct[0].category} 외 ${controller.careStatus?.careProduct.length ?? 0}건'),
+                  _inputField('${controller.genuineStatus?.title}'),
                   const SizedBox(height: 24),
                   Text('택배 반송 주소', style: medium14TextStyle),
                   const SizedBox(height: 10),
@@ -89,25 +89,25 @@ class AddGenuineStatusPage extends StatelessWidget {
                   const SizedBox(height: 24),
                   Text('이름', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField(controller.careStatus?.returnType == "SENDER" ? "${controller.careStatus?.sender.name}" : "${controller.careStatus?.receiver.name}"),
+                  _inputField(controller.genuineStatus?.returnType == "SENDER" ? "${controller.genuineStatus?.sender.name}" : "${controller.genuineStatus?.receiver.name}"),
                   const SizedBox(height: 24),
                   Text('전화번호', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField(controller.careStatus?.returnType == "SENDER" ? "${controller.careStatus?.sender.phone}" : "${controller.careStatus?.receiver.phone}"),
+                  _inputField(controller.genuineStatus?.returnType == "SENDER" ? "${controller.genuineStatus?.sender.phone}" : "${controller.genuineStatus?.receiver.phone}"),
                   const SizedBox(height: 24),
                   Text('주소', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField(controller.careStatus?.returnType == "SENDER" ?
-                  "${controller.careStatus?.sender.address.city}":
-                  "${controller.careStatus?.receiver.address.city}"),
+                  _inputField(controller.genuineStatus?.returnType == "SENDER" ?
+                  "${controller.genuineStatus?.sender.address.city}":
+                  "${controller.genuineStatus?.receiver.address.city}"),
                   const SizedBox(height: 10),
-                  _inputField(controller.careStatus?.returnType == "SENDER" ?
-                  "${controller.careStatus?.sender.address.street}":
-                  "${controller.careStatus?.receiver.address.street}"),
+                  _inputField(controller.genuineStatus?.returnType == "SENDER" ?
+                  "${controller.genuineStatus?.sender.address.street}":
+                  "${controller.genuineStatus?.receiver.address.street}"),
                   const SizedBox(height: 24),
                   Text('요청사항', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField("${controller.careStatus?.request_term}"),
+                  _inputField("${controller.genuineStatus?.request_term}"),
                   const SizedBox(height: 120),
                 ],
               ),
@@ -118,13 +118,13 @@ class AddGenuineStatusPage extends StatelessWidget {
             right: 0,
             bottom: 0,
             child: CustomButtonEmptyBackgroundWidget(
-                title: "확인",
-                onClick: () => controller.nextLevel(),
+              title: "확인",
+              onClick: () => controller.nextLevel(),
             ),
           ),
         ],
       ),
-    );
+    ));
   }
 
   _backPost(bool isChecked, String title){

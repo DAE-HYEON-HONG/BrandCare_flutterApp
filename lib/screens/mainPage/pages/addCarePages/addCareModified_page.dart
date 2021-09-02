@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/addCarePic_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/careSub_expansionList_feild.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/care_expansionList_feild.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
@@ -61,16 +62,15 @@ class AddCareModifiedPage extends GetView<AddCarePicController> {
                   ),
                   const SizedBox(height: 9),
                   CareExpansionListField(
-                      onTap: () => controller.chkFill(),
-                      hintText: "$category",
-                      items: controller.careList,
-                      onChange: (value) => controller.firstCategory(value),
-                      onPriceChange: (value) {},
+                    onTap: () => controller.chkFill(),
+                    hintText: "1. 카테고리를 선택하세요.(가방, 지갑, 신발)",
+                    items: controller.globalCtrl.careCategory!,
+                    onChange: (value) => controller.firstCategory(value),
                   ),
                   const SizedBox(height: 8),
-                  Obx(() => CareExpansionListField(
+                  Obx(() => CareSubExpansionListField(
                     onTap: () => controller.chkFill(),
-                    hintText: "$secondCategory",
+                    hintText: "2. 케어/수선 항목을 선택하세요.",
                     items: controller.checkType(controller.firstCareCategory.value),
                     onChange: (value) => controller.secondCategory(value),
                     onPriceChange: (value) => controller.choicePrice(value),

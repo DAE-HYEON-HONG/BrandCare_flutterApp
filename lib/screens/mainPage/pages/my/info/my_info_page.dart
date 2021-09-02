@@ -74,25 +74,31 @@ class MyInfoPage extends StatelessWidget {
               style: medium14TextStyle,
             ),
             const Spacer(),
-            myController.myProfileInfoModel?.profileImg == null ?
+            myController.myProfileInfoModel?.profile == null ?
             SvgPicture.asset(
               'assets/icons/mypage_on.svg',
             ):
-            ExtendedImage.network(
-              BaseApiService.imageApi+(myController.myProfileInfoModel?.profileImg ?? ""),
-              fit: BoxFit.cover,
-              cache: true,
-              // ignore: missing_return
-              loadStateChanged: (ExtendedImageState state) {
-                switch(state.extendedImageLoadState) {
-                  case LoadState.loading :
-                    break;
-                  case LoadState.completed :
-                    break;
-                  case LoadState.failed :
-                    break;
-                }
-              },
+            Container(
+              width: 50,
+              height: 50,
+              child: ClipOval(
+                child: ExtendedImage.network(
+                  BaseApiService.imageApi+myController.myProfileInfoModel!.profile!,
+                  fit: BoxFit.cover,
+                  cache: true,
+                  // ignore: missing_return
+                  loadStateChanged: (ExtendedImageState state) {
+                    switch(state.extendedImageLoadState) {
+                      case LoadState.loading :
+                        break;
+                      case LoadState.completed :
+                        break;
+                      case LoadState.failed :
+                        break;
+                    }
+                  },
+                ),
+              ),
             ),
           ],
         ),

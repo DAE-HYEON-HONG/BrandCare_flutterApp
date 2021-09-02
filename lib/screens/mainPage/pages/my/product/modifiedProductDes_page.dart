@@ -16,12 +16,12 @@ class ModifiedProductDesPage extends StatelessWidget {
       onTap: () => FocusScope.of(context).unfocus(),
       child: DefaultAppBarScaffold(
         title: "제품 정보 수정",
-        child: _renderBody(),
+        child: _renderBody(context),
       ),
     );
   }
 
-  _renderBody() {
+  _renderBody(context) {
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -119,6 +119,9 @@ class ModifiedProductDesPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 110),
+                  //autoHeight
+                  GetBuilder<ModifiedProductDesController>(
+                      builder: (_) => SizedBox(height: controller.autoHeight(context)))
                 ],
               ),
             ),

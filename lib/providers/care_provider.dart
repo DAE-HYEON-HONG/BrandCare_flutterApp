@@ -74,4 +74,15 @@ class CareProvider{
       return json;
     }
   }
+
+  Future<dynamic> careCategory() async {
+    final res = await _careApiService.careCategory();
+    if(res == null) {
+      return null;
+    }else {
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      print(json.toString());
+      return json;
+    }
+  }
 }

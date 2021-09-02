@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'package:brandcare_mobile_flutter_v2/models/addCare/addCareList_model.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
 import 'package:http_parser/http_parser.dart';
 import '../base_api_service.dart';
 
@@ -54,7 +51,6 @@ class CareApiService{
         uri,
         headers: headers,
       );
-      print(res.body.toString());
       if(res.statusCode == 200){
         return res;
       }else{
@@ -73,7 +69,23 @@ class CareApiService{
         uri,
         headers: headers,
       );
-      print(res.body.toString());
+      if(res.statusCode == 200){
+        return res;
+      }else{
+        return null;
+      }
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> careCategory() async{
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/care/category");
+      final http.Response res = await http.get(
+        uri,
+      );
       if(res.statusCode == 200){
         return res;
       }else{

@@ -8,9 +8,9 @@ class MyProfileInfoModel {
   final int productCount;
   final String lastLoginDate;
   final String? nickName;
-  final String? profileImg;
+  final String? profile;
 
-  MyProfileInfoModel(this.activationCount, this.careCount, this.productCount, this.lastLoginDate, this.nickName, this.profileImg);
+  MyProfileInfoModel(this.activationCount, this.careCount, this.productCount, this.lastLoginDate, this.nickName, this.profile);
 
   factory MyProfileInfoModel.fromJson(Map<String, dynamic> json) => _$MyProfileInfoModelFromJson(json);
   Map<String, dynamic> toJson() => _$MyProfileInfoModelToJson(this);

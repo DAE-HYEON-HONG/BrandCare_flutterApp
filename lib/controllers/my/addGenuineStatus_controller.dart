@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/addCare/careStatus_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/addCare/care_statusDate_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/genuine/genuineStatus_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/care_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addCarePages/addCareDetail_page.dart';
@@ -11,11 +12,11 @@ import 'package:get/get.dart';
 class AddGenuineStatusController extends BaseController {
 
   RxBool fill = true.obs;
-  CareStatusModel? careStatus;
+  GenuineStatusModel? genuineStatus;
   CareStatusDateModel? dateStatus;
   int productIdx = Get.arguments['idx'];
   bool back = Get.arguments['back'];
-  List<Map<dynamic, dynamic>> careStatusJson = [];
+  List<Map<dynamic, dynamic>> genuineStatusJson = [];
   void nextLevel() {
     if(back){
       Get.back();
@@ -40,7 +41,7 @@ class AddGenuineStatusController extends BaseController {
             })
         );
       }else{
-        careStatus = CareStatusModel.fromJson(res);
+        genuineStatus = GenuineStatusModel.fromJson(res);
         dateStatus = CareStatusDateModel.fromJson(res);
         super.networkState.value = NetworkStateEnum.DONE;
         update();
@@ -53,43 +54,43 @@ class AddGenuineStatusController extends BaseController {
 
   void addList(){
     print(dateStatus?.completedDate);
-    careStatusJson.add({
+    genuineStatusJson.add({
       "statusType" : "신청 완료",
-      "date" : careStatus?.createdDate,
-      "time" : careStatus?.createdDate,
-      "checked" : careStatus?.createdDate == null ? false : true,
+      "date" : genuineStatus?.createdDate,
+      "time" : genuineStatus?.createdDate,
+      "checked" : genuineStatus?.createdDate == null ? false : true,
     });
-    careStatusJson.add({
+    genuineStatusJson.add({
       "statusType" : "택배 수거 진행중",
       "date" : dateStatus?.pickUpDate,
       "time" : dateStatus?.pickUpDate,
       "checked" : dateStatus?.pickUpDate == null ? false : true,
     });
-    careStatusJson.add({
+    genuineStatusJson.add({
       "statusType" : "입고",
       "date" : dateStatus?.wareHouseIngDate,
       "time" : dateStatus?.wareHouseIngDate,
       "checked" : dateStatus?.wareHouseIngDate == null ? false : true,
     });
-    careStatusJson.add({
+    genuineStatusJson.add({
       "statusType" : "케어/수선 진행 중",
       "date" : dateStatus?.caringDate,
       "time" : dateStatus?.caringDate,
       "checked" : dateStatus?.caringDate == null ? false : true,
     });
-    careStatusJson.add({
+    genuineStatusJson.add({
       "statusType" : "출고",
       "date" : dateStatus?.be_releasedDate,
       "time" : dateStatus?.be_releasedDate,
       "checked" : dateStatus?.be_releasedDate == null ? false : true,
     });
-    careStatusJson.add({
+    genuineStatusJson.add({
       "statusType" : "택배 배송 중",
       "date" : dateStatus?.deliveringDate,
       "time" : dateStatus?.deliveringDate,
       "checked" : dateStatus?.deliveringDate == null ? false : true,
     });
-    careStatusJson.add({
+    genuineStatusJson.add({
       "statusType" : "완료",
       "date" : dateStatus?.completedDate,
       "time" : dateStatus?.completedDate,

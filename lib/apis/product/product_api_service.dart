@@ -44,37 +44,45 @@ class ProductApiService {
         );
       }
       //앞면 이미지
-      req.files.add(
-        http.MultipartFile.fromBytes(
-          'frontImage',
-          frontImg.readAsBytesSync(),
-          filename: frontImg.path.split("/").last
-        ),
-      );
+      if(frontImg.path.isNotEmpty){
+        req.files.add(
+          http.MultipartFile.fromBytes(
+              'frontImage',
+              frontImg.readAsBytesSync(),
+              filename: frontImg.path.split("/").last
+          ),
+        );
+      }
       //뒷면 이미지
-      req.files.add(
-        http.MultipartFile.fromBytes(
-            'backImage',
-            backImg.readAsBytesSync(),
-            filename: backImg.path.split("/").last
-        ),
-      );
+      if(backImg.path.isNotEmpty){
+        req.files.add(
+          http.MultipartFile.fromBytes(
+              'backImage',
+              backImg.readAsBytesSync(),
+              filename: backImg.path.split("/").last
+          ),
+        );
+      }
       //왼쪽 이미지
-      req.files.add(
-        http.MultipartFile.fromBytes(
-            'leftImage',
-            leftImg.readAsBytesSync(),
-            filename: leftImg.path.split("/").last
-        ),
-      );
+      if(leftImg.path.isNotEmpty){
+        req.files.add(
+          http.MultipartFile.fromBytes(
+              'leftImage',
+              leftImg.readAsBytesSync(),
+              filename: leftImg.path.split("/").last
+          ),
+        );
+      }
       //오른쪽 이미지
-      req.files.add(
-        http.MultipartFile.fromBytes(
-            'rightImage',
-            rightImg.readAsBytesSync(),
-            filename: rightImg.path.split("/").last
-        ),
-      );
+      if(rightImg.path.isNotEmpty){
+        req.files.add(
+          http.MultipartFile.fromBytes(
+              'rightImage',
+              rightImg.readAsBytesSync(),
+              filename: rightImg.path.split("/").last
+          ),
+        );
+      }
       req.headers.addAll(headers);
       http.StreamedResponse res = await req.send();
       final resReturn = await res.stream.bytesToString();
@@ -228,6 +236,7 @@ class ProductApiService {
 
   Future<http.Response?> productRemove(dynamic headers, int idx) async{
     try{
+      print(idx);
       final uri = Uri.parse("${BaseApiService.baseApi}/product/apply/$idx");
       final http.Response res = await http.delete(
         uri,
@@ -268,7 +277,7 @@ class ProductApiService {
   Future<http.Response?> genuineStatus(dynamic headers, int idx) async{
     try{
       final uri = Uri.parse("${BaseApiService.baseApi}/activation/$idx");
-      final http.Response res = await http.delete(
+      final http.Response res = await http.get(
         uri,
         headers: headers,
       );
@@ -317,6 +326,96 @@ class ProductApiService {
         return null;
       }
     }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<dynamic> modifiedProduct(
+      dynamic headers,
+      dynamic body,
+      List<File> images,
+      File frontImg,
+      File backImg,
+      File leftImg,
+      File rightImg) async {
+    try {
+      final uri = Uri.parse("${BaseApiService.baseApi}/product/apply/update");
+      var req = http.MultipartRequest('PATCH', uri);
+      req.files.add(
+        http.MultipartFile.fromBytes(
+          'dto',
+          utf8.encode(body),
+          contentType: MediaType(
+            'application',
+            'json',
+            {'charset': 'utf-8'},
+          ),
+        ),
+      );
+      //이미지 리스트
+      for (var file in images) {
+        List<int> imageData = file.readAsBytesSync();
+        req.files.add(
+          http.MultipartFile.fromBytes(
+            'images',
+            imageData,
+            filename: file.path
+                .split("/")
+                .last,
+          ),
+        );
+      }
+      //앞면 이미지
+      if(frontImg.path != ""){
+        req.files.add(
+          http.MultipartFile.fromBytes(
+              'frontImage',
+              frontImg.readAsBytesSync() ,
+              filename: frontImg.path.split("/").last
+          ),
+        );
+      }
+      //뒷면 이미지
+      if(backImg.path != ""){
+        req.files.add(
+          http.MultipartFile.fromBytes(
+              'backImage',
+              backImg.readAsBytesSync(),
+              filename: backImg.path.split("/").last
+          ),
+        );
+      }
+      //왼쪽 이미지
+      if(leftImg.path != ""){
+        req.files.add(
+          http.MultipartFile.fromBytes(
+              'leftImage',
+              leftImg.readAsBytesSync(),
+              filename: leftImg.path.split("/").last
+          ),
+        );
+      }
+      //오른쪽 이미지
+      if(rightImg.path != ""){
+        req.files.add(
+          http.MultipartFile.fromBytes(
+              'rightImage',
+              rightImg.readAsBytesSync(),
+              filename: rightImg.path.split("/").last
+          ),
+        );
+      }
+      req.headers.addAll(headers);
+      http.StreamedResponse res = await req.send();
+      final resReturn = await res.stream.bytesToString();
+      print(res.statusCode);
+      if (res.statusCode == 200) {
+        return resReturn;
+      } else {
+        return null;
+      }
+    } catch (e) {
       print("접속 에러 : ${e.toString()}");
       return null;
     }

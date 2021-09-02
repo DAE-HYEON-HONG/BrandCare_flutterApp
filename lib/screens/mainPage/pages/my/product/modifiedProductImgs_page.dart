@@ -1,3 +1,4 @@
+import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/AddProductControllers/addProductImgs_controller.dart';
@@ -5,6 +6,7 @@ import 'package:brandcare_mobile_flutter_v2/controllers/my/modifiedProductImgs_c
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -40,7 +42,7 @@ class ModifiedProductImgsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "제품 사진을 등록하세요.",
+                        "제품 사진을 수정하세요.",
                         style: medium14TextStyle,
                       ),
                       const SizedBox(height: 8),
@@ -53,7 +55,7 @@ class ModifiedProductImgsPage extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 24),
-                  GridView.count(
+                  GetBuilder<ModifiedProductImgsController>(builder: (_) => GridView.count(
                     physics: NeverScrollableScrollPhysics(),
                     childAspectRatio: 8 / 9,
                     scrollDirection: Axis.vertical,
@@ -62,17 +64,37 @@ class ModifiedProductImgsPage extends StatelessWidget {
                     crossAxisSpacing: 8,
                     mainAxisSpacing: 32.0,
                     children: [
-                      _photoApply(controller.frontImg, "front", "정면 사진"),
-                      _photoApply(controller.backImg, "back", "뒷면 사진"),
-                      _photoApply(controller.leftImg, "left", "좌측 사진"),
-                      _photoApply(controller.rightImg, "right", "우측 사진"),
+                      _photoApply(
+                        controller.frontImg,
+                        "front",
+                        "정면 사진",
+                        controller.frontImgPath,
+                      ),
+                      _photoApply(
+                        controller.backImg,
+                        "back",
+                        "뒷면 사진",
+                        controller.backImgPath,
+                      ),
+                      _photoApply(
+                        controller.leftImg,
+                        "left",
+                        "좌측 사진",
+                        controller.leftImgPath,
+                      ),
+                      _photoApply(
+                        controller.rightImg,
+                        "right",
+                        "우측 사진",
+                        controller.rightImgPath,
+                      ),
                     ],
-                  ),
+                  )),
                   const SizedBox(height: 32),
-                  GetBuilder<AddProductImgsController>(
+                  GetBuilder<ModifiedProductImgsController>(
                     builder: (_) => GridView.builder(
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: controller.pickImgList!.length + 1,
+                      itemCount: controller.imgList!.length + 1,
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
@@ -104,8 +126,8 @@ class ModifiedProductImgsPage extends StatelessWidget {
     );
   }
 
-  _photoApply(Rx<File> img, String chkImg, String title) {
-    return Obx(() => SizedBox(
+  _photoApply(Rx<File> img, String chkImg, String title, String imgPath) {
+    return SizedBox(
       height: 180,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,7 +138,8 @@ class ModifiedProductImgsPage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: img.value.path == "" ?
+            child: imgPath == "" ?
+            img.value.path == "" ?
             GestureDetector(
               onTap: () => _normalMode(chkImg),
               child: Container(
@@ -169,17 +192,53 @@ class ModifiedProductImgsPage extends StatelessWidget {
                   ),
                 ],
               ),
+            ) :
+            Container(
+              width: double.infinity,
+              height: 180,
+              child: Stack(
+                children: [
+                  ExtendedImage.network(
+                    BaseApiService.imageApi+imgPath,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    cache: true,
+                    // ignore: missing_return
+                    loadStateChanged: (ExtendedImageState state) {
+                      switch(state.extendedImageLoadState) {
+                        case LoadState.loading :
+                          break;
+                        case LoadState.completed :
+                          break;
+                        case LoadState.failed :
+                          break;
+                      }
+                    },
+                  ),
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: GestureDetector(
+                      onTap: () => controller.removeUploadedImg(chkImg),
+                      child: SvgPicture.asset(
+                        "assets/icons/btn_x.svg",
+                        height: 16,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
       ),
-    ));
+    );
   }
 
   _photoListApply(int idx){
-    return GetBuilder<AddProductImgsController>(builder: (_) => Container(
+    return Container(
       height: 180,
-      child: controller.pickImgList!.length < idx + 1 ?
+      child: controller.imgList!.length < idx + 1 ?
       GestureDetector(
         onTap: () => _listMode(),
         child: Container(
@@ -214,16 +273,36 @@ class ModifiedProductImgsPage extends StatelessWidget {
         height: 180,
         child: Stack(
           children: [
+            controller.imgList![idx].path == "" ?
             Container(
               width: double.infinity,
               height: double.infinity,
-              child: Image.file(File(controller.pickImgList![idx].path), fit: BoxFit.cover),
+              child: Image.file(File(controller.imgList![idx].file!.path), fit: BoxFit.cover),
+            ):
+            Container(
+              child: ExtendedImage.network(
+                BaseApiService.imageApi+controller.imgList![idx].path!,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                cache: true,
+                // ignore: missing_return
+                loadStateChanged: (ExtendedImageState state) {
+                  switch(state.extendedImageLoadState) {
+                    case LoadState.loading :
+                      break;
+                    case LoadState.completed :
+                      break;
+                    case LoadState.failed :
+                      break;
+                  }
+                },
+              ),
             ),
             Positioned(
               top: 8,
               right: 8,
               child: GestureDetector(
-                onTap: () => controller.removeListAssets(controller.pickImgList![idx]),
+                onTap: () => controller.removeListAssets(controller.imgList![idx]),
                 child: SvgPicture.asset(
                   "assets/icons/btn_x.svg",
                   height: 16,
@@ -233,7 +312,7 @@ class ModifiedProductImgsPage extends StatelessWidget {
           ],
         ),
       ),
-    ));
+    );
   }
 
   _normalMode(String chkImg){

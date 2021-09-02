@@ -8,6 +8,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'dart:io';
 
 void main() {
   KakaoContext.clientId = "24d578e5ec7cbcf97fe904e7b11a0ecd";
@@ -18,6 +19,8 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Platform.isIOS ?
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]) :
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown]);
     return ScreenUtilInit(
       designSize: Size(360, 640),

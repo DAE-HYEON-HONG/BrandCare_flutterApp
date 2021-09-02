@@ -8,6 +8,7 @@ import 'package:brandcare_mobile_flutter_v2/models/product/addGenuineList_model.
 import 'package:brandcare_mobile_flutter_v2/models/product/addProduct_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/genuineList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/productDetail_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/product/updateProduct_model.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'dart:io';
 
@@ -138,7 +139,7 @@ class ProductProvider {
     }else {
       Map<String, dynamic> json = jsonDecode(res.body.toString());
       print(json.toString());
-      return ProductDetailModel.fromJson(json);
+      return json;
     }
   }
 
@@ -191,13 +192,35 @@ class ProductProvider {
 
   Future<dynamic> genuineStatus(int idx) async {
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
-    final res = await _productApiService.productGenuineAdd(BaseApiService.authHeaders(token!), idx);
+    final res = await _productApiService.genuineStatus(BaseApiService.authHeaders(token!), idx);
     if(res == null) {
       return null;
     }else {
       Map<String, dynamic> json = jsonDecode(res.body.toString());
       print(json.toString());
       return ProductDetailModel.fromJson(json);
+    }
+  }
+
+  Future<dynamic> productUpdate(UpdateProductModel model, List<File> images, File frontImg, File backImg, File leftImg, File rightImg) async {
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    var body = model.toJson();
+    var bodyJson = jsonEncode(body);
+    print(bodyJson.toString());
+    final res = await _productApiService.modifiedProduct(
+      BaseApiService.authHeaders(token!),
+      bodyJson,
+      images,
+      frontImg,
+      backImg,
+      leftImg,
+      rightImg,
+    );
+    if(res == null) {
+      return null;
+    }else {
+      Map<String, dynamic> json = jsonDecode(res.toString());
+      return json;
     }
   }
 }

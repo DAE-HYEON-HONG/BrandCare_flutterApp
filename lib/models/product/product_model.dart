@@ -8,10 +8,10 @@ class ProductModel {
   final String brand;
   final String category;
   final String? thumbnail;
-  final String frontImage;
-  final String leftImage;
-  final String backImage;
-  final String rightImage;
+  final String? frontImage;
+  final String? leftImage;
+  final String? backImage;
+  final String? rightImage;
   final String genuine;
   final String? createdDate;
 

@@ -222,4 +222,61 @@ class MyApiService{
       return null;
     }
   }
+
+  Future<http.Response?> getQnA(int page) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/faq?page=$page");
+      final http.Response res = await http.get(
+        uri,
+      );
+      return res;
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> getBanner(String type) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/banner-list?type=$type");
+      final http.Response res = await http.get(
+        uri,
+      );
+      return res;
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> getTerms() async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/terms");
+      final http.Response res = await http.get(
+        uri,
+      );
+      return res;
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> getInquiry(dynamic headers, int page) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/inquiry/mine?page=$page");
+      final http.Response res = await http.get(
+        uri,
+        headers: headers,
+      );
+      if(res.statusCode == 200){
+        return res;
+      }else{
+        return null;
+      }
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
 }
