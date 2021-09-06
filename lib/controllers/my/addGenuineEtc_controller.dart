@@ -1,16 +1,9 @@
-import 'dart:async';
-
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuine_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/productInfo_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/models/mypage/genuine/genuineList_model.dart';
-import 'package:brandcare_mobile_flutter_v2/models/product/addGenuineList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/genuineList_model.dart';
-import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
-import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/addGenuinePayment_page.dart';
-import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
-import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/genuine/addGenuinePayment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,6 +30,11 @@ class AddGenuineEtcController extends BaseController {
 
   RxBool fill = false.obs;
 
+  double autoHeight (BuildContext context){
+    double height = MediaQuery.of(context).viewInsets.bottom == 0 ? 0 : 200;
+    return height;
+  }
+
   void changeFirstGenuine(int idx){
     firstGenuine = idx;
     priceList.add(GenuinePriceListModel("정품인증", 1, 29000));
@@ -49,8 +47,13 @@ class AddGenuineEtcController extends BaseController {
     update();
   }
 
+  void removeGenuine(GenuinePriceListModel obj){
+    priceList.remove(obj);
+    update();
+  }
+
   void fillChange(){
-    if(des.text != "" && productName.text != "" && serialCode.text != "" && buyDate.text != ""){
+    if(des.text != ""){
       fill.value = true;
       update();
     }else{

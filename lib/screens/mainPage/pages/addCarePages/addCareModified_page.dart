@@ -66,6 +66,7 @@ class AddCareModifiedPage extends GetView<AddCarePicController> {
                     hintText: "1. 카테고리를 선택하세요.(가방, 지갑, 신발)",
                     items: controller.globalCtrl.careCategory!,
                     onChange: (value) => controller.firstCategory(value),
+                    changeIdx: (value) => controller.firstIdxCategory(value) ,
                   ),
                   const SizedBox(height: 8),
                   Obx(() => CareSubExpansionListField(
@@ -74,6 +75,7 @@ class AddCareModifiedPage extends GetView<AddCarePicController> {
                     items: controller.checkType(controller.firstCareCategory.value),
                     onChange: (value) => controller.secondCategory(value),
                     onPriceChange: (value) => controller.choicePrice(value),
+                    changeIdx: (value) => controller.secondIdxCategory(value),
                   )),
                   const SizedBox(height: 120),
                 ],

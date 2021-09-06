@@ -77,7 +77,7 @@ class _AddProductExpansionListFieldState extends State<AddProductExpansionListFi
     return AnimatedContainer(
       curve: Curves.easeInOutQuart,
       width: double.infinity,
-      height: _moreTab ? 60.0 * widget.items.length : 55,
+      height: _moreTab ? 50.0 / 1.1 * widget.items.length : 55,
       duration: Duration(milliseconds: 800),
       decoration: BoxDecoration(
         color: whiteColor,
@@ -123,6 +123,7 @@ class _AddProductExpansionListFieldState extends State<AddProductExpansionListFi
                 children: [
                   const Divider(height: 1, color: gray_f5f6f7Color),
                   ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
                     padding: const EdgeInsets.all(0),
                     shrinkWrap: true,
                     itemCount: widget.items.length,

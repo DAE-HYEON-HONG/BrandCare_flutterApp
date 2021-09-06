@@ -1,4 +1,5 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/productInfo_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/product_change_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/product_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
@@ -30,6 +31,11 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
 
   final _productProvider = ProductProvider();
 
+  double autoHeight (BuildContext context){
+    double height = MediaQuery.of(context).viewInsets.bottom == 0 ? 0 : 300;
+    return height;
+  }
+
   String getTypeComment(ChangeProductEnum type) {
     String typeComment = "";
     switch(type) {
@@ -57,17 +63,25 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
   // }
 
   void changeProductOwner() {
-    Get.dialog(
-        CustomDialogWidget(content: '변경할 사용자에게 모든 제품 정보가\n이동되며 복구할 수 없습니다.\n제품 사용자 변경을 진행 하시겠습니까?',
-          onClick: (){
+    if(userEmail.value == ""){
+      Get.dialog(
+          CustomDialogWidget(content: '이메일을 입력해주세요.', onClick: (){
             Get.back();
-            changeProduct();
-            // Get.toNamed('/main/my/change_product/apply/change');
-          },
-          isSingleButton: false,
-          title: '제품 사용자 변경',
-        )
-    );
+          })
+      );
+    }else{
+      Get.dialog(
+          CustomDialogWidget(content: '변경할 사용자에게 모든 제품 정보가\n이동되며 복구할 수 없습니다.\n제품 사용자 변경을 진행 하시겠습니까?',
+            onClick: (){
+              Get.back();
+              changeProduct();
+              // Get.toNamed('/main/my/change_product/apply/change');
+            },
+            isSingleButton: false,
+            title: '제품 사용자 변경',
+          )
+      );
+    }
   }
 
   void getMyProduct() async {
@@ -98,6 +112,12 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
       Get.snackbar('알림', '제품 변경 신청되었습니다.', snackPosition: SnackPosition.BOTTOM);
       Get.offNamed('/main/my/change_product/apply/complete');
       return;
+    }else{
+      Get.dialog(
+          CustomDialogWidget(content: '해당 이메일이 존재하지 않습니다.', onClick: (){
+            Get.back();
+          })
+      );
     }
   }
 
@@ -162,6 +182,9 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
 
   @override
   void onInit() {
+    getMyProduct();
+    userEmail.value = '';
+    selectIdx.value = -1;
     super.onInit();
     tabController = TabController(length: 4, vsync: this);
     getChangeProductList();

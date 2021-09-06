@@ -198,7 +198,7 @@ class ProductProvider {
     }else {
       Map<String, dynamic> json = jsonDecode(res.body.toString());
       print(json.toString());
-      return ProductDetailModel.fromJson(json);
+      return json;
     }
   }
 

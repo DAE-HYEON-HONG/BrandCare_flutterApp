@@ -107,6 +107,7 @@ class AddCarePaymentController extends BaseController {
         isSingleButton: true,
         okTxt: "확인",
       ),
+      barrierDismissible: false,
     );
   }
 

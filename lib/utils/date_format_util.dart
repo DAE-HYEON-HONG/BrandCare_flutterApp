@@ -7,7 +7,7 @@ class DateFormatUtil{
     return DateFormat('hh:mm').format(convertDate);
   }
 
-  static String convertDateFormat({required String date, String format='yyyy-MM-DD'}) {
+  static String convertDateFormat({required String date, String format='yyyy-MM-dd'}) {
     DateTime convertDate = DateFormat('yyyy-MM-DDThh:mm:ss').parse(date);
     return DateFormat(format).format(convertDate);
   }
@@ -19,7 +19,7 @@ class DateFormatUtil{
 
   static String convertOnlyDate({required String date}){
     DateTime convertDate = DateFormat('yyyy-MM-DDThh:mm:ss').parse(date);
-    return DateFormat('yyyy-MM-DD').format(convertDate);
+    return DateFormat('yyyy-MM-dd').format(convertDate);
   }
 
   static String convertOnlyTime({required String date}){

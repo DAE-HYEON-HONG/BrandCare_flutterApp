@@ -39,26 +39,32 @@ class AddProductDescriptionController extends BaseController{
     if(title == "오염"){
       dirty.value = !dirty.value;
       nothing.value = false;
+      formChk();
     }else if(title == "파손"){
       broken.value = !broken.value;
       nothing.value = false;
+      formChk();
     }else if(title == "문제 없음"){
       nothing.value = !nothing.value;
       if(nothing.value){
         dirty.value = false;
         broken.value = false;
+        formChk();
       }
     }else if(title == "더스트백"){
       dustBag.value = !dustBag.value;
       notExist.value = false;
+      formChk();
     }else if(title == "보증서"){
       guarantee.value = !guarantee.value;
       notExist.value = false;
+      formChk();
     }else{
       notExist.value = !notExist.value;
       if(notExist.value){
         dustBag.value = false;
         guarantee.value = false;
+        formChk();
       }
     }
     formChk();
@@ -84,7 +90,7 @@ class AddProductDescriptionController extends BaseController{
       this.description = false;
     }
 
-    if(this.isCondition || this.products || this.description){
+    if(this.isCondition && this.products && this.description){
       fill.value = true;
     }else {
       fill.value = false;
@@ -115,43 +121,45 @@ class AddProductDescriptionController extends BaseController{
   }
 
   Future<void> uploadAddProduct() async {
-    addList();
-    AddProductModel model = AddProductModel(
-        title: mainAddProductCtrl.titleCtrl.text,
-        categoryId: mainAddProductCtrl.categoryIdx ?? 0,
-        brandId: mainAddProductCtrl.brandCategoryIdx ?? 0,
-        etc: desBody.text,
-        price: mainAddProductCtrl.priceCtrl.text != "" ? int.parse(mainAddProductCtrl.priceCtrl.text) : 0,
-        serialCode: mainAddProductCtrl.serialCtrl.text,
-        buyRoute: mainAddProductCtrl.connectBuyCtrl.text,
-        buyDate: mainAddProductCtrl.sinceBuyCtrl.text,
-        conditionId: conditionId,
-        additionId: additionalId
-    );
-    final res = await ProductProvider().productApply(
-      model,
-      addProductImgsCtrl.pickImgList!,
-      addProductImgsCtrl.frontImg.value,
-      addProductImgsCtrl.backImg.value,
-      addProductImgsCtrl.leftImg.value,
-      addProductImgsCtrl.rightImg.value,
-    );
-    if(res == null){
-      Get.dialog(
-        CustomDialogWidget(content: '네트워크 에러입니다.', onClick: (){
-          Get.back();
-          update();
-        }),
+    if(fill.value) {
+      addList();
+      AddProductModel model = AddProductModel(
+          title: mainAddProductCtrl.titleCtrl.text,
+          categoryId: mainAddProductCtrl.categoryIdx ?? 0,
+          brandId: mainAddProductCtrl.brandCategoryIdx ?? 0,
+          etc: desBody.text,
+          price: mainAddProductCtrl.priceCtrl.text != "" ? int.parse(mainAddProductCtrl.priceCtrl.text) : 0,
+          serialCode: mainAddProductCtrl.serialCtrl.text,
+          buyRoute: mainAddProductCtrl.connectBuyCtrl.text,
+          buyDate: mainAddProductCtrl.sinceBuyCtrl.text,
+          conditionId: conditionId,
+          additionId: additionalId
       );
-    }else{
-      if(res['data'] == "Y"){
+      final res = await ProductProvider().productApply(
+        model,
+        addProductImgsCtrl.pickImgList!,
+        addProductImgsCtrl.frontImg.value,
+        addProductImgsCtrl.backImg.value,
+        addProductImgsCtrl.leftImg.value,
+        addProductImgsCtrl.rightImg.value,
+      );
+      if(res == null){
         Get.dialog(
-          CustomDialogWidget(content: '제품등록이 완료되었습니다.', onClick: (){
-            Get.offAllNamed('/mainPage');
+          CustomDialogWidget(content: '네트워크 에러입니다.', onClick: (){
+            Get.back();
             update();
           }),
-          barrierDismissible: false,
         );
+      }else{
+        if(res['data'] == "Y"){
+          Get.dialog(
+            CustomDialogWidget(content: '제품등록이 완료되었습니다.', onClick: (){
+              Get.offAllNamed('/mainPage');
+              update();
+            }),
+            barrierDismissible: false,
+          );
+        }
       }
     }
   }

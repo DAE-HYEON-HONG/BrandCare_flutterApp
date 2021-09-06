@@ -3,8 +3,9 @@ import 'package:brandcare_mobile_flutter_v2/consts/box_shadow.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/productInfo_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/change_product_apply_info_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/custom_route_button.dart';
-import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/addGenuine_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/genuine/addGenuine_page.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/customArrowBtn.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/customArrowUpDown.dart';
@@ -31,13 +32,20 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
                 const SizedBox(height: 24,),
                 controller.model?.genuine == "GENUINE" ?
                 CustomRouteButton(title: '정품인증 결과보기', route: '/main/my/change_product/apply'):
+                controller.model?.genuine != "GOING" ?
                 CustomArrowBtn(title: '정품인증 신청하기', onTap: () {
                   Get.to(() => AddGenuinePage(), arguments: controller.productIdx);
-                }),
+                }):
+                CustomArrowBtn(title: '정품 확인중', onTap: () {}),
                 if(controller.model?.genuine == "REFUSAL")
                   CustomRouteButton(title: '정품인증 결과보기', route: '/main/my/change_product/apply'),
                 const SizedBox(height: 16,),
-                CustomRouteButton(title: '제품 사용자 변경', route: '/main/my/change_product/history'),
+                CustomArrowBtn(
+                  title: '제품 사용자 변경',
+                  onTap: () {
+                    Get.to(() => ChangeProductApplyInfoPage(), arguments: controller.productIdx);
+                  },
+                ),
                 const SizedBox(height: 16,),
                 Obx(() => CustomArrowUpDownBtn(
                   onTap: () {

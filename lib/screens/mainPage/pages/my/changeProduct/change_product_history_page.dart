@@ -14,7 +14,7 @@ import 'package:get/get.dart';
 class ChangeProductHistoryPage extends StatelessWidget {
   ChangeProductHistoryPage({Key? key}) : super(key: key);
 
-  final controller = Get.find<ChangeProductController>();
+  final controller = Get.put(ChangeProductController());
 
   @override
   Widget build(BuildContext context) {

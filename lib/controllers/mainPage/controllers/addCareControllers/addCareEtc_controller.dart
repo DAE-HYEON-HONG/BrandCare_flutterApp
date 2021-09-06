@@ -11,6 +11,11 @@ class AddCareEtcController extends BaseController{
 
   List<AddCareListModel>? addCareList = <AddCareListModel>[];
 
+  double autoHeight (BuildContext context){
+    double height = MediaQuery.of(context).viewInsets.bottom == 0 ? 0 : 200;
+    return height;
+  }
+
   void nextLevel(){
     if(fill.value){
       Get.toNamed('/mainAddCare/add/payment');

@@ -4,6 +4,7 @@ import 'package:brandcare_mobile_flutter_v2/providers/my_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainHomeController extends BaseController{
 
@@ -16,6 +17,14 @@ class MainHomeController extends BaseController{
     "https://www.hdcarwallpapers.com/walls/kia_seltos_x_line_concept_2020_5k-HD.jpg",
     "https://www.hdcarwallpapers.com/walls/kia_seltos_x_line_concept_2020_5k-HD.jpg",
   ];
+
+  void launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   void changeBannerImg(int idx) {
     this.pageNum.value = idx;

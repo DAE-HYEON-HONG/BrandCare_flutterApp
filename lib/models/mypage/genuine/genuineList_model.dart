@@ -6,13 +6,13 @@ class GenuineListModel {
   final String createdDate;
   final int id;
   final String status;
-  final String? title;
+  final String? product_title;
   final String? brand;
   final String? category;
   final String? thumbnail;
   final String? type;
 
-  GenuineListModel(this.createdDate, this.id, this.status, this.title,
+  GenuineListModel(this.createdDate, this.id, this.status, this.product_title,
       this.brand, this.category, this.thumbnail, this.type);
 
   factory GenuineListModel.fromJson(Map<String, dynamic> json) => _$GenuineListModelFromJson(json);

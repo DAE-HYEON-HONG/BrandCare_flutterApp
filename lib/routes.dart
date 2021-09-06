@@ -38,6 +38,7 @@ import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProd
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/product_info_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/coupon/add_coupon_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/coupon/coupon_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/coupon/use_coupon_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/genuine/genuine_history_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/info/address_change_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/info/my_info_page.dart';
@@ -50,6 +51,7 @@ import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/notice/not
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/onetoone_inquiry/onetoone_inquiry_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/point/add_point_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/point/point_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/point/use_point_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/modified_product_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/my_product_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/product_info_page.dart';
@@ -85,9 +87,11 @@ final routes = [
   GetPage(name: '/main/my/term', page: () => TermsPage()),
   GetPage(name: '/main/my/invite', page: () => InvitePage()),
   GetPage(name: '/main/my/coupon', page: () => CouponPage(), binding: CouponBinding()),
-  GetPage(name: '/main/my/coupon/add', page: () => CouponAddPage()),
+  GetPage(name: '/main/my/coupon/use', page: () => CouponUsePage(), binding: CouponBinding()),
+  GetPage(name: '/main/my/coupon/add', page: () => CouponAddPage(), binding: CouponBinding()),
+  GetPage(name: '/main/my/point/use', page: () => PointUsePage(), binding: PointBinding()),
   GetPage(name: '/main/my/point', page: () => PointPage(), binding: PointBinding()),
-  GetPage(name: '/main/my/point/add', page: () => PointAddPage()),
+  GetPage(name: '/main/my/point/add', page: () => PointAddPage(), binding: PointBinding()),
   GetPage(name: '/main/my/genuine', page: () => GenuineHistoryPage(), binding: GenuineBinding()),
   GetPage(name: '/main/my/care', page: () => CareHistoryPage(), binding: CareHistoryBinding()),
   GetPage(name: '/main/my/product', page: () => MyProductPage(), binding: MyProductBinding()),

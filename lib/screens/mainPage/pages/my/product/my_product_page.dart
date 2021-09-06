@@ -2,6 +2,7 @@ import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/my_product_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_bottom_filter.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/genuine_box_widget.dart';
 import 'package:extended_image/extended_image.dart';
@@ -24,7 +25,22 @@ class MyProductPage extends GetView<MyProductController> {
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 32, right: 16, bottom: 8),
-              child: SvgPicture.asset('assets/icons/filter.svg'),
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  Get.bottomSheet(
+                    CustomBottomFilter(
+                      sort1: () async {
+                        await controller.filter(type: "LATEST");
+                      },
+                      sort2: () async {
+                        await controller.filter(type: "");
+                      },
+                    ),
+                  );
+                },
+                child: SvgPicture.asset('assets/icons/filter.svg'),
+              ),
             ),
             const Divider(
               height: 0,
@@ -75,9 +91,23 @@ class MyProductPage extends GetView<MyProductController> {
               border: Border.all(color: gray_999Color),
             ),
             child: Center(
-              child: SvgPicture.asset(
-                "assets/icons/header_title_logo.svg",
-                height: 10,
+              child: GestureDetector(
+                onTap: () {
+                  Get.bottomSheet(
+                    CustomBottomFilter(
+                      sort1: () async {
+                        await controller.filter(type: "LATEST");
+                      },
+                      sort2: () async {
+                        await controller.filter(type: "");
+                      },
+                    ),
+                  );
+                },
+                child: SvgPicture.asset(
+                  "assets/icons/header_title_logo.svg",
+                  height: 10,
+                ),
               ),
             ),
           ):

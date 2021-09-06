@@ -26,6 +26,13 @@ class MyProductController extends BaseController {
     }
   }
 
+  Future<void> filter({required String type})async {
+    sort.value = type;
+    update();
+    await reqProductList();
+    Get.back();
+  }
+
   Future<void> reqProductList() async {
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     final res =  await MyProvider().productList(token!, currentPage, sort.value);

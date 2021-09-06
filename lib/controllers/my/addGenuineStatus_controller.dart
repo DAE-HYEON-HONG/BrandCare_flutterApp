@@ -29,7 +29,7 @@ class AddGenuineStatusController extends BaseController {
     Get.to(AddCareDetailPage());
   }
 
-  Future<void> reqCareStatus() async {
+  Future<void> reqGenuineStatus() async {
     try{
       super.networkState.value = NetworkStateEnum.LOADING;
       final res =  await ProductProvider().genuineStatus(productIdx);
@@ -101,7 +101,7 @@ class AddGenuineStatusController extends BaseController {
 
   @override
   void onInit() async{
-    await reqCareStatus();
+    await reqGenuineStatus();
     addList();
     super.onInit();
   }

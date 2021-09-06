@@ -124,12 +124,26 @@ class AddGenuineEtcPage extends StatelessWidget {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              '$idx. ${controller.priceList[idx].title}',
+                                              '${idx+1}. ${controller.priceList[idx].title}',
                                               style: medium14TextStyle,
                                             ),
-                                            Text(
-                                              '+ ${NumberFormatUtil.convertNumberFormat(number: controller.priceList[idx].price)}원',
-                                              style: medium14TextStyle,
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  '+ ${NumberFormatUtil.convertNumberFormat(number: controller.priceList[idx].price)}원',
+                                                  style: medium14TextStyle,
+                                                ),
+                                                const SizedBox(width: 15),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    controller.removeGenuine(controller.priceList[idx]);
+                                                  },
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/btn_x.svg",
+                                                    height: 15,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
@@ -175,7 +189,7 @@ class AddGenuineEtcPage extends StatelessWidget {
                         )),
                         const SizedBox(height: 16),
                         Text(
-                          '케어/수선 요청사항',
+                          '요청사항',
                           style: medium14TextStyle,
                         ),
                         const SizedBox(height: 10),
@@ -203,7 +217,7 @@ class AddGenuineEtcPage extends StatelessWidget {
                                 focusedBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
                                 enabledBorder: InputBorder.none,
-                                hintText: "신청 항목 별로 케어/수선 요청사항을\n자세하게 작성해주세요.",
+                                hintText: "고객님의 요청사항을 작성하세요.",
                                 hintStyle: regular14TextStyle.copyWith(color: gray_999Color),
                               ),
                             ),
@@ -212,8 +226,8 @@ class AddGenuineEtcPage extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 120),
-                    if(MediaQuery.of(context).viewInsets.bottom == 0)
-                      const SizedBox(height: 1000),
+                    GetBuilder<AddGenuineEtcController>(
+                        builder: (_) => SizedBox(height: controller.autoHeight(context))),
                   ],
                 ),
               ),

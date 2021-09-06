@@ -16,7 +16,7 @@ class AddGenuinePaymentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(
-      title: "케어/수선 결제",
+      title: "정품인증 결제",
       child: _renderBody(),
     );
   }
@@ -121,7 +121,7 @@ class AddGenuinePaymentPage extends StatelessWidget {
                   const Divider(height: 1, color: gray_f5f6f7Color),
                   const SizedBox(height: 16),
                   Text(
-                    '케어/수선 신청 정보',
+                    '정품인증 신청 정보',
                     style: medium14TextStyle,
                   ),
                   const SizedBox(height: 10),
@@ -206,20 +206,20 @@ class AddGenuinePaymentPage extends StatelessWidget {
                   const SizedBox(height: 16),
                   _saleTile(
                     onTap: (){
-                      //쿠폰
+                      Get.toNamed("/main/my/coupon");
                     },
                     title: '브랜드케어 쿠폰',
-                    subTitle: 'n개 보유',
+                    subTitle: '0개 보유',
                   ),
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),
                   const SizedBox(height: 16),
                   _saleTile(
                     onTap: (){
-                      //포인트
+                      Get.toNamed("/main/my/point");
                     },
                     title: '브랜드케어 포인트',
-                    subTitle: 'nP 사용가능',
+                    subTitle: '0P 사용가능',
                   ),
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),
@@ -390,7 +390,7 @@ class AddGenuinePaymentPage extends StatelessWidget {
     );
   }
 
-  _saleTile({required Function onTap, required String title, required subTitle}){
+  _saleTile({required Function() onTap, required String title, required subTitle}){
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -399,7 +399,10 @@ class AddGenuinePaymentPage extends StatelessWidget {
           style: medium14TextStyle,
         ),
         GestureDetector(
-          onTap: () => onTap,
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            onTap();
+          },
           child: Row(
             children: [
               Text(

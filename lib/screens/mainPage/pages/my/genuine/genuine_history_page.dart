@@ -1,12 +1,16 @@
+import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/box_shadow.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/genuine_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/addGenuineStatus_page.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/my_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/genuine/addGenuineStatus_page.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/status_util.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_bottom_filter.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
@@ -15,6 +19,7 @@ import 'package:get/get.dart';
 class GenuineHistoryPage extends GetView<GenuineController> {
   GenuineHistoryPage({Key? key}) : super(key: key);
   final globalCtrl = Get.find<GlobalController>();
+  final myController = Get.find<MyController>();
   @override
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(
@@ -27,7 +32,21 @@ class GenuineHistoryPage extends GetView<GenuineController> {
               _renderProfile(),
               Padding(
                 padding: const EdgeInsets.only(top: 24, bottom: 8),
-                child: SvgPicture.asset('assets/icons/filter.svg'),
+                child: GestureDetector(
+                  onTap: () {
+                    Get.bottomSheet(
+                      CustomBottomFilter(
+                        sort1: () async {
+                          await controller.filter(type: "LATEST");
+                        },
+                        sort2: () async {
+                          await controller.filter(type: "");
+                        },
+                      ),
+                    );
+                  },
+                  child: SvgPicture.asset('assets/icons/filter.svg'),
+                ),
               ),
               const Divider(
                 height: 0,
@@ -38,7 +57,7 @@ class GenuineHistoryPage extends GetView<GenuineController> {
                     controller: controller.pagingScroll,
                     itemBuilder: (context, idx) => _item(
                       productIdx: controller.genuineList![idx].id,
-                      title: controller.genuineList![idx].title ?? '',
+                      title: controller.genuineList![idx].product_title ?? '',
                       status: controller.genuineList![idx].status,
                       time: DateFormatUtil.convertDateFormat(date: controller.genuineList![idx].createdDate),
                       date: DateFormatUtil.convertOnlyTime(date: controller.genuineList![idx].createdDate),
@@ -64,10 +83,33 @@ class GenuineHistoryPage extends GetView<GenuineController> {
             ]),
         child: Row(
           children: [
+            myController.myProfileInfoModel?.profile == null ?
             Container(
               width: 59,
               height: 50,
               child: SvgPicture.asset('assets/icons/person_outline.svg'),
+            ):
+            Container(
+              width: 50,
+              height: 50,
+              child: ClipOval(
+                child: ExtendedImage.network(
+                  BaseApiService.imageApi+myController.myProfileInfoModel!.profile!,
+                  fit: BoxFit.cover,
+                  cache: true,
+                  // ignore: missing_return
+                  loadStateChanged: (ExtendedImageState state) {
+                    switch(state.extendedImageLoadState) {
+                      case LoadState.loading :
+                        break;
+                      case LoadState.completed :
+                        break;
+                      case LoadState.failed :
+                        break;
+                    }
+                  },
+                ),
+              ),
             ),
             const SizedBox(
               width: 24,

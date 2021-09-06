@@ -19,6 +19,8 @@ class AddCarePicController extends BaseController {
 
   RxString firstCareCategory = "".obs;
   RxString secondCareCategory = "".obs;
+  int firstIdx = 999;
+  int secondIdx = 999;
   RxInt price = 0.obs;
   List<CareSubCategoryModel> nothing = [
     CareSubCategoryModel(0, "", 0, null),
@@ -43,6 +45,8 @@ class AddCarePicController extends BaseController {
     firstCareCategory.value = "";
     secondCareCategory.value = "";
     price.value = 0;
+    firstIdx = 999;
+    secondIdx = 999;
   }
 
   Future<void> loadAssets(ImageSource source)async{
@@ -84,9 +88,19 @@ class AddCarePicController extends BaseController {
     update();
   }
 
+  void firstIdxCategory(int idx){
+    firstIdx = idx;
+    update();
+  }
+
   void secondCategory(String value){
     secondCareCategory.value = value;
     chkFill();
+    update();
+  }
+
+  void secondIdxCategory(int idx){
+    secondIdx = idx;
     update();
   }
 
@@ -99,10 +113,12 @@ class AddCarePicController extends BaseController {
     if (fill.value){
       addCareEtc.addCareList!.add(
         AddCareListModel(
-            category: firstCareCategory.value,
-            secondCategory: secondCareCategory.value,
-            price: price.value,
-            picture: careImg.value
+          category: firstCareCategory.value,
+          secondCategory: secondCareCategory.value,
+          price: price.value,
+          picture: careImg.value,
+          categoryId: firstIdx,
+          secondCategoryId: secondIdx,
         ),
       );
       Get.toNamed("/mainAddCare/add/etc");
@@ -113,10 +129,12 @@ class AddCarePicController extends BaseController {
     if (fill.value){
       addCareEtc.addCareList!.add(
         AddCareListModel(
-            category: firstCareCategory.value,
-            secondCategory: secondCareCategory.value,
-            price: price.value,
-            picture: careImg.value
+          category: firstCareCategory.value,
+          secondCategory: secondCareCategory.value,
+          price: price.value,
+          picture: careImg.value,
+          categoryId: firstIdx,
+          secondCategoryId: secondIdx,
         ),
       );
       addCareEtc.updateInfo();

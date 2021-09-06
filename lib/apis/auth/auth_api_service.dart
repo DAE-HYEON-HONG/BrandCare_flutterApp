@@ -99,4 +99,59 @@ class AuthApiService {
     return null;
   }
 
+  Future<http.Response?> findId(String phNum) async{
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/auth/find-id?phone=$phNum");
+      final http.Response res = await http.get(
+        uri,
+        headers: BaseApiService.headers,
+      );
+      if(res.statusCode == 200) {
+        return res;
+      }
+      if(res.statusCode == 400){
+        return res;
+      }
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+    }
+    return null;
+  }
+
+  Future<http.Response?> findPassword(String phNum, String email) async{
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/auth/find-password?email=$email&phone=$phNum");
+      final http.Response res = await http.get(
+        uri,
+        headers: BaseApiService.headers,
+      );
+      if(res.statusCode == 200) {
+        return res;
+      }
+      if(res.statusCode == 400){
+        return res;
+      }
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+    }
+    return null;
+  }
+
+  Future<http.Response?> updatePw(dynamic body) async{
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/auth/password");
+      final http.Response res = await http.put(
+        uri,
+        headers: BaseApiService.headers,
+        body: body,
+      );
+      print(res.body.toString());
+      if(res.statusCode == 200) {
+        return res;
+      }
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+    }
+    return null;
+  }
 }

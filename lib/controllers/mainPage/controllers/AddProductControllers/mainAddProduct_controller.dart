@@ -40,6 +40,7 @@ class MainAddProductController extends BaseController {
   }
 
   void changeCategory(int idx){
+    print(idx);
     categoryIdx = idx;
     update();
   }
@@ -56,6 +57,7 @@ class MainAddProductController extends BaseController {
   }
 
   void nextBtnFill(){
+    dateChk();
     if (
         titleCtrl.text == "" ||
         categoryIdx == 999 ||
@@ -69,9 +71,41 @@ class MainAddProductController extends BaseController {
     }
   }
 
+  void dateChk() {
+    if (sinceBuyCtrl.text != "") {
+      if (sinceBuyCtrl.text.length == 4) {
+        String yearDate = sinceBuyCtrl.text.substring(2, 4);
+        if (int.parse(yearDate) == 00 || int.parse(yearDate) > 12) {
+          Get.dialog(CustomDialogWidget(
+              content: '날짜를 제대로 입력해주세요.',
+              onClick: () {
+                Get.back();
+                sinceBuyCtrl.text = "";
+              }
+              ),
+          );
+          return;
+        }
+      }
+    }
+  }
+
+
   void nextBtnFunc(BuildContext context) {
     FocusScope.of(context).unfocus();
     if(nextBtn.value){
+      if(sinceBuyCtrl.text != ""){
+        if(sinceBuyCtrl.text.length != 4){
+          Get.dialog(CustomDialogWidget(
+              content: '날짜를 제대로 입력해주세요.',
+              onClick: () {
+                Get.back();
+              }
+          ),
+          );
+          return;
+        }
+      }
       Get.toNamed("/mainAddProduct/addImg");
     }
   }

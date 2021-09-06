@@ -30,26 +30,21 @@ class AddCareStatusController extends BaseController {
   }
 
   Future<void> reqCareStatus() async {
-    try{
-      super.networkState.value = NetworkStateEnum.LOADING;
-      final String? token = await SharedTokenUtil.getToken("userLogin_token");
-      final res =  await CareProvider().careStatus(token!, productIdx);
-      if(res == null){
-        Get.dialog(
-            CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
-              Get.back();
-              update();
-            })
-        );
-      }else{
-        careStatus = CareStatusModel.fromJson(res);
-        dateStatus = CareStatusDateModel.fromJson(res);
-        update();
-        super.networkState.value = NetworkStateEnum.DONE;
-      }
-    }catch(e){
-      print(e);
-      super.networkState.value = NetworkStateEnum.ERROR;
+    super.networkState.value = NetworkStateEnum.LOADING;
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    final res =  await CareProvider().careStatus(token!, productIdx);
+    if(res == null){
+      Get.dialog(
+          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          }),
+      );
+    }else{
+      careStatus = CareStatusModel.fromJson(res);
+      dateStatus = CareStatusDateModel.fromJson(res);
+      super.networkState.value = NetworkStateEnum.DONE;
+      update();
     }
   }
 

@@ -12,8 +12,8 @@ import 'package:get/get.dart';
 class MainAddProductPage extends StatelessWidget {
   final MainAddProductController controller = Get.put(MainAddProductController());
   @override
+  //textFormField랑 textEditingctrl은 stless에서 사용 시 rebuild를 하게 됩니다.
   Widget build(BuildContext context) {
-    print('build');
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -70,7 +70,7 @@ class MainAddProductPage extends StatelessWidget {
                 onTap: () {
                   FocusScope.of(context).unfocus();
                 },
-                hintText: controller.categoryIdx == null ? "카테고리를 선택해주세요." : controller.categoryList[controller.categoryIdx!].title,
+                hintText: controller.categoryIdx == null ? "카테고리를 선택해주세요." : controller.categoryList[controller.categoryIdx!-1].title,
                 items: controller.categoryList,
                 onChange: (value) => controller.nextBtnFill(),
                 idxChange: (value) => controller.changeCategory(value),
@@ -80,7 +80,7 @@ class MainAddProductPage extends StatelessWidget {
                 onTap: () {
                   FocusScope.of(context).unfocus();
                 },
-                hintText: controller.brandCategoryIdx == null ? "브랜드명을 선택해주세요." : controller.brandList[controller.brandCategoryIdx!].title,
+                hintText: controller.brandCategoryIdx == null ? "브랜드명을 선택해주세요." : controller.brandList[controller.brandCategoryIdx!-1].title,
                 items: controller.brandList,
                 onChange: (value) => controller.nextBtnFill(),
                 idxChange: (value) => controller.changeBrandCategory(value),

@@ -14,12 +14,14 @@ class CareSubExpansionListField extends StatefulWidget {
   final List<CareSubCategoryModel> items;
   final ValueChanged<String> onChange;
   final ValueChanged<int> onPriceChange;
+  final ValueChanged<int> changeIdx;
   CareSubExpansionListField({
     required this.onTap,
     required this.hintText,
     required this.items,
     required this.onChange,
     required this.onPriceChange,
+    required this.changeIdx,
   });
   @override
   _CareSubExpansionListFieldState createState() => _CareSubExpansionListFieldState();
@@ -64,6 +66,10 @@ class _CareSubExpansionListFieldState extends State<CareSubExpansionListField> w
 
   void changePriceValue(int value){
     widget.onPriceChange(value);
+  }
+
+  void changeIdx(int value){
+    widget.changeIdx(value);
   }
 
   @override
@@ -133,6 +139,7 @@ class _CareSubExpansionListFieldState extends State<CareSubExpansionListField> w
                         onTap: () {
                           changeValue(widget.items[idx].title);
                           changePriceValue(widget.items[idx].price);
+                          changeIdx(widget.items[idx].id);
                         },
                         child: Container(
                           width: double.infinity,

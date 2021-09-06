@@ -4,7 +4,7 @@ import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuine_controller
 import 'package:brandcare_mobile_flutter_v2/providers/care_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/my_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
-import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/addGenuineStatus_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/genuine/addGenuineStatus_page.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:get/get.dart';
@@ -49,6 +49,7 @@ class AddGenuinePaymentController extends BaseController {
           okTxt: "예",
           cancelTxt: "아니오",
         ),
+        barrierDismissible: false,
       );
     }
   }
@@ -110,6 +111,7 @@ class AddGenuinePaymentController extends BaseController {
         isSingleButton: true,
         okTxt: "확인",
       ),
+      barrierDismissible: false,
     );
   }
 

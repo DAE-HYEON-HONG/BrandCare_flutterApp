@@ -113,4 +113,42 @@ class AuthProvider {
       return json;
     }
   }
+
+  Future<Map<String, dynamic>?> findId(String phNum) async {
+    var res = await _authApiService.findId(phNum);
+    if(res == null) {
+      return null;
+    }else {
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      print(json.toString());
+      return json;
+    }
+  }
+
+  Future<Map<String, dynamic>?> findPw(String phNum, String email) async {
+    var res = await _authApiService.findPassword(phNum, email);
+    if(res == null) {
+      return null;
+    }else {
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      print(json.toString());
+      return json;
+    }
+  }
+  Future<Map<String, dynamic>?> updatePw(String email, String pw) async {
+    var body = jsonEncode({
+      "email" : email,
+      "password" : pw,
+    });
+    print(body.toString());
+    var res = await _authApiService.updatePw(body);
+    if(res == null) {
+      return null;
+    }else {
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      print(json.toString());
+      return json;
+    }
+  }
+
 }

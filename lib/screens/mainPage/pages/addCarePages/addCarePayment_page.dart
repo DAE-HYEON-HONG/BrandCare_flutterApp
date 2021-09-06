@@ -211,17 +211,21 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                   const Divider(color: gray_f5f6f7Color, height: 1),
                   const SizedBox(height: 16),
                   _saleTile(
-                    onTap: (){},
+                    onTap: (){
+                      Get.toNamed("/main/my/coupon/use");
+                    },
                     title: '브랜드케어 쿠폰',
-                    subTitle: 'n개 보유',
+                    subTitle: '0개 보유',
                   ),
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),
                   const SizedBox(height: 16),
                   _saleTile(
-                    onTap: (){},
+                    onTap: (){
+                      Get.toNamed("/main/my/point/use");
+                    },
                     title: '브랜드케어 포인트',
-                    subTitle: 'nP 사용가능',
+                    subTitle: '0P 사용가능',
                   ),
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),
@@ -401,7 +405,10 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
           style: medium14TextStyle,
         ),
         GestureDetector(
-          onTap: () => onTap,
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            onTap();
+          },
           child: Row(
             children: [
               Text(

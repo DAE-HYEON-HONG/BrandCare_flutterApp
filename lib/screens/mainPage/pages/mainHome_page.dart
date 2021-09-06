@@ -68,7 +68,7 @@ class MainHomePage extends StatelessWidget {
                                   return GestureDetector(
                                     onTap: () {
                                       if(e.isUrl){
-                                        launch(e.url!);
+                                        controller.launchURL(e.url);
                                       }
                                     },
                                     child: Container(

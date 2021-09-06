@@ -33,6 +33,9 @@ class CareApiService{
       req.headers.addAll(headers);
       http.StreamedResponse res = await req.send();
       final resReturn = await res.stream.bytesToString();
+      print(resReturn.toString());
+      print(res.reasonPhrase.toString());
+      print(res.statusCode);
       if(res.statusCode == 200){
         return resReturn;
       }else{

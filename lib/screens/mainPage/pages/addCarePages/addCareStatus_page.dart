@@ -87,7 +87,7 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                     itemBuilder: (context, idx){
                       return Column(
                         children: [
-                          _inputField("${_.careStatus?.careProduct[idx].category}"),
+                          _inputField("${idx+1}. ${_.careStatus?.careProduct[idx].largeCategory} - ${_.careStatus?.careProduct[idx].category}"),
                           const SizedBox(height: 16),
                         ],
                       );
@@ -307,10 +307,12 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                 },
               ),
               const SizedBox(width: 32),
-              Text(
-                '$title',
-                style: medium14TextStyle,
-              )
+              Expanded(
+                child: Text(
+                  '$title',
+                  style: medium14TextStyle,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 3),

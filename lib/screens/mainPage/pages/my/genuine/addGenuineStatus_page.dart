@@ -1,13 +1,15 @@
+import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
-import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/addCareStatus_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuineStatus_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/status_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class AddGenuineStatusPage extends StatelessWidget {
@@ -54,8 +56,8 @@ class AddGenuineStatusPage extends StatelessWidget {
                     itemBuilder: (context, idx){
                       return _status(
                         title: controller.genuineStatusJson[idx]['statusType'],
-                        date: DateFormatUtil.convertOnlyDate(date: controller.genuineStatusJson[idx]['date']),
-                        time: DateFormatUtil.convertOnlyTime(date: controller.genuineStatusJson[idx]['time']),
+                        date: DateFormatUtil.convertOnlyDate(date: "${_.genuineStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
+                        time: DateFormatUtil.convertOnlyTime(date: "${_.genuineStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
                         isNext: idx == controller.genuineStatusJson.length - 1 ? false : true,
                         checked: controller.genuineStatusJson[idx]['checked'],
                       );
@@ -63,7 +65,7 @@ class AddGenuineStatusPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   CustomButtonOnOffWidget(
-                    title: '케어/수선 결과보기',
+                    title: '정품인증 결과보기',
                     onClick: () {
                       if(controller.dateStatus?.be_releasedDate != null){
                         controller.detail();
@@ -107,7 +109,36 @@ class AddGenuineStatusPage extends StatelessWidget {
                   const SizedBox(height: 24),
                   Text('요청사항', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField("${controller.genuineStatus?.request_term}"),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xffD5D7DB),
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: 290,
+                        maxHeight: 700,
+                      ),
+                      child: TextFormField(
+                        readOnly: true,
+                        onChanged: (value) {},
+                        maxLines: null,
+                        controller: TextEditingController(text: controller.genuineStatus?.request_term),
+                        style: regular14TextStyle.copyWith(color: gray_999Color),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          hintStyle: regular14TextStyle.copyWith(color: gray_999Color),
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 120),
                 ],
               ),
@@ -209,9 +240,40 @@ class AddGenuineStatusPage extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset(
-                'assets/icons/sample_product.png',
+              imgPath == "" ?
+              Container(
+                width: 72,
                 height: 72,
+                decoration: BoxDecoration(
+                  border: Border.all(color: gray_999Color),
+                ),
+                child: Center(
+                  child: SvgPicture.asset(
+                    "assets/icons/header_title_logo.svg",
+                    height: 10,
+                  ),
+                ),
+              ):
+              Container(
+                width: 72,
+                height: 72,
+                child: ExtendedImage.network(
+                  BaseApiService.imageApi+imgPath,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  cache: true,
+                  // ignore: missing_return
+                  loadStateChanged: (ExtendedImageState state) {
+                    switch(state.extendedImageLoadState) {
+                      case LoadState.loading :
+                        break;
+                      case LoadState.completed :
+                        break;
+                      case LoadState.failed :
+                        break;
+                    }
+                  },
+                ),
               ),
               const SizedBox(width: 32),
               Text(

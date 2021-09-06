@@ -13,11 +13,11 @@ class AddCareEtcPage extends GetView<AddCareEtcController> {
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(
       title: "케어/수선 신청",
-      child: _renderBody(),
+      child: _renderBody(context),
     );
   }
 
-  _renderBody(){
+  _renderBody(context){
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -34,10 +34,10 @@ class AddCareEtcPage extends GetView<AddCareEtcController> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      GetBuilder<AddCareEtcController>(builder: (_) => Text(
                         '${controller.addCareList!.length}개의 케어/수선 진행',
                         style: medium14TextStyle,
-                      ),
+                      )),
                       GestureDetector(
                         onTap: () => Get.to(() => AddCareAddListPage()),
                         child: Text(
@@ -100,6 +100,8 @@ class AddCareEtcPage extends GetView<AddCareEtcController> {
                     ),
                   ),
                   const SizedBox(height: 120),
+                  GetBuilder<AddCareEtcController>(
+                      builder: (_) => SizedBox(height: controller.autoHeight(context)))
                 ],
               ),
             ),

@@ -26,6 +26,13 @@ class CareHistoryController extends BaseController {
     }
   }
 
+  Future<void> filter({required String type})async {
+      sort.value = type;
+      update();
+      await reqCareList();
+      Get.back();
+  }
+
   Future<void> reqCareList() async {
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     final res =  await MyProvider().caretList(token!, currentPage, sort.value);

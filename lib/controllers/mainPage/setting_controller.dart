@@ -46,7 +46,8 @@ class SettingController extends BaseController {
         Get.offAllNamed('/auth/login');
         SharedTokenUtil.saveBool(false, 'isAutoLogin');
         SharedTokenUtil.remove('userLogin_token');
-      })
+      }),
+      barrierDismissible: false,
     );
   }
 

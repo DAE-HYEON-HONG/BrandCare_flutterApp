@@ -31,72 +31,93 @@ class ChangeProductApplyChangePage extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: double.infinity,
-        child: Column(
+        child: Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16),
+            SingleChildScrollView(
+              scrollDirection: Axis.vertical,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('나의 제품', style: medium14TextStyle,),
-                  const SizedBox(height: 10,),
-                  _my_product(),
-                  const SizedBox(height: 16,),
-                  FormInputWidget(onChange: (value){}, onSubmit: (value){}, controller: TextEditingController(),
-                    title: '현재 사용자 아이디(이메일)',
-                    isShowTitle: true,
-                    hint: '${globalController.userInfoModel!.email}',
-                    readOnly: true,
-                  ),
-                  const SizedBox(height: 16,),
-                  FormInputWidget(onChange: (value){}, onSubmit: (value){}, controller: TextEditingController(
-                    text: controller.userEmail.value
-                  ),
-                    readOnly: true,
-                    title: '변경할 사용자 아이디(이메일)',
-                    isShowTitle: true,
-                    hint: '변경할 사용자 아이디(이메일)를 입력해주세요.',
-                  ),
-                  const SizedBox(height: 60,),
-                  GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: (){
-                      Get.back();
-                      Get.back();
-                    },
-                    child: Row(
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('제품 사용자 변경으로 돌아가기', style: medium14TextStyle,),
-                        const Spacer(),
-                        SvgPicture.asset('assets/icons/btn_arrow_right.svg', color: gray_666Color,),
+                        Text('나의 제품', style: medium14TextStyle,),
+                        const SizedBox(height: 10,),
+                        _my_product(),
+                        const SizedBox(height: 16,),
+                        FormInputWidget(onChange: (value){}, onSubmit: (value){}, controller: TextEditingController(),
+                          title: '현재 사용자 아이디(이메일)',
+                          isShowTitle: true,
+                          hint: '${globalController.userInfoModel!.email}',
+                          readOnly: true,
+                        ),
+                        const SizedBox(height: 16,),
+                        FormInputWidget(
+                          onChange: (value){},
+                          onSubmit: (value){},
+                          controller: TextEditingController(
+                            text: controller.userEmail.value
+                          ),
+                          readOnly: true,
+                          title: '변경할 사용자 아이디(이메일)',
+                          isShowTitle: true,
+                          hint: '변경할 사용자 아이디(이메일)를 입력해주세요.',
+                        ),
+                        const SizedBox(height: 60,),
+                        //autoHeight
+                        GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: (){
+                            Get.back();
+                            Get.back();
+                          },
+                          child: Row(
+                            children: [
+                              Text('제품 사용자 변경으로 돌아가기', style: medium14TextStyle,),
+                              const Spacer(),
+                              SvgPicture.asset('assets/icons/btn_arrow_right.svg', color: gray_666Color,),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
-
+                  const SizedBox(height: 100),
+                  GetBuilder<ChangeProductController>(
+                      builder: (_) => SizedBox(height: controller.autoHeight(context))),
                 ],
               ),
             ),
-            const Spacer(),
-            Center(
-              child: Text('변경할 사용자의 확인을 기다리는 중입니다.\n"확인중" 버튼을 누를 시 변경 요청이 취소 됩니다.',
-                textAlign: TextAlign.center,
-                style: regular14TextStyle.copyWith(color: gray_999Color),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Column(
+                children: [
+                  Center(
+                    child: Text('변경할 사용자의 확인을 기다리는 중입니다.\n"확인중" 버튼을 누를 시 변경 요청이 취소 됩니다.',
+                      textAlign: TextAlign.center,
+                      style: regular14TextStyle.copyWith(color: gray_999Color),
+                    ),
+                  ),
+                  const SizedBox(height: 34,),
+                  CustomButtonEmptyBackgroundWidget(
+                    title: '확인 중',
+                    onClick: () async {
+                      // Get.back();
+                      if(await controller.cancel(controller.selectProductModel!.id)){
+                        Get.back();
+                        Get.snackbar('알림', '변경 요청이 취소되었습니다.', snackPosition: SnackPosition.BOTTOM);
+                      }
+                    },
+                    radius: 0,
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 34,),
-            CustomButtonEmptyBackgroundWidget(
-              title: '확인 중',
-              onClick: () async {
-                // Get.back();
-                if(await controller.cancel(controller.selectProductModel!.id)){
-                  Get.back();
-                  Get.snackbar('알림', '변경 요청이 취소되었습니다.', snackPosition: SnackPosition.BOTTOM);
-                }
-              },
-              radius: 0,
-            ),
           ],
-        ),
+        )
       ),
     );
   }

@@ -26,6 +26,13 @@ class GenuineController extends BaseController{
       }
     }
   }
+  Future<void> filter({required String type})async {
+    sort.value = type;
+    update();
+    await reqGenuineList();
+    Get.back();
+  }
+
 
   Future<void> reqGenuineList() async {
     final String? token = await SharedTokenUtil.getToken("userLogin_token");

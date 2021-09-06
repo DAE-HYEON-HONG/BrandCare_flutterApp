@@ -49,30 +49,8 @@ class MainPageController extends BaseController {
     }
     update();
   }
-
-  Future<void> careCategory()async{
-    final res = await CareProvider().careCategory();
-    if(res == null){
-      Get.dialog(
-          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
-            Get.back();
-            update();
-          })
-      );
-    }else {
-      print(res['data']);
-      final list = (res['data'] as List).map((e) => CareCategoryModel.fromJson(e)).toList();
-      for (var e in list) {
-        _globalController.careCategory!.add(e);
-      }
-    }
-    _globalController.update();
-    update();
-  }
-
   @override
   void onInit() async{
-    await careCategory();
     super.onInit();
   }
 }

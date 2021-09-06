@@ -13,19 +13,16 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ChangeProductApplyPage extends StatelessWidget {
-  ChangeProductApplyPage({Key? key}) : super(key: key);
+class ChangeProductApplyInfoPage extends StatelessWidget {
+  ChangeProductApplyInfoPage({Key? key}) : super(key: key);
 
-  final controller = Get.find<ChangeProductController>();
+  final controller = Get.put(ChangeProductController());
   final globalController = Get.find<GlobalController>();
-  late Widget customExpansionTile;
+  //late Widget customExpansionTile;
   late BuildContext context;
 
   @override
   Widget build(BuildContext context) {
-    //controller.selectIdx.value = -1;
-    //controller.userEmail.value = '';
-    //controller.getMyProduct();
     this.context = context;
     return DefaultAppBarScaffold(
       title: '제품 사용자 변경',

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
-import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/addGenuineEtc_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/genuine/addGenuineEtc_page.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/material.dart';
@@ -137,12 +137,22 @@ class AddGenuineController extends BaseController {
       if (senderPostCode.text != ""
           || senderAddress.text != ""
           || senderAddressDetail.value != "") {
-        senderPostSet.value = true;
+        saveSenderPostChk.value = true;
         update();
       } else {
-        senderPostSet.value = false;
+        saveSenderPostChk.value = false;
         update();
       }
+    }
+  }
+
+  void senderPostSave() {
+    if(receiverPostSet.value){
+      receiverPostSet.value = false;
+      update();
+    }else{
+      senderPostSet.value = !senderPostSet.value;
+      update();
     }
   }
 
@@ -162,10 +172,10 @@ class AddGenuineController extends BaseController {
   void receiverNormalAddressSet() {
     receiverNormalAddress.value = !receiverNormalAddress.value;
     if(receiverNormalAddress.value){
-      senderPostCode.text = globalCtrl.userInfoModel!.address!.zipCode;
-      senderAddress.text = globalCtrl.userInfoModel!.address!.city;
-      senderAddressDetail.value = globalCtrl.userInfoModel!.address!.street;
-      senderAddressDetailCtrl.text = globalCtrl.userInfoModel!.address!.street;
+      receiverPostCode.text = globalCtrl.userInfoModel!.address!.zipCode;
+      receiverAddress.text = globalCtrl.userInfoModel!.address!.city;
+      receiverAddressDetail.value = globalCtrl.userInfoModel!.address!.street;
+      receiverAddressDetailCtrl.text = globalCtrl.userInfoModel!.address!.street;
     }
     update();
   }
@@ -178,6 +188,16 @@ class AddGenuineController extends BaseController {
       update();
     }else{
       saveReceiverPostChk.value = false;
+      update();
+    }
+  }
+
+  void receiverPostSave() {
+    if(senderPostSet.value){
+      senderPostSet.value = false;
+      update();
+    }else{
+      receiverPostSet.value = !receiverPostSet.value;
       update();
     }
   }

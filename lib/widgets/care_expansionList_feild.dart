@@ -12,11 +12,13 @@ class CareExpansionListField extends StatefulWidget {
   final Function onTap;
   final List<CareCategoryModel> items;
   final ValueChanged<String> onChange;
+  final ValueChanged<int> changeIdx;
   CareExpansionListField({
     required this.onTap,
     required this.hintText,
     required this.items,
     required this.onChange,
+    required this.changeIdx,
   });
   @override
   _CareExpansionListFieldState createState() => _CareExpansionListFieldState();
@@ -57,6 +59,10 @@ class _CareExpansionListFieldState extends State<CareExpansionListField> with Si
     });
     widget.onChange(value);
     _handleTap();
+  }
+
+  void changeIdx(int idx){
+    widget.changeIdx(idx);
   }
 
   @override
@@ -125,6 +131,7 @@ class _CareExpansionListFieldState extends State<CareExpansionListField> with Si
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
                           changeValue(widget.items[idx].title);
+                          changeIdx(widget.items[idx].id);
                         },
                         child: Container(
                           width: double.infinity,
