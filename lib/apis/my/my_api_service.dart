@@ -26,6 +26,7 @@ class MyApiService{
   Future<http.Response?> productList(dynamic headers, int page, String sort) async {
     try{
       final uri = Uri.parse("${BaseApiService.baseApi}/product/mine?page=$page&sort=$sort");
+      print(uri.toString());
       final http.Response res = await http.get(
         uri,
         headers: headers,
@@ -66,6 +67,8 @@ class MyApiService{
         uri,
         headers: headers,
       );
+      print("$page $sort");
+      print(res.body.toString());
       if(res.statusCode == 200){
         return res;
       }else{
@@ -270,6 +273,26 @@ class MyApiService{
         headers: headers,
       );
       if(res.statusCode == 200){
+        print(res.body.toString());
+        return res;
+      }else{
+        return null;
+      }
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> reqPoint(dynamic headers, int page) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/point?page=$page");
+      final http.Response res = await http.get(
+        uri,
+        headers: headers,
+      );
+      if(res.statusCode == 200){
+        print(res.body.toString());
         return res;
       }else{
         return null;

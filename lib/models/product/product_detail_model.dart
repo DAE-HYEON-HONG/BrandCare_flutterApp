@@ -16,7 +16,7 @@ class ProductDetailModel {
   final String? rightImage;
   final String genuine;
   final String? createdDate;
-  final int price;
+  final String price;
   final String etc;
   final String serialCode;
   final String buyRoute;

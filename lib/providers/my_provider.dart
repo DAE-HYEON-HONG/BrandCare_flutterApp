@@ -123,6 +123,7 @@ class MyProvider{
       return null;
     }else{
       Map<String, dynamic> json = jsonDecode(res.body.toString());
+      print(json.toString());
       return json;
     }
   }
@@ -202,6 +203,16 @@ class MyProvider{
     }else {
       Map<String, dynamic> json = jsonDecode(res.body.toString());
       print(json.toString());
+      return json;
+    }
+  }
+
+  Future<dynamic> reqPoint(String token, int page) async{
+    var res = await _myApiService.reqPoint(BaseApiService.authHeaders(token), page);
+    if(res == null) {
+      return null;
+    }else {
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
       return json;
     }
   }

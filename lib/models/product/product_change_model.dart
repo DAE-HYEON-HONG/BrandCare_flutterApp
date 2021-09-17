@@ -12,9 +12,10 @@ class ProductChangeModel {
   final String? image;
   final String? currentEmail;
   final String? beforeEmail;
+  final String? createdDate;
 
   ProductChangeModel(this.id, this.productId, this.brand, this.category,
-      this.title, this.genuine, this.image, this.currentEmail, this.beforeEmail);
+      this.title, this.genuine, this.image, this.currentEmail, this.beforeEmail, this.createdDate);
   
   factory ProductChangeModel.fromJson(Map<String, dynamic> json) => _$ProductChangeModelFromJson(json);
   Map<String, dynamic> toJson() => _$ProductChangeModelToJson(this);

@@ -34,8 +34,9 @@ class MyProductPage extends GetView<MyProductController> {
                         await controller.filter(type: "LATEST");
                       },
                       sort2: () async {
-                        await controller.filter(type: "");
+                        await controller.filter(type: "a");
                       },
+                      mode: "nameBy",
                     ),
                   );
                 },
@@ -93,16 +94,17 @@ class MyProductPage extends GetView<MyProductController> {
             child: Center(
               child: GestureDetector(
                 onTap: () {
-                  Get.bottomSheet(
-                    CustomBottomFilter(
-                      sort1: () async {
-                        await controller.filter(type: "LATEST");
-                      },
-                      sort2: () async {
-                        await controller.filter(type: "");
-                      },
-                    ),
-                  );
+                  // Get.bottomSheet(
+                  //   CustomBottomFilter(
+                  //     sort1: () async {
+                  //       await controller.filter(type: "LATEST");
+                  //     },
+                  //     sort2: () async {
+                  //       await controller.filter(type: "");
+                  //     },
+                  //     mode: "nameBy",
+                  //   ),
+                  // );
                 },
                 child: SvgPicture.asset(
                   "assets/icons/header_title_logo.svg",

@@ -22,11 +22,12 @@ class CouponUsePage extends GetView<CouponController> {
         color: Colors.white,
         child: Column(
           children: [
-            Flexible(
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.only(left: 16, right: 16),
               child: Column(
                 children: [
                   Row(
-                    mainAxisSize: MainAxisSize.max,
                     children: [
                       Flexible(
                         flex: 2,
@@ -40,10 +41,13 @@ class CouponUsePage extends GetView<CouponController> {
                       const SizedBox(
                         width: 8,
                       ),
-                      Obx(() => CustomButtonOnOffWidget(title: '등록', onClick: (){
-                        controller.addCoupon();
-                        Get.back();
-                      }, isOn: controller.isValidCouponCode)),
+                      Flexible(
+                        flex: 1,
+                        child: Obx(() => CustomButtonOnOffWidget(title: '등록', onClick: (){
+                          controller.addCoupon();
+                          Get.back();
+                        }, isOn: controller.isValidCouponCode)),
+                      )
                     ],
                   ),
                   const SizedBox(
@@ -56,18 +60,22 @@ class CouponUsePage extends GetView<CouponController> {
                   ),
                   controller.couponList!.isNotEmpty
                       ? _couponList()
-                      : Expanded(
+                      : Container(
+                    width: double.infinity,
+                        height: 150,
                         child: Center(
                           child: Text(
                             '등록된 쿠폰이 없습니다.',
                             style: medium16TextStyle.copyWith(
                               color: gray_666Color,
                             ),
-                          ))),
+                          ),
+                        ),
+                  ),
                 ],
               ),
-
             ),
+            const Spacer(),
             CustomButtonOnOffWidget(title: '적용하기', onClick: (){
               Get.back();
             }, isOn: controller.couponId.value != 0,),

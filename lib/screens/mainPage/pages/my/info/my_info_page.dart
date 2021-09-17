@@ -3,7 +3,6 @@ import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/my_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/utils/image_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/route_container_widget.dart';
 import 'package:extended_image/extended_image.dart';
@@ -11,9 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MyInfoPage extends StatelessWidget {
-  MyInfoPage({Key? key}) : super(key: key);
+  //MyInfoPage({Key? key}) : super(key: key);
 
   final globalCtrl = Get.find<GlobalController>();
   final myController = Get.find<MyController>();
@@ -31,16 +31,17 @@ class MyInfoPage extends StatelessWidget {
                   if(e.value == 'profile') return _renderProfileContainer(e.key);
                   else if(e.value == 'email') return _renderEmailContainer(e.key);
                   return Container(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  width: 1,
-                                  color: gray_F5F6F7Color
-                              )
-                          )
-                      ),
-                      child: RouteContainerWidget(title: e.key, route: e.value,));
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                                width: 1,
+                                color: gray_F5F6F7Color
+                            )
+                        )
+                    ),
+                    child: RouteContainerWidget(title: e.key, route: e.value, onTap: () {myController.initMyController();},),
+                  );
                 }),
               ],
             ),
@@ -61,6 +62,7 @@ class MyInfoPage extends StatelessWidget {
     ),
     child: GestureDetector(
       onTap: () async {
+        myController.initMyController();
         await _loadAssetsMode();
       },
       behavior: HitTestBehavior.translucent,
@@ -105,7 +107,19 @@ class MyInfoPage extends StatelessWidget {
       ),
     ), ));
 
-  _loadAssetsMode(){
+  _loadAssetsMode() async{
+    bool permissionChk = await myController.permissionChk();
+    print(permissionChk);
+    if (!permissionChk) {
+      Get.snackbar(
+        '권한 알림',
+        '카메라 및 갤러리 권한이 필요합니다.',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(milliseconds: 1200),
+      );
+      //Future.delayed(Duration(milliseconds: 900), () => Get.back());
+      return;
+    }
     return Get.bottomSheet(
       Container(
         width: double.infinity,

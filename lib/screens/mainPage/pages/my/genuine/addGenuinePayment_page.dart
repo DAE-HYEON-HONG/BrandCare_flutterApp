@@ -1,8 +1,5 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
-import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/addCareEtc_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/addCarePayment_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/mainAddCare_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuinePayment_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
@@ -204,23 +201,23 @@ class AddGenuinePaymentPage extends StatelessWidget {
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),
                   const SizedBox(height: 16),
-                  _saleTile(
+                  Obx(() => _saleTile(
                     onTap: (){
-                      Get.toNamed("/main/my/coupon");
+                      Get.toNamed("/main/my/coupon", arguments: "genuine");
                     },
                     title: '브랜드케어 쿠폰',
-                    subTitle: '0개 보유',
-                  ),
+                    subTitle: '${controller.countCoupon.value}개 보유',
+                  )),
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),
                   const SizedBox(height: 16),
-                  _saleTile(
+                  Obx(() => _saleTile(
                     onTap: (){
-                      Get.toNamed("/main/my/point");
+                      Get.toNamed("/main/my/point", arguments: "genuine");
                     },
                     title: '브랜드케어 포인트',
-                    subTitle: '0P 사용가능',
-                  ),
+                    subTitle: '${controller.myPoint.value}P 사용가능',
+                  )),
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),
                   const SizedBox(height: 16),

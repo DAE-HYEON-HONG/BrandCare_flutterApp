@@ -100,12 +100,13 @@ class AddCareEtcPage extends GetView<AddCareEtcController> {
                     ),
                   ),
                   const SizedBox(height: 120),
-                  GetBuilder<AddCareEtcController>(
-                      builder: (_) => SizedBox(height: controller.autoHeight(context)))
+                  // GetBuilder<AddCareEtcController>(
+                  //     builder: (_) => SizedBox(height: controller.autoHeight(context)))
                 ],
               ),
             ),
           ),
+          if(MediaQuery.of(context).viewInsets.bottom == 0)
           Obx(()=> Positioned(
             left: 0,
             right: 0,

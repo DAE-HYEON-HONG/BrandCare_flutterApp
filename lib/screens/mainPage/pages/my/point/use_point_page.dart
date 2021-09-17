@@ -38,10 +38,10 @@ class PointUsePage extends StatelessWidget {
                             style: medium16TextStyle,
                           ),
                           const Spacer(),
-                          Obx(() => Text(
-                                '${NumberFormatUtil.convertNumberFormat(number: controller.myPoint.value)}P',
-                                style: medium16TextStyle,
-                              )),
+                          GetBuilder<PointController>(builder: (_) => Text(
+                            '${NumberFormatUtil.convertNumberFormat(number: controller.canUsePoint())}P',
+                            style: medium16TextStyle,
+                          )),
                         ],
                       ),
                     ),
@@ -53,6 +53,7 @@ class PointUsePage extends StatelessWidget {
                           onTap: () {
                             _textEditingController.text = controller.myPoint.value.toString();
                             controller.usePoint.value = controller.myPoint.value;
+                            controller.allUsePoint();
                           },
                           child: Container(
                             width: 72,
@@ -73,14 +74,14 @@ class PointUsePage extends StatelessWidget {
                     const SizedBox(height: 24,),
                     FormInputWidget(
                       onChange: (value){
-                        if(controller.usePoint.value > controller.myPoint.value){
-                          _textEditingController.text = controller.myPoint.value.toString();
-                          controller.usePoint.value = controller.myPoint.value;
-                        }
-                        else {
-                          controller.usePoint.value = int.parse(value);
-                        }
-                    }, onSubmit: (value){}, controller: _textEditingController,
+                        controller.usePoint.value =
+                            value == "" ? 0 : int.parse(value);
+                        controller.update();
+                        controller.chkPoint();
+                        controller.canUsePoint();
+                      },
+                      onSubmit: (value){},
+                      controller: controller.usePointCtrl,
                       textInputType: TextInputType.number,
                       hint: '사용할 포인트를 입력해주세요.',
                     ),
@@ -88,9 +89,12 @@ class PointUsePage extends StatelessWidget {
                 ),
               ),
             ),
-            CustomButtonOnOffWidget(title: '사용하기', onClick: (){
-              Get.back();
-            }, isOn: controller.usePoint.value != 0 && controller.usePoint.value <= controller.myPoint.value,),
+            GetBuilder<PointController>(builder: (_) => CustomButtonOnOffWidget(
+              title: '사용하기',
+              onClick: () => controller.addUsePoint(),
+              isOn: controller.usePoint.value != 0 && controller.usePoint.value <= controller.myPoint.value,
+            )),
+            const SizedBox(height: 10),
           ],
         ),
       ),

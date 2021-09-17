@@ -5,6 +5,7 @@ import 'package:brandcare_mobile_flutter_v2/models/genuine/genuineStatus_model.d
 import 'package:brandcare_mobile_flutter_v2/providers/care_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addCarePages/addCareDetail_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/genuine/addGenuineDetail_page.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:get/get.dart';
@@ -26,10 +27,15 @@ class AddGenuineStatusController extends BaseController {
   }
 
   void detail() {
-    Get.to(AddCareDetailPage());
+    Get.to(() => AddGenuineDetailPage(), arguments: {
+      'back' : true,
+      'idx' : genuineStatus?.id,
+      'status': genuineStatus?.status,
+    });
   }
 
   Future<void> reqGenuineStatus() async {
+    print(productIdx);
     try{
       super.networkState.value = NetworkStateEnum.LOADING;
       final res =  await ProductProvider().genuineStatus(productIdx);
@@ -40,6 +46,8 @@ class AddGenuineStatusController extends BaseController {
               update();
             })
         );
+        super.networkState.value = NetworkStateEnum.DONE;
+        Get.back();
       }else{
         genuineStatus = GenuineStatusModel.fromJson(res);
         dateStatus = CareStatusDateModel.fromJson(res);
@@ -53,7 +61,6 @@ class AddGenuineStatusController extends BaseController {
   }
 
   void addList(){
-    print(dateStatus?.completedDate);
     genuineStatusJson.add({
       "statusType" : "신청 완료",
       "date" : genuineStatus?.createdDate,
@@ -101,9 +108,9 @@ class AddGenuineStatusController extends BaseController {
 
   @override
   void onInit() async{
+    super.onInit();
     await reqGenuineStatus();
     addList();
-    super.onInit();
   }
 }
 //${controller.careStatus.careProduct[0].category}

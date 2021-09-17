@@ -17,11 +17,11 @@ class AddressChangePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    myController.initMyController();
+    //myController.initMyController();
     if(globalCtrl.userInfoModel?.address == null){
-      return DefaultAppBarScaffold(title: '주소 등록 / 변경', child: _renderRegisterAddress());
+      return DefaultAppBarScaffold(title: '주소 등록 / 변경', child: _renderRegisterAddress(context));
     }else{
-      return DefaultAppBarScaffold(title: '주소 등록 / 변경', child: _renderChangeAddress());
+      return DefaultAppBarScaffold(title: '주소 등록 / 변경', child: _renderChangeAddress(context));
     }
 
   }
@@ -104,53 +104,89 @@ class AddressChangePage extends StatelessWidget {
         ),
       );
   
-  Widget _renderRegisterAddress() => Container(
-    child: Column(
+  Widget _renderRegisterAddress(context) => Container(
+    child: Stack(
       children: [
-        _changeAddress('등록할 주소'),
-        const Spacer(),
-        Obx(() =>CustomButtonOnOffWidget(title: '확인', onClick: ()async{
-          await myController.changeAddress();
-        }, isOn: myController.isAddress))
-        ,
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                _changeAddress('등록할 주소'),
+              ],
+            ),
+          ),
+        ),
+        if(MediaQuery.of(context).viewInsets.bottom == 0)
+          Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Obx(() => CustomButtonOnOffWidget(
+                      title: '확인',
+                      onClick: () async {
+                        await myController.changeAddress(context);
+                      },
+                      isOn: myController.isAddress
+                )),
+          ),
       ],
     ),
   );
 
-  Widget _renderChangeAddress() => Container(
-    child: Column(
+  Widget _renderChangeAddress(context) => Container(
+    child: Stack(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: FormInputWidget(
-            onChange: (value) {},
-            onSubmit: (value) {},
-            controller: TextEditingController(),
-            isShowTitle: true,
-            title: '현재 주소',
-            hint: '${globalCtrl.userInfoModel?.address?.city}',
-            readOnly: true,
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: FormInputWidget(
+                    onChange: (value) {},
+                    onSubmit: (value) {},
+                    controller: TextEditingController(),
+                    isShowTitle: true,
+                    title: '현재 주소',
+                    hint: '${globalCtrl.userInfoModel?.address?.city}',
+                    readOnly: true,
+                  ),
+                ),
+                const SizedBox(height: 12,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: FormInputWidget(
+                    onChange: (value) {},
+                    onSubmit: (value) {},
+                    controller: TextEditingController(),
+                    hint: '${globalCtrl.userInfoModel?.address?.street}',
+                    readOnly: true,
+                  ),
+                ),
+                const SizedBox(height: 32,),
+                _changeAddress('변경할 주소'),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
-        const SizedBox(height: 12,),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: FormInputWidget(
-            onChange: (value) {},
-            onSubmit: (value) {},
-            controller: TextEditingController(),
-            hint: '${globalCtrl.userInfoModel?.address?.street}',
-            readOnly: true,
-          ),
-        ),
-        const SizedBox(height: 32,),
-        _changeAddress('변경할 주소'),
-        const Spacer(),
-        Obx(() =>CustomButtonOnOffWidget(
-          title: '확인',
-          onClick: () async => await myController.changeAddress(),
-          isOn: myController.isAddress,
-        ))
+        if(MediaQuery.of(context).viewInsets.bottom == 0)
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Obx(() =>CustomButtonOnOffWidget(
+            title: '확인',
+            onClick: () async => await myController.changeAddress(context),
+            isOn: myController.isAddress,
+          )),
+        )
       ],
     ),
   );

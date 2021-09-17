@@ -5,12 +5,14 @@ import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/change_product_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/product_model.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/change_product_expansionList_feild.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansion_tile_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/genuine_box_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class ChangeProductApplyInfoPage extends StatelessWidget {
@@ -40,8 +42,7 @@ class ChangeProductApplyInfoPage extends StatelessWidget {
                     Text('나의 제품', style: medium14TextStyle,),
                     const SizedBox(height: 10,),
                     GetBuilder<ChangeProductController>(builder: (_) {
-                      print('my product builder');
-                      return _my_product();
+                      return _myProduct();
                     }),
                     const SizedBox(height: 16,),
                     FormInputWidget(
@@ -73,6 +74,7 @@ class ChangeProductApplyInfoPage extends StatelessWidget {
                 ),
               ),
             ),
+            if(MediaQuery.of(context).viewInsets.bottom == 0)
             Positioned(
                 left: 0,
                 right: 0,
@@ -93,19 +95,32 @@ class ChangeProductApplyInfoPage extends StatelessWidget {
     );
   }
 
-  Widget _my_product() =>
-      Container(
-        padding: const EdgeInsets.only(top: 14, bottom: 15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          border: Border.all(color: gray_D5D7DBColor),
-        ),
-        child: CustomExpantionTile2(
-          isShowShadow: false,
-          title: _title(),
-          child: _child(),
-        ),
-      );
+  // Widget _my_product() =>
+  //     Container(
+  //       padding: const EdgeInsets.only(top: 14, bottom: 15),
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(4),
+  //         border: Border.all(color: gray_D5D7DBColor),
+  //       ),
+  //       child: CustomExpantionTile2(
+  //         isShowShadow: false,
+  //         title: _title(),
+  //         child: _child(),
+  //       ),
+  //     );
+
+  _myProduct() {
+    return ChangeProductExpansionListField(
+        onTap: () {},
+        hintText: "등록된 제품을 선택해주세요.",
+        items: controller.myProductData,
+        onChange: (value) {},
+        idxChange: (value) {
+          controller.selectMyProduct(value);
+        },
+        controller: ScrollController(),
+    );
+  }
 
   Widget _title() =>
       Container(
@@ -149,10 +164,18 @@ class ChangeProductApplyInfoPage extends StatelessWidget {
                   cache: true,
                 )
               else
-                Image.asset(
-                  'assets/icons/sample_product.png',
+                Container(
                   width: 72,
                   height: 72,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: gray_999Color),
+                  ),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      "assets/icons/header_title_logo.svg",
+                      height: 10,
+                    ),
+                  ),
                 ),
               const SizedBox(
                 width: 32,

@@ -114,6 +114,7 @@ class ProductApiService {
 
   changeProduct({required String token, required Map<String, dynamic> data}) async {
     late http.Response res;
+    print(data.toString());
     try {
       res = await http.post(Uri.parse('${BaseApiService.baseApi}/product/apply/change'),
           headers: BaseApiService.authHeaders(token),
@@ -150,6 +151,7 @@ class ProductApiService {
 
   changeProductCancel(String token, Map<String, dynamic> data) async {
     late http.Response res;
+    print(data.toString());
     try {
       res = await http.post(Uri.parse('${BaseApiService.baseApi}/product/apply/change/cancel'),
           headers: BaseApiService.authHeaders(token),
@@ -222,7 +224,6 @@ class ProductApiService {
         uri,
         headers: headers,
       );
-      print(res.body.toString());
       if(res.statusCode == 200){
         return res;
       }else{
@@ -293,6 +294,25 @@ class ProductApiService {
     }
   }
 
+  Future<http.Response?> genuineDetail(dynamic headers, int idx) async{
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/activation/result/$idx");
+      final http.Response res = await http.get(
+        uri,
+        headers: headers,
+      );
+      print(res.body.toString());
+      if(res.statusCode == 200){
+        return res;
+      }else{
+        return null;
+      }
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
   Future<http.Response?> brandCategory(dynamic headers) async{
     try{
       final uri = Uri.parse("${BaseApiService.baseApi}/product/brand");
@@ -338,7 +358,8 @@ class ProductApiService {
       File frontImg,
       File backImg,
       File leftImg,
-      File rightImg) async {
+      File rightImg,
+      ) async {
     try {
       final uri = Uri.parse("${BaseApiService.baseApi}/product/apply/update");
       var req = http.MultipartRequest('PATCH', uri);
@@ -355,16 +376,18 @@ class ProductApiService {
       );
       //이미지 리스트
       for (var file in images) {
-        List<int> imageData = file.readAsBytesSync();
-        req.files.add(
-          http.MultipartFile.fromBytes(
-            'images',
-            imageData,
-            filename: file.path
-                .split("/")
-                .last,
-          ),
-        );
+        if(file.path != ""){
+          List<int> imageData = file.readAsBytesSync();
+          req.files.add(
+            http.MultipartFile.fromBytes(
+              'images',
+              imageData,
+              filename: file.path
+                  .split("/")
+                  .last,
+            ),
+          );
+        }
       }
       //앞면 이미지
       if(frontImg.path != ""){

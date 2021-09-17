@@ -5,6 +5,7 @@ import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_b
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:delayed_widget/delayed_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 class TermsPage extends StatelessWidget {
@@ -19,48 +20,57 @@ class TermsPage extends StatelessWidget {
         child: GetBuilder<TermsController>(builder: (_) => Container(
           width: double.infinity,
           height: double.infinity,
-          child: Column(
+          child: Stack(
             children: [
-              Expanded(
+              if(controller.isLoaded)
+              Container(
+                width: double.infinity,
+                height: double.infinity,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: DelayedWidget(
-                      delayDuration: Duration(milliseconds: 500),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: 80,
-                          ),
-                          Get.arguments['title'] == "이용약관" ?
-                          Text(
-                            "${controller.termsList?[0].content ?? ""}",
-                            style: regular14TextStyle.copyWith(
-                                color: gray_666Color),
-                          ):
-                          Text(
-                            "${controller.termsList?[1].content ?? ""}",
-                            style: regular14TextStyle.copyWith(
-                                color: gray_666Color),
-                          ),
-                        ],
-                      ),
-                    )
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: DelayedWidget(
+                        delayDuration: Duration(milliseconds: 500),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 50,
+                            ),
+                            Get.arguments['title'] == "이용약관" ?
+                            Text(
+                              "${controller.termsList?[0].content ?? ""}",
+                              style: regular14TextStyle.copyWith(
+                                  color: gray_666Color),
+                            ):
+                            Text(
+                              "${controller.termsList?[1].content ?? ""}",
+                              style: regular14TextStyle.copyWith(
+                                  color: gray_666Color),
+                            ),
+                            const SizedBox(height: 80),
+                          ],
+                        ),
+                      )
                   ),
                 ),
               ),
-              CustomButtonEmptyBackgroundWidget(
-                title: '확인',
-                onClick: () {
-                  Get.back();
-                },
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: CustomButtonEmptyBackgroundWidget(
+                  title: '확인',
+                  onClick: () {
+                    Get.back();
+                  },
+                ),
               ),
             ],
           ),
-        )
-      )
+        ),
+      ),
     );
   }
 }

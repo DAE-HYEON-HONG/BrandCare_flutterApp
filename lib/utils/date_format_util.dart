@@ -14,7 +14,7 @@ class DateFormatUtil{
 
   static String convertDateTimeFormat({required String date}) {
     DateTime convertDate = DateFormat('yyyy-MM-DDThh:mm:ss').parse(date);
-    return DateFormat('yyyy-MM-DD hh:mm').format(convertDate);
+    return DateFormat('yyyy-MM-dd hh:mm').format(convertDate);
   }
 
   static String convertOnlyDate({required String date}){
@@ -24,12 +24,13 @@ class DateFormatUtil{
 
   static String convertOnlyTime({required String date}){
     DateTime convertDate = DateFormat('yyyy-MM-DDThh:mm:ss').parse(date);
-    return DateFormat('hh:mm').format(convertDate);
+    return DateFormat('HH:mm').format(convertDate);
   }
 
   static String convertTimer({required int timer}) {
     int min = (timer / 60).floor();
     int second = timer % 60;
-    return '$min:$second';
+    String secondZero = '$second'.padLeft(2, "0");
+    return '$min:$secondZero';
   }
 }

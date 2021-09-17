@@ -76,7 +76,7 @@ class _CareExpansionListFieldState extends State<CareExpansionListField> with Si
     return AnimatedContainer(
       curve: Curves.easeInOutQuart,
       width: double.infinity,
-      height: _moreTab ? 60.0 * widget.items.length : 55,
+      height: _moreTab ? 40.0 * 5 : 51,
       duration: Duration(milliseconds: 800),
       decoration: BoxDecoration(
         color: whiteColor,
@@ -87,11 +87,11 @@ class _CareExpansionListFieldState extends State<CareExpansionListField> with Si
         borderRadius: BorderRadius.circular(5),
       ),
       child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+            Container(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              height: 48.8,
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
@@ -116,44 +116,51 @@ class _CareExpansionListFieldState extends State<CareExpansionListField> with Si
                 ),
               ),
             ),
+            if(_moreTab)
+              const Divider(height: 1, color: gray_f5f6f7Color),
             _moreTab ? DelayedWidget(
               delayDuration: Duration(milliseconds: 800),
-              child: Column(
-                children: [
-                  const Divider(height: 1, color: gray_f5f6f7Color),
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(0),
-                    shrinkWrap: true,
-                    itemCount: widget.items.length,
-                    itemBuilder: (context, idx) {
-                      return GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          changeValue(widget.items[idx].title);
-                          changeIdx(widget.items[idx].id);
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.only(left: 16, right: 16, top: 13, bottom: 13),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  widget.items[idx].title,
-                                  style: regular14TextStyle.copyWith(
-                                      color: gray_999Color),
-                                ),
+              child: Container(
+                height: 37.4*5,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(0),
+                        shrinkWrap: true,
+                        itemCount: widget.items.length,
+                        itemBuilder: (context, idx) {
+                          return GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              changeValue(widget.items[idx].title);
+                              changeIdx(widget.items[idx].id);
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.only(left: 16, right: 16, top: 13, bottom: 13),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      widget.items[idx].title,
+                                      style: regular14TextStyle.copyWith(
+                                          color: gray_999Color),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ):
             const SizedBox(),

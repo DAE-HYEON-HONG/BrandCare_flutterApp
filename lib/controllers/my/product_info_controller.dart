@@ -1,30 +1,33 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/models/product/product_change_model.dart';
-import 'package:brandcare_mobile_flutter_v2/models/product/product_detail_model.dart';
-import 'package:brandcare_mobile_flutter_v2/models/product/product_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/product/productDetail_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
-import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/change_product_enum.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProductInfoController extends BaseController{
 
-  ProductDetailModel? productDetailModel;
-  final _productProvider = ProductProvider();
+  ProductDetailModel? model;
 
   void getDetailProduct(int id) async {
+    print(id);
     super.networkState.value = NetworkStateEnum.LOADING;
-    var json = await _productProvider.getProductDetail(id);
-    super.networkState.value = NetworkStateEnum.DONE;
-    print('json = $json');
-
-    if(json != null) {
-      productDetailModel = ProductDetailModel.fromJson(json);
+    var res = await ProductProvider().productDetail(id);
+    print(res.toString());
+    if(res == null){
+      Get.dialog(
+          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          })
+      );
+      super.networkState.value = NetworkStateEnum.ERROR;
+    }else{
+      model = res;
+      super.networkState.value = NetworkStateEnum.DONE;
       update();
     }
-
   }
+
 
 
   @override

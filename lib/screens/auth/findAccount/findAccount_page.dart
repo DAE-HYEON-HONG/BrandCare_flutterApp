@@ -16,7 +16,7 @@ class FindAccountPage extends GetView<FindController> {
             length: 2,
             child: Column(
               children: [
-                const SizedBox(height: 40,),
+                const SizedBox(height: 20,),
                 SizedBox(
                   height: 48,
                   child: TabBar(

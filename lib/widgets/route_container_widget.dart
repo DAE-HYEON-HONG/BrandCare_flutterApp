@@ -10,9 +10,10 @@ class RouteContainerWidget extends StatelessWidget {
 
   final Map? arguments;
   final bool isRoot;
+  Function()? onTap;
 
-  const RouteContainerWidget(
-      {Key? key, required this.route, required this.title, this.arguments, this.isRoot=false})
+  RouteContainerWidget(
+      {Key? key, required this.route, required this.title, this.arguments, this.isRoot=false, this.onTap})
       : super(key: key);
 
   @override
@@ -24,6 +25,7 @@ class RouteContainerWidget extends StatelessWidget {
           return;
         }
         Get.toNamed(route, arguments: arguments);
+        onTap!();
       },
       behavior: HitTestBehavior.translucent,
       child: Container(

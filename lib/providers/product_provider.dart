@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/apis/product/product_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/models/addCare/addCareList_model.dart';
-import 'package:brandcare_mobile_flutter_v2/models/categoryList_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/category/categoryList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/addGenuineList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/addProduct_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/genuineList_model.dart';
@@ -91,7 +91,8 @@ class ProductProvider {
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     final res = await _productApiService.getProductDetail(token!, id);
     if(res != null) {
-      return jsonDecode(res.body);
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      return json;
     }
     return null;
   }
@@ -197,7 +198,17 @@ class ProductProvider {
       return null;
     }else {
       Map<String, dynamic> json = jsonDecode(res.body.toString());
-      print(json.toString());
+      return json;
+    }
+  }
+
+  Future<dynamic> genuineDetail(int idx) async {
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    final res = await _productApiService.genuineDetail(BaseApiService.authHeaders(token!), idx);
+    if(res == null) {
+      return null;
+    }else {
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
       return json;
     }
   }

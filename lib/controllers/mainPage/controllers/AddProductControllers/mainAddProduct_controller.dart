@@ -1,5 +1,5 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/models/categoryList_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/category/categoryList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,6 +32,10 @@ class MainAddProductController extends BaseController {
     sinceBuyCtrl.text = "";
     priceCtrl.text = "";
     connectBuyCtrl.text = "";
+    brandCategoryIdx = null;
+    categoryIdx = null;
+    nextBtn.value = false;
+    update();
   }
 
   void changeBrandCategory(int idx){
@@ -57,18 +61,19 @@ class MainAddProductController extends BaseController {
   }
 
   void nextBtnFill(){
+    print(titleCtrl.text);
+    print(categoryIdx);
+    print(brandCategoryIdx);
     dateChk();
-    if (
-        titleCtrl.text == "" ||
-        categoryIdx == 999 ||
-        brandCategoryIdx == 999
-    ){
-      nextBtn.value = false;
-      update();
-    }else {
+    if (titleCtrl.text.isNotEmpty && categoryIdx != null && brandCategoryIdx != null){
       nextBtn.value = true;
       update();
+      print("찍힘?");
+      return;
     }
+    print("안찍힘?");
+    nextBtn.value = false;
+    update();
   }
 
   void dateChk() {

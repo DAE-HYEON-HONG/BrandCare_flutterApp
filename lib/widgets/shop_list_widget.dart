@@ -70,7 +70,7 @@ class ShopListWidget extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             Flexible(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -151,12 +151,12 @@ class ShopListWidget extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("거래가", style: regular12TextStyle.copyWith(
+                      Text("", style: regular12TextStyle.copyWith(
                           color: gray_333Color)),
                       const SizedBox(width: 5),
                       Text(this.money, style: medium14TextStyle.copyWith(
                           color: gray_333Color)),
-                      const SizedBox(width: 5),
+                      const SizedBox(width: 1),
                       Text("원", style: regular12TextStyle.copyWith(
                           color: gray_333Color))
                     ],

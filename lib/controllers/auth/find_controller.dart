@@ -42,6 +42,8 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
   Rx<FindIdStateEnum> idState = FindIdStateEnum.NONE.obs;
   Rx<FindPwStateEnum> pwState = FindPwStateEnum.NONE.obs;
 
+  int nowTab = int.parse(Get.arguments);
+
   late TabController tabController;
 
   changeCurrentIndex({required int index}) {
@@ -262,6 +264,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
   void onInit() {
     super.onInit();
     tabController = TabController(length: 2, vsync: this);
+    tabController.index = nowTab;
     idState.value = FindIdStateEnum.NONE;
     tabController.addListener(() {
       print('tabController');

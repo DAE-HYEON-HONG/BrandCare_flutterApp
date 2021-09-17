@@ -13,7 +13,6 @@ class NameChangePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final myController = Get.find<MyController>();
     final globalCtrl = Get.find<GlobalController>();
-    myController.initMyController();
     return DefaultAppBarScaffold(
         title: '이름(닉네임) 변경',
         child: SafeArea(
@@ -46,11 +45,12 @@ class NameChangePage extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              Obx(() =>CustomButtonOnOffWidget(
+              if(MediaQuery.of(context).viewInsets.bottom == 0)
+              GetBuilder<MyController>(builder: (_) =>CustomButtonOnOffWidget(
                   title: '확인',
                   onClick: () async => await myController.changeNickName(myController.nickNameController.text),
-                  isOn: myController.name.value.isNotEmpty),
-              ),
+                  isOn: myController.changeColor(),
+              )),
             ],
           ),
         ));

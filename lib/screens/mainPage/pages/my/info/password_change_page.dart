@@ -11,66 +11,85 @@ class PasswordChangePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final myController = Get.find<MyController>();
-    myController.initMyController();
+    //myController.initMyController();
     return DefaultAppBarScaffold(
         title: '비밀번호 변경',
-        child: SafeArea(
-          child: Column(
-            children: [
-              const SizedBox(height: 32,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: FormInputWidget(
-                  onChange: (value) {
-                    myController.nowPassword.value = value;
-                  },
-                  onSubmit: (value) {},
-                  controller: TextEditingController(),
-                  isShowTitle: true,
-                  title: '현재 비밀번호',
-                  hint: '현재 비밀번호를 입력해주세요',
-                  isObscureText: true,
+        child: Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 32,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: FormInputWidget(
+                        onChange: (value) {
+                          myController.nowPassword.value = value;
+                        },
+                        onSubmit: (value) {},
+                        textInputType: TextInputType.visiblePassword,
+                        controller: myController.currentPwController,
+                        isShowTitle: true,
+                        title: '현재 비밀번호',
+                        hint: '현재 비밀번호를 입력해주세요',
+                        isObscureText: true,
 
+                      ),
+                    ),
+                    const SizedBox(height: 24,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: FormInputWidget(
+                        onChange: (value) {
+                          myController.password.value = value;
+                        },
+                        onSubmit: (value) {},
+                        controller: myController.pwController,
+                        textInputType: TextInputType.visiblePassword,
+                        isShowTitle: true,
+                        title: '새로운 비밀번호',
+                        hint: '새로운 비밀번호를 입력해주세요',
+                        isObscureText: true,
+                      ),
+                    ),
+                    const SizedBox(height: 24,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: FormInputWidget(
+                        onChange: (value) {
+                          myController.rePassword.value = value;
+                        },
+                        onSubmit: (value) {},
+                        controller: myController.rePwController,
+                        textInputType: TextInputType.visiblePassword,
+                        isShowTitle: true,
+                        title: '비밀번호 확인',
+                        hint: '새로운 비밀번호를 한번 더 입력해주세요.',
+                        isObscureText: true,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
                 ),
               ),
-              const SizedBox(height: 24,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: FormInputWidget(
-                  onChange: (value) {
-                    myController.password.value = value;
-                  },
-                  onSubmit: (value) {},
-                  controller: TextEditingController(),
-                  isShowTitle: true,
-                  title: '새로운 비밀번호',
-                  hint: '새로운 비밀번호를 입력해주세요',
-                  isObscureText: true,
-                ),
-              ),
-              const SizedBox(height: 24,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: FormInputWidget(
-                  onChange: (value) {
-                    myController.rePassword.value = value;
-                  },
-                  onSubmit: (value) {},
-                  controller: TextEditingController(),
-                  isShowTitle: true,
-                  title: '비밀번호 확인',
-                  hint: '새로운 비밀번호를 한번 더 입력해주세요.',
-                  isObscureText: true,
-                ),
-              ),
-              const Spacer(),
-              Obx(() =>CustomButtonOnOffWidget(
+            ),
+            if(MediaQuery.of(context).viewInsets.bottom == 0)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: GetBuilder<MyController>(builder: (_) =>CustomButtonOnOffWidget(
                 title: '확인',
                 onClick: () async => myController.changePassword(),
-                isOn: myController.passwordIsOn,
+                isOn: myController.changeColor(),
               )),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+    );
   }
 }

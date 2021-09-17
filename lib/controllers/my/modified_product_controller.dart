@@ -1,7 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/my_product_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/productInfo_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/models/categoryList_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/category/categoryList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/product/modifiedProductImgs_page.dart';
 import 'package:flutter/material.dart';

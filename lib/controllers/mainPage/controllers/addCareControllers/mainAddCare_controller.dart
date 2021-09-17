@@ -12,6 +12,8 @@ class MainAddCareController extends BaseController {
 
   final globalCtrl = Get.find<GlobalController>();
 
+  RxBool nextFill = false.obs;
+
   Rx<int> smsTime = 180.obs;
 
   TextEditingController senderName = TextEditingController();
@@ -46,6 +48,45 @@ class MainAddCareController extends BaseController {
 
   RxBool returnSender = true.obs;
   RxBool returnReceiver = false.obs;
+
+  void chkFill(){
+    if(senderName.text.isEmpty){
+      print("이름");
+      nextFill.value = false;
+    }else if(senderPhNum.text.isEmpty){
+      print("전번");
+      nextFill.value = false;
+    }else if(phoneChecked.value == false){
+      print("인증");
+      nextFill.value = false;
+    }else if(senderPostCode.text.isEmpty){
+      print("보우편번호");
+      nextFill.value = false;
+    }else if(senderAddress.text.isEmpty){
+      print("보주소");
+      nextFill.value = false;
+    }else if(senderAddressDetailCtrl.text.isEmpty){
+      print("보주자");
+      nextFill.value = false;
+    }else if(receiverName.text.isEmpty){
+      print("받이");
+      nextFill.value = false;
+    }else if(receiverPhNum.text.isEmpty){
+      print("밭전");
+      nextFill.value = false;
+    }else if(receiverPostCode.text.isEmpty){
+      print("받우");
+      nextFill.value = false;
+    }else if(receiverAddress.text.isEmpty){
+      print('받주');
+      nextFill.value = false;
+    }else if(receiverAddressDetailCtrl.text.isEmpty){
+      print("받주자");
+      nextFill.value = false;
+    }else{
+      nextFill.value = true;
+    }
+  }
 
   void initInfo(){
     senderName.text = "";
@@ -95,6 +136,8 @@ class MainAddCareController extends BaseController {
       }else{
         checkSmsAuthTimer();
         phAuth = res['data'];
+        phoneChecked.value = false;
+        chkFill();
         update();
       }
     }
@@ -123,6 +166,9 @@ class MainAddCareController extends BaseController {
       if(smsTime.value == 0){
         timer.cancel();
       }
+      if(phoneChecked.value){
+        timer.cancel();
+      }
     });
   }
 
@@ -135,12 +181,14 @@ class MainAddCareController extends BaseController {
       senderAddressDetailCtrl.text = globalCtrl.userInfoModel!.address!.street;
     }
     update();
+    chkFill();
   }
 
   void changeSenderPost(String postCode, String address){
     senderPostCode.text = postCode;
     senderAddress.text = address;
     update();
+    chkFill();
   }
 
   void senderPostSaveChk(){
@@ -150,9 +198,11 @@ class MainAddCareController extends BaseController {
           || senderAddressDetail.value != "") {
         saveSenderPostChk.value = true;
         update();
+        chkFill();
       } else {
         saveSenderPostChk.value = false;
         update();
+        chkFill();
       }
     }
   }
@@ -161,9 +211,11 @@ class MainAddCareController extends BaseController {
     if(receiverPostSet.value){
       receiverPostSet.value = false;
       update();
+      chkFill();
     }else{
       senderPostSet.value = !senderPostSet.value;
       update();
+      chkFill();
     }
   }
 
@@ -178,6 +230,7 @@ class MainAddCareController extends BaseController {
       receiverAddressDetail.value = senderAddressDetail.value;
     }
     update();
+    chkFill();
   }
 
   void receiverNormalAddressSet() {
@@ -189,6 +242,7 @@ class MainAddCareController extends BaseController {
       receiverAddressDetailCtrl.text = globalCtrl.userInfoModel!.address!.street;
     }
     update();
+    chkFill();
   }
 
   void receiverPostSaveChk(){
@@ -197,9 +251,11 @@ class MainAddCareController extends BaseController {
         || receiverAddressDetail.value != ""){
       saveReceiverPostChk.value = true;
       update();
+      chkFill();
     }else{
       saveReceiverPostChk.value = false;
       update();
+      chkFill();
     }
   }
 
@@ -207,6 +263,7 @@ class MainAddCareController extends BaseController {
     if(senderPostSet.value){
       senderPostSet.value = false;
       update();
+      chkFill();
     }else{
       receiverPostSet.value = !receiverPostSet.value;
       update();
@@ -217,6 +274,7 @@ class MainAddCareController extends BaseController {
     receiverPostCode.text = postCode;
     receiverAddress.text = address;
     update();
+    chkFill();
   }
 
   void changeReturnPost(String person){
@@ -228,6 +286,7 @@ class MainAddCareController extends BaseController {
       returnReceiver.value = true;
     }
     update();
+    chkFill();
   }
 
 

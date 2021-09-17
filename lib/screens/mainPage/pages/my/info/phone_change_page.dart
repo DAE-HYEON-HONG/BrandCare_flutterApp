@@ -15,132 +15,145 @@ class PhoneChangePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final myController = Get.find<MyController>();
     final globalCtrl = Get.find<GlobalController>();
-    myController.initMyController();
-    final phoneController = TextEditingController();
-    final codeController = TextEditingController();
+    //myController.initMyController();
     return DefaultAppBarScaffold(
         title: '전화번호 변경',
         child: GetBuilder<MyController>(
           builder: (_) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: FormInputWidget(
-                    onChange: (value) {},
-                    onSubmit: (value) {},
-                    controller: TextEditingController(),
-                    readOnly: true,
-                    isShowTitle: true,
-                    title: '등록된 전화번호',
-                    hint: globalCtrl.userInfoModel!.phNum,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
+            return Container(
+              width: double.infinity,
+              height: double.infinity,
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AnimatedContainer(
-                          duration: Duration(milliseconds: 500),
-                          width: ((!myController.isAuth.value ? 3 : 1) *
-                              (Get.width - 32)) /
-                              ((!myController.isAuth.value ? 3 : 1) + (!myController.isAuth.value ? 2 : 0)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: FormInputWidget(
-                            onChange: (value) {
-                              myController.phone.value = value;
-                            },
+                            onChange: (value) {},
                             onSubmit: (value) {},
-                            readOnly: myController.isAuth.value,
-                            controller: phoneController,
-                            textInputType: TextInputType.phone,
+                            controller: TextEditingController(),
+                            readOnly: true,
                             isShowTitle: true,
-                            title: '전화번호 변경',
-                            hint: '전화번호를 입력하세요',
+                            title: '등록된 전화번호',
+                            hint: globalCtrl.userInfoModel!.phNum,
                           ),
                         ),
-                        AnimatedContainer(
-                          duration: Duration(milliseconds: 500),
-                          width: ((!myController.isAuth.value ? 2 : 0) *
-                              (Get.width - 32)) /
-                              ((!myController.isAuth.value ? 2 : 0) + (!myController.isAuth.value ? 3 : 1)),
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 8.0, left: 8.0),
-                            child: Column(
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Row(
                               children: [
-                                Text(
-                                  '',
-                                  style: medium14TextStyle,
-                                ),
-                                Obx(() => CustomButtonOnOffWidget(
-                                  onClick: () async => await myController.smsAuth(),
-                                  title: '인증번호 받기',
-                                  radius: 4,
-                                  isOn: myController.isPhone,
-                                )),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ]),
-                ),
-                if(!myController.isAuth.value)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                        children: [
-                          Flexible(
-                            flex: 2,
-                            child: FormInputWidget(
-                              onChange: (value) {
-                                myController.code.value = value;
-                              },
-                              onSubmit: (value) {},
-                              controller: codeController,
-                              isShowTitle: true,
-                              title: '인증번호',
-                              hint: '인증번호를 입력하세요',
-                            ),
-                          ),
-
-                          Flexible(
-                            flex: 1,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 8.0, left: 8.0),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    '',
-                                    style: medium14TextStyle,
+                                AnimatedContainer(
+                                  duration: Duration(milliseconds: 500),
+                                  width: ((!myController.isAuth.value ? 3 : 1) *
+                                      (Get.width - 32)) /
+                                      ((!myController.isAuth.value ? 3 : 1) + (!myController.isAuth.value ? 2 : 0)),
+                                  child: FormInputWidget(
+                                    onChange: (value) {
+                                      myController.phone.value = value;
+                                    },
+                                    onSubmit: (value) {},
+                                    readOnly: myController.isAuth.value,
+                                    controller: myController.phoneController,
+                                    textInputType: TextInputType.phone,
+                                    isShowTitle: true,
+                                    title: '전화번호 변경',
+                                    hint: '전화번호를 입력하세요',
                                   ),
-                                  Obx(() => CustomButtonOnOffWidget(
-                                    onClick: () => myController.smsAuthChk(),
-                                    title: '인증확인',
-                                    radius: 4,
-                                    isOn: myController.isCode,
-                                  )),
-                                ],
-                              ),
-                            ),
+                                ),
+                                AnimatedContainer(
+                                  duration: Duration(milliseconds: 500),
+                                  width: ((!myController.isAuth.value ? 2 : 0) *
+                                      (Get.width - 32)) /
+                                      ((!myController.isAuth.value ? 2 : 0) + (!myController.isAuth.value ? 3 : 1)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 8.0, left: 8.0),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          '',
+                                          style: medium14TextStyle,
+                                        ),
+                                        Obx(() => CustomButtonOnOffWidget(
+                                          onClick: () async => await myController.smsAuth(),
+                                          title: '인증번호 받기',
+                                          radius: 4,
+                                          isOn: myController.isPhone,
+                                        )),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ]),
+                        ),
+                        if(!myController.isAuth.value)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Row(
+                                children: [
+                                  Flexible(
+                                    flex: 2,
+                                    child: FormInputWidget(
+                                      onChange: (value) {
+                                        myController.code.value = value;
+                                      },
+                                      onSubmit: (value) {},
+                                      controller: myController.codeController,
+                                      textInputType: TextInputType.number,
+                                      isShowTitle: true,
+                                      title: '인증번호',
+                                      hint: '인증번호를 입력하세요',
+                                    ),
+                                  ),
+
+                                  Flexible(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 8.0, left: 8.0),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            '',
+                                            style: medium14TextStyle,
+                                          ),
+                                          Obx(() => CustomButtonOnOffWidget(
+                                            onClick: () => myController.smsAuthChk(),
+                                            title: '인증확인',
+                                            radius: 4,
+                                            isOn: myController.isCode,
+                                          )),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+
+                                ]),
+                          )
+                        else
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+
+                            child: Text('인증되었습니다.', style: medium14TextStyle.copyWith(color: Color(0xff169F00)),),
                           ),
-
-                        ]),
-                  )
-                else
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-
-                    child: Text('인증되었습니다.', style: medium14TextStyle.copyWith(color: Color(0xff169F00)),),
+                      ],
+                    ),
                   ),
-
-                const Spacer(),
-
-                CustomButtonOnOffWidget(
-                  title: '확인',
-                  onClick: () async => await myController.changePhone(),
-                  isOn: myController.isAuth.value,
-                ),
-              ],
+                  if(MediaQuery.of(context).viewInsets.bottom == 0)
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: GetBuilder<MyController>(builder: (_) => CustomButtonOnOffWidget(
+                      title: '확인',
+                      onClick: () async => await myController.changePhone(),
+                      isOn: myController.changeColor(),
+                    )),
+                  ),
+                ],
+              ),
             );
           },
         )

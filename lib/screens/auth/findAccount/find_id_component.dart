@@ -132,8 +132,8 @@ class FindIdComponent extends StatelessWidget {
                     ],
                   ),
                 ),
-                GetBuilder<FindController>(
-                    builder: (_) => SizedBox(height: controller.autoHeight(context)))
+                // GetBuilder<FindController>(
+                //     builder: (_) => SizedBox(height: controller.autoHeight(context)))
               ],
             ),
           ),

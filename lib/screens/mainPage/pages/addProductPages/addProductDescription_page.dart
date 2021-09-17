@@ -63,7 +63,7 @@ class AddProductDescriptionPage extends GetView<AddProductDescriptionController>
                   Divider(height: 1, color: gray_f5f6f7Color),
                   const SizedBox(height: 16),
                   Text(
-                    "제품 컨디션(중복 선택 가능)",
+                    "제품 구성품(중복 선택 가능)",
                     style: medium14TextStyle,
                   ),
                   const SizedBox(height: 15),
@@ -117,12 +117,13 @@ class AddProductDescriptionPage extends GetView<AddProductDescriptionController>
                     ),
                   ),
                   const SizedBox(height: 110),
-                  GetBuilder<AddProductDescriptionController>(
-                      builder: (_) => SizedBox(height: controller.autoHeight(context)))
+                  // GetBuilder<AddProductDescriptionController>(
+                  //     builder: (_) => SizedBox(height: controller.autoHeight(context)))
                 ],
               ),
             ),
           ),
+          if(MediaQuery.of(context).viewInsets.bottom == 0)
           Positioned(
             left: 0,
             right: 0,

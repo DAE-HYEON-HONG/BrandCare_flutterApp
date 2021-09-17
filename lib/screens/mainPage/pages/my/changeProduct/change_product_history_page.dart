@@ -5,6 +5,8 @@ import 'package:brandcare_mobile_flutter_v2/controllers/my/change_product_contro
 import 'package:brandcare_mobile_flutter_v2/models/product/product_change_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/product_model.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/change_product_enum.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/genuine_box_widget.dart';
 import 'package:extended_image/extended_image.dart';
@@ -147,11 +149,19 @@ class ChangeProductHistoryPage extends StatelessWidget {
                   const SizedBox(
                     height: 16,
                   ),
-                  Text(
-                    '${productModel.title}',
-                    style: medium14TextStyle,
-                    overflow: TextOverflow.ellipsis,
-                  )
+                  Row(
+                    children: [
+                      Text(
+                        '${productModel.title}',
+                        style: medium14TextStyle,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const Spacer(),
+                      Text(
+                          "${DateFormatUtil.convertDateTimeFormat(date: productModel.createdDate!)}"
+                      ),
+                    ],
+                  ),
                 ],
               ),
             )

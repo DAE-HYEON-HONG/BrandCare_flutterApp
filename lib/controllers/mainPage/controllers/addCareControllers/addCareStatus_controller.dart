@@ -16,6 +16,15 @@ class AddCareStatusController extends BaseController {
   int productIdx = Get.arguments["idx"];
   bool back = Get.arguments['back'];
 
+  int addPrices(){
+    int price = 0;
+    int length = careStatus?.careProduct.length ?? 0;
+    for(var i = 0; i < length; i++){
+      price += careStatus?.careProduct[i].price ?? 0;
+    }
+    return price+3000;
+  }
+
   List<Map<dynamic, dynamic>> careStatusJson = [];
   void nextLevel() {
     if(back){
@@ -96,8 +105,8 @@ class AddCareStatusController extends BaseController {
   }
   @override
   void onInit() async{
+    super.onInit();
     await reqCareStatus();
     addList();
-    super.onInit();
   }
 }

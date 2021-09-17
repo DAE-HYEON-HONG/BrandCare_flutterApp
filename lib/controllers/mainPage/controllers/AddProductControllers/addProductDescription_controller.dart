@@ -39,6 +39,7 @@ class AddProductDescriptionController extends BaseController{
     if(title == "오염"){
       dirty.value = !dirty.value;
       nothing.value = false;
+      update();
       formChk();
     }else if(title == "파손"){
       broken.value = !broken.value;
@@ -49,36 +50,38 @@ class AddProductDescriptionController extends BaseController{
       if(nothing.value){
         dirty.value = false;
         broken.value = false;
-        formChk();
+        update();
       }
+      formChk();
     }else if(title == "더스트백"){
       dustBag.value = !dustBag.value;
       notExist.value = false;
+      update();
       formChk();
     }else if(title == "보증서"){
       guarantee.value = !guarantee.value;
       notExist.value = false;
+      update();
       formChk();
     }else{
       notExist.value = !notExist.value;
       if(notExist.value){
         dustBag.value = false;
         guarantee.value = false;
-        formChk();
+        update();
       }
+      formChk();
     }
-    formChk();
-    update();
   }
 
   void formChk(){
-    if(dirty.value && broken.value && nothing.value){
+    if(dirty.value || broken.value || nothing.value){
       this.isCondition = true;
     }else {
       this.isCondition = false;
     }
 
-    if(dustBag.value && guarantee.value && notExist.value){
+    if(dustBag.value || guarantee.value || notExist.value){
       this.products = true;
     }else {
       this.products = false;
@@ -89,6 +92,10 @@ class AddProductDescriptionController extends BaseController{
     }else {
       this.description = false;
     }
+
+    print(this.isCondition);
+    print(this.products);
+    print(this.description);
 
     if(this.isCondition && this.products && this.description){
       fill.value = true;

@@ -2,7 +2,9 @@ import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/addCareStatus_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/models/addCare/careStatus_model.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/status_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
@@ -17,7 +19,7 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: DefaultAppBarScaffold(
-        title: "제품 케어 신청현황",
+        title: "케어/수선 신청현황",
         child: _renderBody(),
         isLeadingShow: false,
       ),
@@ -42,7 +44,9 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                   const SizedBox(height: 32),
                   _productInfo(
                     imgPath: "${controller.careStatus?.careProduct[0].image}",
-                    title: "${controller.careStatus?.careProduct[0].category} 외 ${controller.careStatus?.careProduct.length ?? 0}건",
+                    title: controller.careStatus?.careProduct.length == 1 ?
+                    "${controller.careStatus?.careProduct[0].category ?? "로딩중"}":
+                    "${controller.careStatus?.careProduct[0].category ?? "로딩중"} 외 ${(controller.careStatus?.careProduct.length ?? 0)-1}건",
                     type: StatusUtil.statusChk(status: "${_.careStatus?.status}"),
                     clock: DateFormatUtil.convertOnlyTime(date: "${_.careStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
                     date: DateFormatUtil.convertOnlyDate(date: "${_.careStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
@@ -93,6 +97,8 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                       );
                     },
                   ),
+                  const SizedBox(height: 8),
+                  _paymentInfo(model: controller.careStatus),
                   const SizedBox(height: 24),
                   Text('택배 반송 주소', style: medium14TextStyle),
                   const SizedBox(height: 10),
@@ -412,6 +418,109 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
           ],
         ) : Container(),
       ],
+    );
+  }
+
+  _paymentInfo({required CareStatusModel? model}){
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: gray_D5D7DBColor,
+          width: 1.0,
+        ),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 18),
+            child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: model?.careProduct.length ?? 0,
+              itemBuilder: (context, idx){
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${idx+1}. ${model?.careProduct[idx].largeCategory}',
+                      style: medium14TextStyle,
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            '- ${model?.careProduct[idx].category}',
+                            style: medium14TextStyle,
+                          ),
+                        ),
+                        Text(
+                          '+ ${NumberFormatUtil.convertNumberFormat(number: model?.careProduct[idx].price ?? 0)}원',
+                          style: medium14TextStyle,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 18),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    '배송비',
+                    style: medium14TextStyle,
+                  ),
+                ),
+                Text(
+                  '+ ${NumberFormatUtil.convertNumberFormat(number: 3000)}원',
+                  style: medium14TextStyle,
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            height: 1,
+            color: gray_D5D7DBColor,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 18),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${model?.careProduct.length ?? 0}개 선택됨',
+                  style: medium14TextStyle,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '총 금액',
+                      style: medium14TextStyle,
+                    ),
+                    const SizedBox(width: 27),
+                    Text(
+                      '${NumberFormatUtil.convertNumberFormat(number: controller.addPrices())}원',
+                      style: medium16TextStyle.copyWith(color: redColor),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -11,6 +11,8 @@ import 'package:get/get.dart';
 
 class AddGenuinePaymentController extends BaseController {
 
+  RxInt myPoint = 0.obs;
+  RxInt countCoupon = 0.obs;
   RxInt couponDiscount = 0.obs;
   RxInt pointDiscount = 0.obs;
   RxBool fill = false.obs;
@@ -29,7 +31,9 @@ class AddGenuinePaymentController extends BaseController {
     if(chkUserInfo.value){
       fill.value = true;
       update();
+      return;
     }
+    fill.value = false;
     update();
   }
 
@@ -157,9 +161,28 @@ class AddGenuinePaymentController extends BaseController {
     }
   }
 
+  Future<void> reqCouponList() async {
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    final res =  await MyProvider().couponHistory(token!, 1);
+    print(res);
+    if(res == null){
+      Get.dialog(
+          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          })
+      );
+    }else{
+      countCoupon.value = (res['countCoupon']);
+      myPoint.value = (res['point']);
+    }
+    update();
+  }
+
 
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
+    await reqCouponList();
   }
 }

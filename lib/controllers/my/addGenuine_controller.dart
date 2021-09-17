@@ -15,6 +15,8 @@ class AddGenuineController extends BaseController {
 
   int productIdx = Get.arguments;
 
+  RxBool nextFill = false.obs;
+
   Rx<int> smsTime = 180.obs;
   RxBool normalAddress = false.obs;
 
@@ -52,10 +54,7 @@ class AddGenuineController extends BaseController {
   RxBool returnReceiver = false.obs;
 
   void chkNormalAddress() {
-    if(globalCtrl.userInfoModel?.address!.city != "" &&
-        globalCtrl.userInfoModel?.address!.street != "" &&
-        globalCtrl.userInfoModel?.address!.zipCode != ""
-    ){
+    if(globalCtrl.userInfoModel != null){
       normalAddress.value = true;
       update();
     }else {
@@ -84,6 +83,7 @@ class AddGenuineController extends BaseController {
       }else{
         checkSmsAuthTimer();
         phAuth = res['data'];
+        phoneChecked.value = false;
         update();
       }
     }
@@ -102,6 +102,7 @@ class AddGenuineController extends BaseController {
       phoneChecked.value = false;
     }
     update();
+    chkFill();
   }
 
   checkSmsAuthTimer(){
@@ -110,6 +111,9 @@ class AddGenuineController extends BaseController {
     Timer.periodic(Duration(seconds: 1), (timer) {
       smsTime.value--;
       if(smsTime.value == 0){
+        timer.cancel();
+      }
+      if(phoneChecked.value){
         timer.cancel();
       }
     });
@@ -124,12 +128,14 @@ class AddGenuineController extends BaseController {
       senderAddressDetailCtrl.text = globalCtrl.userInfoModel!.address!.street;
     }
     update();
+    chkFill();
   }
 
   void changeSenderPost(String postCode, String address){
     senderPostCode.text = postCode;
     senderAddress.text = address;
     update();
+    chkFill();
   }
 
   void senderPostSaveChk(){
@@ -139,9 +145,11 @@ class AddGenuineController extends BaseController {
           || senderAddressDetail.value != "") {
         saveSenderPostChk.value = true;
         update();
+        chkFill();
       } else {
         saveSenderPostChk.value = false;
         update();
+        chkFill();
       }
     }
   }
@@ -150,9 +158,11 @@ class AddGenuineController extends BaseController {
     if(receiverPostSet.value){
       receiverPostSet.value = false;
       update();
+      chkFill();
     }else{
       senderPostSet.value = !senderPostSet.value;
       update();
+      chkFill();
     }
   }
 
@@ -167,6 +177,7 @@ class AddGenuineController extends BaseController {
       receiverAddressDetail.value = senderAddressDetail.value;
     }
     update();
+
   }
 
   void receiverNormalAddressSet() {
@@ -186,9 +197,11 @@ class AddGenuineController extends BaseController {
         || receiverAddressDetail.value != ""){
       saveReceiverPostChk.value = true;
       update();
+      chkFill();
     }else{
       saveReceiverPostChk.value = false;
       update();
+      chkFill();
     }
   }
 
@@ -206,6 +219,7 @@ class AddGenuineController extends BaseController {
     receiverPostCode.text = postCode;
     receiverAddress.text = address;
     update();
+    chkFill();
   }
 
   void changeReturnPost(String person){
@@ -217,9 +231,47 @@ class AddGenuineController extends BaseController {
       returnReceiver.value = true;
     }
     update();
+    chkFill();
   }
 
-
+  void chkFill(){
+    if(senderName.text.isEmpty){
+      print("이름");
+      nextFill.value = false;
+    }else if(senderPhNum.text.isEmpty){
+      print("전번");
+      nextFill.value = false;
+    }else if(phoneChecked.value == false){
+      print("인증");
+      nextFill.value = false;
+    }else if(senderPostCode.text.isEmpty){
+      print("보우편번호");
+      nextFill.value = false;
+    }else if(senderAddress.text.isEmpty){
+      print("보주소");
+      nextFill.value = false;
+    }else if(senderAddressDetailCtrl.text.isEmpty){
+      print("보주자");
+      nextFill.value = false;
+    }else if(receiverName.text.isEmpty){
+      print("받이");
+      nextFill.value = false;
+    }else if(receiverPhNum.text.isEmpty){
+      print("밭전");
+      nextFill.value = false;
+    }else if(receiverPostCode.text.isEmpty){
+      print("받우");
+      nextFill.value = false;
+    }else if(receiverAddress.text.isEmpty){
+      print('받주');
+      nextFill.value = false;
+    }else if(receiverAddressDetailCtrl.text.isEmpty){
+      print("받주자");
+      nextFill.value = false;
+    }else{
+      nextFill.value = true;
+    }
+  }
 
   void nextLevel(){
     if(senderName.text.isEmpty){
@@ -307,6 +359,7 @@ class AddGenuineController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    print(globalCtrl.userInfoModel.toString());
     chkNormalAddress();
     debounce(senderPhTxt, (_) {
       senderPhNumFill.value = RegexUtil.checkPhoneRegex(phone: senderPhTxt.value);

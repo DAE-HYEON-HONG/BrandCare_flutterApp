@@ -46,7 +46,7 @@ class LoginPage extends GetView<LoginController> {
                             onChange: (value) {},
                             onSubmit: (value) {},
                             controller: controller.emailController,
-                            hint: '이메일을 입력해주세요,',
+                            hint: '이메일을 입력해주세요.',
                             textInputType: TextInputType.emailAddress,
                           ),
                           const SizedBox(
@@ -113,7 +113,7 @@ class LoginPage extends GetView<LoginController> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   _itemTextButton(
-                                      title: e.keys.first, link: e.values.first),
+                                      title: e.keys.first, link: e.values.first, argument: e.values.last),
                                   if (controller.textList.indexOf(e) != 2)
                                     Container(
                                       width: 1,
@@ -157,6 +157,7 @@ class LoginPage extends GetView<LoginController> {
   Widget _itemTextButton({
     required String title,
     required String link,
+    required String argument,
   }) =>
       Container(
         child: TextButton(
@@ -164,7 +165,7 @@ class LoginPage extends GetView<LoginController> {
             if(title == '회원가입'){
               controller.openSignUpDialog();
             }else {
-              Get.toNamed(link);
+              Get.toNamed(link, arguments: argument);
             }
           },
           child: Text(

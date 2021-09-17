@@ -20,7 +20,7 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
   MainShopListInstController mainShopListInstCtrl = Get.find<MainShopListInstController>();
 
   List<IdPathImagesModel> testBanner = [
-    IdPathImagesModel(0, "https://www.hdcarwallpapers.com/walls/kia_seltos_x_line_concept_2020_5k-HD.jpg"),
+    IdPathImagesModel(0, ""),
   ];
 
   void pageChanged(int idx){
@@ -44,7 +44,7 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
   }
 
   Future<void> reqShopDetail() async {
-    super.networkState.value = NetworkStateEnum.LOADING;
+    //super.networkState.value = NetworkStateEnum.LOADING;
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     var res = await ShopProvider().shopDetail(token!, idx);
     if(res == null){
@@ -54,10 +54,10 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
             update();
           })
       );
-      super.networkState.value = NetworkStateEnum.ERROR;
+      //super.networkState.value = NetworkStateEnum.ERROR;
     }else{
       model = res;
-      super.networkState.value = NetworkStateEnum.DONE;
+      //super.networkState.value = NetworkStateEnum.DONE;
       mainShopListInstCtrl.reqShopList();
       mainShopListInstCtrl.update();
       update();

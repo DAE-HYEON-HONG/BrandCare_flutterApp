@@ -1,5 +1,6 @@
 import 'dart:async';
 
+
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
@@ -21,6 +22,11 @@ class SignUpController extends BaseController {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController authNumberController = TextEditingController();
   final TextEditingController friendCodeController = TextEditingController();
+
+  Map<String, String> linkData = {
+    '이용약관': '/main/my/term',
+    '개인정보 취급방침': '/main/my/term'
+  };
 
   Rx<bool> sendPhoneCode = false.obs;
   Rx<bool> authCode = false.obs;
@@ -45,8 +51,6 @@ class SignUpController extends BaseController {
   Rx<bool> phoneReadOnly = false.obs;
 
   final _authApiProvider = AuthProvider();
-
-
 
 
   void agreeUpdate() {
@@ -127,14 +131,22 @@ class SignUpController extends BaseController {
         }),
       );
     }
-    else if(duplicateEmail.value == SignUpCheckEmail.DUPLICATE){
+    else if(nameController.text.length > 8){
       Get.dialog(
-        CustomDialogWidget(content: '이메일을 중복 및 확인해주세요.', onClick: (){
+        CustomDialogWidget(content: '닉네임은 8자리 이하로 입력해주세요.', onClick: (){
           Get.back();
-          update();
         }),
       );
-    } else if(phoneController.text == ""){
+    }
+    // else if(duplicateEmail.value == SignUpCheckEmail.DUPLICATE){
+    //   Get.dialog(
+    //     CustomDialogWidget(content: '이메일을 중복 및 확인해주세요.', onClick: (){
+    //       Get.back();
+    //       update();
+    //     }),
+    //   );
+    // }
+    else if(phoneController.text == ""){
       Get.dialog(
         CustomDialogWidget(content: '전화번호를 확인해주세요.', onClick: (){
           Get.back();
@@ -181,6 +193,8 @@ class SignUpController extends BaseController {
     var response = await _authApiProvider.smsAuth(phoneController.text);
     if(response != null) {
       sendPhoneCode.value = true;
+      authCode.value = false;
+      phoneReadOnly.value = false;
       smsCode = response["data"];
       checkSmsAuthTimer();
       update();

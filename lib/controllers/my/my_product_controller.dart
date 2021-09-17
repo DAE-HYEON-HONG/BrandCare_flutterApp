@@ -27,6 +27,7 @@ class MyProductController extends BaseController {
   }
 
   Future<void> filter({required String type})async {
+    currentPage = 1;
     sort.value = type;
     update();
     await reqProductList();
@@ -36,6 +37,7 @@ class MyProductController extends BaseController {
   Future<void> reqProductList() async {
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     final res =  await MyProvider().productList(token!, currentPage, sort.value);
+    print(res.toString());
     if(res == null){
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){

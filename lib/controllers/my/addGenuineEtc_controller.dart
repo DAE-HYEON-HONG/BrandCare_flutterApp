@@ -26,7 +26,6 @@ class AddGenuineEtcController extends BaseController {
   TextEditingController des = TextEditingController();
 
   int firstGenuine = 0;
-  int secondGenuine = 0;
 
   RxBool fill = false.obs;
 
@@ -36,15 +35,11 @@ class AddGenuineEtcController extends BaseController {
   }
 
   void changeFirstGenuine(int idx){
-    firstGenuine = idx;
-    priceList.add(GenuinePriceListModel("정품인증", 1, 29000));
-    update();
-  }
-
-  void changeSecondGenuine(int idx){
-    secondGenuine = idx;
-    priceList.add(GenuinePriceListModel("정품인증", 2, 29000));
-    update();
+    if(priceList.length != 1){
+      firstGenuine = idx;
+      priceList.add(GenuinePriceListModel("정품인증", 1, 29000));
+      update();
+    }
   }
 
   void removeGenuine(GenuinePriceListModel obj){
@@ -79,6 +74,7 @@ class AddGenuineEtcController extends BaseController {
 
   @override
   void onInit() {
+    priceList.add(GenuinePriceListModel("정품인증", 1, 29000));
     super.onInit();
 
   }

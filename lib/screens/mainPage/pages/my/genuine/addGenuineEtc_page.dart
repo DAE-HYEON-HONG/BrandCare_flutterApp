@@ -1,22 +1,12 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
-import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/mainAddCare_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuineEtc_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuine_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
-import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
-import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
-import 'package:brandcare_mobile_flutter_v2/widgets/custom_chk_address.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
-import 'package:brandcare_mobile_flutter_v2/widgets/form_input_otherTitle_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
-import 'package:brandcare_mobile_flutter_v2/widgets/genuine_expansionList_feild.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:kpostal/kpostal.dart';
 
 class AddGenuineEtcPage extends StatelessWidget {
   final AddGenuineEtcController controller = Get.put(AddGenuineEtcController());
@@ -79,24 +69,24 @@ class AddGenuineEtcPage extends StatelessWidget {
                           title: "구입시기",
                           hint: "${controller.productInfoDetailCtrl.model?.buyDate}",
                         ),
-                        const SizedBox(height: 16),
-                        Text("인증항목", style: medium14TextStyle,),
-                        const SizedBox(height: 9),
-                        GenuineExpansionListField(
-                          onTap: () {},
-                          hintText: "1. 인증항목을 선택하세요.",
-                          items: controller.genuineList!,
-                          onChange: (value) {},
-                          onIdChange: (value) => controller.changeFirstGenuine(value),
-                        ),
-                        const SizedBox(height: 16),
-                        GenuineExpansionListField(
-                          onTap: () {},
-                          hintText: "2. 인증항목을 선택하세요. (추가선택)",
-                          items: controller.genuineList!,
-                          onChange: (value) {},
-                          onIdChange: (value) => controller.changeSecondGenuine(value),
-                        ),
+                        //const SizedBox(height: 16),
+                        // Text("인증항목", style: medium14TextStyle,),
+                        // const SizedBox(height: 9),
+                        // GenuineExpansionListField(
+                        //   onTap: () {},
+                        //   hintText: "1. 인증항목을 선택하세요.",
+                        //   items: controller.genuineList!,
+                        //   onChange: (value) {},
+                        //   onIdChange: (value) => controller.changeFirstGenuine(value),
+                        // ),
+                        // const SizedBox(height: 16),
+                        // GenuineExpansionListField(
+                        //   onTap: () {},
+                        //   hintText: "2. 인증항목을 선택하세요. (추가선택)",
+                        //   items: controller.genuineList!,
+                        //   onChange: (value) {},
+                        //   onIdChange: (value) => controller.changeSecondGenuine(value),
+                        // ),
                         const SizedBox(height: 32),
                         GetBuilder<AddGenuineEtcController>(builder: (_) =>Container(
                           width: double.infinity,
@@ -133,16 +123,16 @@ class AddGenuineEtcPage extends StatelessWidget {
                                                   '+ ${NumberFormatUtil.convertNumberFormat(number: controller.priceList[idx].price)}원',
                                                   style: medium14TextStyle,
                                                 ),
-                                                const SizedBox(width: 15),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    controller.removeGenuine(controller.priceList[idx]);
-                                                  },
-                                                  child: SvgPicture.asset(
-                                                    "assets/icons/btn_x.svg",
-                                                    height: 15,
-                                                  ),
-                                                ),
+                                                // const SizedBox(width: 15),
+                                                // GestureDetector(
+                                                //   onTap: () {
+                                                //     controller.removeGenuine(controller.priceList[idx]);
+                                                //   },
+                                                //   child: SvgPicture.asset(
+                                                //     "assets/icons/btn_x.svg",
+                                                //     height: 15,
+                                                //   ),
+                                                // ),
                                               ],
                                             ),
                                           ],
@@ -232,6 +222,7 @@ class AddGenuineEtcPage extends StatelessWidget {
                 ),
               ),
             ),
+            if(MediaQuery.of(context).viewInsets.bottom == 0)
             Obx(()=> Positioned(
               left: 0,
               right: 0,

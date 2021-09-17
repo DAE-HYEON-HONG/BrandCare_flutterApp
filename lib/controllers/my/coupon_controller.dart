@@ -10,7 +10,9 @@ import 'package:flutter/material.dart';
 class CouponController extends BaseController{
 
   late Paging couponListPaging;
-  List<CouponListModel>? couponList = <CouponListModel>[];
+  List<CouponListModel>? couponList = <CouponListModel>[
+    CouponListModel("SSIBALNOM2B", 3000, 0, "0", "SINBALSagi 쿠폰!"),
+  ];
   ScrollController pagingScroll = ScrollController();
   int currentPage = 1;
   RxString couponCode = RxString('');
@@ -42,17 +44,17 @@ class CouponController extends BaseController{
           })
       );
     }else{
-      final list = (res['response']['list'] as List).map((e) => CouponListModel.fromJson(e)).toList();
-      couponListPaging = Paging.fromJson(res['response']);
+      final list = (res['couponList'] as List).map((e) => CouponListModel.fromJson(e)).toList();
+      // couponListPaging = Paging.fromJson(res['response']);
       if (currentPage == 1) {
-        this.couponList = list;
+        //this.couponList = list;
       } else {
         for (var e in list) {
           this.couponList!.add(e);
         }
       }
-      countCoupon.value = (res['model']['countCoupon']);
-      myPoint.value = (res['model']['point']);
+      countCoupon.value = (res['countCoupon']);
+      myPoint.value = (res['point']);
     }
     update();
   }
@@ -66,7 +68,7 @@ class CouponController extends BaseController{
 
   @override
   void onInit() async{
-    // await reqCouponList();
+    await reqCouponList();
     pagingScroll.addListener(pagingScrollListener);
     super.onInit();
   }

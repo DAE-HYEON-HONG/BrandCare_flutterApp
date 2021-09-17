@@ -1,7 +1,9 @@
 import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
-import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/mainHome_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/home/mainHome_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/mainPage_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/image_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansion_tile_main_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansion_tile_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -10,7 +12,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MainHomePage extends StatelessWidget {
   final MainHomeController controller = Get.put(MainHomeController());
@@ -27,6 +28,7 @@ class MainHomePage extends StatelessWidget {
   }
 
   _body() {
+    final mainPageCtrl = Get.find<MainPageController>();
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -122,7 +124,7 @@ class MainHomePage extends StatelessWidget {
                                   Stack(
                                     children: [
                                       Container(
-                                        width: 30.0 * controller.bannerImageList.length,
+                                        width: 30.0 * controller.bannerList!.length,
                                         height: 3,
                                         decoration: BoxDecoration(
                                           color: Colors.white.withOpacity(0.6),
@@ -152,7 +154,7 @@ class MainHomePage extends StatelessWidget {
                                     ),
                                     child: Center(
                                       child: Text(
-                                        "${controller.pageNum.value+1}/${controller.bannerImageList.length}",
+                                        "${controller.pageNum.value+1}/${controller.bannerList!.length}",
                                         style: regular12TextStyle.copyWith(color: whiteColor),
                                       ),
                                     ),
@@ -193,10 +195,10 @@ class MainHomePage extends StatelessWidget {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    _useInfomation(0, "price_list_on.svg", "가격표"),
-                                    _useInfomation(1, "howtouse_on.svg", "이용방법"),
-                                    _useInfomation(2, "delivery_on.svg", "택배 유의사항"),
-                                    _useInfomation(3, "event_on.svg", "이벤트"),
+                                    _useInformation(0, "postIt.png", "가격표"),
+                                    _useInformation(1, "speaker.png", "이용방법"),
+                                    _useInformation(2, "truck.png", "택배 유의사항"),
+                                    _useInformation(3, "presentBox.png", "이벤트"),
                                   ],
                                 ),
                               ),
@@ -276,11 +278,22 @@ class MainHomePage extends StatelessWidget {
               color: whiteColor,
               width: double.infinity,
               height: 48.h,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset('assets/icons/header_title_logo.svg', width:120.w, height: 15.w, color: primaryColor),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(),
+                    SvgPicture.asset('assets/icons/header_title_logo.svg', width:120.w, height: 15.w, color: primaryColor),
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: (){
+                        mainPageCtrl.onItemTaped(5);
+                      },
+                      child: SvgPicture.asset('assets/icons/mainNotice.svg', height: 19,),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -289,21 +302,25 @@ class MainHomePage extends StatelessWidget {
     );
   }
 
-  _useInfomation(int idx, String imgAdds, String title) {
+  _useInformation(int idx, String imgAdds, String title) {
     return Expanded(
       child: InkWell(
         onTap: () {
-          controller.useInfo(idx);
+          controller.useInfo(idx, title);
         },
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(
+            // SvgPicture.asset(
+            //   'assets/icons/$imgAdds',
+            //   height: 40.h,
+            //   color: primaryColor,
+            // ),
+            Image.asset(
               'assets/icons/$imgAdds',
               height: 40.h,
-              color: primaryColor,
             ),
             Text(
               title,

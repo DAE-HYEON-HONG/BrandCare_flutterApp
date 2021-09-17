@@ -8,6 +8,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+import 'package:permission_handler/permission_handler.dart';
+
 class AddCarePicController extends BaseController {
 
   RxBool fill = false.obs;
@@ -158,8 +160,24 @@ class AddCarePicController extends BaseController {
     update();
   }
 
+  void cameraPermissionChk()async{
+    await Permission.camera.request();
+    await Permission.photos.request();
+    var _cameraStatus = await Permission.camera.status.isGranted;
+    var _galleryStatus = await Permission.photos.isGranted;
+    if(_cameraStatus == false || _galleryStatus == false){
+      Get.snackbar(
+        '권한 알림', '카메라 및 갤러리 권한이 필요합니다.',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(milliseconds: 1200),
+      );
+      Future.delayed(Duration(milliseconds: 1200), () => Get.back());
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();
+    cameraPermissionChk();
   }
 }

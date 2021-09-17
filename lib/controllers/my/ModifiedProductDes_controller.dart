@@ -6,7 +6,7 @@ import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/Add
 import 'package:brandcare_mobile_flutter_v2/controllers/my/modifiedProductImgs_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/modified_product_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/productInfo_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/models/categoryList_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/category/categoryList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/addProduct_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/updateProduct_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
@@ -57,7 +57,7 @@ class ModifiedProductDesController extends BaseController{
       }else if(addValue.title == "파손"){
         broken.value = true;
         nothing.value = false;
-      }else if(addValue.title == "문제 없음"){
+      }else if(addValue.title == "문제없음"){
         nothing.value = true;
       }else if(addValue.title == "더스트백"){
         dustBag.value = true;
@@ -167,7 +167,9 @@ class ModifiedProductDesController extends BaseController{
       additionId: additionalId,
       id: productInfoDetailCtrl.model!.id,
       deleteImageId: updateImgCtrl.removeImgIdx!,
+      deleteStr: updateImgCtrl.removeMainImg!,
     );
+    print(model.toString());
     List<File> images = <File>[];
     for(var file in updateImgCtrl.imgList!){
       images.add(file.file!);

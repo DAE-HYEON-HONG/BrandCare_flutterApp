@@ -34,8 +34,8 @@ class CustomArrowUpDownBtn extends StatelessWidget {
             Text(title, style: medium14TextStyle.copyWith(color: primaryColor),),
             const Spacer(),
             !onDown ?
-            SvgPicture.asset('assets/icons/btn_arrow_up.svg'):
-            SvgPicture.asset('assets/icons/btn_arrow_down.svg'),
+            SvgPicture.asset('assets/icons/btn_arrow_down.svg'):
+            SvgPicture.asset('assets/icons/btn_arrow_up.svg'),
           ],
         ),
         style: ButtonStyle(

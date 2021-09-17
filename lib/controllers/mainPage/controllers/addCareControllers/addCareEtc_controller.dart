@@ -26,7 +26,10 @@ class AddCareEtcController extends BaseController{
     if(etcDescription.text != ""){
       fill.value = true;
       update();
+      return;
     }
+    fill.value = false;
+    update();
   }
 
   void removeList(AddCareListModel obj){

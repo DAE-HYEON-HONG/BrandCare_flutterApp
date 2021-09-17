@@ -42,8 +42,8 @@ class AddGenuineStatusPage extends StatelessWidget {
                 children: [
                   const SizedBox(height: 32),
                   _productInfo(
-                    imgPath: "${controller.genuineStatus?.product_image}",
-                    title: "${controller.genuineStatus?.title}",
+                    imgPath: "${controller.genuineStatus?.product_image ?? ""}",
+                    title: "${controller.genuineStatus?.title ?? "로딩중"}",
                     type: StatusUtil.statusChk(status: "${controller.genuineStatus?.status}"),
                     clock: DateFormatUtil.convertOnlyTime(date: "${controller.genuineStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
                     date: DateFormatUtil.convertOnlyDate(date: "${controller.genuineStatus?.createdDate ?? "2021-08-31T00:39:24.562773"}"),
@@ -221,7 +221,7 @@ class AddGenuineStatusPage extends StatelessWidget {
   _productInfo({required String imgPath, required String title, required String type, required String clock, required String date}){
     return Container(
       width: double.infinity,
-      height: 150,
+      height: 160,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),

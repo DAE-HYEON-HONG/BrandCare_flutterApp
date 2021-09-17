@@ -11,12 +11,6 @@ class MainHomeController extends BaseController{
   List<BannerModel>? bannerList = <BannerModel>[];
 
   Rx<int> pageNum = 0.obs;
-  List<String> bannerImageList = [
-    "https://www.hdcarwallpapers.com/walls/kia_seltos_x_line_concept_2020_5k-HD.jpg",
-    "https://images4.alphacoders.com/110/1104217.jpg",
-    "https://www.hdcarwallpapers.com/walls/kia_seltos_x_line_concept_2020_5k-HD.jpg",
-    "https://www.hdcarwallpapers.com/walls/kia_seltos_x_line_concept_2020_5k-HD.jpg",
-  ];
 
   void launchURL(url) async {
     if (await canLaunch(url)) {
@@ -27,12 +21,13 @@ class MainHomeController extends BaseController{
   }
 
   void changeBannerImg(int idx) {
+    print(idx);
     this.pageNum.value = idx;
     update();
   }
 
-  void useInfo(int index){
-    Get.toNamed('/mainPage/useInfo/main', arguments: {'index': index});
+  void useInfo(int index, String title){
+    Get.toNamed('/mainPage/useInfo/main', arguments: {'index': index, 'title' : title});
   }
 
   Future<void> reqBannerList() async {

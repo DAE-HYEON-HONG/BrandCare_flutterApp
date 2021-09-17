@@ -41,7 +41,7 @@ class AddCareDetailController extends BaseController {
   }
   @override
   void onInit() async{
-    await reqCareStatus();
     super.onInit();
+    await reqCareStatus();
   }
 }

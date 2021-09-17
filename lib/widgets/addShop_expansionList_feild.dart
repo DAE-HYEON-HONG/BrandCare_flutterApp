@@ -1,7 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
-import 'package:brandcare_mobile_flutter_v2/models/categoryList_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/category/categoryList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/mypage/product/myProduct_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/product_model.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
@@ -90,7 +90,7 @@ class _AddShopExpansionListFieldState extends State<AddShopExpansionListField> w
     return AnimatedContainer(
       curve: Curves.easeInOutQuart,
       width: double.infinity,
-      height: _moreTab ? 98.0 * widget.items.length : productIdx == 0 ? 55 : 90,
+      height: _moreTab ? 98.0 * 3 : productIdx == 0 ? 55 : 90,
       duration: Duration(milliseconds: 800),
       decoration: BoxDecoration(
         color: whiteColor,
@@ -105,6 +105,7 @@ class _AddShopExpansionListFieldState extends State<AddShopExpansionListField> w
         child: Column(
           children: <Widget>[
             Container(
+              height: productIdx == 0 ? 55 : 90,
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
@@ -118,7 +119,7 @@ class _AddShopExpansionListFieldState extends State<AddShopExpansionListField> w
                     if(productIdx == 0)
                     Flexible(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+                        padding: const EdgeInsets.only(left: 16, right: 16),
                         child: Text(
                           widget.hintText,
                           style: regular14TextStyle.copyWith(color: gray_999Color),
@@ -146,41 +147,49 @@ class _AddShopExpansionListFieldState extends State<AddShopExpansionListField> w
                 ),
               ),
             ),
+            if(_moreTab)
+              const Divider(height: 1, color: gray_f5f6f7Color),
             _moreTab ? DelayedWidget(
               delayDuration: Duration(milliseconds: 800),
-              child: Column(
-                children: [
-                  const Divider(height: 1, color: gray_f5f6f7Color),
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    controller: widget.controller,
-                    padding: const EdgeInsets.all(0),
-                    shrinkWrap: true,
-                    itemCount: widget.items.length,
-                    itemBuilder: (context, idx) {
-                      return GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          changeValue(widget.items[idx].title);
-                          idxChangeValue(widget.items[idx].productId);
-                          widget.onChange(idx);
-                          this.idx = idx;
+              child: Container(
+                height: 237,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child:  Column(
+                    children: [
+                      const Divider(height: 1, color: gray_f5f6f7Color),
+                      ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        controller: widget.controller,
+                        padding: const EdgeInsets.all(0),
+                        shrinkWrap: true,
+                        itemCount: widget.items.length,
+                        itemBuilder: (context, idx) {
+                          return GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              changeValue(widget.items[idx].title);
+                              idxChangeValue(widget.items[idx].productId);
+                              widget.onChange(idx);
+                              this.idx = idx;
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              //padding: EdgeInsets.only(left: 16, right: 16),
+                              child: _item(
+                                title: widget.items[idx].title,
+                                category: widget.items[idx].category,
+                                brand: widget.items[idx].brand,
+                                isGenuine: widget.items[idx].genuine == "GENUINE" ? true : false,
+                                imgPath: widget.items[idx].thumbnail ?? "",
+                              ),
+                            ),
+                          );
                         },
-                        child: Container(
-                          width: double.infinity,
-                          //padding: EdgeInsets.only(left: 16, right: 16),
-                          child: _item(
-                            title: widget.items[idx].title,
-                            category: widget.items[idx].category,
-                            brand: widget.items[idx].brand,
-                            isGenuine: widget.items[idx].genuine == "GENUINE" ? true : false,
-                            imgPath: widget.items[idx].thumbnail ?? "",
-                          ),
-                        ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ):
             const SizedBox(),

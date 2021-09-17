@@ -5,20 +5,21 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class DefaultAppBarScaffold extends StatelessWidget {
-  const DefaultAppBarScaffold({Key? key, required this.title, required this.child,
-  this.isLeadingShow = true
+  DefaultAppBarScaffold({Key? key, required this.title, required this.child,
+  this.isLeadingShow = true, this.actions,
   }) : super(key: key);
 
   final String title;
   final Widget child;
 
   final bool isLeadingShow;
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //resizeToAvoidBottomInset: true,
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
+      //resizeToAvoidBottomInset: false,
       backgroundColor: whiteColor,
       appBar: AppBar(
         leading: isLeadingShow ? GestureDetector(
@@ -40,6 +41,7 @@ class DefaultAppBarScaffold extends StatelessWidget {
         elevation: 4,
         shadowColor: blackColor.withOpacity(0.05),
         automaticallyImplyLeading: false,
+        actions: this.actions,
       ),
       body: child,
     );

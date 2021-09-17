@@ -1,4 +1,4 @@
-import 'package:brandcare_mobile_flutter_v2/models/categoryList_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/category/categoryList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/idPathImages_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -27,7 +27,8 @@ class ProductDetailModel{
       this.rightImage,
       this.serialCode,
       this.thumbnail,
-      this.title);
+      this.title,
+      this.activationId,);
 
   late String? backImage;
   late String brand;
@@ -50,6 +51,7 @@ class ProductDetailModel{
   late String serialCode;
   late String? thumbnail;
   late String title;
+  final int? activationId;
 
   factory ProductDetailModel.fromJson(Map<String, dynamic> json) => _$ProductDetailModelFromJson(json);
   Map<String, dynamic> toJson() => _$ProductDetailModelToJson(this);

@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/mainShop_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/mainPage_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/shopListPages/mainShopListAll_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/shopListPages/mainShopListInst_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/shopListPages/mainShopListMine_page.dart';
@@ -30,6 +31,7 @@ class MainShopPage extends StatelessWidget{
 
   //앱바
   _appBar() {
+    final mainPageCtrl = Get.find<MainPageController>();
     return AppBar(
       leading: GestureDetector(
           behavior: HitTestBehavior.translucent,
@@ -44,6 +46,15 @@ class MainShopPage extends StatelessWidget{
       elevation: 4,
       shadowColor: blackColor.withOpacity(0.05),
       automaticallyImplyLeading: false,
+      actions: [
+        GestureDetector(
+          onTap: (){
+            mainPageCtrl.onItemTaped(5);
+          },
+          child: SvgPicture.asset('assets/icons/mainNotice.svg', height: 19,),
+        ),
+        const SizedBox(width: 16),
+      ],
     );
   }
 
@@ -82,7 +93,7 @@ class MainShopPage extends StatelessWidget{
                         ),
                         child: Center(
                           child: Text(
-                            "거래등록",
+                            "글쓰기",
                             style: regular12TextStyle.copyWith(color: primaryColor),
                           ),
                         ),

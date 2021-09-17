@@ -16,7 +16,7 @@ class GenuineStatusModel{
   late String title;
   late String category;
   late String returnType;
-  late String product_image;
+  late String? product_image;
   late String brand;
 
   GenuineStatusModel(

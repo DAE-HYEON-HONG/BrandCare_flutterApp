@@ -6,6 +6,7 @@ import 'package:brandcare_mobile_flutter_v2/providers/care_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addCarePages/mainAddCare_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addProductPages/mainAddProduct_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/mainHome_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/notice/main_notice_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/mainShop_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/my_page.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
@@ -16,6 +17,7 @@ import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 class MainPageController extends BaseController {
 
   RxInt selectedIdx = 0.obs;
+  int backWidget = 0;
   GlobalController _globalController = Get.find<GlobalController>();
   MainAddProductController mainAddProductCtrl = Get.put(MainAddProductController());
   MainAddCareController _addCareController = Get.put(MainAddCareController());
@@ -27,7 +29,13 @@ class MainPageController extends BaseController {
     MainAddCarePage(),
     MainShopPage(),
     MyPage(),
+    MainNoticePage(),
   ];
+
+  void backHome(){
+    selectedIdx.value = 0;
+    update();
+  }
 
   void onItemTaped(int idx){
     if(!_globalController.isLogin.value) {
@@ -40,6 +48,10 @@ class MainPageController extends BaseController {
     }
     selectedIdx.value = idx;
     print("현재 선택된 idx: ${selectedIdx.value}");
+    if(idx != 5) {
+      backWidget = idx;
+    }
+    update();
     if(idx == 1){
       mainAddProductCtrl.initInfo();
       mainAddProductCtrl.update();

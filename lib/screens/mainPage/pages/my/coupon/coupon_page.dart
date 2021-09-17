@@ -40,7 +40,7 @@ class CouponPage extends GetView<CouponController> {
                     thickness: 1,
                     color: gray_F1F3F5Color,
                   ),
-                  controller.couponList!.isNotEmpty
+                  controller.couponList!.length != 0
                       ? _couponList()
                       : Expanded(
                           child: Center(

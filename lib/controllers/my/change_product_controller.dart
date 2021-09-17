@@ -15,12 +15,15 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
   String _requestString = '변경할 사용자의 확인을 기다리는 중입니다.\n"확인 중" 버튼을 누를 시 변경 요청이 취소 됩니다.';
   String _receivedString = '상대방이 확인을 기다리는 중입니다.\n"확인"을 누를 시 제품 사용자 변경이 완료 됩니다.';
 
+  TextEditingController emailTextCtrl = TextEditingController();
+
   RxInt selectIdx = RxInt(-1);
   Rx<String> userEmail = ''.obs;
   Rx<bool> isChange = false.obs;
 
-  RxList myProductData = RxList<ProductModel>();
+  List<ProductModel> myProductData = <ProductModel>[];
   ProductModel? selectProductModel;
+  int? cancelIdx;
 
   RxList<ProductChangeModel> sendProductChangeList = RxList();
   RxList<ProductChangeModel> receiveProductChangeList = RxList();
@@ -34,6 +37,12 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
   double autoHeight (BuildContext context){
     double height = MediaQuery.of(context).viewInsets.bottom == 0 ? 0 : 300;
     return height;
+  }
+
+  void initInfo(){
+    emailTextCtrl.text = "";
+    selectProductModel = null;
+    update();
   }
 
   String getTypeComment(ChangeProductEnum type) {
@@ -63,6 +72,36 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
   // }
 
   void changeProductOwner() {
+    if(selectProductModel == null){
+      Get.dialog(
+          CustomDialogWidget(content: '제품을 선택해주세요.', onClick: (){
+            Get.back();
+          })
+      );
+    }else{
+      if(userEmail.value == ""){
+        Get.dialog(
+            CustomDialogWidget(content: '이메일을 입력해주세요.', onClick: (){
+              Get.back();
+            })
+        );
+      }else{
+        Get.dialog(
+            CustomDialogWidget(content: '변경할 사용자에게 모든 제품 정보가\n이동되며 복구할 수 없습니다.\n제품 사용자 변경을 진행 하시겠습니까?',
+              onClick: (){
+                Get.back();
+                changeProduct();
+                // Get.toNamed('/main/my/change_product/apply/change');
+              },
+              isSingleButton: false,
+              title: '제품 사용자 변경',
+            )
+        );
+      }
+    }
+  }
+
+  void changeProductOwnerInfoPage(int idx) {
     if(userEmail.value == ""){
       Get.dialog(
           CustomDialogWidget(content: '이메일을 입력해주세요.', onClick: (){
@@ -74,8 +113,7 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
           CustomDialogWidget(content: '변경할 사용자에게 모든 제품 정보가\n이동되며 복구할 수 없습니다.\n제품 사용자 변경을 진행 하시겠습니까?',
             onClick: (){
               Get.back();
-              changeProduct();
-              // Get.toNamed('/main/my/change_product/apply/change');
+              changeProductInfoPage(idx);
             },
             isSingleButton: false,
             title: '제품 사용자 변경',
@@ -92,7 +130,7 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
 
     if(json != null) {
       final list = (json['list'] as List).map((e) => ProductModel.fromJson(e)).toList();
-      myProductData.value = list;
+      myProductData = list;
       update();
     }
 
@@ -106,6 +144,26 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
   void changeProduct() async {
     super.networkState.value = NetworkStateEnum.LOADING;
     var json = await _productProvider.changeProduct({'email': userEmail.value, 'productId': selectProductModel!.id});
+    print(json);
+    super.networkState.value = NetworkStateEnum.DONE;
+    if(json != null) {
+      cancelIdx = int.parse(json['data']);
+      Get.snackbar('알림', '제품 변경 신청되었습니다.', snackPosition: SnackPosition.BOTTOM);
+      getChangeProductList();
+      Get.offNamed('/main/my/change_product/apply/complete',);
+      return;
+    }else{
+      Get.dialog(
+          CustomDialogWidget(content: '해당 이메일이 존재하지 않습니다.', onClick: (){
+            Get.back();
+          })
+      );
+    }
+  }
+
+  void changeProductInfoPage(int idx) async {
+    super.networkState.value = NetworkStateEnum.LOADING;
+    var json = await _productProvider.changeProduct({'email': userEmail.value, 'productId': idx});
     print(json);
     super.networkState.value = NetworkStateEnum.DONE;
     if(json != null && json['data'] == 'Y') {

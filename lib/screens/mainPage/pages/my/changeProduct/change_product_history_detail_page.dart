@@ -10,6 +10,7 @@ import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/genuine_box_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class ChangeProductHistoryDetailPage extends StatelessWidget {
@@ -67,7 +68,7 @@ class ChangeProductHistoryDetailPage extends StatelessWidget {
   }
   Widget _item() => GestureDetector(
     onTap: (){
-      Get.toNamed('/main/my/change_product/history/product/info', arguments: {'id': controller.historyOnceProductData!.id});
+      Get.toNamed('/main/my/change_product/history/product/info', arguments: {'id': controller.historyOnceProductData!.productId});
     },
     child: Container(
       height: 120,
@@ -88,10 +89,18 @@ class ChangeProductHistoryDetailPage extends StatelessWidget {
               cache: true,
             )
           else
-            Image.asset(
-              'assets/icons/sample_product.png',
+            Container(
               width: 72,
               height: 72,
+              decoration: BoxDecoration(
+                border: Border.all(color: gray_999Color),
+              ),
+              child: Center(
+                child: SvgPicture.asset(
+                  "assets/icons/header_title_logo.svg",
+                  height: 10,
+                ),
+              ),
             ),
           const SizedBox(width: 16,),
           Column(

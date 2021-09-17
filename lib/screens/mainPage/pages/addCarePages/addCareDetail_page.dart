@@ -35,7 +35,9 @@ class AddCareDetailPage extends StatelessWidget {
                 const SizedBox(height: 32),
                 _productInfo(
                   imgPath: "${_.model?.results[0].afterImage}",
-                  title: "${_.model?.careInfo.title} 외 ${_.model?.results.length}건",
+                  title: _.model?.results.length == 1 ?
+                  "${_.model?.careInfo.title ?? "로딩중"}" :
+                  "${_.model?.careInfo.title ?? "로딩중"} 외 ${(_.model?.results.length ?? 0)-1}건",
                   type: StatusUtil.statusChk(status: "${_.model?.careInfo.status}"),
                   clock: DateFormatUtil.convertOnlyTime(date: "${_.model?.careInfo.createdDate ?? "2021-08-31T00:39:24.562773"}"),
                   date: DateFormatUtil.convertOnlyDate(date: "${_.model?.careInfo.createdDate ?? "2021-08-31T00:39:24.562773"}"),
@@ -247,7 +249,7 @@ class AddCareDetailPage extends StatelessWidget {
       Dialog(
         child: Container(
           width: double.infinity,
-          height: double.infinity,
+          height: 360,
           child: Center(
             child: Container(
               width: double.infinity,
@@ -299,21 +301,26 @@ class AddCareDetailPage extends StatelessWidget {
                   Positioned(
                     left: 0,
                     right: 0,
-                    bottom: 0,
-                    child: Obx(() => Container(
-                      width: 40,
-                      height: 18,
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.6),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
+                    bottom: 15,
+                    child: Container(
+                      width: double.infinity,
                       child: Center(
-                        child: Text(
-                          "${controller.pageNum.value+1}/${controller.model?.results.length}",
-                          style: regular12TextStyle.copyWith(color: whiteColor),
-                        ),
+                        child: Obx(() => Container(
+                          width: 40,
+                          height: 18,
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.6),
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "${controller.pageNum.value+1}/${controller.model?.results.length}",
+                              style: regular12TextStyle.copyWith(color: whiteColor),
+                            ),
+                          ),
+                        )),
                       ),
-                    )),
+                    ),
                   )
                 ],
               ),
@@ -324,3 +331,5 @@ class AddCareDetailPage extends StatelessWidget {
     );
   }
 }
+
+

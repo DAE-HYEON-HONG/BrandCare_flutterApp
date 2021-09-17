@@ -41,6 +41,7 @@ class CareHistoryPage extends GetView<CareHistoryController> {
                         sort2: () async {
                           await controller.filter(type: "");
                         },
+                        mode: "",
                       ),
                     );
                   },

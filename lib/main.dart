@@ -19,9 +19,13 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Platform.isIOS ?
+    // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]) :
+    // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown]);
+    if(Platform.isIOS) SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
     Platform.isIOS ?
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]) :
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown]);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark):
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return ScreenUtilInit(
       designSize: Size(360, 640),
       builder: () => Builder(

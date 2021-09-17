@@ -30,7 +30,7 @@ class SignUpSocialController extends BaseController {
 
   Rx<bool> isPhone = false.obs;
   Rx<String> phoneTxt = ''.obs;
-  bool phoneChecked = false; // false로 꼭 바꿔주세요.
+  RxBool phoneChecked = false.obs; // false로 꼭 바꿔주세요.
 
 
   void agreeUpdate() {
@@ -102,14 +102,23 @@ class SignUpSocialController extends BaseController {
             update();
           }),
       );
-    } else if(!duplicateEmail.value){
+    }
+    else if(nameController.text.length > 8){
       Get.dialog(
-        CustomDialogWidget(content: '이메일을 중복 및 확인해주세요.', onClick: (){
+        CustomDialogWidget(content: '닉네임은 8자리 이하로 입력해주세요.', onClick: (){
           Get.back();
-          update();
         }),
       );
-    } else if(phoneController.text == ""){
+    }
+    // else if(!duplicateEmail.value){
+    //   Get.dialog(
+    //     CustomDialogWidget(content: '이메일을 중복 및 확인해주세요.', onClick: (){
+    //       Get.back();
+    //       update();
+    //     }),
+    //   );
+    // }
+    else if(phoneController.text == ""){
       Get.dialog(
         CustomDialogWidget(content: '전화번호를 확인해주세요.', onClick: (){
           Get.back();
@@ -136,6 +145,7 @@ class SignUpSocialController extends BaseController {
   }
 
   Future<void> addUser(String type) async{
+    super.networkState.value = NetworkStateEnum.LOADING;
     final addUser = await AuthProvider().registerUserSocial(
       friendCodeController.text,
       emailController.text,
@@ -143,7 +153,8 @@ class SignUpSocialController extends BaseController {
       phoneController.text,
       type,
     );
-    Get.back();
+    super.networkState.value = NetworkStateEnum.DONE;
+    Get.offAndToNamed('/auth/signup/complete');
   }
 
   bool get allAgree => agree.value && privacyAgree.value;
@@ -167,6 +178,8 @@ class SignUpSocialController extends BaseController {
           }),
         );
       }else{
+        sendPhoneCode.value = true;
+        phoneChecked.value = false;
         checkSmsAuthTimer();
         phAuth = res['data'];
         update();
@@ -175,8 +188,15 @@ class SignUpSocialController extends BaseController {
   }
 
   void smsAuthChk() {
+    if(smsTime.value == 0) {
+      Get.dialog(
+          CustomDialogWidget(content: '인증시간이 초과되었습니다.\n다시 시도 부탁드립니다.', onClick: (){
+            Get.back();
+          })
+      );
+    }
     if(phAuth == authNumberController.text){
-      phoneChecked = true;
+      phoneChecked.value = true;
       isPhone.value = true;
       update();
     }else{
@@ -186,7 +206,7 @@ class SignUpSocialController extends BaseController {
           update();
         }),
       );
-      phoneChecked = false;
+      phoneChecked.value = false;
       isPhone.value = false;
       update();
     }

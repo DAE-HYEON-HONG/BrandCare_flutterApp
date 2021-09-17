@@ -3,6 +3,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/box_shadow.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/mainPage_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/my_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
@@ -22,7 +23,17 @@ class MyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mainPageCtrl = Get.find<MainPageController>();
     return DefaultAppBarScaffold(
+      actions: [
+        GestureDetector(
+          onTap: (){
+            mainPageCtrl.onItemTaped(5);
+          },
+          child: SvgPicture.asset('assets/icons/mainNotice.svg', height: 19,),
+        ),
+        const SizedBox(width: 16),
+      ],
       isLeadingShow: false,
       title: '나의 정보',
       child: SingleChildScrollView(

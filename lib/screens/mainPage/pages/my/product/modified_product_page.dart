@@ -55,6 +55,7 @@ class ModifiedProductPage extends GetView<ModifiedProductController> {
                     items: controller.categoryList!,
                     onChange: (value) => controller.hintText(value, "category"),
                     idxChange: (value) => controller.changeCategory(value),
+                    hintIdx: (value) {},
                   )),
                   const SizedBox(height: 16),
                   GetBuilder<ModifiedProductController>(builder: (_) => AddProductExpansionListField(
@@ -63,6 +64,7 @@ class ModifiedProductPage extends GetView<ModifiedProductController> {
                     items: controller.brandList!,
                     onChange: (value) => controller.hintText(value, "brand"),
                     idxChange: (value) => controller.changeCategory(value),
+                    hintIdx: (value) {},
                   )),
                   const SizedBox(height: 16),
                   FormInputTitleRowWidget(
@@ -106,12 +108,13 @@ class ModifiedProductPage extends GetView<ModifiedProductController> {
                   ),
                   const SizedBox(height: 120),
                   //autoHeight
-                  GetBuilder<ModifiedProductController>(
-                      builder: (_) => SizedBox(height: controller.autoHeight(context)))
+                  // GetBuilder<ModifiedProductController>(
+                  //     builder: (_) => SizedBox(height: controller.autoHeight(context)))
                 ],
               ),
             ),
           ),
+          if(MediaQuery.of(context).viewInsets.bottom == 0)
           Obx(()=> Positioned(
             left: 0,
             right: 0,

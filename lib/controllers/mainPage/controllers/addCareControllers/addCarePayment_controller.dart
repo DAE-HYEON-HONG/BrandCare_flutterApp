@@ -1,4 +1,5 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/models/couponPoint/coupon_list_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/care_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/my_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
@@ -9,6 +10,8 @@ import 'mainAddCare_controller.dart';
 
 class AddCarePaymentController extends BaseController {
 
+  RxInt countCoupon = 0.obs;
+  RxInt myPoint = 0.obs;
   RxInt couponDiscount = 0.obs;
   RxInt pointDiscount = 0.obs;
   RxBool fill = false.obs;
@@ -18,8 +21,10 @@ class AddCarePaymentController extends BaseController {
   final addCareEtcCtrl = Get.find<AddCareEtcController>();
   final addCareMainCtrl = Get.find<MainAddCareController>();
 
+  get currentPage => null;
+
   int allMountPrice() {
-   int price = addPrices() + 3000 - couponDiscount.value - pointDiscount.value;
+   int price = addPrices() - couponDiscount.value - pointDiscount.value;
    return price;
   }
   void changeUserInfo(){
@@ -166,9 +171,28 @@ class AddCarePaymentController extends BaseController {
     }
   }
 
+  Future<void> reqCouponList() async {
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    final res =  await MyProvider().couponHistory(token!, 1);
+    print(res);
+    if(res == null){
+      Get.dialog(
+          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          })
+      );
+    }else{
+      countCoupon.value = (res['countCoupon']);
+      myPoint.value = (res['point']);
+    }
+    update();
+  }
+
 
   @override
-  void onInit() {
+  void onInit() async{
     super.onInit();
+    await reqCouponList();
   }
 }

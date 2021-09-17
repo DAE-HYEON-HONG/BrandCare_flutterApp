@@ -154,4 +154,18 @@ class AuthApiService {
     }
     return null;
   }
+
+  Future<http.Response?> deleteUser(int userIdx) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/manage/user/$userIdx");
+      final http.Response res = await http.post(
+        uri,
+        headers: BaseApiService.headers,
+      );
+      return res;
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
 }

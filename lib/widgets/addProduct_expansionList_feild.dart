@@ -1,6 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
-import 'package:brandcare_mobile_flutter_v2/models/categoryList_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/category/categoryList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:delayed_widget/delayed_widget.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +13,14 @@ class AddProductExpansionListField extends StatefulWidget {
   final List<CategoryListModel> items;
   final ValueChanged<String> onChange;
   final ValueChanged<int> idxChange;
+  final ValueChanged<int> hintIdx;
   AddProductExpansionListField({
     required this.onTap,
     required this.hintText,
     required this.items,
     required this.onChange,
     required this.idxChange,
+    required this.hintIdx,
   });
   @override
   _AddProductExpansionListFieldState createState() => _AddProductExpansionListFieldState();
@@ -65,6 +67,10 @@ class _AddProductExpansionListFieldState extends State<AddProductExpansionListFi
     widget.idxChange(value);
   }
 
+  void hintIdxValue(int value){
+    widget.hintIdx(value);
+  }
+
 
   @override
   void dispose() {
@@ -77,7 +83,7 @@ class _AddProductExpansionListFieldState extends State<AddProductExpansionListFi
     return AnimatedContainer(
       curve: Curves.easeInOutQuart,
       width: double.infinity,
-      height: _moreTab ? 50.0 / 1.1 * widget.items.length : 55,
+      height: _moreTab ? 40.0 * 6 : 48,
       duration: Duration(milliseconds: 800),
       decoration: BoxDecoration(
         color: whiteColor,
@@ -88,11 +94,11 @@ class _AddProductExpansionListFieldState extends State<AddProductExpansionListFi
         borderRadius: BorderRadius.circular(5),
       ),
       child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+            Container(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              height: 48.8,
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
@@ -106,7 +112,7 @@ class _AddProductExpansionListFieldState extends State<AddProductExpansionListFi
                     Flexible(
                       child: Text(
                         widget.hintText,
-                        style: regular14TextStyle.copyWith(color: gray_999Color),
+                        style: regular12TextStyle.copyWith(color: gray_999Color),
                       ),
                     ),
                     RotationTransition(
@@ -117,48 +123,56 @@ class _AddProductExpansionListFieldState extends State<AddProductExpansionListFi
                 ),
               ),
             ),
+            if(_moreTab)
+              const Divider(height: 1, color: gray_f5f6f7Color),
             _moreTab ? DelayedWidget(
-              delayDuration: Duration(milliseconds: 800),
-              child: Column(
-                children: [
-                  const Divider(height: 1, color: gray_f5f6f7Color),
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(0),
-                    shrinkWrap: true,
-                    itemCount: widget.items.length,
-                    itemBuilder: (context, idx) {
-                      return GestureDetector(
-                        onTap: () {
-                          changeValue(widget.items[idx].title);
-                          idxChangeValue(widget.items[idx].id);
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          height: 40,
-                          padding: EdgeInsets.only(left: 16, right: 16),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.items[idx].title,
-                                style: regular14TextStyle.copyWith(
-                                    color: gray_999Color),
+              delayDuration: Duration(milliseconds: 400),
+              child: Container(
+                height: 37.4 * 5,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(0),
+                        shrinkWrap: true,
+                        itemCount: widget.items.length,
+                        itemBuilder: (context, idx) {
+                          return GestureDetector(
+                            onTap: () {
+                              idxChangeValue(widget.items[idx].id);
+                              changeValue(widget.items[idx].title);
+                              hintIdxValue(idx);
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 40,
+                              padding: EdgeInsets.only(left: 16, right: 16),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.items[idx].title,
+                                    style: regular14TextStyle.copyWith(
+                                        color: gray_999Color),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ):
             const SizedBox(),
           ],
         ),
-      ),
+      )
     );
   }
 }

@@ -1,15 +1,18 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/mainPage_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/notLoginPagesControllers/useInfoControllers/useInfoDescription_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/get.dart';
 
 class UseInfoDescriptionPage extends StatelessWidget {
   final UseInfoDescriptionController controller = Get.put(UseInfoDescriptionController());
   final globalCtrl = Get.find<GlobalController>();
+  final mainPageCtrl = Get.find<MainPageController>();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -45,7 +48,12 @@ class UseInfoDescriptionPage extends StatelessWidget {
               //   style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
               // ),
             ],
-          ),
+          ), (){
+          mainPageCtrl.selectedIdx.value = 1;
+          mainPageCtrl.update();
+          mainPageCtrl.onItemTaped(1);
+          Get.back();
+        },
         ),
         const SizedBox(height: 8),
         // 2. 문장
@@ -73,84 +81,10 @@ class UseInfoDescriptionPage extends StatelessWidget {
                       "- 케어/수선 신청하는 방법",
                       style: regular10TextStyle,
                     ),
-                    const SizedBox(height: 16),
-                    // Text(
-                    //   "추가설명----",
-                    //   style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
-                    // ),
-                    const SizedBox(height: 16),
                     controller.isOpened.value ?
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [Text(
-                        "step1. 케어/수선 신청하기",
-                        style: regular10TextStyle,
-                      ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "- 홈 화면 하단 메뉴에서 [케어/수선]을 눌러주세요.",
-                          style: regular10TextStyle,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          "step2. 택배 보내기",
-                          style: regular10TextStyle,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "- 신청이 완료되면, 아래의 배송주소로 제품을 배송해주세요.",
-                          style: regular10TextStyle,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "- 보내시는 택배 비용은 고객님 부담입니다.",
-                          style: regular10TextStyle,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "- 수선품을 보내실때 박스에 보내는 분의 연락처와 성명, 주소를 정확하게 기재해주세요.",
-                          style: regular10TextStyle,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "> 서울 구로구 디지털로 33길 28(구로동 170-5), 우림 이비지센터 1차 1211호\n(주) 리드고\n우편번호: 08377  연락처: 02-6223-6223",
-                          style: regular10TextStyle.copyWith(fontSize: 8),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          "step3. 배송",
-                          style: regular10TextStyle,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "- 서비스 완료된 제품은 신청시 작성해주신 배송지로 배송해드립니다.",
-                          style: regular10TextStyle,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "- 받으실 택배 비용은 저희가 부담합니다.",
-                          style: regular10TextStyle,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "- 배송 조회는 [마이페이지]에서 확인 가능합니다.",
-                          style: regular10TextStyle,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          "step4. 케어/수선 확인하기",
-                          style: regular10TextStyle,
-                        ),
-                        Text(
-                          "- [마이페이지]에서 before/ after 사진 확인을 하실 수 있습니다.",
-                          style: regular10TextStyle,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          "> 케어 수선이 힘든 경우 브랜드케어 측에서 반려, 환불될 수 있습니다.\n> 요청하신 항목과 금액으로 주문이 접수되오니 정확하게 신청해주시기 바랍니다.\n> 요청 사항과 접수 사진이 다를 경우 주문 취소 됩니다. ",
-                          style: regular10TextStyle.copyWith(fontSize: 8),
-                        ),
-                      ],
+                    Image.asset(
+                      "assets/icons/notLoginGuide.png",
+                      fit: BoxFit.fitWidth,
                     ) :
                     Container(),
                     const SizedBox(height: 20),
@@ -159,13 +93,22 @@ class UseInfoDescriptionPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         if(globalCtrl.isLogin.value)
-                        Text(
-                          "케어/수선 신청 바로가기",
-                          style: medium10TextStyle.copyWith(
-                            color: primaryColor,
-                            fontWeight: FontWeight.w700,
-                            decoration: TextDecoration.underline,
+                        GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          child: Text(
+                            "케어/수선 신청 바로가기",
+                            style: medium10TextStyle.copyWith(
+                              color: primaryColor,
+                              fontWeight: FontWeight.w700,
+                              decoration: TextDecoration.underline,
+                            ),
                           ),
+                          onTap: () {
+                            mainPageCtrl.selectedIdx.value = 2;
+                            mainPageCtrl.update();
+                            mainPageCtrl.onItemTaped(2);
+                            Get.back();
+                          },
                         ),
                         GestureDetector(
                           onTap: () => controller.openExpansion(),
@@ -216,7 +159,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
               //   style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
               // ),
             ],
-          ),
+          ), (){},
         ),
         const SizedBox(height: 8),
         // 4. 문장
@@ -238,14 +181,18 @@ class UseInfoDescriptionPage extends StatelessWidget {
               //   style: regular10TextStyle.copyWith(color: gray_8E8F95Color),
               // ),
             ],
-          ),
+          ),(){
+          mainPageCtrl.selectedIdx.value = 3;
+          mainPageCtrl.update();
+          Get.back();
+        },
         ),
         const SizedBox(height: 50),
       ],
     );
   }
 
-  _description(String title, String smallTitle, String enter, Widget description,) {
+  _description(String title, String smallTitle, String enter, Widget description, Function() onTap) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -271,12 +218,18 @@ class UseInfoDescriptionPage extends StatelessWidget {
             children: [
               description,
               const SizedBox(height: 16),
-              Text(
-                "$enter",
-                style: medium10TextStyle.copyWith(
-                  color: primaryColor,
-                  fontWeight: FontWeight.w700,
-                  decoration: TextDecoration.underline,
+              GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  onTap();
+                },
+                child: Text(
+                  "$enter",
+                  style: medium10TextStyle.copyWith(
+                    color: primaryColor,
+                    fontWeight: FontWeight.w700,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
             ],

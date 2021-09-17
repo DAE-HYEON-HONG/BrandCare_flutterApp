@@ -1,16 +1,19 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/AddProductControllers/mainAddProduct_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/mainPage_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/Custom_expansionList_feild.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/addProduct_expansionList_feild.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansion_field.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class MainAddProductPage extends StatelessWidget {
   final MainAddProductController controller = Get.put(MainAddProductController());
+  int? brandIdx;
   @override
   //textFormField랑 textEditingctrl은 stless에서 사용 시 rebuild를 하게 됩니다.
   Widget build(BuildContext context) {
@@ -24,6 +27,7 @@ class MainAddProductPage extends StatelessWidget {
   }
   //앱바 부분
   _appBar() {
+    final mainPageCtrl = Get.find<MainPageController>();
     return AppBar(
       leading: GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -38,6 +42,15 @@ class MainAddProductPage extends StatelessWidget {
       elevation: 4,
       shadowColor: blackColor.withOpacity(0.05),
       automaticallyImplyLeading: false,
+      actions: [
+        GestureDetector(
+          onTap: (){
+            mainPageCtrl.onItemTaped(5);
+          },
+          child: SvgPicture.asset('assets/icons/mainNotice.svg', height: 19,),
+        ),
+        const SizedBox(width: 16),
+      ],
     );
   }
   //바디 부분
@@ -55,7 +68,7 @@ class MainAddProductPage extends StatelessWidget {
             children: <Widget>[
               const SizedBox(height: 32),
               Text(
-                "제품 정보를 입력하세요.(모든 항목 필수 입력)",
+                "제품 정보를 입력하세요.",
                 style: regular14TextStyle,
               ),
               const SizedBox(height: 17),
@@ -63,32 +76,36 @@ class MainAddProductPage extends StatelessWidget {
                 onChange: (value) => controller.nextBtnFill(),
                 onSubmit: (value) {},
                 controller: controller.titleCtrl,
-                hint: "제품명을 입력하세요.(제품 애칭)",
+                hint: "제품명을 입력하세요.(필수입력)",
               ),
               const SizedBox(height: 16),
               AddProductExpansionListField(
                 onTap: () {
                   FocusScope.of(context).unfocus();
                 },
-                hintText: controller.categoryIdx == null ? "카테고리를 선택해주세요." : controller.categoryList[controller.categoryIdx!-1].title,
+                hintText: controller.categoryIdx == null ? "카테고리를 선택해주세요. (필수입력)" : controller.categoryList[controller.categoryIdx!-1].title,
                 items: controller.categoryList,
                 onChange: (value) => controller.nextBtnFill(),
                 idxChange: (value) => controller.changeCategory(value),
+                hintIdx: (value) {}
               ),
               const SizedBox(height: 16),
               AddProductExpansionListField(
                 onTap: () {
                   FocusScope.of(context).unfocus();
                 },
-                hintText: controller.brandCategoryIdx == null ? "브랜드명을 선택해주세요." : controller.brandList[controller.brandCategoryIdx!-1].title,
+                hintText: controller.brandCategoryIdx == null ? "브랜드명을 선택해주세요. (필수입력)" : controller.brandList[brandIdx!].title,
                 items: controller.brandList,
                 onChange: (value) => controller.nextBtnFill(),
                 idxChange: (value) => controller.changeBrandCategory(value),
+                hintIdx: (value) {
+                  brandIdx = value;
+                },
               ),
               const SizedBox(height: 16),
               Text(
-                "* 모르는 항목은 입력하지 않으셔도 됩니다.(선택입력)",
-                style: medium14TextStyle.copyWith(color: redColor),
+                "아래 항목은 입력하지 않으셔도 됩니다.(선택입력)",
+                style: regular14TextStyle,
               ),
               const SizedBox(height: 16),
               FormInputWidget(
@@ -126,8 +143,7 @@ class MainAddProductPage extends StatelessWidget {
                 onTab: () => controller.nextBtnFunc(context),
                 fill: controller.nextBtn.value,
               )),
-              const SizedBox(height: 30),
-
+              const SizedBox(height: 50),
             ],
           ),
         )

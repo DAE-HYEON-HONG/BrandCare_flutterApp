@@ -193,8 +193,22 @@ class ShopAddProductController extends BaseController{
     }
   }
 
+  void cameraPermissionChk()async{
+    var _cameraStatus = await Permission.camera.status.isGranted;
+    var _galleryStatus = await Permission.photos.isGranted;
+    if(_cameraStatus == false || _galleryStatus == false){
+      Get.snackbar(
+        '권한 알림', '카메라 및 갤러리 권한이 필요합니다.',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(milliseconds: 900),
+      );
+      Get.back();
+    }
+  }
+
   @override
   void onInit() async{
+    cameraPermissionChk();
     await reqProductList();
     pagingScroll.addListener(pagingScrollListener);
     _cameraPermission();

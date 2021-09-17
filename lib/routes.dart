@@ -3,6 +3,7 @@ import 'package:brandcare_mobile_flutter_v2/bindings/change_product_binding.dart
 import 'package:brandcare_mobile_flutter_v2/bindings/coupon_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/findAccount_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/genuine_binding.dart';
+import 'package:brandcare_mobile_flutter_v2/bindings/guide_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/inquiry_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/login_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/mainPage_binding.dart';
@@ -20,6 +21,7 @@ import 'package:brandcare_mobile_flutter_v2/screens/auth/login_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signupSocial_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signup_complete_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signup_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/guide/guide_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/main_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/notLoginUserPages/not_login_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/notLoginUserPages/useInfoPages/useInfoMain_page.dart';
@@ -108,8 +110,9 @@ final routes = [
   GetPage(name: '/mainShop/Detail', page: () => ShopDetailPage(), binding: MainShopDetailBinding()),
   GetPage(name: '/mainAddProduct/addImg', page: () => AddProductImgsPage(), binding: MainAddProductBindings()),
   GetPage(name: '/mainAddProduct/addDescription', page: () => AddProductDescriptionPage(), binding: MainAddProductBindings()),
-  GetPage(name: '/mainAddCare/add/pics', page: () => AddCarePicPage(), binding: MainAddCareBinding()),
-  GetPage(name: '/mainAddCare/add/etc', page: () => AddCareEtcPage(), binding: MainAddCareBinding()),
-  GetPage(name: '/mainAddCare/add/payment', page: () => AddCarePaymentPage(), binding: MainAddCareBinding()),
+  GetPage(name: '/mainAddCare/add/pics', page: () => AddCarePicPage(), binding: MainAddCarePicBinding()),
+  GetPage(name: '/mainAddCare/add/etc', page: () => AddCareEtcPage(), binding: MainAddCareEtcBinding()),
+  GetPage(name: '/mainAddCare/add/payment', page: () => AddCarePaymentPage(), binding: MainAddCarePaymentBinding()),
   GetPage(name: '/mainAddCare/add/status', page: () => AddCareStatusPage(), binding: CareStatusBinding()),
+  GetPage(name: '/guide', page: () => GuidePage(), binding: GuideBinding()),
 ];

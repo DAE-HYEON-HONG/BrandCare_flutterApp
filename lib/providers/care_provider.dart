@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/apis/care/care_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/models/addCare/addCareList_model.dart';
-import 'package:brandcare_mobile_flutter_v2/models/careStatus_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/care/careStatus_model.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 
 class CareProvider{

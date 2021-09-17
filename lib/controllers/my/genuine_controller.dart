@@ -17,6 +17,7 @@ class GenuineController extends BaseController{
   RxInt notCompleteCount = 0.obs;
   RxString sort = "LATEST".obs;
 
+
   void pagingScrollListener() async {
     if(pagingScroll.position.pixels == pagingScroll.position.maxScrollExtent){
       print("스크롤이 최하단입니다. 다시 로딩합니다.");
@@ -27,6 +28,7 @@ class GenuineController extends BaseController{
     }
   }
   Future<void> filter({required String type})async {
+    currentPage = 1;
     sort.value = type;
     update();
     await reqGenuineList();
@@ -37,7 +39,6 @@ class GenuineController extends BaseController{
   Future<void> reqGenuineList() async {
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     final res =  await MyProvider().genuineList(token!, currentPage, sort.value);
-    print(res.toString());
     if(res == null){
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){

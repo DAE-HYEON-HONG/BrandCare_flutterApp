@@ -19,7 +19,7 @@ class ShopAddProductPage extends GetView<ShopAddProductController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: DefaultAppBarScaffold(
-        title: "거래등록",
+        title: "글쓰기",
         child: _renderBody(context),
       ),
     );
@@ -125,6 +125,34 @@ class ShopAddProductPage extends GetView<ShopAddProductController> {
                       idxChange: (value) => controller.changeProductIdx(value),
                       controller: controller.pagingScroll,
                     )),
+                    GetBuilder<ShopAddProductController>(builder: (_) =>
+                        Container(
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              if(controller.myProductIdx != null)
+                                const SizedBox(height: 8),
+                              if(controller.myProductIdx != null)
+                                GestureDetector(
+                                  behavior: HitTestBehavior.translucent,
+                                  child: Text(
+                                    "제품 정보",
+                                    style: medium12TextStyle.copyWith(
+                                      color: primaryColor,
+                                      fontWeight: FontWeight.w700,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Get.toNamed('/main/my/change_product/history/product/info',
+                                        arguments: {'id': controller.myProductIdx});
+                                  },
+                                ),
+                            ],
+                          ),
+                        ),
+                    ),
                     const SizedBox(height: 12),
                     FormInputWidget(
                       onChange: (value) {},
@@ -166,12 +194,13 @@ class ShopAddProductPage extends GetView<ShopAddProductController> {
                     ),
                     const SizedBox(height: 100),
                     //autoHeight
-                    GetBuilder<ShopAddProductController>(
-                        builder: (_) => SizedBox(height: controller.autoHeight(context))),
+                    // GetBuilder<ShopAddProductController>(
+                    //     builder: (_) => SizedBox(height: controller.autoHeight(context))),
                   ],
                 ),
               ),
           ),
+          if(MediaQuery.of(context).viewInsets.bottom == 0)
           Positioned(
             left: 0,
             right: 0,

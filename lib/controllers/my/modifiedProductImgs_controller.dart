@@ -16,6 +16,7 @@ class ModifiedProductImgsController extends BaseController {
   RxBool fill = true.obs;
   List<IdPathFileImagesModel>? imgList = <IdPathFileImagesModel>[];
   List<int>? removeImgIdx = [];
+  List<String>? removeMainImg = [];
   Rx<File> frontImg = File('').obs;
   Rx<File> backImg = File('').obs;
   Rx<File> leftImg = File('').obs;
@@ -93,15 +94,19 @@ class ModifiedProductImgsController extends BaseController {
   void removeUploadedImg(String chkImg){
     if(chkImg == "front"){
       frontImgPath = "";
+      removeMainImg!.add("f");
       update();
     }else if (chkImg == "back"){
       backImgPath = "";
+      removeMainImg!.add("b");
       update();
     }else if (chkImg == "left"){
       leftImgPath = "";
+      removeMainImg!.add("l");
       update();
     }else {
       rightImgPath = "";
+      removeMainImg!.add("r");
       update();
     }
   }
@@ -141,6 +146,7 @@ class ModifiedProductImgsController extends BaseController {
   }
 
   void nextLevel() {
+    print(removeMainImg.toString());
     if(fill.value){
       Get.to(() => ModifiedProductDesPage());
     }

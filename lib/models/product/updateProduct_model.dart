@@ -3,18 +3,19 @@ part 'updateProduct_model.g.dart';
 
 @JsonSerializable()
 class UpdateProductModel {
-  late String title;
-  late int categoryId;
-  late int brandId;
-  late String etc;
-  late int price;
-  late String serialCode;
-  late String buyRoute;
-  late String buyDate;
-  late List<int> conditionId;
-  late List<int> additionId;
-  late int id;
-  late List<int> deleteImageId;
+  final String title;
+  final int categoryId;
+  final int brandId;
+  final String etc;
+  final int price;
+  final String serialCode;
+  final String buyRoute;
+  final String buyDate;
+  final List<int> conditionId;
+  final List<int> additionId;
+  final int id;
+  final List<int> deleteImageId;
+  final List<String> deleteStr;
 
 
   UpdateProductModel({
@@ -30,6 +31,7 @@ class UpdateProductModel {
     required this.additionId,
     required this.id,
     required this.deleteImageId,
+    required this.deleteStr,
   });
 
   factory UpdateProductModel.fromJson(Map<String, dynamic> json) => _$UpdateProductModelFromJson(json);

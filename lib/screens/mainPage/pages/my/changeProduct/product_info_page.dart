@@ -3,7 +3,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/box_shadow.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/product_info_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/models/product/product_detail_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/product/productDetail_model.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
@@ -30,7 +30,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
                 const SizedBox(
                   height: 32,
                 ),
-                _item(controller.productDetailModel),
+                _item(controller.model),
                 const SizedBox(
                   height: 24,
                 ),
@@ -38,7 +38,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
                   onChange: (value) {},
                   onSubmit: (value) {},
                   controller: TextEditingController(
-                      text: '${controller.productDetailModel?.title}'),
+                      text: '${controller.model?.title ?? "로딩중"}'),
                   readOnly: true,
                   title: '제품명',
                   isShowTitle: true,
@@ -50,7 +50,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
                   onChange: (value) {},
                   onSubmit: (value) {},
                   controller: TextEditingController(
-                      text: '${controller.productDetailModel?.serialCode}'),
+                      text: '${controller.model?.serialCode ?? "0"}'),
                   readOnly: true,
                   title: '일련번호',
                   isShowTitle: true,
@@ -62,7 +62,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
                   onChange: (value) {},
                   onSubmit: (value) {},
                   controller: TextEditingController(
-                      text: '${controller.productDetailModel?.buyDate}'),
+                      text: '${controller.model?.buyDate ?? "2020-12-31"}'),
                   readOnly: true,
                   title: '구입시기',
                   isShowTitle: true,
@@ -75,7 +75,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
                   onSubmit: (value) {},
                   controller: TextEditingController(
                       text:
-                          '${NumberFormatUtil.convertNumberFormat(number: controller.productDetailModel?.price ?? 0)}원'),
+                          '${NumberFormatUtil.convertNumberFormat(number: int.parse(controller.model?.price ?? "0"))}원'),
                   readOnly: true,
                   title: '구입금액',
                   isShowTitle: true,
@@ -87,7 +87,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
                   onChange: (value) {},
                   onSubmit: (value) {},
                   controller: TextEditingController(
-                      text: '${controller.productDetailModel?.buyRoute}'),
+                      text: '${controller.model?.buyRoute ?? "로딩중"}'),
                   readOnly: true,
                   title: '구입경로',
                   isShowTitle: true,
@@ -96,10 +96,10 @@ class ProductInfoPage extends GetView<ProductInfoController> {
                   height: 24,
                 ),
                 _gridPicture(
-                    controller.productDetailModel?.frontImage,
-                    controller.productDetailModel?.backImage,
-                    controller.productDetailModel?.leftImage,
-                    controller.productDetailModel?.rightImage),
+                    controller.model?.frontImage,
+                    controller.model?.backImage,
+                    controller.model?.leftImage,
+                    controller.model?.rightImage),
                 const SizedBox(
                   height: 32,
                 ),
@@ -112,8 +112,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
                 ),
                 _productAddInfo(
                     '제품 컨디션',
-                    controller.productDetailModel != null
-                        ? controller.productDetailModel!.conditionList
+                    controller.model != null
+                        ? controller.model!.conditionList
                             .map((e) => e.title)
                             .toList()
                         : []),
@@ -122,15 +122,15 @@ class ProductInfoPage extends GetView<ProductInfoController> {
                 ),
                 _productAddInfo(
                     '제품 구성품',
-                    controller.productDetailModel != null
-                        ? controller.productDetailModel!.additionList
+                    controller.model != null
+                        ? controller.model!.additionList
                             .map((e) => e.title)
                             .toList()
                         : []),
                 const SizedBox(
                   height: 27,
                 ),
-                _etc('${controller.productDetailModel?.etc}'),
+                _etc('${controller.model?.etc}'),
                 const SizedBox(
                   height: 32,
                 ),
@@ -159,10 +159,18 @@ class ProductInfoPage extends GetView<ProductInfoController> {
                 cache: true,
               )
             else
-              Image.asset(
-                'assets/icons/sample_product.png',
+              Container(
                 width: 72,
                 height: 72,
+                decoration: BoxDecoration(
+                  border: Border.all(color: gray_999Color),
+                ),
+                child: Center(
+                  child: SvgPicture.asset(
+                    "assets/icons/header_title_logo.svg",
+                    height: 10,
+                  ),
+                ),
               ),
             const SizedBox(
               width: 16,
@@ -175,7 +183,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${model?.brand} | ${model?.category}',
+                      '${model?.brand ?? ""} | ${model?.category ?? ""}',
                       style: regular12TextStyle.copyWith(color: gray_333Color),
                     ),
                     const SizedBox(
@@ -188,7 +196,7 @@ class ProductInfoPage extends GetView<ProductInfoController> {
                   height: 5,
                 ),
                 Text(
-                  '${model?.title}',
+                  '${model?.title ?? "로딩중"}',
                   style: medium14TextStyle,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -244,10 +252,12 @@ class ProductInfoPage extends GetView<ProductInfoController> {
                 cache: true,
               )
             else
-              Image.asset(
-                'assets/icons/sample_product.png',
+              Container(
                 width: 160,
                 height: 160,
+                child: Center(
+                  child: SvgPicture.asset('assets/icons/header_title_logo.svg', width: 10, height: 10,),
+                ),
               ),
           ],
         ),

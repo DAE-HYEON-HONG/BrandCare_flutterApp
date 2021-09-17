@@ -24,7 +24,17 @@ class LoginController extends BaseController {
 
   RxBool isKakaoTalkInstalled = false.obs;
 
-  List<Map<String, String>> textList = [{'아이디 찾기': '/auth/find'}, {'비밀번호 찾기': '/auth/find'}, { '회원가입': ''}];
+  List<Map<String, String>> textList = [
+    {
+      '아이디 찾기': '/auth/find',
+      'argument': "0",
+    },
+    {
+      '비밀번호 찾기': '/auth/find',
+      'argument' : "1",
+    },
+    { '회원가입': ''},
+  ];
 
   List snsLoginItem = ['login_kakao.svg', 'login_naver.svg', 'login_facebook.svg'];
 
@@ -70,6 +80,7 @@ class LoginController extends BaseController {
       print("카카오 토큰값 ${token.accessToken}");
       print("카카오 토큰타입 ${token.tokenType}");
       print("카카오 토큰만료 ${token.expiresIn}");
+      super.networkState.value = NetworkStateEnum.LOADING;
       final res = await AuthProvider().registerUserSocialChk(
         token.accessToken,
         "${user.kakaoAccount!.email}",
@@ -77,6 +88,7 @@ class LoginController extends BaseController {
       );
       Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
       if(jsonMap['code'] == "R9721"){
+        super.networkState.value = NetworkStateEnum.DONE;
         Get.toNamed(
           '/auth/signupSocial',
           arguments: {
@@ -86,16 +98,17 @@ class LoginController extends BaseController {
           },
         );
       }else{
+        super.networkState.value = NetworkStateEnum.DONE;
         if(isAutoLogin.value){
           SharedTokenUtil.saveBool(true, 'isAutoLogin');
           SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
           globalCtrl.isLoginChk(true);
-          Get.toNamed('/mainPage');
+          Get.offAllNamed('/mainPage');
         }else{
           SharedTokenUtil.saveBool(false, 'isAutoLogin');
           SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
           globalCtrl.isLoginChk(true);
-          Get.toNamed('/mainPage');
+          Get.offAllNamed('/mainPage');
         }
       }
     }catch(e){
@@ -139,6 +152,7 @@ class LoginController extends BaseController {
       print("네이버 로그인 이름 ${res.account.name}");
       print("네이버 로그인 닉네임 ${res.account.nickname}");
       print("네이버 로그인 ${res.account.email}");
+      super.networkState.value = NetworkStateEnum.LOADING;
       final response = await AuthProvider().registerUserSocialChk(
         resAccess.accessToken,
         "${res.account.email}",
@@ -147,6 +161,7 @@ class LoginController extends BaseController {
       Map<String, dynamic> jsonMap = jsonDecode(response!.body.toString());
       print(jsonMap.toString());
       if(jsonMap['code'] == "R9721"){
+        super.networkState.value = NetworkStateEnum.DONE;
         Get.toNamed(
             '/auth/signupSocial',
             arguments: {
@@ -156,16 +171,17 @@ class LoginController extends BaseController {
             },
         );
       }else{
+        super.networkState.value = NetworkStateEnum.DONE;
         if(isAutoLogin.value){
           SharedTokenUtil.saveBool(true, 'isAutoLogin');
           SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
           globalCtrl.isLoginChk(true);
-          Get.toNamed('/mainPage');
+          Get.offAllNamed('/mainPage');
         }else{
           SharedTokenUtil.saveBool(false, 'isAutoLogin');
           SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
           globalCtrl.isLoginChk(true);
-          Get.toNamed('/mainPage');
+          Get.offAllNamed('/mainPage');
         }
       }
     }catch(e){
@@ -184,6 +200,7 @@ class LoginController extends BaseController {
       if(result.status == LoginStatus.success){
         final AccessToken  accessToken = result.accessToken!;
         print(accessToken.token);
+        super.networkState.value = NetworkStateEnum.LOADING;
         final response = await AuthProvider().registerUserSocialChk(
           accessToken.token,
           userData['email'],
@@ -192,6 +209,7 @@ class LoginController extends BaseController {
         Map<String, dynamic> jsonMap = jsonDecode(response!.body.toString());
         print(jsonMap.toString());
         if(jsonMap['code'] == "R9721"){
+          super.networkState.value = NetworkStateEnum.DONE;
           Get.toNamed(
             '/auth/signupSocial',
             arguments: {
@@ -201,13 +219,17 @@ class LoginController extends BaseController {
             },
           );
         }else{
+          super.networkState.value = NetworkStateEnum.DONE;
           if(isAutoLogin.value){
             SharedTokenUtil.saveBool(true, 'isAutoLogin');
             SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
             globalCtrl.isLoginChk(true);
-            Get.toNamed('/mainPage');
+            Get.offAllNamed('/mainPage');
           }else{
             SharedTokenUtil.saveBool(false, 'isAutoLogin');
+            SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
+            globalCtrl.isLoginChk(true);
+            Get.offAllNamed('/mainPage');
           }
         }
       }

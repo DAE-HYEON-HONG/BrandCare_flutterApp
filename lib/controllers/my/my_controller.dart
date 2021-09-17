@@ -8,6 +8,7 @@ import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import '../global_controller.dart';
 
@@ -57,9 +58,14 @@ class MyController extends BaseController {
   bool authNumChk = false;
 
   TextEditingController nickNameController = TextEditingController();
+  TextEditingController currentPwController = TextEditingController();
+  TextEditingController pwController = TextEditingController();
+  TextEditingController rePwController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController addressDetailController = TextEditingController();
   TextEditingController postCodeController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController codeController = TextEditingController();
 
   Rx<File> profileImg = File('').obs;
   final ImagePicker imgPicker = ImagePicker();
@@ -83,8 +89,11 @@ class MyController extends BaseController {
   }
 
   Rx<bool> isAuth = false.obs;
+
   void initMyController(){
-    name.value = '';
+    print('초기화');
+    nickNameController.text = '';
+    name.value = "";
     password.value = '';
     rePassword.value = '';
     phone = ''.obs;
@@ -92,9 +101,45 @@ class MyController extends BaseController {
     isAuth.value = false;
     address = ''.obs;
     detailAddress = ''.obs;
-    addressController = TextEditingController();
-    addressDetailController = TextEditingController();
-    postCodeController = TextEditingController();
+    addressController.text = "";
+    addressDetailController.text = "";
+    postCodeController.text = "";
+    phoneController.text = "";
+    codeController.text = "";
+    update();
+  }
+
+  bool changeColor(){
+    if(nickNameController.text.isNotEmpty){
+      return true;
+    }
+    else if(password.value.isNotEmpty && rePassword.value.isNotEmpty){
+      return true;
+    }
+    else if(phoneController.text.isNotEmpty && codeController.text.isNotEmpty && isAuth.value){
+      return true;
+    }
+    else if(addressController.text.isNotEmpty && addressDetailController.text.isNotEmpty && postCodeController.text.isNotEmpty){
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> permissionChk() async{
+    final Map<Permission, PermissionStatus> status = await [
+      Permission.photos,
+      Permission.camera,
+    ].request();
+    bool? permissionStatus;
+    await Permission.photos.shouldShowRequestRationale;
+    status.forEach((permission, status) {
+      if(status.isGranted){
+        permissionStatus = true;
+        return;
+      }
+      permissionStatus = false;
+    });
+    return permissionStatus!;
   }
 
   Future<void> myInfo() async{
@@ -136,19 +181,27 @@ class MyController extends BaseController {
   }
 
   Future<void> changeNickName(String name) async{
-    final String? token = await SharedTokenUtil.getToken("userLogin_token");
-    final res = await MyProvider().changeName(token!, name);
-    if(res){
-      myInfo();
-      Get.back();
-      update();
-    }else{
-      Get.dialog(
-        CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
-          Get.back();
-          update();
-        }),
-      );
+    if(name.isNotEmpty){
+      final String? token = await SharedTokenUtil.getToken("userLogin_token");
+      final res = await MyProvider().changeName(token!, name);
+      if(res){
+        myInfo();
+        Get.dialog(
+          CustomDialogWidget(content: '닉네임이 변경되었습니다.', onClick: (){
+            Get.back();
+            Get.back();
+            update();
+          }),
+        );
+        update();
+      }else{
+        Get.dialog(
+          CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          }),
+        );
+      }
     }
   }
 
@@ -173,7 +226,13 @@ class MyController extends BaseController {
             }),
           );
         }else{
-          Get.back();
+          Get.dialog(
+            CustomDialogWidget(content: '비밀번호가 변경되었습니다.', onClick: (){
+              Get.back();
+              Get.back();
+              update();
+            }),
+          );
         }
       }else{
         Get.dialog(
@@ -225,7 +284,13 @@ class MyController extends BaseController {
         globalCtrl.userInfoModel!.phNum = phone.value;
         globalCtrl.update();
         myInfo();
-        Get.back();
+        Get.dialog(
+          CustomDialogWidget(content: '전화번호가 변경되었습니다.', onClick: (){
+            Get.back();
+            Get.back();
+            update();
+          }),
+        );
         update();
       }else{
         Get.dialog(
@@ -245,7 +310,8 @@ class MyController extends BaseController {
     }
   }
 
-  Future<void> changeAddress() async{
+  Future<void> changeAddress(BuildContext context) async{
+    FocusScope.of(context).unfocus();
     if(postCodeController.text == ""){
       Get.dialog(
         CustomDialogWidget(content: '우편번호가 입력되지 않았습니다.', onClick: (){
@@ -258,12 +324,18 @@ class MyController extends BaseController {
       final res = await MyProvider().changeAddress(
         token!,
         '${city.value} ${sigungu.value}',
-        "${street.value} ${detailAddress}",
+        "${street.value.split('${city.value} ${sigungu.value}').last}${detailAddress}",
         postcode.value,
       );
       if(res){
         myInfo();
-        Get.back();
+        Get.dialog(
+          CustomDialogWidget(content: '주소가 변경되었습니다.', onClick: (){
+            Get.back();
+            Get.back();
+            update();
+          }),
+        );
         update();
       }else{
         Get.dialog(

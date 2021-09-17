@@ -17,11 +17,11 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(
       title: "케어/수선 결제",
-      child: _renderBody(),
+      child: _renderBody(context),
     );
   }
 
-  _renderBody() {
+  _renderBody(context) {
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -210,23 +210,23 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),
                   const SizedBox(height: 16),
-                  _saleTile(
+                  Obx(() => _saleTile(
                     onTap: (){
-                      Get.toNamed("/main/my/coupon/use");
+                      Get.toNamed("/main/my/coupon/use", arguments: "care");
                     },
                     title: '브랜드케어 쿠폰',
-                    subTitle: '0개 보유',
-                  ),
+                    subTitle: '${controller.countCoupon}개 보유',
+                  )),
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),
                   const SizedBox(height: 16),
-                  _saleTile(
+                  Obx(() => _saleTile(
                     onTap: (){
-                      Get.toNamed("/main/my/point/use");
+                      Get.toNamed("/main/my/point/use", arguments: "care");
                     },
                     title: '브랜드케어 포인트',
-                    subTitle: '0P 사용가능',
-                  ),
+                    subTitle: '${controller.myPoint}P 사용가능',
+                  )),
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),
                   const SizedBox(height: 16),
@@ -265,20 +265,20 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '배송비',
-                                    style: medium14TextStyle,
-                                  ),
-                                  Text(
-                                    '+ 3,000원',
-                                    style: medium14TextStyle,
-                                  ),
-                                ],
-                              ),
+                              // const SizedBox(height: 10),
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //   children: [
+                              //     Text(
+                              //       '배송비',
+                              //       style: medium14TextStyle,
+                              //     ),
+                              //     Text(
+                              //       '+ 3,000원',
+                              //       style: medium14TextStyle,
+                              //     ),
+                              //   ],
+                              // ),
                               const SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -363,6 +363,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
               ),
             ),
           ),
+          if(MediaQuery.of(context).viewInsets.bottom == 0)
           Obx(()=> Positioned(
             left: 0,
             right: 0,

@@ -151,4 +151,15 @@ class AuthProvider {
     }
   }
 
+  Future<dynamic> deleteUser(int userIdx) async {
+    var res = await _authApiService.deleteUser(userIdx);
+    if(res == null){
+      return null;
+    }else{
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      print(json.toString());
+      return json;
+    }
+  }
+
 }

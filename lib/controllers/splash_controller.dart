@@ -25,6 +25,14 @@ class SplashController extends BaseController {
     );
   }
 
+  Future<void> chkGuidePage() async {
+    final bool isGuide = await SharedTokenUtil.getBool('isGuide') ?? false;
+    if(!isGuide){
+      return Get.offAllNamed('/guide');
+    }
+    return;
+  }
+
   Future<void> checkLogin() async {
     final bool isLogin = await SharedTokenUtil.getBool('isAutoLogin') ?? false;
     if(isLogin){
@@ -76,6 +84,7 @@ class SplashController extends BaseController {
   void onInit()async{
     super.onInit();
     await careCategory();
+    await chkGuidePage();
     Timer(splashTime, ()async{
       //TODO: Check auto login
           await checkLogin();

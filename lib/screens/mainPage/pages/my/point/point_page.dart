@@ -2,6 +2,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/point_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/mypage/point/pointList_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/point/point_list_info_model.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
@@ -31,10 +32,10 @@ class PointPage extends GetView<PointController> {
                       style: medium16TextStyle,
                     ),
                     const Spacer(),
-                    Obx(() => Text(
+                    Text(
                       '${NumberFormatUtil.convertNumberFormat(number: controller.myPoint.value)}P',
                       style: medium16TextStyle,
-                    )),
+                    ),
                   ],
                 ),
               ),
@@ -60,14 +61,14 @@ class PointPage extends GetView<PointController> {
                   child: GetBuilder<PointController>(builder: (_) => ListView.separated(
                     controller: controller.pagingScroll,
                     itemBuilder: (context, idx) => _item(
-                      controller.pointList![idx],
+                      controller.list![idx],
                     ),
                     separatorBuilder: (context, idx) => Divider(
                       height: 0,
                       thickness: 1,
                       color: gray_F1F3F5Color,
                     ),
-                    itemCount: controller.pointList!.length,
+                    itemCount: controller.list?.length ?? 0,
                   )),
               ),
             ],
@@ -77,7 +78,7 @@ class PointPage extends GetView<PointController> {
     );
   }
 
-  Widget _item(PointListModel model) {
+  Widget _item(PointListInfoModel model) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,15 +89,19 @@ class PointPage extends GetView<PointController> {
           Row(
             children: [
               Text(
-                model.title,
+                model.content,
                 style: regular14TextStyle,
               ),
               const Spacer(),
+              // Text(
+              //   '${NumberFormatUtil.convertNegativePositiveNumber(number: model.usedPoint)}',
+              //   style: regular14TextStyle.copyWith(
+              //       color: model.usedPoint.isNegative ? redColor : purpleColor),
+              // )
               Text(
-                '${NumberFormatUtil.convertNegativePositiveNumber(number: model.usedPoint)}',
-                style: regular14TextStyle.copyWith(
-                    color: model.usedPoint.isNegative ? redColor : purpleColor),
-              )
+                model.history,
+                style: regular14TextStyle,
+              ),
             ],
           ),
           const SizedBox(

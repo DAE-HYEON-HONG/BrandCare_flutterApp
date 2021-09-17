@@ -27,6 +27,7 @@ class CareHistoryController extends BaseController {
   }
 
   Future<void> filter({required String type})async {
+      currentPage = 1;
       sort.value = type;
       update();
       await reqCareList();

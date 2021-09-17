@@ -83,7 +83,8 @@ class SettingPage extends GetView<SettingController> {
 
   Widget _itemToggle() => Container(
         child: GestureDetector(
-          onTap: () => openAppSettings(),
+          behavior: HitTestBehavior.translucent,
+          onTap: () => controller.openNotificationSettings(),
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.only(top: 9.0, bottom: 9.0),

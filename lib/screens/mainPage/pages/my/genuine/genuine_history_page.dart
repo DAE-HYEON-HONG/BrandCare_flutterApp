@@ -42,6 +42,7 @@ class GenuineHistoryPage extends GetView<GenuineController> {
                         sort2: () async {
                           await controller.filter(type: "");
                         },
+                        mode: "",
                       ),
                     );
                   },
@@ -126,7 +127,7 @@ class GenuineHistoryPage extends GetView<GenuineController> {
                     ),
                     const Spacer(),
                     Obx(() => Text(
-                      '인증 완료 제품 ${controller.completeCount.value}개 | 미인증 제품 ${controller.notCompleteCount.value}개',
+                      '인증 완료 제품 ${controller.completeCount.value}개',
                       style: regular12TextStyle.copyWith(color: primaryColor),
                     )),
                   ],

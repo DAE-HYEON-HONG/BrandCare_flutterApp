@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 class CustomBottomFilter extends StatelessWidget {
   final Function() sort1;
   final Function() sort2;
+  final String mode;
 
-  CustomBottomFilter({required this.sort1, required this.sort2});
+  CustomBottomFilter({required this.sort1, required this.sort2, required this.mode});
 
   @override
   Widget build(BuildContext context) {
@@ -16,18 +17,40 @@ class CustomBottomFilter extends StatelessWidget {
       color: whiteColor,
       child: Column(
         children: <Widget>[
-          ListTile(
-            onTap: () => this.sort1(),
-            title: Text(
-              "최신 순",
-              style: medium14TextStyle,
+          GestureDetector(
+            onTap: () {
+              this.sort1();
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "최신 순",
+                    style: medium14TextStyle,
+                  ),
+                ],
+              ),
             ),
           ),
-          ListTile(
-            onTap: () => this.sort2(),
-            title: Text(
-              "오래된 순",
-              style: medium14TextStyle,
+          GestureDetector(
+            onTap: () {
+              this.sort2();
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    mode == "nameBy" ? "항목별" : "오래된 순",
+                    style: medium14TextStyle,
+                  ),
+                ],
+              ),
             ),
           ),
         ],

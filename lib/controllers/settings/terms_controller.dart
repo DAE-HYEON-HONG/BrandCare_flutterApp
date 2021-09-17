@@ -6,7 +6,11 @@ import 'package:get/get.dart';
 
 class TermsController extends BaseController {
   List<TermsModel>? termsList = <TermsModel>[];
+  bool isLoaded = false;
+
   Future<void> termsController() async {
+
+    super.networkState.value = NetworkStateEnum.LOADING;
     final res = await MyProvider().getTerms();
     if(res == null){
       Get.dialog(
@@ -20,13 +24,15 @@ class TermsController extends BaseController {
       for (var e in list) {
         this.termsList!.add(e);
       }
+      isLoaded = true;
       update();
+      super.networkState.value = NetworkStateEnum.DONE;
     }
   }
 
   @override
   void onInit() async{
-    await termsController();
     super.onInit();
+    await termsController();
   }
 }

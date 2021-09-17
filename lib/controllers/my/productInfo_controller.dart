@@ -13,7 +13,6 @@ class ProductInfoDetailController extends BaseController{
   MyProductController myProductCtrl = Get.find<MyProductController>();
 
   Future<void> reqProductInfo()async{
-    print(productIdx);
     super.networkState.value = NetworkStateEnum.LOADING;
     var res = await ProductProvider().productDetail(productIdx);
     print(res.toString());
@@ -32,6 +31,19 @@ class ProductInfoDetailController extends BaseController{
     }
   }
 
+  void removeProductAsk(){
+    Get.dialog(
+        CustomDialogWidget(content: '삭제한 제품은 복구되지 않습니다.\n정말 삭제 하시겠습니까?',
+          onClick: () async{
+            await removeProduct();
+          },
+          isSingleButton: false,
+          title: '제품삭제',
+        ),
+        barrierDismissible: false
+    );
+  }
+
   Future<void> removeProduct() async {
     super.networkState.value = NetworkStateEnum.LOADING;
     var res = await ProductProvider().productRemove(productIdx);
@@ -46,6 +58,13 @@ class ProductInfoDetailController extends BaseController{
     }else{
       super.networkState.value = NetworkStateEnum.DONE;
       update();
+      Get.dialog(
+          CustomDialogWidget(content: '삭제되었습니다.', onClick: (){
+            Get.back();
+            Get.back();
+            update();
+          })
+      );
       await myProductCtrl.reqProductList();
       myProductCtrl.update();
       Get.back();
@@ -60,7 +79,7 @@ class ProductInfoDetailController extends BaseController{
 
   @override
   void onInit() async{
-    await reqProductInfo();
     super.onInit();
+    await reqProductInfo();
   }
 }

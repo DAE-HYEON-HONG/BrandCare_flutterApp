@@ -83,7 +83,7 @@ class _CareSubExpansionListFieldState extends State<CareSubExpansionListField> w
     return AnimatedContainer(
       curve: Curves.easeInOutQuart,
       width: double.infinity,
-      height: _moreTab ? 60.0 * widget.items.length : 55,
+      height: _moreTab ? 40.0 * 6 : 51,
       duration: Duration(milliseconds: 800),
       decoration: BoxDecoration(
         color: whiteColor,
@@ -94,11 +94,11 @@ class _CareSubExpansionListFieldState extends State<CareSubExpansionListField> w
         borderRadius: BorderRadius.circular(5),
       ),
       child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+            Container(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              height: 48.8,
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
@@ -123,65 +123,72 @@ class _CareSubExpansionListFieldState extends State<CareSubExpansionListField> w
                 ),
               ),
             ),
+            if(_moreTab)
+              const Divider(height: 1, color: gray_f5f6f7Color),
             _moreTab ? DelayedWidget(
               delayDuration: Duration(milliseconds: 800),
-              child: Column(
-                children: [
-                  const Divider(height: 1, color: gray_f5f6f7Color),
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(0),
-                    shrinkWrap: true,
-                    itemCount: widget.items.length,
-                    itemBuilder: (context, idx) {
-                      return GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          changeValue(widget.items[idx].title);
-                          changePriceValue(widget.items[idx].price);
-                          changeIdx(widget.items[idx].id);
+              child: Container(
+                height: 37.4*5,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(0),
+                        shrinkWrap: true,
+                        itemCount: widget.items.length,
+                        itemBuilder: (context, idx) {
+                          return GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              changeValue(widget.items[idx].title);
+                              changePriceValue(widget.items[idx].price);
+                              changeIdx(widget.items[idx].id);
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.only(left: 16, right: 16, top: 13, bottom: 13),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      widget.items[idx].title,
+                                      style: regular14TextStyle.copyWith(
+                                          color: gray_999Color),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 120,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          widget.items[idx].reMark ?? "",
+                                          style: regular14TextStyle.copyWith(
+                                              color: gray_999Color),
+                                        ),
+                                        Text(
+                                          NumberFormatUtil.convertNumberFormat(number: widget.items[idx].price),
+                                          style: regular14TextStyle.copyWith(
+                                              color: gray_999Color),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
                         },
-                        child: Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.only(left: 16, right: 16, top: 13, bottom: 13),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  widget.items[idx].title,
-                                  style: regular14TextStyle.copyWith(
-                                      color: gray_999Color),
-                                ),
-                              ),
-                              Container(
-                                width: 120,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      widget.items[idx].reMark ?? "",
-                                      style: regular14TextStyle.copyWith(
-                                          color: gray_999Color),
-                                    ),
-                                    Text(
-                                      NumberFormatUtil.convertNumberFormat(number: widget.items[idx].price),
-                                      style: regular14TextStyle.copyWith(
-                                          color: gray_999Color),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              )
             ):
             const SizedBox(),
           ],

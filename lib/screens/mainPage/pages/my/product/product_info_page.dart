@@ -3,12 +3,15 @@ import 'package:brandcare_mobile_flutter_v2/consts/box_shadow.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/productInfo_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/changeProduct_in_productInfo.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/change_product_apply_info_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/custom_route_button.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/genuine/addGenuineStatus_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/genuine/addGenuine_page.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/customArrowBtn.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/customArrowUpDown.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/genuine_box_widget.dart';
@@ -31,19 +34,32 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
                 _item("${controller.model?.thumbnail ?? ""}"),
                 const SizedBox(height: 24,),
                 controller.model?.genuine == "GENUINE" ?
-                CustomRouteButton(title: '정품인증 결과보기', route: '/main/my/change_product/apply'):
+                CustomArrowBtn(title: '정품인증 결과보기', onTap: () {
+                  Get.to(() => AddGenuineStatusPage(), arguments: {
+                    'back' : true,
+                    'idx' : controller.model?.activationId ?? 0,
+                  });
+                }):
                 controller.model?.genuine != "GOING" ?
                 CustomArrowBtn(title: '정품인증 신청하기', onTap: () {
                   Get.to(() => AddGenuinePage(), arguments: controller.productIdx);
                 }):
                 CustomArrowBtn(title: '정품 확인중', onTap: () {}),
                 if(controller.model?.genuine == "REFUSAL")
-                  CustomRouteButton(title: '정품인증 결과보기', route: '/main/my/change_product/apply'),
+                  CustomArrowBtn(title: '정품인증 결과보기', onTap: () {
+                    Get.to(() => AddGenuineStatusPage(), arguments: {
+                      'back' : true,
+                      'idx' : controller.model?.activationId ?? 0,
+                    });
+                  }),
                 const SizedBox(height: 16,),
                 CustomArrowBtn(
                   title: '제품 사용자 변경',
                   onTap: () {
-                    Get.to(() => ChangeProductApplyInfoPage(), arguments: controller.productIdx);
+                    Get.to(() => ChangeProductInProductInfo(), arguments: {
+                      'back' : true,
+                      'idx' : controller.productIdx,
+                    });
                   },
                 ),
                 const SizedBox(height: 16,),
@@ -130,6 +146,14 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
                     _etc(),
                     const SizedBox(height: 32,),
                     CustomArrowBtn(title: '제품 정보 수정', onTap: () {
+                      if(controller.model?.genuine == "GENUINE" || controller.model?.genuine == "GOING"){
+                        Get.dialog(
+                          CustomDialogWidget(content: '정품인증을 진행 중이거나\n완료된 경우 수정이 불가능 합니다.', onClick: (){
+                            Get.back();
+                          }),
+                        );
+                        return;
+                      }
                       Get.toNamed(
                         "/modified/product/info",
                         arguments: {
@@ -191,17 +215,6 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
             BaseApiService.imageApi+imgPath,
             fit: BoxFit.cover,
             cache: true,
-            // ignore: missing_return
-            loadStateChanged: (ExtendedImageState state) {
-              switch(state.extendedImageLoadState) {
-                case LoadState.loading :
-                  break;
-                case LoadState.completed :
-                  break;
-                case LoadState.failed :
-                  break;
-              }
-            },
           ),
         ),
         const SizedBox(width: 16,),
@@ -212,14 +225,14 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('${controller.model?.brand} | ${controller.model?.category}', style: regular12TextStyle.copyWith(color: gray_333Color),),
+                Text('${controller.model?.brand ?? ""} | ${controller.model?.category ?? ""}', style: regular12TextStyle.copyWith(color: gray_333Color),),
                 const SizedBox(width: 19,),
                 if(controller.model?.genuine != "REFUSAL")
                   GenuineBoxWidget(isGenuine: controller.model?.genuine == "GENUINE" ? true : false),
               ],
             ),
             const SizedBox(height: 5,),
-            Text("${controller.model?.title}", style: medium14TextStyle,),
+            Text("${controller.model?.title ?? "로딩중"}", style: medium14TextStyle,),
           ],
         )
       ],
@@ -262,17 +275,6 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
           cache: true,
           height: 160,
           width: 160,
-          // ignore: missing_return
-          loadStateChanged: (ExtendedImageState state) {
-            switch(state.extendedImageLoadState) {
-              case LoadState.loading :
-                break;
-              case LoadState.completed :
-                break;
-              case LoadState.failed :
-                break;
-            }
-          },
         ):
         Container(
           width: 160,

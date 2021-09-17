@@ -13,6 +13,27 @@ class MainAddCareBinding implements Bindings {
   }
 }
 
+class MainAddCarePicBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.put(AddCarePicController());
+  }
+}
+
+class MainAddCareEtcBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.put(AddCareEtcController());
+  }
+}
+
+class MainAddCarePaymentBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.put(AddCarePaymentController());
+  }
+}
+
 class CareStatusBinding implements Bindings {
   @override
   void dependencies() {

@@ -5,6 +5,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopDetail/shopDetail_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/add_genuineLogo.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_like_btn.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
@@ -183,7 +184,7 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                         ),
                       ),
                       const Divider(color: gray_f5f6f7Color, height: 1),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 16),
                       Text(
                         "${controller.model?.title}",
                         style: medium16TextStyle,
@@ -245,6 +246,21 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                     isLiked: controller.model?.hasLike ?? false,
                     onTap: () => controller.changeIsLiked(),
                   )),
+                  const SizedBox(width: 16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '가격',
+                        style: regular12TextStyle.copyWith(color: gray_999Color),
+                      ),
+                      Text(
+                        '${NumberFormatUtil.convertNumberFormat(number: controller.model?.price ?? 0)}원',
+                        style: medium14TextStyle.copyWith(fontWeight: FontWeight.w700),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

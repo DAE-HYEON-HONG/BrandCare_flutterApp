@@ -108,12 +108,18 @@ class AddProductImgsController extends BaseController {
     update();
   }
 
-  Future<void>_cameraPermission() async {
-    if(await Permission.photos.request().isDenied){
-      print("카메라 권한 거부");
-      Get.back();
-    }else{
-      print("카메라 및 갤러리 권한 허용됨");
+  void cameraPermissionChk()async{
+    await Permission.camera.request();
+    await Permission.photos.request();
+    var _cameraStatus = await Permission.camera.status.isGranted;
+    var _galleryStatus = await Permission.photos.isGranted;
+    if(_cameraStatus == false || _galleryStatus == false){
+      Get.snackbar(
+        '권한 알림', '카메라 및 갤러리 권한이 필요합니다.',
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(milliseconds: 1200),
+      );
+      Future.delayed(Duration(milliseconds: 1200), () => Get.back());
     }
   }
 
@@ -123,7 +129,7 @@ class AddProductImgsController extends BaseController {
 
   @override
   void onInit() {
-    _cameraPermission();
     super.onInit();
+    cameraPermissionChk();
   }
 }

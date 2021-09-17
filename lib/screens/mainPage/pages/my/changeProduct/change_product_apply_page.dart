@@ -5,12 +5,14 @@ import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/change_product_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/product_model.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/change_product_expansionList_feild.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansion_tile_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/genuine_box_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class ChangeProductApplyPage extends StatelessWidget {
@@ -44,8 +46,36 @@ class ChangeProductApplyPage extends StatelessWidget {
                     const SizedBox(height: 10,),
                     GetBuilder<ChangeProductController>(builder: (_) {
                       print('my product builder');
-                      return _my_product();
+                      return _myProduct();
                     }),
+                    GetBuilder<ChangeProductController>(builder: (_) =>
+                        Container(
+                          width: double.infinity,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              if(controller.selectProductModel != null)
+                                const SizedBox(height: 8),
+                              if(controller.selectProductModel != null)
+                                GestureDetector(
+                                  behavior: HitTestBehavior.translucent,
+                                  child: Text(
+                                    "제품 정보",
+                                    style: medium12TextStyle.copyWith(
+                                      color: primaryColor,
+                                      fontWeight: FontWeight.w700,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Get.toNamed('/main/my/change_product/history/product/info',
+                                        arguments: {'id': controller.selectProductModel!.id});
+                                  },
+                                ),
+                            ],
+                          ),
+                        ),
+                    ),
                     const SizedBox(height: 16,),
                     FormInputWidget(
                       onChange: (value) {},
@@ -63,19 +93,20 @@ class ChangeProductApplyPage extends StatelessWidget {
                         print(controller.userEmail.value);
                       },
                       onSubmit: (value) {},
-                      controller: TextEditingController(),
+                      controller: controller.emailTextCtrl,
                       title: '변경할 사용자 아이디(이메일)',
                       isShowTitle: true,
                       hint: '변경할 사용자 아이디(이메일)를 입력해주세요.',
                       textInputType: TextInputType.emailAddress,
                     ),
                     const SizedBox(height: 60,),
-                    GetBuilder<ChangeProductController>(
-                        builder: (_) => SizedBox(height: controller.autoHeight(context))),
+                    // GetBuilder<ChangeProductController>(
+                    //     builder: (_) => SizedBox(height: controller.autoHeight(context))),
                   ],
                 ),
               ),
             ),
+            if(MediaQuery.of(context).viewInsets.bottom == 0)
             Positioned(
                 left: 0,
                 right: 0,
@@ -110,6 +141,18 @@ class ChangeProductApplyPage extends StatelessWidget {
         ),
       );
 
+  _myProduct() {
+    return ChangeProductExpansionListField(
+      onTap: () {},
+      hintText: "등록된 제품을 선택해주세요.",
+      items: controller.myProductData,
+      onChange: (value) {},
+      idxChange: (value) {
+        controller.selectMyProduct(value);
+      },
+      controller: ScrollController(),
+    );
+  }
   Widget _title() =>
       Container(
         child: controller.selectProductModel == null ? Text('등록된 제품을 선택해주세요.',
@@ -152,10 +195,18 @@ class ChangeProductApplyPage extends StatelessWidget {
                   cache: true,
                 )
               else
-                Image.asset(
-                  'assets/icons/sample_product.png',
+                Container(
                   width: 72,
                   height: 72,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: gray_999Color),
+                  ),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      "assets/icons/header_title_logo.svg",
+                      height: 10,
+                    ),
+                  ),
                 ),
               const SizedBox(
                 width: 32,
@@ -214,10 +265,18 @@ class ChangeProductApplyPage extends StatelessWidget {
                   cache: true,
                 )
               else
-                Image.asset(
-                  'assets/icons/sample_product.png',
+                Container(
                   width: 72,
                   height: 72,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: gray_999Color),
+                  ),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      "assets/icons/header_title_logo.svg",
+                      height: 10,
+                    ),
+                  ),
                 ),
               const SizedBox(
                 width: 16,
