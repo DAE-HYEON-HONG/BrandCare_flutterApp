@@ -16,6 +16,9 @@ class SignUpSocialController extends BaseController {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController authNumberController = TextEditingController();
   final TextEditingController friendCodeController = TextEditingController();
+  final String socialType = Get.arguments['TYPE'];
+  String? sub;
+  String? fcm;
 
   Rx<bool> sendPhoneCode = false.obs;
   Rx<bool> authCode = false.obs;
@@ -59,6 +62,9 @@ class SignUpSocialController extends BaseController {
     emailController.text = email ?? '';
     emailTxt.value = email ?? '';
     nameController.text = name ?? '';
+    print("fcm ${Get.arguments['fcm']}");
+    sub = Get.arguments['sub'];
+    fcm = Get.arguments['fcm'];
   }
 
   void chkDuplicateEmail(String email)async{
@@ -145,13 +151,16 @@ class SignUpSocialController extends BaseController {
   }
 
   Future<void> addUser(String type) async{
+    print(fcm);
     super.networkState.value = NetworkStateEnum.LOADING;
     final addUser = await AuthProvider().registerUserSocial(
       friendCodeController.text,
       emailController.text,
       nameController.text,
-      phoneController.text,
+      phoneTxt.value,
       type,
+      sub!,
+      fcm!
     );
     super.networkState.value = NetworkStateEnum.DONE;
     Get.offAndToNamed('/auth/signup/complete');
@@ -240,6 +249,7 @@ class SignUpSocialController extends BaseController {
     debounce(authNumTxt, (_) {
       print('autCode txt = $authNumTxt');
       authCode.value = RegexUtil.checkSMSCodeRegex(code: authNumTxt.value);
+
       print('isAuthCode = ${authCode.value}');
     });
   }

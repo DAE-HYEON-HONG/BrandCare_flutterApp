@@ -78,7 +78,7 @@ class AddCareStatusController extends BaseController {
       "checked" : dateStatus?.wareHouseIngDate == null ? false : true,
     });
     careStatusJson.add({
-      "statusType" : "케어/수선 진행 중",
+      "statusType" : "진행 중",
       "date" : dateStatus?.caringDate,
       "time" : dateStatus?.caringDate,
       "checked" : dateStatus?.caringDate == null ? false : true,

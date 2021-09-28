@@ -4,18 +4,20 @@ import 'dart:io';
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signup_dialog.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
+import '../global_controller.dart';
 
 class SignUpDialogController extends BaseController {
-
-
+  final globalCtrl = Get.find<GlobalController>();
   RxBool isKakaoTalkInstalled = false.obs;
-
-
 
   void notLoginMain() {
     Get.offAllNamed('/mainPage');
@@ -34,8 +36,51 @@ class SignUpDialogController extends BaseController {
       }
     }else if(type == "login_naver.svg"){
       await loginNaver();
-    }else{
+    }else if(type == "login_apple.svg"){
+      _appleLogin();
+    } else{
       await loginFacebook();
+    }
+  }
+
+  //애플로 로그인
+  _appleLogin() async {
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+    print("유저 AuthCode : ${credential.authorizationCode}");
+    print("유저 identityToken : ${credential.identityToken}");
+    Map<String, dynamic> payload = JwtDecoder.decode(credential.identityToken!);
+    print(payload);
+    super.networkState.value = NetworkStateEnum.LOADING;
+    final res = await AuthProvider().registerUserSocialChk(
+      credential.userIdentifier.toString(),
+      "",
+      "APPLE",
+      globalCtrl.fcmToken!,
+    );
+    Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
+    if(jsonMap['code'] == "R9721"){
+      super.networkState.value = NetworkStateEnum.DONE;
+      Get.toNamed(
+        '/auth/signupSocial',
+        arguments: {
+          "TYPE": "APPLE",
+          "Email" : payload['email'],
+          "nickName" : "",
+          "sub" : credential.userIdentifier.toString(),
+          "fcm" : globalCtrl.fcmToken,
+        },
+      );
+    }else{
+      super.networkState.value = NetworkStateEnum.DONE;
+      SharedTokenUtil.saveBool(false, 'isAutoLogin');
+      SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
+      globalCtrl.isLoginChk(true);
+      Get.offAllNamed('/mainPage');
     }
   }
 
@@ -60,6 +105,7 @@ class SignUpDialogController extends BaseController {
         token.accessToken,
         "${user.kakaoAccount!.email}",
         "KAKAO",
+        globalCtrl.fcmToken!,
       );
       Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
       if(jsonMap['code'] == "R9721"){
@@ -69,6 +115,7 @@ class SignUpDialogController extends BaseController {
             "TYPE":"KAKAO",
             "Email" : user.kakaoAccount!.email,
             "nickName" : user.kakaoAccount!.profile!.nickname,
+            "fcm" : globalCtrl.fcmToken!,
           },
         );
       }
@@ -120,6 +167,7 @@ class SignUpDialogController extends BaseController {
         resAccess.accessToken,
         "${res.account.email}",
         "NAVER",
+        globalCtrl.fcmToken!,
       );
       Map<String, dynamic> jsonMap = jsonDecode(response!.body.toString());
       if(jsonMap['code'] == "R9721"){
@@ -140,8 +188,43 @@ class SignUpDialogController extends BaseController {
   //페이스북 로그인 부분
   Future<void> loginFacebook() async {
     try{
-      final result = await FacebookAuth.instance.login();
-      print(result.toString());
+      final result = await FacebookAuth.instance.login(
+        permissions: ['public_profile', 'email'],
+      );
+      final userData = await FacebookAuth.instance.getUserData();
+      print(userData.toString());
+      if(result.status == LoginStatus.success){
+        final AccessToken  accessToken = result.accessToken!;
+        print(accessToken.token);
+        super.networkState.value = NetworkStateEnum.LOADING;
+        final response = await AuthProvider().registerUserSocialChk(
+          accessToken.token,
+          userData['email'],
+          "FACEBOOK",
+          globalCtrl.fcmToken!,
+        );
+        Map<String, dynamic> jsonMap = jsonDecode(response!.body.toString());
+        print(jsonMap.toString());
+        if(jsonMap['code'] == "R9721"){
+          super.networkState.value = NetworkStateEnum.DONE;
+          Get.toNamed(
+            '/auth/signupSocial',
+            arguments: {
+              "TYPE":"FACEBOOK",
+              "Email" : userData['email'],
+              "nickName" : userData['name'],
+              "sub" : "",
+              "fcm" : globalCtrl.fcmToken,
+            },
+          );
+        }else{
+          super.networkState.value = NetworkStateEnum.DONE;
+          SharedTokenUtil.saveBool(false, 'isAutoLogin');
+          SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
+          globalCtrl.isLoginChk(true);
+          Get.offAllNamed('/mainPage');
+        }
+      }
     }catch(e){
       print(e.toString());
     }

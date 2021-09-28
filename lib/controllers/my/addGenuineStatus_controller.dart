@@ -80,7 +80,7 @@ class AddGenuineStatusController extends BaseController {
       "checked" : dateStatus?.wareHouseIngDate == null ? false : true,
     });
     genuineStatusJson.add({
-      "statusType" : "케어/수선 진행 중",
+      "statusType" : "진행 중",
       "date" : dateStatus?.caringDate,
       "time" : dateStatus?.caringDate,
       "checked" : dateStatus?.caringDate == null ? false : true,

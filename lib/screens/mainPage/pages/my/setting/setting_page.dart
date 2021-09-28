@@ -24,7 +24,7 @@ class SettingPage extends GetView<SettingController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _box(child: _itemToggle()),
+                 _box(child: _itemToggle()),
                 ...controller.linkData.entries.map(
                   (e) => _box(
                     child: RouteContainerWidget(route: e.value, title: e.key, arguments: {'title': e.key},),
@@ -82,47 +82,207 @@ class SettingPage extends GetView<SettingController> {
       );
 
   Widget _itemToggle() => Container(
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () => controller.openNotificationSettings(),
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.only(top: 9.0, bottom: 9.0),
-            child: Row(
-              children: [
-                Text(
-                  '알림설정',
-                  style: medium14TextStyle,
-                ),
-                const Spacer(),
-                // Obx(() =>
-                //     Transform.scale(
-                //       transformHitTests: false,
-                //       scale: 0.5, child: CupertinoSwitch(
-                //         activeColor: primaryColor,
-                //         value: controller.isAlarm.value,
-                //         onChanged: (value) {
-                //           controller.isAlarm.value = value;
-                //         }),))
-                Obx(() =>
-                    SizedBox(
-                      width: 30.4,
-                      height: 20,
-                      child: Transform.scale(
-                        transformHitTests: false,
-                        scale: .7,
-                        child: CupertinoSwitch(
-                            activeColor: primaryColor,
-                            value: controller.isAlarm.value,
-                            onChanged: (value) {
-                              controller.isAlarm.value = value;
-                            }),
+        child: GetBuilder<SettingController>(builder: (_)=> Container(
+          width: double.infinity,
+          padding: const EdgeInsets.only(top: 9.0, bottom: 9.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '알림설정',
+                          style: medium14TextStyle,
+                        ),
+                        if(!controller.isNotification)
+                          Text(
+                            "알림을 받으려면 설정에서 알림을 켜주세요.",
+                            style: medium14TextStyle.copyWith(color: gray_666Color),
+                          ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  if(!controller.isNotification)
+                    GestureDetector(
+                      onTap: () => controller.openNotificationSettings(),
+                      child: Container(
+                        width: 72,
+                        height: 35,
+                        decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "알림 설정",
+                            style: medium14TextStyle.copyWith(color: whiteColor),
+                          ),
+                        ),
                       ),
-                    ))
-              ],
-            ),
+                    ),
+                ],
+              ),
+              if(!controller.isNotification)
+                const SizedBox(height: 37),
+              if(controller.isNotification)
+                const SizedBox(height: 16),
+              //진행 관련 알림
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "진행 관련 알림",
+                        style: medium14TextStyle.copyWith(
+                          color: controller.isNotification ? Colors.black : gray_666Color,
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        "케어/수선, 정품인증 진행 알림",
+                        style: regular12TextStyle.copyWith(
+                          color: gray_666Color,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Obx(() =>
+                      Transform.scale(
+                        transformHitTests: false,
+                        scale: 0.7, child: CupertinoSwitch(
+                        activeColor: primaryColor,
+                        value: controller.isProgressAlarm.value,
+                        onChanged: (value) {
+                          if(controller.isNotification){
+                            controller.isProgressAlarm.value = value;
+                            controller.changeAlarm(1);
+                          }
+                        },
+                      ),
+                      )),
+                ],
+              ),
+              const SizedBox(height: 8),
+              //제품 관련 알림
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "제품 관련 알림",
+                        style: medium14TextStyle.copyWith(
+                          color: controller.isNotification ? Colors.black : gray_666Color,
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        "제품사용자변경 알림",
+                        style: regular12TextStyle.copyWith(
+                          color: gray_666Color,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Obx(() =>
+                      Transform.scale(
+                        transformHitTests: false,
+                        scale: 0.7, child: CupertinoSwitch(
+                        activeColor: primaryColor,
+                        value: controller.isProductAlarm.value,
+                        onChanged: (value) {
+                          controller.isProductAlarm.value = value;
+                          controller.changeAlarm(2);
+                        },
+                      ),
+                      )),
+                ],
+              ),
+              const SizedBox(height: 8),
+              //shop알림
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "SHOP 알림",
+                        style: medium14TextStyle.copyWith(
+                          color: controller.isNotification ? Colors.black : gray_666Color,
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        "SHOP 댓글 알림",
+                        style: regular12TextStyle.copyWith(
+                          color: gray_666Color,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Obx(() =>
+                      Transform.scale(
+                        transformHitTests: false,
+                        scale: 0.7, child: CupertinoSwitch(
+                        activeColor: primaryColor,
+                        value: controller.isShopAlarm.value,
+                        onChanged: (value) {
+                          controller.isShopAlarm.value = value;
+                          controller.changeAlarm(3);
+                        },
+                      ),
+                      )),
+                ],
+              ),
+              const SizedBox(height: 8),
+              //기타알림
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "1:1문의",
+                        style: medium14TextStyle.copyWith(
+                          color: controller.isNotification ? Colors.black : gray_666Color,
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        "1:1문의 답변 알림",
+                        style: regular12TextStyle.copyWith(
+                          color: gray_666Color,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Obx(() =>
+                      Transform.scale(
+                        transformHitTests: false,
+                        scale: 0.7, child: CupertinoSwitch(
+                        activeColor: primaryColor,
+                        value: controller.isEtcAlarm.value,
+                        onChanged: (value) {
+                          controller.isEtcAlarm.value = value;
+                          controller.changeAlarm(4);
+                        },
+                      ),
+                      )),
+                ],
+              ),
+            ],
           ),
-        ),
+        )),
       );
 
   Widget _renderAdBox() => Container(

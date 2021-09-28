@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:brandcare_mobile_flutter_v2/models/shop/addProductShop_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import '../base_api_service.dart';

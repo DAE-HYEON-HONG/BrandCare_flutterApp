@@ -2,6 +2,7 @@ import 'dart:async';
 
 
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
@@ -15,6 +16,7 @@ enum SignUpCheckEmail {
 }
 
 class SignUpController extends BaseController {
+  final globalCtrl = Get.find<GlobalController>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController rePasswordController = TextEditingController();
@@ -176,11 +178,12 @@ class SignUpController extends BaseController {
   Future<void> addUser() async{
     super.networkState.value = NetworkStateEnum.LOADING;
     final addUser = await _authApiProvider.registerUserEmail(
-        friendCodeController.text,
-        emailController.text,
-        nameController.text,
-        passwordController.text,
-        phoneController.text,
+      friendCodeController.text,
+      emailController.text,
+      nameController.text,
+      passwordController.text,
+      phoneController.text,
+      globalCtrl.fcmToken!,
     );
     super.networkState.value = NetworkStateEnum.DONE;
     // Get.back();

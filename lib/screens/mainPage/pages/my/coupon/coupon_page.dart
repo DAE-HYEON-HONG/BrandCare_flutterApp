@@ -75,13 +75,26 @@ class CouponPage extends GetView<CouponController> {
         height: 120,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: gray_666Color,
+          color: primaryColor,
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Placeholder(
-            strokeWidth: 1.0,
-            color: blackColor,
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("회원가입 완료 쿠폰", style: regular12TextStyle.copyWith(color: whiteColor)),
+              const SizedBox(height: 8),
+              Text("3,000원 할인", style: medium24TextStyle.copyWith(fontSize: 30, color: whiteColor, fontWeight: FontWeight.w900)),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text("브랜드케어", style: regular12TextStyle.copyWith(color: whiteColor)),
+                ],
+              ),
+            ],
           ),
         ),
       );

@@ -1,15 +1,12 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/AddProductControllers/mainAddProduct_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/mainAddCare_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/models/care/careCategory_model.dart';
-import 'package:brandcare_mobile_flutter_v2/providers/care_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addCarePages/mainAddCare_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addProductPages/mainAddProduct_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/mainHome_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/notice/main_notice_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/mainShop_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/my_page.dart';
-import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import "package:get/get.dart";
 import 'package:flutter/material.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';

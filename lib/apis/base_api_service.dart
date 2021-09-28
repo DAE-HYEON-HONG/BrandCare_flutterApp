@@ -1,8 +1,4 @@
-import 'dart:io';
 
-import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
-import 'package:extended_image/extended_image.dart';
-import 'package:get/get.dart';
 
 class BaseApiService {
 

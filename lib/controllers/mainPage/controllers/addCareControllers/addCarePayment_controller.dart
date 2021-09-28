@@ -13,6 +13,7 @@ class AddCarePaymentController extends BaseController {
   RxInt countCoupon = 0.obs;
   RxInt myPoint = 0.obs;
   RxInt couponDiscount = 0.obs;
+  int? couponIdx;
   RxInt pointDiscount = 0.obs;
   RxBool fill = false.obs;
   RxBool chkUserInfo = false.obs;
@@ -78,7 +79,7 @@ class AddCarePaymentController extends BaseController {
       returnAddress: returnAddress,
       senderName: addCareMainCtrl.senderName.text,
       usePointAmount: pointDiscount.value,
-      couponId: null,
+      couponId: couponIdx,
       returnType: addCareMainCtrl.returnReceiver.value ? "RECEIVER" : "SENDER",
       price: addPrices(),
     );
@@ -183,8 +184,9 @@ class AddCarePaymentController extends BaseController {
           })
       );
     }else{
-      countCoupon.value = (res['countCoupon']);
-      myPoint.value = (res['point']);
+      print(res.toString());
+      countCoupon.value = (res['model']['countCoupon']);
+      myPoint.value = (res['model']['point']);
     }
     update();
   }

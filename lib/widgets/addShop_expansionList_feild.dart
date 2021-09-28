@@ -1,10 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
-import 'package:brandcare_mobile_flutter_v2/models/category/categoryList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/mypage/product/myProduct_model.dart';
-import 'package:brandcare_mobile_flutter_v2/models/product/product_model.dart';
-import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:delayed_widget/delayed_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';

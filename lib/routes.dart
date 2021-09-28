@@ -5,6 +5,7 @@ import 'package:brandcare_mobile_flutter_v2/bindings/findAccount_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/genuine_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/guide_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/inquiry_binding.dart';
+import 'package:brandcare_mobile_flutter_v2/bindings/invite_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/login_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/mainPage_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/my_product_binding.dart';
@@ -87,7 +88,7 @@ final routes = [
   GetPage(name: '/main/my/setting', page: () => SettingPage(), binding: SettingBinding()),
   GetPage(name: '/main/my/inquiry', page: () => OneToOneInquiryPage(), binding: InquiryBinding()),
   GetPage(name: '/main/my/term', page: () => TermsPage()),
-  GetPage(name: '/main/my/invite', page: () => InvitePage()),
+  GetPage(name: '/main/my/invite', page: () => InvitePage(), binding: InviteBinding()),
   GetPage(name: '/main/my/coupon', page: () => CouponPage(), binding: CouponBinding()),
   GetPage(name: '/main/my/coupon/use', page: () => CouponUsePage(), binding: CouponBinding()),
   GetPage(name: '/main/my/coupon/add', page: () => CouponAddPage(), binding: CouponBinding()),

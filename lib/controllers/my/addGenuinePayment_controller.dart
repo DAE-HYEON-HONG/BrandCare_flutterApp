@@ -15,6 +15,7 @@ class AddGenuinePaymentController extends BaseController {
   RxInt countCoupon = 0.obs;
   RxInt couponDiscount = 0.obs;
   RxInt pointDiscount = 0.obs;
+  int? couponIdx;
   RxBool fill = false.obs;
   RxBool chkUserInfo = false.obs;
   String testAddress = "서울 구로구 디지털로 33길 28(구로동 170-5)우림 이비지센터 1차 1211호 (주)리드고";
@@ -80,7 +81,7 @@ class AddGenuinePaymentController extends BaseController {
       returnAddress: returnAddress,
       senderName: addGenuineCtrl.senderName.text,
       usePointAmount: pointDiscount.value,
-      couponId: null,
+      couponId: couponIdx,
       returnType: addGenuineCtrl.returnReceiver.value ? "RECEIVER" : "SENDER",
       price: allPrice(),
       productId: addGenuineCtrl.productIdx,

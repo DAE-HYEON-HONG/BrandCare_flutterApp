@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -61,7 +63,8 @@ class AuthApiService {
 
   Future<http.Response?> loginToken(dynamic headers) async {
     try{
-      final uri = Uri.parse("${BaseApiService.baseApi}/user/me");
+
+      final uri = Uri.parse("${BaseApiService.baseApi}/user/me/${Platform.isAndroid ? "a" : "i"}");
       final http.Response res = await http.get(
         uri,
         headers: headers,
@@ -70,6 +73,7 @@ class AuthApiService {
         print(res.body.toString());
         return res;
       }else{
+        print(res.body.toString());
         return null;
       }
     }catch(e){
@@ -157,11 +161,16 @@ class AuthApiService {
 
   Future<http.Response?> deleteUser(int userIdx) async {
     try{
+      print(userIdx);
       final uri = Uri.parse("${BaseApiService.baseApi}/manage/user/$userIdx");
-      final http.Response res = await http.post(
+      final http.Response res = await http.delete(
         uri,
         headers: BaseApiService.headers,
       );
+      print(res.body.toString());
+      if(res.statusCode == 500){
+        return null;
+      }
       return res;
     }catch(e){
       print("접속 에러 : ${e.toString()}");

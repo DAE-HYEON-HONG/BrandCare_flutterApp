@@ -195,10 +195,10 @@ class MainHomePage extends StatelessWidget {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    _useInformation(0, "postIt.png", "가격표"),
-                                    _useInformation(1, "speaker.png", "이용방법"),
-                                    _useInformation(2, "truck.png", "택배 유의사항"),
-                                    _useInformation(3, "presentBox.png", "이벤트"),
+                                    _useInformation(0, "price_list_on.svg", "가격표"),
+                                    _useInformation(1, "howtouse_on.svg", "이용방법"),
+                                    _useInformation(2, "delivery_on.svg", "택배 유의사항"),
+                                    _useInformation(3, "event_on.svg", "이벤트"),
                                   ],
                                 ),
                               ),
@@ -313,14 +313,10 @@ class MainHomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // SvgPicture.asset(
-            //   'assets/icons/$imgAdds',
-            //   height: 40.h,
-            //   color: primaryColor,
-            // ),
-            Image.asset(
+            SvgPicture.asset(
               'assets/icons/$imgAdds',
               height: 40.h,
+              color: primaryColor,
             ),
             Text(
               title,

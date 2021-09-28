@@ -51,10 +51,10 @@ class UseInfoMainPage extends GetView<UseInfoMainController> {
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    _useInfomation(0, "postIt.png", "가격표"),
-                    _useInfomation(1, "speaker.png", "이용방법"),
-                    _useInfomation(2, "truck.png", "택배 유의사항"),
-                    _useInfomation(3, "presentBox.png", "이벤트"),
+                    _useInfomation(0, "price_list_on.svg", "가격표"),
+                    _useInfomation(1, "howtouse_on.svg", "이용방법"),
+                    _useInfomation(2, "delivery_on.svg", "택배 유의사항"),
+                    _useInfomation(3, "event_on.svg", "이벤트"),
                   ],
                 ),
               ),
@@ -80,15 +80,15 @@ class UseInfoMainPage extends GetView<UseInfoMainController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // SvgPicture.asset(
-            //   'assets/icons/$imgAdds',
-            //   height: 40.h,
-            //   color: controller.currentPageIdx.value == idx ? primaryColor : gray_8E8F95Color,
-            // ),
-            Image.asset(
+            SvgPicture.asset(
               'assets/icons/$imgAdds',
               height: 40.h,
+              color: controller.currentPageIdx.value == idx ? primaryColor : gray_8E8F95Color,
             ),
+            // Image.asset(
+            //   'assets/icons/$imgAdds',
+            //   height: 40.h,
+            // ),
             Text(
               title,
               style: regular12TextStyle.copyWith(

@@ -271,7 +271,7 @@ class AddGenuinePaymentPage extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 10),
-                              Row(
+                              Obx(() => Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
@@ -283,9 +283,9 @@ class AddGenuinePaymentPage extends StatelessWidget {
                                     style: medium14TextStyle,
                                   ),
                                 ],
-                              ),
+                              )),
                               const SizedBox(height: 10),
-                              Row(
+                              Obx(() => Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
@@ -297,7 +297,7 @@ class AddGenuinePaymentPage extends StatelessWidget {
                                     style: medium14TextStyle,
                                   ),
                                 ],
-                              ),
+                              )),
                             ],
                           ),
                         ),
@@ -306,7 +306,7 @@ class AddGenuinePaymentPage extends StatelessWidget {
                           height: 1,
                           color: gray_D5D7DBColor,
                         ),
-                        Padding(
+                        GetBuilder<AddGenuinePaymentController>(builder: (_) => Padding(
                           padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 18),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -321,7 +321,7 @@ class AddGenuinePaymentPage extends StatelessWidget {
                               ),
                             ],
                           ),
-                        ),
+                        )),
                       ],
                     ),
                   ),

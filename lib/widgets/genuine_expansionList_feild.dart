@@ -1,8 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
-import 'package:brandcare_mobile_flutter_v2/models/mypage/genuine/genuineList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/genuineList_model.dart';
-import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:delayed_widget/delayed_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

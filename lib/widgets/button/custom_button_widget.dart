@@ -1,7 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class CustomButtonWidget extends StatelessWidget {
   CustomButtonWidget({Key? key,

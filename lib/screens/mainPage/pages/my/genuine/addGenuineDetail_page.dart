@@ -389,8 +389,9 @@ class AddGenuineDetailPage extends StatelessWidget {
                               width: 30,
                               height: 30,
                               child: SvgPicture.asset(
-                                "assets/icons/camera.svg",
+                                "assets/icons/download.svg",
                                 height: 30,
+                                color: whiteColor,
                               ),
                             ),
                           ),

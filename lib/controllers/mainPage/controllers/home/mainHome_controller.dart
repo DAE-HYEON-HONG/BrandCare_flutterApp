@@ -21,7 +21,6 @@ class MainHomeController extends BaseController{
   }
 
   void changeBannerImg(int idx) {
-    print(idx);
     this.pageNum.value = idx;
     update();
   }

@@ -1,4 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/addCarePayment_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuinePayment_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/mypage/coupon/couponList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/paging_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/my_provider.dart';
@@ -10,9 +12,7 @@ import 'package:flutter/material.dart';
 class CouponController extends BaseController{
 
   late Paging couponListPaging;
-  List<CouponListModel>? couponList = <CouponListModel>[
-    CouponListModel("SSIBALNOM2B", 3000, 0, "0", "SINBALSagi 쿠폰!"),
-  ];
+  List<CouponListModel>? couponList = <CouponListModel>[];
   ScrollController pagingScroll = ScrollController();
   int currentPage = 1;
   RxString couponCode = RxString('');
@@ -44,19 +44,37 @@ class CouponController extends BaseController{
           })
       );
     }else{
-      final list = (res['couponList'] as List).map((e) => CouponListModel.fromJson(e)).toList();
-      // couponListPaging = Paging.fromJson(res['response']);
+      final list = (res['response']['list'] as List).map((e) => CouponListModel.fromJson(e)).toList();
+      couponListPaging = Paging.fromJson(res['response']);
       if (currentPage == 1) {
-        //this.couponList = list;
+        this.couponList = list;
       } else {
         for (var e in list) {
           this.couponList!.add(e);
         }
       }
-      countCoupon.value = (res['countCoupon']);
-      myPoint.value = (res['point']);
+      countCoupon.value = (res['model']['countCoupon']);
+      myPoint.value = (res['model']['point']);
     }
     update();
+  }
+
+  void couponAddWhere(){
+    if(couponId.value != 0 && couponDiscount.value != 0){
+      if(Get.arguments == "care"){
+        final AddCarePaymentController addCarePayCtrl = Get.find<AddCarePaymentController>();
+        addCarePayCtrl.couponDiscount.value = couponDiscount.value;
+        addCarePayCtrl.couponIdx = couponId.value;
+        addCarePayCtrl.update();
+        Get.back();
+      }else{
+        final AddGenuinePaymentController addGenuinePayCtrl = Get.find<AddGenuinePaymentController>();
+        addGenuinePayCtrl.couponDiscount.value = couponDiscount.value;
+        addGenuinePayCtrl.couponIdx = couponId.value;
+        addGenuinePayCtrl.update();
+        Get.back();
+      }
+    }
   }
 
   addCoupon() {

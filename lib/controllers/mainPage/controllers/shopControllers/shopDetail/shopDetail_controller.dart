@@ -31,6 +31,7 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
   Future<void> changeIsLiked() async{
     final String? token = await SharedTokenUtil.getToken('userLogin_token');
     var res = await ShopProvider().isLiked(token!, idx);
+    print(res.toString());
     await reqShopDetail();
     if(res == null){
       Get.dialog(
@@ -39,12 +40,15 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
             update();
           })
       );
+    }else if(res['data'] == "취소"){
+      print('실행됨.');
+      mainShopListInstCtrl.shopList!.removeWhere((item) => item.shopId == model!.shopId);
+      mainShopListInstCtrl.update();
     }
     update();
   }
 
   Future<void> reqShopDetail() async {
-    //super.networkState.value = NetworkStateEnum.LOADING;
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     var res = await ShopProvider().shopDetail(token!, idx);
     if(res == null){
@@ -54,10 +58,8 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
             update();
           })
       );
-      //super.networkState.value = NetworkStateEnum.ERROR;
     }else{
       model = res;
-      //super.networkState.value = NetworkStateEnum.DONE;
       mainShopListInstCtrl.reqShopList();
       mainShopListInstCtrl.update();
       update();

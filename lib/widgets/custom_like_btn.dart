@@ -1,4 +1,3 @@
-import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

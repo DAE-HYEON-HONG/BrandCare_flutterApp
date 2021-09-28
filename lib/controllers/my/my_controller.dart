@@ -149,6 +149,7 @@ class MyController extends BaseController {
     if(res != null){
       myPageInfo(res);
       globalCtrl.addUserInfo(resAuth);
+      globalCtrl.update();
     }else{
       Get.dialog(
         CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){

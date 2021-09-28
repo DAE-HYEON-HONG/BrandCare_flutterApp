@@ -54,6 +54,12 @@ dependencies:
   app_settings: ^4.1.1
   path_provider: ^2.0.3
   image_gallery_saver: ^1.6.9
+  sign_in_with_apple: ^3.0.0
+  firebase_core: ^1.6.0
+  firebase_messaging: ^10.0.7
+  flutter_local_notifications: ^8.2.0
+  firebase_analytics: ^8.3.2
+  jwt_decoder: ^2.0.1
 
 dev_dependencies:
   flutter_test:

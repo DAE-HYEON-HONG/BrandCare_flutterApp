@@ -20,14 +20,15 @@ class AuthProvider {
     }
   }
 
-  Future<dynamic> registerUserEmail(String code, String email, String nickName, String password, String phone) async{
+  Future<dynamic> registerUserEmail(String code, String email, String nickName, String password, String phone, String fcm) async{
     Map<String, dynamic> body = {
       "code" : code == "" ? null : code,
       "email" : email,
       "nickName" : nickName,
       "password" : password,
       "phone" : phone,
-      "socialType" : "NORMAL"
+      "socialType" : "NORMAL",
+      "fcmToken" : fcm,
     };
     final bodyJson = jsonEncode(body);
     var res = await _authApiService.registerUser(bodyJson);
@@ -41,13 +42,15 @@ class AuthProvider {
   }
 
 
-  Future<dynamic> registerUserSocial(String code, String email, String nickName, String phone, String type) async{
+  Future<dynamic> registerUserSocial(String code, String email, String nickName, String phone, String type, String sub, String fcm) async{
     Map<String, dynamic> body = {
       "code" : code == "" ? null : code,
       "email" : email,
       "nickName" : nickName,
       "phone" : phone,
       "socialType" : type,
+      "appleCode" : sub,
+      "fcmToken" : fcm,
     };
     final bodyJson = jsonEncode(body);
     var res = await _authApiService.registerUser(bodyJson);
@@ -60,10 +63,11 @@ class AuthProvider {
     }
   }
 
-  Future<dynamic> registerUserSocialChk(String token, String id, String type)async{
+  Future<dynamic> registerUserSocialChk(String token, String id, String type, String fcm)async{
     Map<String, String> body = {
       "id" : id,
       "token" : token,
+      "fcmToken" : fcm,
     };
     final bodyJson = jsonEncode(body);
     var res = await _authApiService.registerUserSocialChk(bodyJson, type);
@@ -74,10 +78,11 @@ class AuthProvider {
     }
   }
 
-  Future<dynamic> loginUser(String email, String password)async{
+  Future<dynamic> loginUser(String email, String password, String fcmToken)async{
     Map<String, String> body = {
       "email" : email,
       "password" : password,
+      "fcmToken" : fcmToken,
     };
     final bodyJson = jsonEncode(body);
     var res = await _authApiService.loginUser(bodyJson);

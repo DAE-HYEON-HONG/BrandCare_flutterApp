@@ -7,6 +7,7 @@ class GlobalController extends GetxController{
   RxBool isLogin = false.obs;
   RxString token = "".obs;
   UserInfoModel? userInfoModel;
+  String? fcmToken;
 
   List<CareCategoryModel>? careCategory = <CareCategoryModel>[];
 

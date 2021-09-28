@@ -76,7 +76,7 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
               ),
               Obx(() => CustomButtonOnOffWidget(
                 title: '회원가입',
-                onClick: () => controller.registerChk(Get.arguments['TYPE']),
+                onClick: () => controller.registerChk(controller.socialType),
                 isOn: controller.allAgree,
                 radius: 0,
               )),
@@ -103,7 +103,6 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
                 Flexible(
                   flex: 3,
                   child: TextFormField(
-                    // readOnly: controller.phoneChecked.value ? true : false,
                     controller: controller.phoneController,
                     style: regular12TextStyle,
                     keyboardType: TextInputType.phone,

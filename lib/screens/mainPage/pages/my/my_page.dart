@@ -54,14 +54,14 @@ class MyPage extends StatelessWidget {
                       },
                       child: SvgPicture.asset('assets/icons/point.svg')),
                   GestureDetector(
-                    onTap: (){
-                      Get.toNamed('/main/my/coupon');
-                    },
+                      onTap: (){
+                        Get.toNamed('/main/my/coupon');
+                      },
                       child: SvgPicture.asset('assets/icons/coupon.svg')),
                   GestureDetector(
-                    onTap: (){
-                      Get.toNamed('/main/my/info');
-                    },
+                      onTap: (){
+                        Get.toNamed('/main/my/info');
+                      },
                       child: SvgPicture.asset('assets/icons/my_informant.svg')),
                 ],
               ),

@@ -4,10 +4,16 @@ import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/care/careCategory_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/care_provider.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/FcmPushMgr.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 
+import '../main.dart';
 import 'global_controller.dart';
 
 class SplashController extends BaseController {
@@ -47,7 +53,7 @@ class SplashController extends BaseController {
       }else{
         //Get.dialog 후 loginController 사라지는 현상 수정
         Get.dialog(
-          CustomDialogWidget(content: '이메일 또는 비밀번호를 확인해주세요.', onClick: (){
+          CustomDialogWidget(content: '세션이 만료되었습니다.\n 다시 로그인 해주세요.', onClick: (){
             Get.offAllNamed('/auth/login');
             update();
           }),
@@ -79,9 +85,14 @@ class SplashController extends BaseController {
     update();
   }
 
-
   @override
   void onInit()async{
+    await Firebase.initializeApp();
+    FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
+    FcmPushMgr().listenFCM();
+    String fcmToken = await FcmPushMgr().regToken();
+    globalCtrl.fcmToken = fcmToken;
+    globalCtrl.update();
     super.onInit();
     await careCategory();
     await chkGuidePage();

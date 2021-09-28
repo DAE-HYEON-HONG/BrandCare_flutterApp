@@ -36,16 +36,27 @@ class SignUpDialog extends StatelessWidget {
             const SizedBox(height: 10,),
             SvgPicture.asset('assets/icons/title_logo.svg', width: 131, height: 30, color: primaryColor,),
             const SizedBox(height: 26,),
-            if(Platform.isIOS)_itemSignUpBtn(blackColor, 'join_apple.svg'),
+            if(Platform.isIOS)
+              GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () => controller.loginButton("login_apple.svg"),
+                child: _itemSignUpBtn(blackColor, 'join_apple.svg'),
+              ),
             GestureDetector(
+              behavior: HitTestBehavior.translucent,
               onTap: () => controller.loginButton("login_kakao.svg"),
               child: _itemSignUpBtn(kakaoColor, 'join_kakao.svg'),
             ),
             GestureDetector(
+              behavior: HitTestBehavior.translucent,
               onTap: () => controller.loginButton('login_naver.svg'),
               child: _itemSignUpBtn(naverColor, 'join_naver.svg'),
             ),
-            _itemSignUpBtn(facebookColor, 'join_facebook.svg'),
+            GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () => controller.loginButton('join_facebook.svg'),
+              child: _itemSignUpBtn(facebookColor, 'join_facebook.svg'),
+            ),
             GestureDetector(
               onTap: () => controller.emailJoin(),
               child: _itemSignUpBtn(whiteColor, 'join_email.svg'),

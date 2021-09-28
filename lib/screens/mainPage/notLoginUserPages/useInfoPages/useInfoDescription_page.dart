@@ -30,7 +30,6 @@ class UseInfoDescriptionPage extends StatelessWidget {
         ),
         const SizedBox(height: 9),
         // 1. 문장
-        if(globalCtrl.isLogin.value)
         _description(
           "1. 내가 가진 제품 등록하기",
           "",
@@ -111,6 +110,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
                           },
                         ),
                         GestureDetector(
+                          behavior: HitTestBehavior.translucent,
                           onTap: () => controller.openExpansion(),
                           child: controller.isOpened.value ?
                           SvgPicture.asset(
@@ -119,7 +119,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
                           ) : Text(
                             "자세히 보기",
                             style: regular10TextStyle.copyWith(
-                              fontSize: 8,
+                              fontSize: 12,
                               color: gray_8E8F95Color,
                               decoration: TextDecoration.underline,
                             ),
@@ -218,6 +218,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
             children: [
               description,
               const SizedBox(height: 16),
+              if(globalCtrl.isLogin.value)
               GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {

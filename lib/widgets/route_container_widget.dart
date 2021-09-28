@@ -25,7 +25,9 @@ class RouteContainerWidget extends StatelessWidget {
           return;
         }
         Get.toNamed(route, arguments: arguments);
-        onTap!();
+        if(onTap != null){
+          onTap!();
+        }
       },
       behavior: HitTestBehavior.translucent,
       child: Container(

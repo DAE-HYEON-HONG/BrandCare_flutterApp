@@ -42,6 +42,7 @@ class PhoneChangePage extends StatelessWidget {
                             hint: globalCtrl.userInfoModel!.phNum,
                           ),
                         ),
+                        const SizedBox(height: 16),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Row(
@@ -89,6 +90,7 @@ class PhoneChangePage extends StatelessWidget {
                                 ),
                               ]),
                         ),
+                        const SizedBox(height: 10),
                         if(!myController.isAuth.value)
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),

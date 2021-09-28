@@ -2,16 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <true/>
-    </dict>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-      <string>https</string>
-      <string>http</string>
-    </array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -37,7 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>kakao24d578e5ec7cbcf97fe904e7b11a0ecd</string>
+				<string>kakao20ebd93e838ea02863b6183bbb8f8b96</string>
 			</array>
 		</dict>
 		<dict>
@@ -56,6 +46,14 @@
 				<string>fb384304789743724</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.804740475110-eo31bst8a5aurcfcirl3oi7n8o6um45s</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
@@ -63,8 +61,10 @@
 	<string>384304789743724</string>
 	<key>FacebookDisplayName</key>
 	<string>BrandCare</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<string>NO</string>
 	<key>KAKAO_APP_KEY</key>
-	<string>24d578e5ec7cbcf97fe904e7b11a0ecd</string>
+	<string>20ebd93e838ea02863b6183bbb8f8b96</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -79,14 +79,19 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>사진 저장을 위해 갤러리 권한이 필요합니다.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>촬영을 위해 카메라 권한이 필요합니다.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>동영상 촬영을 위해 마이크 권한이 필요합니다.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>사진 저장을 위해 갤러리 권한이 필요합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>사진을 업로드하기 위해 갤러리의 권한이 필요합니다.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

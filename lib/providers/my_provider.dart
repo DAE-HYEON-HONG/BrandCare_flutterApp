@@ -216,4 +216,13 @@ class MyProvider{
       return json;
     }
   }
+
+  Future<bool> changeAlarm(String token, int type) async {
+    var res = await _myApiService.alarmSet(BaseApiService.authHeaders(token), type);
+    if(res == null){
+      return false;
+    }else{
+      return true;
+    }
+  }
 }

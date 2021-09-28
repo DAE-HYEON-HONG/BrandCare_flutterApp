@@ -302,4 +302,38 @@ class MyApiService{
       return null;
     }
   }
+
+  Future<http.Response?> reqAlarmList(dynamic headers) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/user/alarm?page=1&type=HISTORY");
+      final http.Response res = await http.get(
+        uri,
+        headers: headers,
+      );
+      if(res.statusCode == 200){
+        print(res.body.toString());
+        return res;
+      }else{
+        return null;
+      }
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> alarmSet(dynamic headers, int type) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/user/alarm/$type");
+      final http.Response res = await http.post(
+        uri,
+        headers: headers,
+      );
+      print(res.body.toString());
+      return res;
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
 }

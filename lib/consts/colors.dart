@@ -14,6 +14,7 @@ const gray_F1F3F5Color = const Color(0xffF1F3F5);
 const gray_F5F6F7Color = const Color(0xffF5F6F7);
 const gray_727272Color = const Color(0xff727272);
 const gray_F2F5F6Color = const Color(0xffF2F5F6);
+const brown_3B2725 = const Color(0xff3B2725);
 const whiteColor = const Color(0xffffffff);
 const grayColor = const Color(0xff8E8F95);
 const purpleColor = const Color(0xff552FC4);

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
@@ -10,8 +9,10 @@ import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:flutter_naver_login/flutter_naver_login.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginController extends BaseController {
 
@@ -57,8 +58,58 @@ class LoginController extends BaseController {
       }
     }else if(type == "login_naver.svg"){
       await loginNaver();
-    }else{
+    }else if(type == "login_apple.svg"){
+      _appleLogin();
+    } else{
       await loginFacebook();
+    }
+  }
+
+  //애플로 로그인
+  _appleLogin() async {
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+    print("유저 AuthCode : ${credential.authorizationCode}");
+    print("유저 identityToken : ${credential.identityToken}");
+    Map<String, dynamic> payload = JwtDecoder.decode(credential.identityToken!);
+    print(payload);
+    super.networkState.value = NetworkStateEnum.LOADING;
+    final res = await AuthProvider().registerUserSocialChk(
+      credential.userIdentifier.toString(),
+      "",
+      "APPLE",
+      globalCtrl.fcmToken!,
+    );
+    Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
+    if(jsonMap['code'] == "R9721"){
+      super.networkState.value = NetworkStateEnum.DONE;
+      Get.toNamed(
+        '/auth/signupSocial',
+        arguments: {
+          "TYPE": "APPLE",
+          "Email" : payload['email'],
+          "nickName" : "",
+          "sub" : credential.userIdentifier.toString(),
+          "fcm" : globalCtrl.fcmToken,
+        },
+      );
+    }else{
+      super.networkState.value = NetworkStateEnum.DONE;
+      if(isAutoLogin.value){
+        SharedTokenUtil.saveBool(true, 'isAutoLogin');
+        SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
+        globalCtrl.isLoginChk(true);
+        Get.offAllNamed('/mainPage');
+      }else{
+        SharedTokenUtil.saveBool(false, 'isAutoLogin');
+        SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
+        globalCtrl.isLoginChk(true);
+        Get.offAllNamed('/mainPage');
+      }
     }
   }
 
@@ -85,6 +136,7 @@ class LoginController extends BaseController {
         token.accessToken,
         "${user.kakaoAccount!.email}",
         "KAKAO",
+        globalCtrl.fcmToken!,
       );
       Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
       if(jsonMap['code'] == "R9721"){
@@ -95,6 +147,8 @@ class LoginController extends BaseController {
             "TYPE":"KAKAO",
             "Email" : user.kakaoAccount!.email,
             "nickName" : user.kakaoAccount!.profile!.nickname,
+            "sub" : "",
+            "fcm" : globalCtrl.fcmToken,
           },
         );
       }else{
@@ -157,6 +211,7 @@ class LoginController extends BaseController {
         resAccess.accessToken,
         "${res.account.email}",
         "NAVER",
+        globalCtrl.fcmToken!,
       );
       Map<String, dynamic> jsonMap = jsonDecode(response!.body.toString());
       print(jsonMap.toString());
@@ -168,6 +223,8 @@ class LoginController extends BaseController {
               "TYPE":"NAVER",
               "Email" : res.account.email,
               "nickName" : res.account.nickname,
+              "sub" : "",
+              "fcm" : globalCtrl.fcmToken,
             },
         );
       }else{
@@ -205,6 +262,7 @@ class LoginController extends BaseController {
           accessToken.token,
           userData['email'],
           "FACEBOOK",
+          globalCtrl.fcmToken!,
         );
         Map<String, dynamic> jsonMap = jsonDecode(response!.body.toString());
         print(jsonMap.toString());
@@ -216,6 +274,8 @@ class LoginController extends BaseController {
               "TYPE":"FACEBOOK",
               "Email" : userData['email'],
               "nickName" : userData['name'],
+              "sub" : "",
+              "fcm" : globalCtrl.fcmToken,
             },
           );
         }else{
@@ -257,7 +317,11 @@ class LoginController extends BaseController {
     }else{
       try{
         super.networkState.value = NetworkStateEnum.LOADING;
-        final res = await AuthProvider().loginUser(emailController.text, passwordController.text);
+        final res = await AuthProvider().loginUser(
+          emailController.text,
+          passwordController.text,
+          globalCtrl.fcmToken!,
+        );
         Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
         print(jsonMap.toString());
         //아에 계정이 없을떄;;

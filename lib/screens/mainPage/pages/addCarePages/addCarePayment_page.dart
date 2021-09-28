@@ -280,7 +280,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                               //   ],
                               // ),
                               const SizedBox(height: 10),
-                              Row(
+                              Obx(() => Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
@@ -292,9 +292,9 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                                     style: medium14TextStyle,
                                   ),
                                 ],
-                              ),
+                              )),
                               const SizedBox(height: 10),
-                              Row(
+                              Obx(() => Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
@@ -306,7 +306,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                                     style: medium14TextStyle,
                                   ),
                                 ],
-                              ),
+                              )),
                             ],
                           ),
                         ),
@@ -315,7 +315,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                           height: 1,
                           color: gray_D5D7DBColor,
                         ),
-                        Padding(
+                        GetBuilder<AddCarePaymentController>(builder: (_) => Padding(
                           padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 18),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -330,7 +330,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                               ),
                             ],
                           ),
-                        ),
+                        )),
                       ],
                     ),
                   ),

@@ -18,7 +18,7 @@ class MainShopListInstPage extends StatelessWidget {
         scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
-            GetBuilder<MainShopListMineController>(builder: (_) => ListView.separated(
+            GetBuilder<MainShopListInstController>(builder: (_) => ListView.separated(
               controller: controller.pagingScroll,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
