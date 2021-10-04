@@ -128,8 +128,27 @@ class MyProvider{
     }
   }
 
-  Future<dynamic> noticeList(String token, int page) async {
-    var res = await _myApiService.noticeList(BaseApiService.authHeaders(token), page);
+  Future<dynamic> couponAdd(String token, String code) async {
+    Map<String, dynamic> body = {
+      'code' : code,
+    };
+    final bodyJson = jsonEncode(body);
+    var res = await _myApiService.couponAdd(BaseApiService.authHeaders(token), bodyJson);
+    if(res == null){
+      return null;
+    }
+    Map<String, dynamic> json = jsonDecode(res.body.toString());
+    if(json['code'] == "CP001"){
+      return "notCoupon";
+    }else if(json['code'] == "C004"){
+      return "already";
+    } else{
+      return true;
+    }
+  }
+
+  Future<dynamic> noticeList(int page) async {
+    var res = await _myApiService.noticeList(BaseApiService.headers, page);
     if(res == null){
       return null;
     }else{
@@ -223,6 +242,36 @@ class MyProvider{
       return false;
     }else{
       return true;
+    }
+  }
+
+  Future<dynamic> alarmList(String token, String type, int page)async{
+    var res = await _myApiService.alarmList(BaseApiService.authHeaders(token), type, page);
+    if(res == null) {
+      return null;
+    }else{
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      return json;
+    }
+  }
+
+  Future<dynamic> removeAllAlarm(String token)async{
+    var res = await _myApiService.removeAllAlarms(BaseApiService.authHeaders(token));
+    if(res == null) {
+      return null;
+    }else{
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      return json;
+    }
+  }
+
+  Future<dynamic> removeSelectAlarm(String token, String type, int id)async{
+    var res = await _myApiService.removeSelectAlarms(BaseApiService.authHeaders(token), type, id);
+    if(res == null) {
+      return null;
+    }else{
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      return json;
     }
   }
 }

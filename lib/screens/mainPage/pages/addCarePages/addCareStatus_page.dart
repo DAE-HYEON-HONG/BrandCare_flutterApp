@@ -80,7 +80,7 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
                   const SizedBox(height: 24),
                   Text('물품명', style: medium14TextStyle),
                   const SizedBox(height: 10),
-                  _inputField('${_.careStatus?.careProduct[0].category} 외 ${controller.careStatus?.careProduct.length ?? 0}건'),
+                  _inputField('${controller.careStatus?.careProduct[0].category ?? "로딩중"} 외 ${(controller.careStatus?.careProduct.length ?? 0)-1}건'),
                   const SizedBox(height: 24),
                   Text('케어항목', style: medium14TextStyle),
                   const SizedBox(height: 10),
@@ -243,8 +243,7 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
   _inputField(String title){
     return Container(
       width: double.infinity,
-      height: 48,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         border: Border.all(color: gray_D5D7DBColor, width: 1),
@@ -477,12 +476,30 @@ class AddCareStatusPage extends GetView<AddCareStatusController> {
               children: [
                 Expanded(
                   child: Text(
-                    '배송비',
+                    '쿠폰 사용',
                     style: medium14TextStyle,
                   ),
                 ),
                 Text(
-                  '+ ${NumberFormatUtil.convertNumberFormat(number: 3000)}원',
+                  '- ${NumberFormatUtil.convertNumberFormat(number: controller.careStatus?.paymentHistoryResponse.useCouponDisCount ?? 0)}원',
+                  style: medium14TextStyle,
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 18),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    '포인트 사용',
+                    style: medium14TextStyle,
+                  ),
+                ),
+                Text(
+                  '- ${NumberFormatUtil.convertNumberFormat(number: controller.careStatus?.paymentHistoryResponse.usePoint ?? 0)}원',
                   style: medium14TextStyle,
                 ),
               ],

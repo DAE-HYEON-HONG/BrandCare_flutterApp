@@ -65,7 +65,7 @@ class MyApp extends StatelessWidget {
             },
             child: GetMaterialApp(
               navigatorObservers: [
-                FirebaseAnalyticsObserver(analytics: analytics),
+                // FirebaseAnalyticsObserver(analytics: analytics),
               ],
               builder: EasyLoading.init(
                 builder: (context, widget){

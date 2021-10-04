@@ -24,10 +24,10 @@ class CareProvider{
     required int usePointAmount,
     required int price,
   })async{
-    List<int> careIdx = [];
-    for(var i in list){
-      print(i.secondCategoryId);
-      careIdx.add(i.secondCategoryId);
+    List<String> careIdx = [];
+    for(var i = 0; i<list.length; i++){
+      print(list[i].secondCategoryId);
+      careIdx.add("${list[i].secondCategoryId},${i+1}");
     }
     var careInfo = jsonEncode({
       "address" : address,

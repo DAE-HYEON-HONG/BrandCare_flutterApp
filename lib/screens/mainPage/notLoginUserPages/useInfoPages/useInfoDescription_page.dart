@@ -150,7 +150,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                "- 인증서도 발급해드려요.",
+                "- 인증서를 발급해드립니다.",
                 style: regular10TextStyle,
               ),
               const SizedBox(height: 14),
@@ -172,7 +172,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "- 손이 잘 안가는 내 제품들 올리고, 내가 찾던 제품들이 여기에!",
+                "- shop에서 내가 찾던 물건도 찾고 안쓰는 명품도 팔아보자!",
                 style: regular10TextStyle,
               ),
               const SizedBox(height: 4),

@@ -16,6 +16,19 @@ class AddCareEtcController extends BaseController{
     return height;
   }
 
+  void backModified() {
+    Get.to(() => AddCareModifiedPage(
+      category: addCareList!.last.category,
+      secondCategory: addCareList!.last.secondCategory,
+      idx: addCareList!.lastIndexOf(addCareList!.last),
+      img: addCareList!.last.picture,
+      isBack: true,
+    ),
+    transition: Transition.leftToRight,
+    );
+    update();
+  }
+
   void nextLevel(){
     if(fill.value){
       Get.toNamed('/mainAddCare/add/payment');
@@ -47,11 +60,12 @@ class AddCareEtcController extends BaseController{
   }
 
   void modifiedProduct(int idx){
-    Get.to(AddCareModifiedPage(
+    Get.to(() => AddCareModifiedPage(
       category: addCareList![idx].category,
       secondCategory: addCareList![idx].secondCategory,
       idx: idx,
       img: addCareList![idx].picture,
+      isBack: false,
     ));
     update();
   }

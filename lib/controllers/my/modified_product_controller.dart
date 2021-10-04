@@ -53,12 +53,14 @@ class ModifiedProductController extends BaseController{
 
   Future<void> reqBrandCategory() async{
     final res = await ProductProvider().brandNameList();
+    print("브랜드 카테고리 ${res.toString()}");
     brandList = (res['data'] as List).map((e) => CategoryListModel.fromJson(e)).toList();
     update();
   }
 
   Future<void> reqCategory() async {
     final res = await ProductProvider().categoryNameList();
+    print("이름 카테고리 ${res.toString()}");
     categoryList = (res['data'] as List).map((e) => CategoryListModel.fromJson(e)).toList();
     update();
   }

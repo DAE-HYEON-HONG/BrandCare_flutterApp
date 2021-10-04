@@ -156,7 +156,7 @@ class ChangeProductApplyInfoPage extends StatelessWidget {
           child: Row(
             children: [
               if(data != null &&
-                  data.thumbnail != null)
+                  data.thumbnail != "사진없음")
                 ExtendedImage.network(GlobalApiService.getImage(
                     data.thumbnail!),
                   width: 72,

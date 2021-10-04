@@ -6,7 +6,7 @@ class CouponListModel{
   final String code;
   final int discount;
   final int id;
-  final String path;
+  final String? path;
   final String title;
 
   CouponListModel(this.code, this.discount, this.id, this.path, this.title);

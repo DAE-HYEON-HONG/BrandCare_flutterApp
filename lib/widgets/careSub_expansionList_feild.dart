@@ -142,7 +142,7 @@ class _CareSubExpansionListFieldState extends State<CareSubExpansionListField> w
                             behavior: HitTestBehavior.translucent,
                             onTap: () {
                               changeValue(widget.items[idx].title);
-                              changePriceValue(widget.items[idx].price);
+                              changePriceValue(widget.items[idx].price ?? 0);
                               changeIdx(widget.items[idx].id);
                             },
                             child: Container(
@@ -150,7 +150,6 @@ class _CareSubExpansionListFieldState extends State<CareSubExpansionListField> w
                               padding: EdgeInsets.only(left: 16, right: 16, top: 13, bottom: 13),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
                                     child: Text(
@@ -159,6 +158,7 @@ class _CareSubExpansionListFieldState extends State<CareSubExpansionListField> w
                                           color: gray_999Color),
                                     ),
                                   ),
+                                  const SizedBox(width: 30),
                                   Container(
                                     width: 120,
                                     child: Row(
@@ -170,8 +170,9 @@ class _CareSubExpansionListFieldState extends State<CareSubExpansionListField> w
                                           style: regular14TextStyle.copyWith(
                                               color: gray_999Color),
                                         ),
+                                        if(widget.items[idx].price != null)
                                         Text(
-                                          NumberFormatUtil.convertNumberFormat(number: widget.items[idx].price),
+                                          NumberFormatUtil.convertNumberFormat(number: widget.items[idx].price ?? 0),
                                           style: regular14TextStyle.copyWith(
                                               color: gray_999Color),
                                         ),

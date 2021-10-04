@@ -29,7 +29,7 @@ class GuidePage extends GetView<GuideController> {
                   reverse: false,
                   autoPlayInterval: Duration(seconds: 5),
                   autoPlayCurve: Curves.fastOutSlowIn,
-                  scrollDirection: Axis.vertical,
+                  scrollDirection: Axis.horizontal,
                   viewportFraction: 1,
                   onPageChanged: (index, reason) {
                     controller.changeBannerImg(index);
@@ -63,8 +63,9 @@ class GuidePage extends GetView<GuideController> {
               child: Text(
                 'SKIP',
                 style: medium16TextStyle.copyWith(
-                  color: controller.pageNum.value != 1 ? whiteColor : gray_999Color,
-                  fontWeight: FontWeight.w700,
+                  // color: controller.pageNum.value != 1 ? whiteColor : gray_999Color,
+                  color: gray_999Color,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),

@@ -37,6 +37,7 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                 //배너
                 Stack(
                   children: [
+                    if(controller.model?.images.length != 0)
                     CarouselSlider(
                       carouselController: controller.slideCtrlBtn,
                       options: CarouselOptions(
@@ -79,6 +80,7 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                         );
                       }).toList(),
                     ),
+                    if(controller.model?.images.length != 0)
                     Positioned(
                       left: 0,
                       right: 0,
@@ -107,6 +109,7 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                         ),
                       ),
                     ),
+                    if(controller.model?.images.length != 0)
                     Positioned(
                       bottom: 0,
                       top: 0,
@@ -132,6 +135,7 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                         ),
                       ),
                     ),
+                    if(controller.model?.images.length != 0)
                     Positioned(
                       bottom: 0,
                       top: 0,
@@ -154,6 +158,19 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                         ),
                       ),
                     ),
+                    if(controller.model?.images.length == 0)
+                    Container(
+                      width: double.infinity,
+                      height: 240,
+                      color: gray_CCCColor,
+                      child: Center(
+                        child: SvgPicture.asset(
+                          "assets/icons/header_title_logo.svg",
+                          height: 40,
+                        ),
+                      ),
+                    ),
+                    if(controller.model?.gi != "REFUSAL" && controller.model?.gi != "GOING")
                     Positioned(
                       right: 15,
                       top: 15,
@@ -168,7 +185,7 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                     children: <Widget>[
                       ListTile(
                         contentPadding: const EdgeInsets.only(left: 0, right: 0, top: 5, bottom: 5),
-                        leading: Container(
+                        leading: controller.model == null ? Container(
                           width: 32,
                           height: 32,
                           decoration: BoxDecoration(
@@ -178,6 +195,38 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                           child: Center(
                             child: SvgPicture.asset("assets/icons/mypage_on.svg", height: 13),
                           ),
+                        ) :
+                        controller.model!.userProfile == null ? Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            color: Color(0xffF4F0FF),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: SvgPicture.asset("assets/icons/mypage_on.svg", height: 13),
+                          ),
+                        ): Container(
+                          width: 32,
+                          height: 32,
+                          child: ClipOval(
+                            child: ExtendedImage.network(
+                              BaseApiService.imageApi+controller.model!.userProfile!,
+                              fit: BoxFit.cover,
+                              cache: true,
+                              // ignore: missing_return
+                              loadStateChanged: (ExtendedImageState state) {
+                                switch(state.extendedImageLoadState) {
+                                  case LoadState.loading :
+                                    break;
+                                  case LoadState.completed :
+                                    break;
+                                  case LoadState.failed :
+                                    break;
+                                }
+                              },
+                            ),
+                          ),
                         ),
                         title: Text(
                           "${controller.model?.nickName}",
@@ -186,17 +235,17 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                       const Divider(color: gray_f5f6f7Color, height: 1),
                       const SizedBox(height: 16),
                       Text(
-                        "${controller.model?.title}",
+                        "${controller.model?.title ?? "로딩중"}",
                         style: medium16TextStyle,
                       ),
                       const SizedBox(height: 8),
                       Row(
                         children: <Widget>[
-                          Text("${controller.model?.brand}", style: regular12TextStyle.copyWith(color: gray_999Color)),
+                          Text("${controller.model?.brand ?? "로딩중"}", style: regular12TextStyle.copyWith(color: gray_999Color)),
                           const SizedBox(width: 8),
                           VerticalDivider(width: 1, color: Color(0xff999999)),
                           const SizedBox(width: 8),
-                          Text("${controller.model?.category}", style: regular12TextStyle.copyWith(color: gray_999Color)),
+                          Text("${controller.model?.category ?? "로딩중"}", style: regular12TextStyle.copyWith(color: gray_999Color)),
                           const SizedBox(width: 8),
                           VerticalDivider(width: 1, color: Color(0xff999999)),
                           const SizedBox(width: 8),
@@ -213,7 +262,7 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                           minHeight: 189,
                         ),
                         child: Text(
-                          "${controller.model?.nickName}",
+                          "${controller.model?.content ?? "로딩중"}",
                           maxLines: 60,
                           style: regular14TextStyle.copyWith(color: gray_333Color),
                         ),

@@ -1,5 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/invite_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class InvitePage extends GetView<InviteController> {
-  const InvitePage({Key? key}) : super(key: key);
-
+  InvitePage({Key? key}) : super(key: key);
+  GlobalController globalCtrl = Get.find<GlobalController>();
   @override
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(
@@ -111,11 +112,11 @@ class InvitePage extends GetView<InviteController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("ABCD1234", style: medium24TextStyle.copyWith(color: primaryColor, fontSize: 32, fontWeight: FontWeight.w700)),
+                          Text("${globalCtrl.userInfoModel?.code ?? ""}", style: medium24TextStyle.copyWith(color: primaryColor, fontSize: 32, fontWeight: FontWeight.w700)),
                           const SizedBox(width: 10),
                           GestureDetector(
                             behavior: HitTestBehavior.translucent,
-                            onTap: () => controller.copyString("ABCD1234"),
+                            onTap: () => controller.copyString("${globalCtrl.userInfoModel?.code ?? ""}"),
                             child: Container(
                               width: 50,
                               height: 27,

@@ -61,6 +61,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
       super.networkState.value = NetworkStateEnum.LOADING;
       final res = await AuthProvider().findId(phoneController.text);
       if(res == null){
+        super.networkState.value = NetworkStateEnum.DONE;
         Get.dialog(
             CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
               Get.back();
@@ -68,6 +69,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
             })
         );
       }else{
+        super.networkState.value = NetworkStateEnum.DONE;
         if(res['code'] == "U001") {
           Get.dialog(
               CustomDialogWidget(content: '해당 유저를 찾을 수 없습니다.', onClick: () {
@@ -76,6 +78,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
               })
           );
         }else{
+          super.networkState.value = NetworkStateEnum.DONE;
           email = res['data'];
           Get.dialog(CustomDialogWidget(
             content: '휴대전화 번호 인증을 하시면\n전체 아이디를 확인 하실 수 있습니다.\n인증을 진행하시겠습니까?',

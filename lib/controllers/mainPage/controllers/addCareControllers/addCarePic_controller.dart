@@ -2,7 +2,9 @@ import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/addCareEtc_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/addCare/addCareList_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/care/careCategory_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/care/careSubCategory_model.dart';
+import 'package:brandcare_mobile_flutter_v2/providers/care_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,7 +27,7 @@ class AddCarePicController extends BaseController {
   int secondIdx = 999;
   RxInt price = 0.obs;
   List<CareSubCategoryModel> nothing = [
-    CareSubCategoryModel(0, "", 0, null),
+    CareSubCategoryModel(0, "", null, null),
   ].obs;
 
   List<CareSubCategoryModel> checkType(String type){
@@ -113,6 +115,7 @@ class AddCarePicController extends BaseController {
 
   void nextLevel(){
     if (fill.value){
+      addCareEtc.addCareList = <AddCareListModel>[];
       addCareEtc.addCareList!.add(
         AddCareListModel(
           category: firstCareCategory.value,
@@ -176,7 +179,8 @@ class AddCarePicController extends BaseController {
   }
 
   @override
-  void onInit() {
+  void onInit() async{
+    await globalCtrl.reqCareCategory();
     super.onInit();
     cameraPermissionChk();
   }

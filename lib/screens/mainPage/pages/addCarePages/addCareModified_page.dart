@@ -17,14 +17,47 @@ class AddCareModifiedPage extends GetView<AddCarePicController> {
   final String secondCategory;
   final int idx;
   final File img;
-  AddCareModifiedPage({required this.category, required this.secondCategory, required this.idx, required this.img});
+  final bool isBack;
+  AddCareModifiedPage({required this.category, required this.secondCategory, required this.idx, required this.img, required this.isBack});
 
   @override
   Widget build(BuildContext context) {
-    controller.modifiedInit(img, category, secondCategory);
-    return DefaultAppBarScaffold(
-      title: "케어/수선 신청",
-      child: _renderBody(),
+    Future.delayed(Duration.zero, () async {
+      controller.modifiedInit(img, category, secondCategory);
+      controller.fill.value = true;
+      controller.update();
+    });
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      //resizeToAvoidBottomInset: false,
+      backgroundColor: whiteColor,
+      appBar: AppBar(
+        leading: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: (){
+            if(isBack){
+              Get.back();
+              Get.back();
+              Get.back();
+              return;
+            }else{
+              Get.back();
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: SvgPicture.asset('assets/icons/btn_arrow_left.svg', width: 18, height: 18,),
+          ),
+        ),
+        title: Text("케어/수선 신청",style: medium16TextStyle.copyWith(color: primaryColor)),
+        titleSpacing: 0,
+        centerTitle: true,
+        titleTextStyle: medium16TextStyle.copyWith(color: primaryColor),
+        backgroundColor: whiteColor,
+        elevation: 4,
+        shadowColor: blackColor.withOpacity(0.05),
+      ),
+      body: _renderBody(),
     );
   }
 
@@ -63,7 +96,7 @@ class AddCareModifiedPage extends GetView<AddCarePicController> {
                   const SizedBox(height: 9),
                   CareExpansionListField(
                     onTap: () => controller.chkFill(),
-                    hintText: "1. 카테고리를 선택하세요.(가방, 지갑, 신발)",
+                    hintText: "$category",
                     items: controller.globalCtrl.careCategory!,
                     onChange: (value) => controller.firstCategory(value),
                     changeIdx: (value) => controller.firstIdxCategory(value) ,
@@ -71,7 +104,7 @@ class AddCareModifiedPage extends GetView<AddCarePicController> {
                   const SizedBox(height: 8),
                   Obx(() => CareSubExpansionListField(
                     onTap: () => controller.chkFill(),
-                    hintText: "2. 케어/수선 항목을 선택하세요.",
+                    hintText: "$secondCategory",
                     items: controller.checkType(controller.firstCareCategory.value),
                     onChange: (value) => controller.secondCategory(value),
                     onPriceChange: (value) => controller.choicePrice(value),
@@ -87,8 +120,9 @@ class AddCareModifiedPage extends GetView<AddCarePicController> {
             right: 0,
             bottom: 0,
             child: CustomFormSubmit(
-              title: "수정",
+              title: this.isBack ? "등록" : "수정",
               onTab: () => controller.modifiedList(idx),
+              // fill: controller.fill.value,
               fill: controller.fill.value,
             ),
           )),

@@ -25,15 +25,21 @@ class CouponAddPage extends StatelessWidget {
           const SizedBox(height: 24,),
           FormInputWidget(onChange: (value){
             controller.couponCode.value = value;
+            controller.update();
           }, onSubmit: (value){}, controller: TextEditingController(),
             textInputType: TextInputType.number,
               hint: '쿠폰 코드 번호를 입력해주세요.',
           ),
           const SizedBox(height: 24,),
-          Obx(() => CustomButtonOnOffWidget(title: '등록하기', onClick: (){
-            controller.addCoupon();
-            Get.back();
-          }, isOn: controller.isValidCouponCode)),
+          Obx(() =>
+              CustomButtonOnOffWidget(
+                title: '등록하기',
+                onClick: ()async{
+                  await controller.couponAdd(controller.couponCode.value);
+                },
+                isOn: controller.isValidCouponCode,
+                // isOn: controller.couponCode.value.isNotEmpty,
+          )),
         ],
       ),
     ));

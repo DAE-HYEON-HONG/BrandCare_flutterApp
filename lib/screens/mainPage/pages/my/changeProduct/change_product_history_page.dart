@@ -11,6 +11,7 @@ import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart
 import 'package:brandcare_mobile_flutter_v2/widgets/genuine_box_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class ChangeProductHistoryPage extends StatelessWidget {
@@ -113,7 +114,7 @@ class ChangeProductHistoryPage extends StatelessWidget {
         child: Row(
           children: [
             if(productModel != null &&
-                productModel.image != null)
+                productModel.image != "사진없음")
               ExtendedImage.network(GlobalApiService.getImage(
                   productModel.image!),
                 width: 72,
@@ -121,10 +122,18 @@ class ChangeProductHistoryPage extends StatelessWidget {
                 cache: true,
               )
             else
-              Image.asset(
-                'assets/icons/sample_product.png',
+              Container(
                 width: 72,
                 height: 72,
+                decoration: BoxDecoration(
+                  border: Border.all(color: gray_999Color),
+                ),
+                child: Center(
+                  child: SvgPicture.asset(
+                    "assets/icons/header_title_logo.svg",
+                    height: 10,
+                  ),
+                ),
               ),
             const SizedBox(
               width: 32,
@@ -157,9 +166,9 @@ class ChangeProductHistoryPage extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       const Spacer(),
-                      Text(
-                          "${DateFormatUtil.convertDateTimeFormat(date: productModel.createdDate!)}"
-                      ),
+                      // Text(
+                      //     "${DateFormatUtil.convertDateTimeFormat(date: productModel.createdDate!)}"
+                      // ),
                     ],
                   ),
                 ],

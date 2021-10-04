@@ -61,7 +61,7 @@ class InquiryController extends BaseController with SingleGetTickerProviderMixin
     update();
   }
 
-  Future<void> addInquiry() async {
+  Future<void> addInquiry(context) async {
     if(title.value == ""){
       Get.dialog(
           CustomDialogWidget(content: '제목을 입력해주세요.', onClick: (){
@@ -93,6 +93,7 @@ class InquiryController extends BaseController with SingleGetTickerProviderMixin
             })
         );
       }else{
+        FocusScope.of(context).unfocus();
         tabController.index = 1;
       }
     }
@@ -100,6 +101,12 @@ class InquiryController extends BaseController with SingleGetTickerProviderMixin
 
   @override
   void onInit() async {
+    if(Get.arguments != null){
+      if(Get.arguments == 1){
+        tabController.index = 1;
+        await reqQnaList();
+      }
+    }
     await reqQnaList();
     pagingScroll.addListener(pagingScrollListener);
     super.onInit();

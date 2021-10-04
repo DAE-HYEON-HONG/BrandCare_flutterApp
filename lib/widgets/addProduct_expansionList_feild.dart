@@ -94,6 +94,7 @@ class _AddProductExpansionListFieldState extends State<AddProductExpansionListFi
         borderRadius: BorderRadius.circular(5),
       ),
       child: SingleChildScrollView(
+        physics: _moreTab ? null : NeverScrollableScrollPhysics(),
         child: Column(
           children: <Widget>[
             Container(

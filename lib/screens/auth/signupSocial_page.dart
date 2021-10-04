@@ -66,7 +66,6 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
                       isShowTitle: true,
                       title: '친구 초대 코드(선택)',
                       hint: '친구에게 받은 초대 코드를 입력해주세요.',
-                      isObscureText: true,
                     ),
                     const SizedBox(height: 16),
                     _itemAgreeContainer(),

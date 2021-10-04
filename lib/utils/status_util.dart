@@ -7,7 +7,7 @@ class StatusUtil{
     } else if(status == "WAREHOUSING"){
       return "입고";
     } else if(status == "CARING"){
-      return "케어진행중";
+      return "진행중";
     } else if(status == "BE_RELEASED"){
       return "출고";
     } else if(status == "DELIVERING"){

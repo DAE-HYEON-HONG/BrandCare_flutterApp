@@ -2,6 +2,8 @@ import 'package:brandcare_mobile_flutter_v2/models/addCare/carePersonInfo_model.
 import 'package:brandcare_mobile_flutter_v2/models/genuine/placer_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../payment_history_model.dart';
+
 part 'genuineStatus_model.g.dart';
 
 @JsonSerializable()
@@ -18,6 +20,7 @@ class GenuineStatusModel{
   late String returnType;
   late String? product_image;
   late String brand;
+  final PaymentHistoryModel paymentHistoryResponse;
 
   GenuineStatusModel(
       this.id,
@@ -28,7 +31,9 @@ class GenuineStatusModel{
       this.title,
       this.category,
       this.product_image,
-      this.brand);
+      this.brand,
+      this.paymentHistoryResponse,
+      );
 
   factory GenuineStatusModel.fromJson(Map<String, dynamic> json) => _$GenuineStatusModelFromJson(json);
   Map<String, dynamic> toJson() => _$GenuineStatusModelToJson(this);

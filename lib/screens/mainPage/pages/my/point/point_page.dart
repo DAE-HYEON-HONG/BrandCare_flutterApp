@@ -100,7 +100,7 @@ class PointPage extends GetView<PointController> {
               // )
               Text(
                 model.history,
-                style: regular14TextStyle,
+                style: model.history.characters.first == "-" ? regular14TextStyle.copyWith(color: redColor) : regular14TextStyle.copyWith(color: purpleColor),
               ),
             ],
           ),

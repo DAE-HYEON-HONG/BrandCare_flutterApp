@@ -12,6 +12,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 
+import '../mainShop_controller.dart';
+
 class ShopAddProductController extends BaseController{
 
   TextEditingController titleCtrl = TextEditingController();
@@ -20,6 +22,7 @@ class ShopAddProductController extends BaseController{
   TextEditingController categoryCtrl = TextEditingController();
   Rx<bool> fill = false.obs;
   Rx<bool> categoryModel = false.obs;
+  MainShopController mainShopCtrl = Get.find<MainShopController>();
 
   late Paging productListPaging;
   List<MyProduct> myProductList = <MyProduct>[];
@@ -89,10 +92,10 @@ class ShopAddProductController extends BaseController{
       customDialogShow(title: "제목이 입력되지 않았습니다.", context: context);
       return;
     }
-    // if(categoryCtrl.text == ""){
-    //   customDialogShow(title: "제품이 선택되지 않았습니다.", context: context);
-    //   return;
-    // }
+    if(myProductIdx == null){
+      customDialogShow(title: "제품이 선택되지 않았습니다.", context: context);
+      return;
+    }
     if(priceCtrl.text == ""){
       customDialogShow(title: "가격이 입력되지 않았습니다.", context: context);
       return;
@@ -144,8 +147,16 @@ class ShopAddProductController extends BaseController{
       print(res['data']);
       if(res['data'] == "Y"){
         Get.dialog(
-          CustomDialogWidget(content: '등록되었습니다.', onClick: (){
-            Get.offAllNamed('/mainPage');
+          CustomDialogWidget(content: '등록되었습니다.', onClick: ()async{
+            Get.back();
+            Get.back();
+            if(mainShopCtrl.currentPageIdx == 0){
+              await mainShopCtrl.shopListAllCtrl.reqShopList();
+            }else if(mainShopCtrl.currentPageIdx == 1){
+              await mainShopCtrl.shopListMineCtrl.reqShopList();
+            }else{
+              await mainShopCtrl.shopListInstCtrl.reqShopList();
+            }
             update();
           }),
           barrierDismissible: false,

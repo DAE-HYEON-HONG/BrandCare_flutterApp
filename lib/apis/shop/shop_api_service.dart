@@ -67,6 +67,7 @@ class ShopApiService {
         uri,
         headers: headers,
       );
+      print(res.body.toString());
       return res;
     }catch(e){
       print("접속 에러 : ${e.toString()}");

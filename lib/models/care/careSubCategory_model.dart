@@ -5,7 +5,7 @@ part 'careSubCategory_model.g.dart';
 class CareSubCategoryModel{
   final int id;
   final String title;
-  final int price;
+  final int? price;
   final String? reMark;
 
   CareSubCategoryModel(this.id, this.title, this.price, this.reMark);

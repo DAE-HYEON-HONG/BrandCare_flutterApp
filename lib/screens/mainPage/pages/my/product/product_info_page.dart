@@ -3,6 +3,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/box_shadow.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/productInfo_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/product_info_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/changeProduct_in_productInfo.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/change_product_apply_info_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/custom_route_button.dart';
@@ -33,18 +34,18 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
               children: [
                 _item("${controller.model?.thumbnail ?? ""}"),
                 const SizedBox(height: 24,),
-                controller.model?.genuine == "GENUINE" ?
+                if(controller.model?.genuine == "GENUINE" && controller.model?.genuine == "REFUSAL")
                 CustomArrowBtn(title: '정품인증 결과보기', onTap: () {
                   Get.to(() => AddGenuineStatusPage(), arguments: {
                     'back' : true,
                     'idx' : controller.model?.activationId ?? 0,
                   });
-                }):
+                }),
+                if(controller.model?.genuine != "REFUSAL")
                 controller.model?.genuine != "GOING" ?
                 CustomArrowBtn(title: '정품인증 신청하기', onTap: () {
                   Get.to(() => AddGenuinePage(), arguments: controller.productIdx);
-                }):
-                CustomArrowBtn(title: '정품 확인중', onTap: () {}),
+                }): CustomArrowBtn(title: '정품 확인중', onTap: () {}),
                 if(controller.model?.genuine == "REFUSAL")
                   CustomArrowBtn(title: '정품인증 결과보기', onTap: () {
                     Get.to(() => AddGenuineStatusPage(), arguments: {
@@ -113,7 +114,7 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
                       title: '구입금액',
                       isShowTitle: true,
                     ),
-                    const SizedBox(height: 24,),
+                    const SizedBox(height: 24),
                     FormInputWidget(
                       onChange: (value){},
                       onSubmit: (value){},
@@ -122,8 +123,25 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
                       title: '구입경로',
                       isShowTitle: true,
                     ),
-                    const SizedBox(height: 24,),
+                    const SizedBox(height: 24),
                     _gridPicture(),
+                    const SizedBox(height: 10),
+                    if(controller.model?.image != null)
+                    GetBuilder<ProductInfoDetailController>(
+                      builder: (_) => GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: controller.model?.image?.length ?? 0,
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8,
+                        ),
+                        itemBuilder: (context, idx){
+                          return _networkImage(controller.model?.image?[idx].path ?? "");
+                        },
+                      ),
+                    ),
                     const SizedBox(height: 32,),
                     Text('추가정보', style: medium14TextStyle,),
                     const SizedBox(height: 17,),
@@ -261,6 +279,28 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
       ],
     ),
   ));
+
+  Widget _networkImage(String imgPath) => Container(
+    width: 160,
+    height: 160,
+    child: imgPath != "" ? ExtendedImage.network(
+      BaseApiService.imageApi+imgPath,
+      fit: BoxFit.cover,
+      cache: true,
+      height: 160,
+      width: 160,
+    ) : Container(
+      width: 160,
+      height: 160,
+      child: Center(
+        child: SvgPicture.asset(
+          'assets/icons/header_title_logo.svg',
+          width: 10,
+          height: 10,
+        ),
+      ),
+    ),
+  );
 
   Widget _pictureItem(String title, String imgPath) => GetBuilder<ProductInfoDetailController>(builder:(_)=>Container(
     child: Column(

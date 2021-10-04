@@ -22,7 +22,7 @@ class AddCareStatusController extends BaseController {
     for(var i = 0; i < length; i++){
       price += careStatus?.careProduct[i].price ?? 0;
     }
-    return price+3000;
+    return price;
   }
 
   List<Map<dynamic, dynamic>> careStatusJson = [];
@@ -43,6 +43,7 @@ class AddCareStatusController extends BaseController {
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     final res =  await CareProvider().careStatus(token!, productIdx);
     if(res == null){
+      super.networkState.value = NetworkStateEnum.DONE;
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
             Get.back();

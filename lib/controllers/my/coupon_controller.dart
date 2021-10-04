@@ -22,6 +22,7 @@ class CouponController extends BaseController{
   // 추가부분
   RxInt couponId = 0.obs;
   RxInt couponDiscount = 0.obs;
+  RxInt couponIdGive = 0.obs;
 
   void pagingScrollListener() async {
     if(pagingScroll.position.pixels == pagingScroll.position.maxScrollExtent){
@@ -30,6 +31,16 @@ class CouponController extends BaseController{
         this.currentPage++;
         await reqCouponList();
       }
+    }
+  }
+
+  void couponUse(int idx) {
+    if(couponDiscount.value == 0 && couponDiscount.value == 0){
+      couponId.value = couponList![idx].id;
+      couponDiscount.value = couponList![idx].discount;
+    }else {
+      couponId.value = 0;
+      couponDiscount.value = 0;
     }
   }
 
@@ -61,7 +72,7 @@ class CouponController extends BaseController{
 
   void couponAddWhere(){
     if(couponId.value != 0 && couponDiscount.value != 0){
-      if(Get.arguments == "care"){
+      if(Get.arguments['type'] == "care"){
         final AddCarePaymentController addCarePayCtrl = Get.find<AddCarePaymentController>();
         addCarePayCtrl.couponDiscount.value = couponDiscount.value;
         addCarePayCtrl.couponIdx = couponId.value;
@@ -82,11 +93,86 @@ class CouponController extends BaseController{
     update();
   }
 
-  bool get isValidCouponCode => couponCode.value != '' && couponCode.value.isNotEmpty && couponCode.value.length == 11;
+  Future<void> couponAdd(String code)async{
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    final res =  await MyProvider().couponAdd(token!, code);
+    print(res.toString());
+    if(res == null){
+      Get.dialog(
+          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          })
+      );
+    }else if (res == "notCoupon"){
+      Get.dialog(
+          CustomDialogWidget(content: '쿠폰 번호가 아닙니다.', onClick: (){
+            Get.back();
+            update();
+          })
+      );
+    }else if(res == "already"){
+      Get.dialog(
+          CustomDialogWidget(content: '이미 등록하신 쿠폰입니다.', onClick: (){
+            Get.back();
+            update();
+          })
+      );
+    }else{
+      Get.dialog(
+        CustomDialogWidget(content: '쿠폰이 등록되었습니다.', onClick: ()async{
+          await reqCouponList();
+          Get.back();
+          Get.back();
+          update();
+        }),
+        barrierDismissible: false,
+      );
+    }
+  }
+
+  Future<void> couponAddPayment(String code)async{
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    final res =  await MyProvider().couponAdd(token!, code);
+    if(res == "notCoupon"){
+      Get.dialog(
+          CustomDialogWidget(content: '쿠폰 형식이 올바르지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          })
+      );
+    }else if (res == null){
+      Get.dialog(
+          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          })
+      );
+    }else{
+      Get.dialog(
+        CustomDialogWidget(content: '쿠폰이 등록되었습니다.', onClick: ()async{
+          await reqCouponList();
+          Get.back();
+          update();
+        }),
+        barrierDismissible: false,
+      );
+    }
+  }
+
+  void giveCouponIdx(){
+    if(Get.arguments['couponId'] != null){
+      couponId.value = Get.arguments['couponId'];
+    }
+  }
+
+  bool get isValidCouponCode =>
+      couponCode.value != '' && couponCode.value.isNotEmpty && couponCode.value.length == 10;
 
   @override
   void onInit() async{
     await reqCouponList();
+    giveCouponIdx();
     pagingScroll.addListener(pagingScrollListener);
     super.onInit();
   }

@@ -2,9 +2,8 @@
 
 class BaseApiService {
 
-
-  static String baseApi = "http://192.168.100.216:6005/api/brc";
-  static String imageApi = "http://192.168.100.216:6005/api/brc/image?path=";
+  static String baseApi = "http://api.leadgo.oig.kr/api/brc";
+  static String imageApi = "http://api.leadgo.oig.kr/api/brc/image?path=";
   static Map<String, String> headers = {
     'Content-Type' : 'application/json',
   };

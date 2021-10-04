@@ -34,10 +34,8 @@ class AddCareDetailPage extends StatelessWidget {
               children: [
                 const SizedBox(height: 32),
                 _productInfo(
-                  imgPath: "${_.model?.results[0].afterImage}",
-                  title: _.model?.results.length == 1 ?
-                  "${_.model?.careInfo.title ?? "로딩중"}" :
-                  "${_.model?.careInfo.title ?? "로딩중"} 외 ${(_.model?.results.length ?? 0)-1}건",
+                  imgPath: "${_.model?.results[0].beforeImage ?? ""}",
+                  title: _.model?.careInfo.title ?? "로딩중",
                   type: StatusUtil.statusChk(status: "${_.model?.careInfo.status}"),
                   clock: DateFormatUtil.convertOnlyTime(date: "${_.model?.careInfo.createdDate ?? "2021-08-31T00:39:24.562773"}"),
                   date: DateFormatUtil.convertOnlyDate(date: "${_.model?.careInfo.createdDate ?? "2021-08-31T00:39:24.562773"}"),
@@ -84,7 +82,7 @@ class AddCareDetailPage extends StatelessWidget {
                     child: TextFormField(
                       maxLines: null,
                       readOnly: true,
-                      controller: TextEditingController(text: "${_.model?.comment}"),
+                      controller: TextEditingController(text: "${_.model?.comment ?? "로딩중"}"),
                       style: regular14TextStyle.copyWith(color: gray_999Color),
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -145,23 +143,14 @@ class AddCareDetailPage extends StatelessWidget {
                 cache: true,
                 width: 72,
                 height: 72,
-                // ignore: missing_return
-                loadStateChanged: (ExtendedImageState state) {
-                  switch(state.extendedImageLoadState) {
-                    case LoadState.loading :
-                      break;
-                    case LoadState.completed :
-                      break;
-                    case LoadState.failed :
-                      break;
-                  }
-                },
               ),
               const SizedBox(width: 32),
-              Text(
-                '$title',
-                style: medium14TextStyle,
-              )
+              Expanded(
+                child: Text(
+                  '$title',
+                  style: medium14TextStyle,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 3),
@@ -228,17 +217,6 @@ class AddCareDetailPage extends StatelessWidget {
           BaseApiService.imageApi+imgPath,
           fit: BoxFit.cover,
           cache: true,
-          // ignore: missing_return
-          loadStateChanged: (ExtendedImageState state) {
-            switch(state.extendedImageLoadState) {
-              case LoadState.loading :
-                break;
-              case LoadState.completed :
-                break;
-              case LoadState.failed :
-                break;
-            }
-          },
         ),
       ),
     );
@@ -247,82 +225,32 @@ class AddCareDetailPage extends StatelessWidget {
   _dialogImage(String imgPath){
     return Get.dialog(
       Dialog(
-        child: Container(
-          width: double.infinity,
-          height: 360,
-          child: Center(
-            child: Container(
-              width: double.infinity,
-              height: 360,
-              child: Stack(
-                children: [
-                  CarouselSlider(
-                    options: CarouselOptions(
-                        height: 360,
-                        aspectRatio: 16 / 9,
-                        initialPage: 0,
-                        enableInfiniteScroll: false,
-                        autoPlay: true,
-                        reverse: false,
-                        autoPlayInterval: Duration(seconds: 5),
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        scrollDirection: Axis.horizontal,
-                        viewportFraction: 1,
-                        onPageChanged: (index, reason) {
-                          controller.changeBannerImg(index);
-                        }),
-                    items: (controller.model!.results).map((e) {
-                      return Builder(
-                        builder: (context) {
-                          return Container(
-                            width: double.infinity,
-                            height: 360,
-                            child: ExtendedImage.network(
-                              BaseApiService.imageApi+e.afterImage,
-                              fit: BoxFit.cover,
-                              cache: true,
-                              // ignore: missing_return
-                              loadStateChanged: (ExtendedImageState state) {
-                                switch(state.extendedImageLoadState) {
-                                  case LoadState.loading :
-                                    break;
-                                  case LoadState.completed :
-                                    break;
-                                  case LoadState.failed :
-                                    break;
-                                }
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    }).toList(),
-                  ),
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 15,
-                    child: Container(
-                      width: double.infinity,
-                      child: Center(
-                        child: Obx(() => Container(
-                          width: 40,
-                          height: 18,
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.6),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "${controller.pageNum.value+1}/${controller.model?.results.length}",
-                              style: regular12TextStyle.copyWith(color: whiteColor),
-                            ),
-                          ),
-                        )),
-                      ),
-                    ),
-                  )
-                ],
+        child: GestureDetector(
+          onTap: () => Get.back(),
+          child: Container(
+            color: Colors.black,
+            width: double.infinity,
+            height: double.infinity,
+            child: Center(
+              child: Container(
+                width: double.infinity,
+                height: 360,
+                child: ExtendedImage.network(
+                  BaseApiService.imageApi+imgPath,
+                  fit: BoxFit.fitWidth,
+                  cache: true,
+                  // ignore: missing_return
+                  loadStateChanged: (ExtendedImageState state) {
+                    switch(state.extendedImageLoadState) {
+                      case LoadState.loading :
+                        break;
+                      case LoadState.completed :
+                        break;
+                      case LoadState.failed :
+                        break;
+                    }
+                  },
+                ),
               ),
             ),
           ),

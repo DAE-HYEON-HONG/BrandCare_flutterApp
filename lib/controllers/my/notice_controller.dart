@@ -26,7 +26,7 @@ class NoticeController extends BaseController{
 
   Future<void> reqNoticeList() async {
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
-    final res =  await MyProvider().noticeList(token!, currentPage);
+    final res =  await MyProvider().noticeList(currentPage);
     if(res == null){
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){

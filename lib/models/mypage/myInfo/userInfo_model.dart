@@ -12,7 +12,8 @@ class UserInfoModel {
   late String? phNum;
   final AddressModel? address;
   final List<int> alarmIds;
-  UserInfoModel(this.userId, this.email, this.nickName, this.phNum, this.address, this.alarmIds);
+  final String code;
+  UserInfoModel(this.userId, this.email, this.nickName, this.phNum, this.address, this.alarmIds, this.code);
 
 
   factory UserInfoModel.fromJson(Map<String, dynamic> json) => _$UserInfoModelFromJson(json);

@@ -14,7 +14,8 @@ class UseInfoPriceController extends BaseController{
   }
 
   @override
-  void onInit() {
+  void onInit() async{
+    await globalCtrl.reqCareCategory();
     super.onInit();
   }
 }

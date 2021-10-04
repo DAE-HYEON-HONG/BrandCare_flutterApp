@@ -256,9 +256,12 @@ class MainAddCarePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Obx(() => FormInputWidget(
-                    readOnly: controller.senderNormalAddress.value,
-                    onChange: (value) => controller.senderPostSaveChk(),
-                    onSubmit: (value) => controller.senderPostSaveChk(),
+                    readOnly: controller.receiverNormalAddress.value,
+                    onChange: (value) {
+                      controller.receiverAddressDetail.value = controller.receiverAddressDetailCtrl.text;
+                      controller.chkFill();
+                    },
+                    onSubmit: (value) => controller.receiverPostSaveChk(),
                     controller: controller.receiverAddressDetailCtrl,
                     hint: "나머지 주소를 입력해주세요.",
                   )),

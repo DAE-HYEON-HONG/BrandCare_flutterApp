@@ -2,7 +2,6 @@ import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopAddProductController/shopAddProduct_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/addShop_expansionList_feild.dart';
-import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansion_field.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
@@ -186,7 +185,7 @@ class ShopAddProductPage extends GetView<ShopAddProductController> {
                             focusedBorder: InputBorder.none,
                             disabledBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
-                            hintText: "내용을 입력하세요. (100자 미만)",
+                            hintText: "내용을 입력하세요.",
                             hintStyle: regular14TextStyle.copyWith(color: gray_999Color),
                           ),
                         ),

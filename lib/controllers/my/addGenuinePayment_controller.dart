@@ -10,7 +10,7 @@ import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:get/get.dart';
 
 class AddGenuinePaymentController extends BaseController {
-
+  int reqMyPoint = 0;
   RxInt myPoint = 0.obs;
   RxInt countCoupon = 0.obs;
   RxInt couponDiscount = 0.obs;
@@ -23,8 +23,14 @@ class AddGenuinePaymentController extends BaseController {
   final addGenuineCtrl = Get.find<AddGenuineController>();
   final addGenuineEtcCtrl = Get.find<AddGenuineEtcController>();
 
+  void resetCoupon() {
+    couponIdx = null;
+    couponDiscount.value = 0;
+    update();
+  }
+
   int allPrice() {
-   int price = addGenuineEtcCtrl.addPrices() + 3000 - couponDiscount.value - pointDiscount.value;
+   int price = addGenuineEtcCtrl.addPrices() - couponDiscount.value - pointDiscount.value;
    return price;
   }
   void changeUserInfo(){
@@ -174,8 +180,9 @@ class AddGenuinePaymentController extends BaseController {
           })
       );
     }else{
-      countCoupon.value = (res['countCoupon']);
-      myPoint.value = (res['point']);
+      countCoupon.value = (res["model"]['countCoupon']);
+      myPoint.value = (res['model']['point']);
+      reqMyPoint = (res['model']['point']);
     }
     update();
   }
@@ -183,7 +190,7 @@ class AddGenuinePaymentController extends BaseController {
 
   @override
   void onInit() async{
-    super.onInit();
     await reqCouponList();
+    super.onInit();
   }
 }

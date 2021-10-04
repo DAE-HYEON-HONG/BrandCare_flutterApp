@@ -161,13 +161,16 @@ class MyInfoPage extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.only(top: 9.0, bottom: 9.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             title,
             style: medium14TextStyle,
           ),
-          const Spacer(),
-          Text(globalCtrl.userInfoModel?.email ?? '', style: regular14TextStyle.copyWith(color: gray_999Color),)
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(globalCtrl.userInfoModel?.email ?? '', style: regular14TextStyle.copyWith(color: gray_999Color),),
+          ),
         ],
       ),
     ), );

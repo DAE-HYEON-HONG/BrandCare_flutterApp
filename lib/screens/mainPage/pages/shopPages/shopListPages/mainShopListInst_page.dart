@@ -36,7 +36,7 @@ class MainShopListInstPage extends StatelessWidget {
                   imageUrl: controller.shopList![idx].image == null ? "" : controller.shopList![idx].image!,
                   brandName: controller.shopList![idx].brand,
                   category: controller.shopList![idx].category,
-                  genuine: controller.shopList![idx].gi == "UNCERTIFIED" ? false : true,
+                  genuine: controller.shopList![idx].gi,
                   money: NumberFormatUtil.convertNumberFormat(number: controller.shopList![idx].price),
                   date: DateFormatUtil.convertDateTimeFormat(date: controller.shopList![idx].createdDate),
                   productIdx: controller.shopList![idx].shopId,

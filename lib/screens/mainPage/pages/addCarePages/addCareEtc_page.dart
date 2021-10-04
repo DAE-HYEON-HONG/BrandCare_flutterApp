@@ -5,15 +5,36 @@ import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/addCarePages/
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 
 class AddCareEtcPage extends GetView<AddCareEtcController> {
   @override
   Widget build(BuildContext context) {
-    return DefaultAppBarScaffold(
-      title: "케어/수선 신청",
-      child: _renderBody(context),
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      //resizeToAvoidBottomInset: false,
+      backgroundColor: whiteColor,
+      appBar: AppBar(
+        leading: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () => controller.backModified(),
+          child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: SvgPicture.asset('assets/icons/btn_arrow_left.svg', width: 18, height: 18,),
+          ),
+        ),
+        title: Text("케어/수선 신청",style: medium16TextStyle.copyWith(color: primaryColor)),
+        titleSpacing: 0,
+        centerTitle: true,
+        titleTextStyle: medium16TextStyle.copyWith(color: primaryColor),
+        backgroundColor: whiteColor,
+        elevation: 4,
+        shadowColor: blackColor.withOpacity(0.05),
+        automaticallyImplyLeading: false,
+      ),
+      body: _renderBody(context),
     );
   }
 
@@ -123,6 +144,7 @@ class AddCareEtcPage extends GetView<AddCareEtcController> {
   }
 
   _careProduct(dynamic idx, File img, String category, String options, int idxNum){
+    print(idxNum);
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 24),
       width: double.infinity,
@@ -175,7 +197,9 @@ class AddCareEtcPage extends GetView<AddCareEtcController> {
               children: [
                 GestureDetector(
                   onTap: () => controller.removeList(idx),
-                  child: Text('삭제하기', style: medium14TextStyle.copyWith(color: gray_D5D7DBColor)),
+                  child: Text('삭제하기', style: medium14TextStyle.copyWith(
+                      color: controller.addCareList!.length > 1 ? Colors.black : gray_D5D7DBColor,
+                  )),
                 ),
                 const SizedBox(width: 8),
                 GestureDetector(

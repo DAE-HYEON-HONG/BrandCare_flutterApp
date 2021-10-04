@@ -148,7 +148,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '1. ${addCareEtcCtrl.addCareList![idx].category}',
+                                    '${idx+1}. ${addCareEtcCtrl.addCareList![idx].category}',
                                     style: medium14TextStyle,
                                   ),
                                   const SizedBox(height: 10),
@@ -157,7 +157,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          '2. ${addCareEtcCtrl.addCareList![idx].secondCategory}',
+                                          '- ${addCareEtcCtrl.addCareList![idx].secondCategory}',
                                           style: medium14TextStyle,
                                         ),
                                       ),
@@ -210,18 +210,43 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),
                   const SizedBox(height: 16),
-                  Obx(() => _saleTile(
-                    onTap: (){
-                      Get.toNamed("/main/my/coupon/use", arguments: "care");
-                    },
-                    title: '브랜드케어 쿠폰',
-                    subTitle: '${controller.countCoupon}개 보유',
+                  GetBuilder<AddCarePaymentController>(builder: (_) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Obx(() => _saleTile(
+                          onTap: (){
+                            Get.toNamed("/main/my/coupon/use", arguments: {
+                              "type" : "care",
+                              "couponId" : controller.couponIdx,
+                            });
+                          },
+                          title: '브랜드케어 쿠폰',
+                          subTitle: controller.couponDiscount.value == 0 ?
+                          '${controller.countCoupon.value}개 보유' : "-${NumberFormatUtil.convertNumberFormat(number: controller.couponDiscount.value)}원 할인",
+                        )),
+                      ),
+                      if(controller.couponIdx != null)
+                        const SizedBox(width: 10),
+                      if(controller.couponIdx != null)
+                        GestureDetector(
+                          onTap: () => controller.resetCoupon(),
+                          behavior: HitTestBehavior.translucent,
+                          child: Text(
+                            "쿠폰 적용 해제",
+                            style: medium14TextStyle.copyWith(color: redColor),
+                          ),
+                        ),
+                    ],
                   )),
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),
                   const SizedBox(height: 16),
                   Obx(() => _saleTile(
                     onTap: (){
+                      // if(controller.myPoint.value != 0){
+                      //   Get.toNamed("/main/my/point/use", arguments: "care");
+                      // }
                       Get.toNamed("/main/my/point/use", arguments: "care");
                     },
                     title: '브랜드케어 포인트',

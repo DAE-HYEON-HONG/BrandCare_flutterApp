@@ -7,11 +7,15 @@ class AuthApiService {
 
 
   Future<http.Response?> duplicateEmail(String email) async {
-      final uri = Uri.parse("${BaseApiService.baseApi}/auth/email?email=$email");
-      final http.Response res = await http.get(uri, headers: BaseApiService.headers);
-      if(res.statusCode == 500 || res.statusCode == 200){
-        return res;
-      }else{
+      try{
+        final uri = Uri.parse("${BaseApiService.baseApi}/auth/email?email=$email");
+        final http.Response res = await http.get(uri, headers: BaseApiService.headers);
+        if(res.statusCode == 500 || res.statusCode == 200){
+          return res;
+        }else{
+          return null;
+        }
+      }catch(e){
         return null;
       }
   }
@@ -103,6 +107,24 @@ class AuthApiService {
     return null;
   }
 
+  Future<http.Response?> phoneChkAuth(String phone) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/auth/duplicate/phone?phone=$phone");
+      final http.Response res = await http.get(
+        uri,
+        headers: BaseApiService.headers,
+      );
+      print(res.body.toString());
+      return res;
+      // }else{
+      //   return null;
+      // }
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
   Future<http.Response?> findId(String phNum) async{
     try{
       final uri = Uri.parse("${BaseApiService.baseApi}/auth/find-id?phone=$phNum");
@@ -110,11 +132,15 @@ class AuthApiService {
         uri,
         headers: BaseApiService.headers,
       );
+      print(res.body.toString());
       if(res.statusCode == 200) {
         return res;
       }
       if(res.statusCode == 400){
         return res;
+      }
+      if(res.statusCode == 500){
+        return null;
       }
     }catch(e){
       print("접속 에러 : ${e.toString()}");
@@ -162,7 +188,7 @@ class AuthApiService {
   Future<http.Response?> deleteUser(int userIdx) async {
     try{
       print(userIdx);
-      final uri = Uri.parse("${BaseApiService.baseApi}/manage/user/$userIdx");
+      final uri = Uri.parse("${BaseApiService.baseApi}user/delete/$userIdx");
       final http.Response res = await http.delete(
         uri,
         headers: BaseApiService.headers,

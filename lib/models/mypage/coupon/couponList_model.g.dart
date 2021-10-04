@@ -11,7 +11,7 @@ CouponListModel _$CouponListModelFromJson(Map<String, dynamic> json) {
     json['code'] as String,
     json['discount'] as int,
     json['id'] as int,
-    json['path'] as String,
+    json['path'] as String?,
     json['title'] as String,
   );
 }

@@ -11,7 +11,7 @@ class ShopListWidget extends StatelessWidget {
   final String imageUrl;
   final String brandName;
   final String category;
-  final bool genuine;
+  final String genuine;
   final String money;
   final String date;
   final int productIdx;
@@ -79,7 +79,9 @@ class ShopListWidget extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(this.title, style: medium16TextStyle),
+                      Expanded(
+                        child: Text(this.title, style: medium16TextStyle),
+                      )
                     ],
                   ),
                   const SizedBox(height: 5),
@@ -114,7 +116,7 @@ class ShopListWidget extends StatelessWidget {
                             ],
                           ),
                         ),
-                        this.genuine == true ?
+                        if(this.genuine == "GENUINE")
                         Container(
                           width: 72,
                           height: 24,
@@ -130,7 +132,9 @@ class ShopListWidget extends StatelessWidget {
                                   color: primaryColor),
                             ),
                           ),
-                        ) : Container(
+                        ),
+                        if(this.genuine == "UNCERTIFIED")
+                        Container(
                           width: 72,
                           height: 24,
                           decoration: BoxDecoration(

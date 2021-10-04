@@ -45,30 +45,45 @@ class ProductInfoDetailController extends BaseController{
   }
 
   Future<void> removeProduct() async {
-    super.networkState.value = NetworkStateEnum.LOADING;
-    var res = await ProductProvider().productRemove(productIdx);
-    if(res == null){
-      Get.dialog(
-          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
-            Get.back();
+    Get.dialog(
+      CustomDialogWidget(
+        title: '삭제 시 주의 사항',
+        content: '삭제 시 복구 되지 않습니다.\n정말 삭제 하시겠습니까?',
+        onClick: () async{
+          super.networkState.value = NetworkStateEnum.LOADING;
+          var res = await ProductProvider().productRemove(productIdx);
+          if(res == null){
+            Get.dialog(
+                CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
+                  Get.back();
+                  update();
+                })
+            );
+            super.networkState.value = NetworkStateEnum.ERROR;
+          }else{
+            super.networkState.value = NetworkStateEnum.DONE;
             update();
-          })
-      );
-      super.networkState.value = NetworkStateEnum.ERROR;
-    }else{
-      super.networkState.value = NetworkStateEnum.DONE;
-      update();
-      Get.dialog(
-          CustomDialogWidget(content: '삭제되었습니다.', onClick: (){
-            Get.back();
-            Get.back();
-            update();
-          })
-      );
-      await myProductCtrl.reqProductList();
-      myProductCtrl.update();
-      Get.back();
-    }
+            Get.dialog(
+              CustomDialogWidget(content: '삭제되었습니다.', onClick: ()async{
+                Get.back();
+                Get.back();
+                Get.back();
+                await myProductCtrl.reqProductList();
+                myProductCtrl.update();
+                update();
+              }),
+              barrierDismissible: false,
+            );
+          }
+        },
+        onCancelClick: () {
+          Get.back();
+        },
+        isSingleButton: false,
+        okTxt: "예",
+        cancelTxt: "아니오",
+      ),
+    );
   }
 
   void onDown(){

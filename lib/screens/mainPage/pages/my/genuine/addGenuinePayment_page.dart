@@ -201,19 +201,46 @@ class AddGenuinePaymentPage extends StatelessWidget {
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),
                   const SizedBox(height: 16),
-                  Obx(() => _saleTile(
-                    onTap: (){
-                      Get.toNamed("/main/my/coupon", arguments: "genuine");
-                    },
-                    title: '브랜드케어 쿠폰',
-                    subTitle: '${controller.countCoupon.value}개 보유',
+                  GetBuilder<AddGenuinePaymentController>(builder: (_) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Obx(() => _saleTile(
+                          onTap: (){
+                            Get.toNamed("/main/my/coupon/use", arguments: {
+                              "type" : "genuine",
+                              "couponId" : controller.couponIdx,
+                            });
+                          },
+                          title: '브랜드케어 쿠폰',
+                          subTitle: controller.couponDiscount.value == 0 ?
+                          '${controller.countCoupon.value}개 보유' : "-${NumberFormatUtil.convertNumberFormat(number: controller.couponDiscount.value)}원 할인",
+                        )),
+                      ),
+                      if(controller.couponIdx != null)
+                        const SizedBox(width: 10),
+                      if(controller.couponIdx != null)
+                        GestureDetector(
+                          onTap: () => controller.resetCoupon(),
+                          behavior: HitTestBehavior.translucent,
+                          child: Text(
+                            "쿠폰 적용 해제",
+                            style: medium14TextStyle.copyWith(color: redColor),
+                          ),
+                        ),
+                    ],
                   )),
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),
                   const SizedBox(height: 16),
                   Obx(() => _saleTile(
                     onTap: (){
-                      Get.toNamed("/main/my/point", arguments: "genuine");
+                      if(controller.reqMyPoint != 0){
+                        Get.toNamed("/main/my/point/use", arguments: {
+                        "type" : "genuine",
+                        });
+                      }
+                      // Get.toNamed("/main/my/point", arguments: "genuine");
                     },
                     title: '브랜드케어 포인트',
                     subTitle: '${controller.myPoint.value}P 사용가능',
@@ -256,20 +283,20 @@ class AddGenuinePaymentPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '배송비',
-                                    style: medium14TextStyle,
-                                  ),
-                                  Text(
-                                    '+ 3,000원',
-                                    style: medium14TextStyle,
-                                  ),
-                                ],
-                              ),
+                              // const SizedBox(height: 10),
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //   children: [
+                              //     Text(
+                              //       '배송비',
+                              //       style: medium14TextStyle,
+                              //     ),
+                              //     Text(
+                              //       '+ 3,000원',
+                              //       style: medium14TextStyle,
+                              //     ),
+                              //   ],
+                              // ),
                               const SizedBox(height: 10),
                               Obx(() => Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -3,6 +3,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuineStatus_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/status_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
@@ -78,6 +79,8 @@ class AddGenuineStatusPage extends StatelessWidget {
                   Text('제품명', style: medium14TextStyle),
                   const SizedBox(height: 10),
                   _inputField('${controller.genuineStatus?.title}'),
+                  const SizedBox(height: 8),
+                  _paymentInfo(),
                   const SizedBox(height: 24),
                   Text('택배 반송 주소', style: medium14TextStyle),
                   const SizedBox(height: 10),
@@ -379,6 +382,127 @@ class AddGenuineStatusPage extends StatelessWidget {
           ],
         ) : Container(),
       ],
+    );
+  }
+
+  _paymentInfo(){
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: gray_D5D7DBColor,
+          width: 1.0,
+        ),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 18),
+            child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: 1,
+              itemBuilder: (context, idx){
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${idx+1}. ${controller.genuineStatus?.title ?? ""}',
+                      style: medium14TextStyle,
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            '- 정품인증 신청',
+                            style: medium14TextStyle,
+                          ),
+                        ),
+                        Text(
+                          '+ ${NumberFormatUtil.convertNumberFormat(number: 29000)}원',
+                          style: medium14TextStyle,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 18),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    '쿠폰 사용',
+                    style: medium14TextStyle,
+                  ),
+                ),
+                Text(
+                  '- ${NumberFormatUtil.convertNumberFormat(number: controller.genuineStatus?.paymentHistoryResponse.useCouponDisCount ?? 0)}원',
+                  style: medium14TextStyle,
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 18),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    '포인트 사용',
+                    style: medium14TextStyle,
+                  ),
+                ),
+                Text(
+                  '- ${NumberFormatUtil.convertNumberFormat(number: controller.genuineStatus?.paymentHistoryResponse.usePoint ?? 0)}원',
+                  style: medium14TextStyle,
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            height: 1,
+            color: gray_D5D7DBColor,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 18),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '1개 선택됨',
+                  style: medium14TextStyle,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '총 금액',
+                      style: medium14TextStyle,
+                    ),
+                    const SizedBox(width: 27),
+                    Text(
+                      '${NumberFormatUtil.convertNumberFormat(number: 29000)}원',
+                      style: medium16TextStyle.copyWith(color: redColor),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

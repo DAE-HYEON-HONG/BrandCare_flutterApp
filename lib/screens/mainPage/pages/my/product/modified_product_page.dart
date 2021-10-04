@@ -63,7 +63,7 @@ class ModifiedProductPage extends GetView<ModifiedProductController> {
                     hintText: controller.brand,
                     items: controller.brandList!,
                     onChange: (value) => controller.hintText(value, "brand"),
-                    idxChange: (value) => controller.changeCategory(value),
+                    idxChange: (value) => controller.changeBrandCategory(value),
                     hintIdx: (value) {},
                   )),
                   const SizedBox(height: 16),

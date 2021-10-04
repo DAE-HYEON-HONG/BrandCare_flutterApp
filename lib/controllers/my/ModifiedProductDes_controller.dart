@@ -104,13 +104,13 @@ class ModifiedProductDesController extends BaseController{
   }
 
   void formChk(){
-    if(dirty.value && broken.value && nothing.value){
+    if(dirty.value || broken.value || nothing.value){
       this.isCondition = true;
     }else {
       this.isCondition = false;
     }
 
-    if(dustBag.value && guarantee.value && notExist.value){
+    if(dustBag.value || guarantee.value || notExist.value){
       this.products = true;
     }else {
       this.products = false;
@@ -122,7 +122,11 @@ class ModifiedProductDesController extends BaseController{
       this.description = false;
     }
 
-    if(this.isCondition || this.products || this.description){
+    print(this.isCondition);
+    print(this.products);
+    print(this.description);
+
+    if(this.isCondition && this.products && this.description){
       fill.value = true;
     }else {
       fill.value = false;
@@ -191,9 +195,14 @@ class ModifiedProductDesController extends BaseController{
       );
     }else{
       if(res['data'] == "Y"){
+        ProductInfoDetailController productInfoDetailCtrl = Get.find<ProductInfoDetailController>();
         Get.dialog(
-          CustomDialogWidget(content: '제품수정이 완료되었습니다.', onClick: (){
-            Get.offAllNamed('/mainPage');
+          CustomDialogWidget(content: '제품수정이 완료되었습니다.', onClick: ()async{
+            await productInfoDetailCtrl.reqProductInfo();
+            Get.back();
+            Get.back();
+            Get.back();
+            Get.back();
             update();
           }),
           barrierDismissible: false,

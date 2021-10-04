@@ -84,7 +84,7 @@ class AddGenuineDetailPage extends StatelessWidget {
                 CustomArrowBtn(
                   title: '인증서 확인',
                   onTap: () {
-                    _dialogImage(imgList: controller.certificateList, type: "down");
+                    _certDialogImage(imgList: controller.certificateList, type: "down");
                     controller.pageNum.value = 0;
                     controller.update();
                   },
@@ -202,37 +202,29 @@ class AddGenuineDetailPage extends StatelessWidget {
   }
 
   _productGridPicture() => GetBuilder<AddGenuineDetailController>(builder:(_)=>Container(
-    child: GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        _dialogImage(imgList: controller.mainImgModel, type: "normal");
-        controller.pageNum.value = 0;
-        controller.update();
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('제품사진'),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _pictureItem(controller.model?.product.frontImage ?? ''),
-              const SizedBox(width: 7),
-              _pictureItem(controller.model?.product.backImage ?? ''),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _pictureItem(controller.model?.product.leftImage ?? ''),
-              const SizedBox(width: 7),
-              _pictureItem(controller.model?.product.rightImage ?? ''),
-            ],
-          ),
-        ],
-      ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('제품사진'),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _pictureItem(controller.model?.product.frontImage ?? ''),
+            const SizedBox(width: 7),
+            _pictureItem(controller.model?.product.backImage ?? ''),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _pictureItem(controller.model?.product.leftImage ?? ''),
+            const SizedBox(width: 7),
+            _pictureItem(controller.model?.product.rightImage ?? ''),
+          ],
+        ),
+      ],
     ),
   ));
 
@@ -241,72 +233,139 @@ class AddGenuineDetailPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('제품사진'),
-        GestureDetector(
-          onTap: () {
-            _dialogImage(imgList: controller.model!.genuineImages, type: "normal");
-            controller.pageNum.value = 0;
-            controller.update();
-          },
-          child: GridView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: controller.model?.genuineImages.length ?? 0,
-            shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 32,
-              crossAxisSpacing: 8,
-            ),
-            itemBuilder: (context, idx){
-              return _pictureItem(controller.model?.genuineImages[idx].path ?? "");
-            },
+        GridView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: controller.model?.genuineImages.length ?? 0,
+          shrinkWrap: true,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisSpacing: 32,
+            crossAxisSpacing: 8,
           ),
+          itemBuilder: (context, idx){
+            return GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                _dialogImage(imgPath: controller.model?.genuineImages[idx].path ?? "", type: "normal");
+              },
+              child: _pictureItem(controller.model?.genuineImages[idx].path ?? ""),
+            );
+          },
         ),
       ],
     ),
   ));
 
   _pictureItem(String imgPath) => GetBuilder<AddGenuineDetailController>(builder:(_)=>
-      Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              imgPath != ""
-                  ? ExtendedImage.network(
-                      BaseApiService.imageApi + imgPath,
-                      fit: BoxFit.cover,
-                      cache: true,
-                      height: 160,
-                      width: 160,
-                    )
-                  : Container(
-                      width: 160,
-                      height: 160,
-                      child: Center(
-                        child: SvgPicture.asset(
-                          'assets/icons/header_title_logo.svg',
-                          width: 10,
-                          height: 10,
+      GestureDetector(
+        onTap: () => _dialogImage(imgPath: imgPath, type: "normal"),
+        child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                imgPath != ""
+                    ? ExtendedImage.network(
+                        BaseApiService.imageApi + imgPath,
+                        fit: BoxFit.cover,
+                        cache: true,
+                        height: 160,
+                        width: 160,
+                      )
+                    : Container(
+                        width: 160,
+                        height: 160,
+                        child: Center(
+                          child: SvgPicture.asset(
+                            'assets/icons/header_title_logo.svg',
+                            width: 10,
+                            height: 10,
+                          ),
                         ),
                       ),
-                    ),
-            ],
+              ],
+            ),
           ),
-        ),
+      ),
       );
 
-  _dialogImage({required List<IdPathImagesModel> imgList, required String type}){
+  _dialogImage({required String imgPath, required String type}){
+    return Get.dialog(
+      GetBuilder<AddGenuineDetailController>(builder: (_) =>
+          Dialog(
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                Get.back();
+              },
+              child: Container(
+                color: Colors.black,
+                width: double.infinity,
+                height: double.infinity,
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: imgPath == "" ?
+                        Center(
+                          child: SvgPicture.asset(
+                            "assets/icons/header_title_logo.svg",
+                            height: 10,
+                          ),
+                        ):
+                        ExtendedImage.network(
+                          BaseApiService.imageApi+imgPath,
+                          fit: BoxFit.fitWidth,
+                          cache: true,
+                        ),
+                      ),
+                      if(type == "down")
+                        Positioned(
+                          right: 15,
+                          bottom: 15,
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: () {
+                              controller.cameraPermissionChk();
+                            },
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              child: SvgPicture.asset(
+                                "assets/icons/download.svg",
+                                height: 30,
+                                color: whiteColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ),
+    );
+  }
+
+  _certDialogImage({required List<IdPathImagesModel> imgList, required String type}){
     return Get.dialog(
       GetBuilder<AddGenuineDetailController>(builder: (_) =>
           Dialog(
             child: Container(
+              color: Colors.black,
               width: double.infinity,
-              height: 360,
-              child: Center(
-                child: Container(
-                  width: double.infinity,
-                  child: Stack(
-                    children: [
-                      CarouselSlider(
+              height: double.infinity,
+              child: Container(
+                width: double.infinity,
+                child: Stack(
+                  children: [
+                    Center(
+                      child: CarouselSlider(
                         options: CarouselOptions(
                             height: 360,
                             aspectRatio: 16 / 9,
@@ -344,7 +403,7 @@ class AddGenuineDetailPage extends StatelessWidget {
                                 ):
                                 ExtendedImage.network(
                                   BaseApiService.imageApi+e.path!,
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.fitWidth,
                                   cache: true,
                                 ),
                               );
@@ -352,52 +411,52 @@ class AddGenuineDetailPage extends StatelessWidget {
                           );
                         }).toList(),
                       ),
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        bottom: 15,
-                        child: Container(
-                          width: double.infinity,
-                          child: Center(
-                            child: Obx(() => Container(
-                              width: 40,
-                              height: 18,
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.6),
-                                borderRadius: BorderRadius.circular(50),
+                    ),
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 15,
+                      child: Container(
+                        width: double.infinity,
+                        child: Center(
+                          child: Obx(() => Container(
+                            width: 40,
+                            height: 18,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.6),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "${controller.pageNum.value+1}/${imgList.length}",
+                                style: regular12TextStyle.copyWith(color: whiteColor),
                               ),
-                              child: Center(
-                                child: Text(
-                                  "${controller.pageNum.value+1}/${imgList.length}",
-                                  style: regular12TextStyle.copyWith(color: whiteColor),
-                                ),
-                              ),
-                            )),
-                          ),
+                            ),
+                          )),
                         ),
                       ),
-                      if(type == "down")
-                        Positioned(
-                          right: 15,
-                          bottom: 15,
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: () {
-                              controller.cameraPermissionChk();
-                            },
-                            child: Container(
-                              width: 30,
+                    ),
+                    if(type == "down")
+                      Positioned(
+                        right: 15,
+                        bottom: 15,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            controller.cameraPermissionChk();
+                          },
+                          child: Container(
+                            width: 30,
+                            height: 30,
+                            child: SvgPicture.asset(
+                              "assets/icons/download.svg",
                               height: 30,
-                              child: SvgPicture.asset(
-                                "assets/icons/download.svg",
-                                height: 30,
-                                color: whiteColor,
-                              ),
+                              color: whiteColor,
                             ),
                           ),
                         ),
-                    ],
-                  ),
+                      ),
+                  ],
                 ),
               ),
             ),

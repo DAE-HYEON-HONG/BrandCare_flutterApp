@@ -7,6 +7,10 @@ import '../base_api_service.dart';
 class CareApiService{
   Future<dynamic> addCare(dynamic headers, dynamic body, List<AddCareListModel> list)async{
     try{
+      for(var file in list){
+       print(file.category);
+       print(file.secondCategory);
+      }
       final uri = Uri.parse("${BaseApiService.baseApi}/care");
       var req = http.MultipartRequest('POST', uri);
       req.files.add(

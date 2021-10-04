@@ -59,7 +59,7 @@ class AddGenuineEtcController extends BaseController {
 
   void nextLevel(){
     if(fill.value){
-      Get.to(AddGenuinePaymentPage());
+      Get.to(() => AddGenuinePaymentPage());
     }
   }
 

@@ -9,6 +9,7 @@ class AuthProvider {
 
   Future<dynamic> chkDuplicateEmail(String email) async {
     var res = await _authApiService.duplicateEmail(email);
+
     if(res == null){
       return null;
     }else{
@@ -106,10 +107,21 @@ class AuthProvider {
 
   Future<Map<String, dynamic>?> smsAuth(String phNum) async{
     Map<String, dynamic> body = {
-      'phNum' : phNum,
+      'phone' : phNum,
     };
     final bodyJson = jsonEncode(body);
     var res = await _authApiService.phoneAuth(bodyJson);
+    if(res == null) {
+      return null;
+    }else {
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      print(json.toString());
+      return json;
+    }
+  }
+
+  Future<Map<String, dynamic>?> phoneChkAuth(String phNum) async{
+    var res = await _authApiService.phoneChkAuth(phNum);
     if(res == null) {
       return null;
     }else {

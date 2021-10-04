@@ -1,4 +1,5 @@
 import 'package:brandcare_mobile_flutter_v2/models/addCare/carePersonInfo_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/payment_history_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'careProductInfo_model.dart';
 part 'careStatus_model.g.dart';
@@ -14,6 +15,7 @@ class CareStatusModel {
   String returnType;
   CarePersonInfoModel sender;
   String status;
+  PaymentHistoryModel paymentHistoryResponse;
 
   CareStatusModel(
       this.careProduct,
@@ -25,6 +27,7 @@ class CareStatusModel {
       this.returnType,
       this.sender,
       this.status,
+      this.paymentHistoryResponse,
   );
   factory CareStatusModel.fromJson(Map<String, dynamic> json) => _$CareStatusModelFromJson(json);
   Map<String, dynamic> toJson() => _$CareStatusModelToJson(this);

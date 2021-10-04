@@ -55,12 +55,20 @@ class PointController extends BaseController{
       final addCarePaymentCtrl = Get.find<AddCarePaymentController>();
       addCarePaymentCtrl.myPoint.value = canUsePoint();
       addCarePaymentCtrl.pointDiscount.value = usePoint.value;
+      if(addCarePaymentCtrl.allMountPrice() <  usePoint.value){
+        addCarePaymentCtrl.pointDiscount.value = addCarePaymentCtrl.addPrices();
+        addCarePaymentCtrl.myPoint.value = myPoint.value - addCarePaymentCtrl.addPrices();
+      }
       addCarePaymentCtrl.update();
       Get.back();
     }else{
       final addGenuinePaymentCtrl = Get.find<AddGenuinePaymentController>();
       addGenuinePaymentCtrl.myPoint.value = canUsePoint();
       addGenuinePaymentCtrl.pointDiscount.value = usePoint.value;
+      if(addGenuinePaymentCtrl.allPrice() <  usePoint.value){
+        addGenuinePaymentCtrl.pointDiscount.value = addGenuinePaymentCtrl.allPrice();
+        addGenuinePaymentCtrl.myPoint.value = myPoint.value - addGenuinePaymentCtrl.allPrice();
+      }
       addGenuinePaymentCtrl.update();
       Get.back();
     }

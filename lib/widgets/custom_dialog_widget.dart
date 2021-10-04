@@ -38,7 +38,7 @@ class CustomDialogWidget extends StatelessWidget {
               ),
 
             Padding(
-              padding: EdgeInsets.only(top: (title == null) ? 32.0 : 12.0),
+              padding: EdgeInsets.only(top: (title == null) ? 32.0 : 12.0, left: 16, right: 16),
               child: Text(content, style: regular14TextStyle, textAlign: TextAlign.center,),
             ),
             const SizedBox(height: 23,),

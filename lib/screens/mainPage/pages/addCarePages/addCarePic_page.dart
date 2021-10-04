@@ -62,6 +62,7 @@ class AddCarePicPage extends GetView<AddCarePicController> {
                     changeIdx: (value) => controller.firstIdxCategory(value) ,
                   ),
                   const SizedBox(height: 8),
+                  // if(controller.firstCareCategory.value.isNotEmpty)
                   Obx(() => CareSubExpansionListField(
                     onTap: () => controller.chkFill(),
                     hintText: "2. 케어/수선 항목을 선택하세요.",

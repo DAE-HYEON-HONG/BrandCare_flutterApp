@@ -2,6 +2,10 @@ import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopListController/mainShopListAll_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopListController/mainShopListInst_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopListController/mainShopListMine_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/models/mypage/product/myProduct_model.dart';
+import 'package:brandcare_mobile_flutter_v2/providers/my_provider.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -44,6 +48,37 @@ class MainShopController extends BaseController with SingleGetTickerProviderMixi
       shopListInstCtrl.update();
       await shopListInstCtrl.reqShopList();
     }
+  }
+
+  void chkMyProduct()async{
+    final int chkProductLength = await reqProductList();
+    if(chkProductLength != 0){
+      Get.toNamed("/mainShop/addProduct");
+    }else{
+      Get.dialog(
+          CustomDialogWidget(content: '등록된 제품이 없습니다. \n제품을 등록 후 글쓰기를 해주세요.', onClick: (){
+            Get.back();
+            update();
+          })
+      );
+    }
+  }
+
+  Future<int> reqProductList() async {
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    final res =  await MyProvider().productList(token!, 1, "LATEST");
+    print(res.toString());
+    if(res == null){
+      Get.dialog(
+          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          })
+      );
+      return 0;
+    }
+    final list = (res['list'] as List).map((e) =>  MyProduct.fromJson(e)).toList();
+    return list.length;
   }
 
   @override

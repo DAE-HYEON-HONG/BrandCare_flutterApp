@@ -11,6 +11,8 @@ class SignUpSocialController extends BaseController {
 
   Rx<int> smsTime = 180.obs;
 
+  Timer? _timer;
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -178,7 +180,7 @@ class SignUpSocialController extends BaseController {
         }),
       );
     }else{
-      final res = await AuthProvider().smsAuth(phoneTxt.value);
+      final res = await AuthProvider().phoneChkAuth(phoneTxt.value);
       if(res == null){
         Get.dialog(
           CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
@@ -186,11 +188,33 @@ class SignUpSocialController extends BaseController {
             update();
           }),
         );
+      }else if(res['code'] == "P002"){
+        Get.dialog(
+            CustomDialogWidget(content: '이미 가입된 전화번호입니다.\n다른 전화번호로 시도해주세요.', onClick: (){
+              Get.back();
+            })
+        );
+        if(_timer != null){
+          _timer!.cancel();
+        }
+        smsTime.value = 180;
+        update();
+        return;
       }else{
+        final response = await AuthProvider().phoneChkAuth(phoneTxt.value);
+        if(response == null){
+          Get.dialog(
+            CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
+              Get.back();
+              update();
+            }),
+          );
+          return;
+        }
         sendPhoneCode.value = true;
         phoneChecked.value = false;
         checkSmsAuthTimer();
-        phAuth = res['data'];
+        phAuth = response['data'];
         update();
       }
     }
@@ -203,6 +227,7 @@ class SignUpSocialController extends BaseController {
             Get.back();
           })
       );
+      return;
     }
     if(phAuth == authNumberController.text){
       phoneChecked.value = true;
@@ -223,6 +248,9 @@ class SignUpSocialController extends BaseController {
   }
 
   checkSmsAuthTimer(){
+    if(_timer != null){
+      _timer!.cancel();
+    }
     // Duration defaultDuration = Duration(minutes: 3);
     smsTime.value = 180;
     Timer.periodic(Duration(seconds: 1), (timer) {
@@ -235,6 +263,9 @@ class SignUpSocialController extends BaseController {
 
   @override
   void onInit() {
+    if(_timer != null){
+      _timer!.cancel();
+    }
     super.onInit();
     setSocialProfile(
       email: Get.arguments?['Email'],

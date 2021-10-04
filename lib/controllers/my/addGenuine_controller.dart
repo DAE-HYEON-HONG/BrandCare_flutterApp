@@ -20,6 +20,8 @@ class AddGenuineController extends BaseController {
   Rx<int> smsTime = 180.obs;
   RxBool normalAddress = false.obs;
 
+  Timer? _timer;
+
   TextEditingController senderName = TextEditingController();
   TextEditingController senderPhNum = TextEditingController();
   TextEditingController authNum = TextEditingController();
@@ -90,6 +92,14 @@ class AddGenuineController extends BaseController {
   }
 
   void smsAuthChk() {
+    if(smsTime.value == 0) {
+      Get.dialog(
+          CustomDialogWidget(content: '인증시간이 초과되었습니다.\n다시 시도 부탁드립니다.', onClick: (){
+            Get.back();
+          })
+      );
+      return;
+    }
     if(phAuth == authNumTxt.value){
       phoneChecked.value = true;
     }else{
@@ -107,14 +117,19 @@ class AddGenuineController extends BaseController {
 
   checkSmsAuthTimer(){
     // Duration defaultDuration = Duration(minutes: 3);
+    if(_timer != null){
+      _timer!.cancel();
+    }
     smsTime.value = 180;
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       smsTime.value--;
       if(smsTime.value == 0){
         timer.cancel();
+        return;
       }
       if(phoneChecked.value){
         timer.cancel();
+        return;
       }
     });
   }
@@ -177,7 +192,7 @@ class AddGenuineController extends BaseController {
       receiverAddressDetail.value = senderAddressDetail.value;
     }
     update();
-
+    chkFill();
   }
 
   void receiverNormalAddressSet() {
@@ -189,6 +204,7 @@ class AddGenuineController extends BaseController {
       receiverAddressDetailCtrl.text = globalCtrl.userInfoModel!.address!.street;
     }
     update();
+    chkFill();
   }
 
   void receiverPostSaveChk(){
@@ -209,9 +225,11 @@ class AddGenuineController extends BaseController {
     if(senderPostSet.value){
       senderPostSet.value = false;
       update();
+      chkFill();
     }else{
       receiverPostSet.value = !receiverPostSet.value;
       update();
+      chkFill();
     }
   }
 
@@ -236,37 +254,26 @@ class AddGenuineController extends BaseController {
 
   void chkFill(){
     if(senderName.text.isEmpty){
-      print("이름");
       nextFill.value = false;
     }else if(senderPhNum.text.isEmpty){
-      print("전번");
       nextFill.value = false;
     }else if(phoneChecked.value == false){
-      print("인증");
       nextFill.value = false;
     }else if(senderPostCode.text.isEmpty){
-      print("보우편번호");
       nextFill.value = false;
     }else if(senderAddress.text.isEmpty){
-      print("보주소");
       nextFill.value = false;
     }else if(senderAddressDetailCtrl.text.isEmpty){
-      print("보주자");
       nextFill.value = false;
     }else if(receiverName.text.isEmpty){
-      print("받이");
       nextFill.value = false;
     }else if(receiverPhNum.text.isEmpty){
-      print("밭전");
       nextFill.value = false;
     }else if(receiverPostCode.text.isEmpty){
-      print("받우");
       nextFill.value = false;
     }else if(receiverAddress.text.isEmpty){
-      print('받주');
       nextFill.value = false;
     }else if(receiverAddressDetailCtrl.text.isEmpty){
-      print("받주자");
       nextFill.value = false;
     }else{
       nextFill.value = true;
@@ -359,6 +366,9 @@ class AddGenuineController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    if(_timer != null){
+      _timer!.cancel();
+    }
     print(globalCtrl.userInfoModel.toString());
     chkNormalAddress();
     debounce(senderPhTxt, (_) {

@@ -73,7 +73,7 @@ class InquiryPage extends StatelessWidget {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                child: Obx(() => CustomButtonOnOffWidget(title: '문의하기', onClick: () async => await controller.addInquiry(), isOn: controller.isOn, radius: 0,)))
+                child: Obx(() => CustomButtonOnOffWidget(title: '문의하기', onClick: () async => await controller.addInquiry(context), isOn: controller.isOn, radius: 0,)))
           ],
         ),
       ),

@@ -1,5 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/notice/main_notice_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/notice/main_notice_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:app_settings/app_settings.dart';
@@ -52,11 +54,6 @@ class FcmPushMgr {
       print(message.notification!.title);
       print(message.notification!.body);
       showNotification(message);
-      if(Platform.isAndroid){
-        if(globalCtrl.isLogin.value){
-          Get.toNamed("/main/my/notice");
-        }
-      }
     });
   }
 
@@ -86,15 +83,29 @@ class FcmPushMgr {
         colorText: Colors.black,
         onTap: (snack) {
           if(globalCtrl.isLogin.value){
-            //Get.offAllNamed("/mainPage");
-            Get.toNamed("/main/my/notice");
+            MainNoticeController notiCtrl = Get.find<MainNoticeController>();
+            notiCtrl.type = "fcm";
+            notiCtrl.update();
+            Get.to(() => MainNoticePage());
           }
         }
       );
     }else{
-      var androidNotiDetails = AndroidNotificationDetails('dexterous.com.flutter.local_notifications', title, body, importance: Importance.max, priority: Priority.high);
+      var androidNotiDetails = AndroidNotificationDetails(
+          'dexterous.com.flutter.local_notifications',
+          title, body, importance: Importance.max, priority: Priority.high,
+      );
       var details = NotificationDetails(android: androidNotiDetails);
       await FlutterLocalNotificationsPlugin().show(0, title, body, details);
+    }
+  }
+
+  Future<dynamic> onSeletcNotification(payload) async {
+    if(globalCtrl.isLogin.value){
+      MainNoticeController notiCtrl = Get.find<MainNoticeController>();
+      notiCtrl.type = "fcm";
+      notiCtrl.update();
+      Get.to(() => MainNoticePage());
     }
   }
 
@@ -109,6 +120,6 @@ class FcmPushMgr {
     var initsetting = InitializationSettings(
         android: androidInitializationSettings, iOS: iOSInitializationSettings);
 
-    await FlutterLocalNotificationsPlugin().initialize(initsetting);
+    await FlutterLocalNotificationsPlugin().initialize(initsetting, onSelectNotification: onSeletcNotification);
   }
 }

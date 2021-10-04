@@ -98,6 +98,7 @@ class _AddShopExpansionListFieldState extends State<AddShopExpansionListField> w
         borderRadius: BorderRadius.circular(5),
       ),
       child: SingleChildScrollView(
+        physics: _moreTab ? null : NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
@@ -149,7 +150,7 @@ class _AddShopExpansionListFieldState extends State<AddShopExpansionListField> w
             _moreTab ? DelayedWidget(
               delayDuration: Duration(milliseconds: 800),
               child: Container(
-                height: 237,
+                height: productIdx == 0 ? 237 : 200,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child:  Column(

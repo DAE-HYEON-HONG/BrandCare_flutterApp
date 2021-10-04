@@ -96,6 +96,9 @@ class MyController extends BaseController {
     name.value = "";
     password.value = '';
     rePassword.value = '';
+    currentPwController.text = "";
+    pwController.text = "";
+    rePwController.text = "";
     phone = ''.obs;
     code = ''.obs;
     isAuth.value = false;
@@ -110,7 +113,7 @@ class MyController extends BaseController {
   }
 
   bool changeColor(){
-    if(nickNameController.text.isNotEmpty){
+    if(nickNameController.text.trim().isNotEmpty){
       return true;
     }
     else if(password.value.isNotEmpty && rePassword.value.isNotEmpty){
@@ -182,7 +185,7 @@ class MyController extends BaseController {
   }
 
   Future<void> changeNickName(String name) async{
-    if(name.isNotEmpty){
+    if(name.trim().isNotEmpty){
       final String? token = await SharedTokenUtil.getToken("userLogin_token");
       final res = await MyProvider().changeName(token!, name);
       if(res){
@@ -206,10 +209,23 @@ class MyController extends BaseController {
     }
   }
 
+  bool validateStructure(String value){
+    String  pattern = r'^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regExp = new RegExp(pattern);
+    return regExp.hasMatch(value);
+  }
+
   Future<void> changePassword() async {
-    if(password.value != rePassword.value){
+    if(password.value != rePassword.value) {
       Get.dialog(
-        CustomDialogWidget(content: '새로운 비밀번호가 서로 일치 하지 않습니다.', onClick: (){
+        CustomDialogWidget(content: '새로운 비밀번호가 서로 일치 하지 않습니다.', onClick: () {
+          Get.back();
+          update();
+        }),
+      );
+    }else if(!validateStructure(password.value)){
+      Get.dialog(
+        CustomDialogWidget(content: '비밀번호는 소문자, 숫자, 특수문자를 포함해야 합니다.', onClick: () {
           Get.back();
           update();
         }),
@@ -247,7 +263,7 @@ class MyController extends BaseController {
   }
 
   Future<void> smsAuth() async {
-    final res = await AuthProvider().smsAuth(phone.value);
+    final res = await AuthProvider().phoneChkAuth(phone.value);
     if(res == null){
       Get.dialog(
         CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
@@ -255,8 +271,26 @@ class MyController extends BaseController {
           update();
         }),
       );
+    }else if(res['code'] == "P002"){
+      Get.dialog(
+          CustomDialogWidget(content: '이미 가입된 전화번호입니다.\n다른 전화번호로 시도해주세요.', onClick: (){
+            Get.back();
+          })
+      );
+      update();
+      return;
     }else{
-      authNum = res['data'];
+      final response = await AuthProvider().smsAuth(phone.value);
+      if(response == null){
+        Get.dialog(
+          CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          }),
+        );
+        return;
+      }
+      authNum = response['data'];
       update();
     }
   }
@@ -320,12 +354,19 @@ class MyController extends BaseController {
           update();
         }),
       );
-    }else{
+    }else if(detailAddress.trim().isEmpty){
+      Get.dialog(
+        CustomDialogWidget(content: '나머지 주소가 입력되지 않았습니다.', onClick: (){
+          Get.back();
+          update();
+        }),
+      );
+    } else{
       final String? token = await SharedTokenUtil.getToken("userLogin_token");
       final res = await MyProvider().changeAddress(
         token!,
         '${city.value} ${sigungu.value}',
-        "${street.value.split('${city.value} ${sigungu.value}').last}${detailAddress}",
+        "${street.value.split('${city.value} ${sigungu.value}').last} ${detailAddress}",
         postcode.value,
       );
       if(res){
@@ -355,7 +396,7 @@ class MyController extends BaseController {
   }
 
   Future<void> reqBannerList() async {
-    final res =  await MyProvider().getBanner("MAIN");
+    final res =  await MyProvider().getBanner("SUB");
     if(res == null){
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
@@ -374,7 +415,7 @@ class MyController extends BaseController {
   bool get passwordIsOn => nowPassword.isNotEmpty && password.value.isNotEmpty && rePassword.value.isNotEmpty && password.value == rePassword.value;
   bool get isPhone => phone.value.length == 11;
   bool get isCode => code.value.length == 6;
-  bool get isAddress => address.value.isNotEmpty && detailAddress.value.isNotEmpty && postcode.value.isNotEmpty;
+  bool get isAddress => address.value.isNotEmpty && detailAddress.value.trim().isNotEmpty && postcode.value.isNotEmpty;
 
   @override
   void onInit() async{

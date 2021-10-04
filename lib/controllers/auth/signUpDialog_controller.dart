@@ -24,6 +24,7 @@ class SignUpDialogController extends BaseController {
   }
 
   void emailJoin(){
+    Get.back();
     Get.toNamed('/auth/signup');
   }
 

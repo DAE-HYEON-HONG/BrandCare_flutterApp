@@ -51,6 +51,7 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
   Future<void> reqShopDetail() async {
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     var res = await ShopProvider().shopDetail(token!, idx);
+    print(res.toString());
     if(res == null){
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
@@ -60,6 +61,11 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
       );
     }else{
       model = res;
+      if(model!.productImages != null){
+        for(var img in model!.productImages!){
+          model!.images.add(img);
+        }
+      }
       mainShopListInstCtrl.reqShopList();
       mainShopListInstCtrl.update();
       update();

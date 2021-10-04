@@ -83,7 +83,7 @@ class MainShopPage extends StatelessWidget{
                   children: <Widget>[
                     const SizedBox(height: 20),
                     InkWell(
-                      onTap: () => Get.toNamed("/mainShop/addProduct"),
+                      onTap: () => controller.chkMyProduct(),
                       child: Container(
                         width: 72,
                         height: 24,
@@ -169,7 +169,7 @@ class MainShopPage extends StatelessWidget{
                   child: _tabBarText("전체"),
                 ),
                 Tab(
-                  child: _tabBarText("내제품"),
+                  child: _tabBarText("내 제품"),
                 ),
                 Tab(
                   child: _tabBarText("관심리스트"),

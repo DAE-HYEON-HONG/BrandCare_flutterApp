@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 
 enum SignUpCheckEmail {
   NONE,
+  ERR,
   DONE,
   DUPLICATE
 }
@@ -24,6 +25,8 @@ class SignUpController extends BaseController {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController authNumberController = TextEditingController();
   final TextEditingController friendCodeController = TextEditingController();
+
+  Timer? _timer;
 
   Map<String, String> linkData = {
     '이용약관': '/main/my/term',
@@ -78,32 +81,42 @@ class SignUpController extends BaseController {
   }
 
   void chkDuplicateEmail(String email)async{
-    super.networkState.value = NetworkStateEnum.LOADING;
-    if(email == ""){
-      Get.dialog(
-          CustomDialogWidget(content: '이메일을 입력해주세요.', onClick: (){
-            Get.back();
-            update();
-          })
-      );
-    }else{
-      final chkEmail = await AuthProvider().chkDuplicateEmail(email);
-      if (chkEmail == null){
+    if(!RegexUtil.checkEmailRegex(email: email)){
+      duplicateEmail.value = SignUpCheckEmail.ERR;
+    }else {
+      super.networkState.value = NetworkStateEnum.LOADING;
+      if(email == ""){
         Get.dialog(
-            CustomDialogWidget(content: '네트워크 연결에 실패하였습니다.', onClick: (){
+            CustomDialogWidget(content: '이메일을 입력해주세요.', onClick: (){
               Get.back();
               update();
             })
         );
-      }else if(chkEmail == "Y"){
-        duplicateEmail.value = SignUpCheckEmail.DONE;
-        update();
-      }else {
-        duplicateEmail.value = SignUpCheckEmail.DUPLICATE;
-        update();
+      }else{
+        final chkEmail = await AuthProvider().chkDuplicateEmail(email);
+        if (chkEmail == null){
+          Get.dialog(
+              CustomDialogWidget(content: '네트워크 연결에 실패하였습니다.', onClick: (){
+                Get.back();
+                update();
+              })
+          );
+        }else if(chkEmail == "Y"){
+          duplicateEmail.value = SignUpCheckEmail.DONE;
+          update();
+        }else {
+          duplicateEmail.value = SignUpCheckEmail.DUPLICATE;
+          update();
+        }
       }
+      super.networkState.value = NetworkStateEnum.NONE;
     }
-    super.networkState.value = NetworkStateEnum.NONE;
+  }
+
+  bool validateStructure(String value){
+    String  pattern = r'^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regExp = new RegExp(pattern);
+    return regExp.hasMatch(value);
   }
 
   Future<void> registerChk() async{
@@ -113,6 +126,19 @@ class SignUpController extends BaseController {
             Get.back();
             update();
           }),
+      );
+    }else if(!RegexUtil.checkEmailRegex(email: emailController.text)) {
+      Get.dialog(
+        CustomDialogWidget(content: '형식에 맞지 않는 이메일 입니다.', onClick: (){
+          Get.back();
+        }),
+      );
+    }else if(!validateStructure(passwordController.text)){
+      Get.dialog(
+        CustomDialogWidget(content: '비밀번호는 소문자, 숫자, 특수문자를 포함해야 합니다.', onClick: () {
+          Get.back();
+          update();
+        }),
       );
     } else if(passwordController.text == "") {
       Get.dialog(
@@ -132,10 +158,15 @@ class SignUpController extends BaseController {
           Get.back();
         }),
       );
-    }
-    else if(nameController.text.length > 8){
+    } else if(nameController.text.length > 8){
       Get.dialog(
         CustomDialogWidget(content: '닉네임은 8자리 이하로 입력해주세요.', onClick: (){
+          Get.back();
+        }),
+      );
+    } else if(nameController.text.trim().isEmpty){
+      Get.dialog(
+        CustomDialogWidget(content: '닉네임이 입력되지 않았습니다.', onClick: (){
           Get.back();
         }),
       );
@@ -193,14 +224,38 @@ class SignUpController extends BaseController {
   Future<void> sendSms() async {
     if(phoneController.text.isEmpty) return null;
     if(!RegexUtil.checkPhoneRegex(phone: phoneController.text)) return null;
-    var response = await _authApiProvider.smsAuth(phoneController.text);
-    if(response != null) {
-      sendPhoneCode.value = true;
-      authCode.value = false;
-      phoneReadOnly.value = false;
-      smsCode = response["data"];
-      checkSmsAuthTimer();
+    final response = await _authApiProvider.phoneChkAuth(phoneController.text);
+    if(response!['code'] == "P002"){
+      Get.dialog(
+          CustomDialogWidget(content: '이미 가입된 전화번호입니다.\n다른 전화번호로 시도해주세요.', onClick: (){
+            Get.back();
+          })
+      );
+      if(_timer != null){
+        _timer!.cancel();
+      }
+      smsTime.value = 180;
       update();
+      return;
+    }else {
+      final res = await _authApiProvider.smsAuth(phoneController.text);
+      if(res == null){
+        Get.dialog(
+          CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
+            Get.back();
+            update();
+          }),
+        );
+        return;
+      }
+      if(res != null) {
+        sendPhoneCode.value = true;
+        authCode.value = false;
+        phoneReadOnly.value = false;
+        smsCode = res["data"];
+        checkSmsAuthTimer();
+        update();
+      }
     }
   }
 
@@ -229,11 +284,19 @@ class SignUpController extends BaseController {
 
   checkSmsAuthTimer(){
     // Duration defaultDuration = Duration(minutes: 3);
+    if(_timer != null){
+      _timer!.cancel();
+    }
     smsTime.value = 180;
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       smsTime.value--;
       if(smsTime.value == 0){
         timer.cancel();
+        return;
+      }
+      if(authCode.value){
+        timer.cancel();
+        return;
       }
     });
   }
@@ -243,6 +306,9 @@ class SignUpController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    if(_timer != null){
+      _timer!.cancel();
+    }
     debounce(emailTxt, (_) {
       isEmail.value = RegexUtil.checkEmailRegex(email: emailTxt.value);
     });

@@ -3,6 +3,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/coupon_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/my_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
@@ -26,6 +27,7 @@ class CouponUsePage extends GetView<CouponController> {
           children: [
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
+              controller: controller.pagingScroll,
               child: Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16),
                 child: GetBuilder<CouponController>(builder: (_) => Column(
@@ -47,8 +49,7 @@ class CouponUsePage extends GetView<CouponController> {
                         Flexible(
                           flex: 1,
                           child: Obx(() => CustomButtonOnOffWidget(title: '등록', onClick: (){
-                            controller.addCoupon();
-                            Get.back();
+                            controller.couponAddPayment(controller.couponCode.value);
                           }, isOn: controller.isValidCouponCode)),
                         )
                       ],
@@ -108,36 +109,42 @@ class CouponUsePage extends GetView<CouponController> {
 
   Widget _couponItem(int idx) => GestureDetector(
     behavior: HitTestBehavior.translucent,
-    onTap: (){
-      controller.couponId.value = controller.couponList![idx].id;
-      controller.couponDiscount.value = controller.couponList![idx].discount;
-    },
+    onTap: () => controller.couponUse(idx),
     child: Container(
-      margin: const EdgeInsets.only(top: 16),
+      margin: const EdgeInsets.only(top: 10),
       width: double.infinity,
       height: 120,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
+        color: primaryColor,
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: ExtendedImage.network(
-          BaseApiService.imageApi+controller.couponList![idx].path,
-          fit: BoxFit.cover,
-          cache: true,
-          // ignore: missing_return
-          loadStateChanged: (ExtendedImageState state) {
-            switch(state.extendedImageLoadState) {
-              case LoadState.loading :
-                break;
-              case LoadState.completed :
-                break;
-              case LoadState.failed :
-                break;
-            }
-          },
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Obx(() => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("${controller.couponList![idx].title}", style: regular12TextStyle.copyWith(color: whiteColor)),
+                if(controller.couponId.value == controller.couponList![idx].id)
+                  Text("사용됨", style: regular12TextStyle.copyWith(color: whiteColor)),
+              ],
+            )),
+            const SizedBox(height: 8),
+            Text("${NumberFormatUtil.convertNumberFormat(number: controller.couponList![idx].discount)}원 할인", style: medium24TextStyle.copyWith(fontSize: 30, color: whiteColor, fontWeight: FontWeight.w900)),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text("브랜드케어", style: regular12TextStyle.copyWith(color: whiteColor)),
+              ],
+            ),
+          ],
         ),
       ),
-    ),
+    )
   );
 }

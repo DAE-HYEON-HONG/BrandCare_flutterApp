@@ -165,6 +165,28 @@ class MyApiService{
         uri,
         headers: headers,
       );
+      print(res.body.toString());
+      return res;
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> couponAdd(dynamic headers, dynamic code) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/coupon/code");
+      final http.Response res = await http.post(
+        uri,
+        headers: headers,
+        body: code
+      );
+      print(res.body.toString());
+      if(res.statusCode == 500){
+        return res;
+      }else if(res.statusCode == 404){
+        return null;
+      }
       return res;
     }catch(e){
       print("접속 에러 : ${e.toString()}");
@@ -330,6 +352,57 @@ class MyApiService{
         headers: headers,
       );
       print(res.body.toString());
+      return res;
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> alarmList(dynamic headers, String type, int page) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/user/alarm/$type?page=$page");
+      final http.Response res = await http.get(
+        uri,
+        headers: headers,
+      );
+      print(res.body.toString());
+      return res;
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> removeAllAlarms(dynamic headers) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/user/read/ALL/1");
+      final http.Response res = await http.post(
+        uri,
+        headers: headers,
+      );
+      print(res.body.toString());
+      if(res.statusCode == 404 || res.statusCode == 500){
+        return null;
+      }
+      return res;
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<http.Response?> removeSelectAlarms(dynamic headers, String type, int id) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/user/read/$type/$id");
+      final http.Response res = await http.post(
+        uri,
+        headers: headers,
+      );
+      print(res.body.toString());
+      if(res.statusCode == 404 || res.statusCode == 500){
+        return null;
+      }
       return res;
     }catch(e){
       print("접속 에러 : ${e.toString()}");

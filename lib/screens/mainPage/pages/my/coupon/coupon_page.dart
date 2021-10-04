@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/coupon_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +63,7 @@ class CouponPage extends GetView<CouponController> {
               padding: EdgeInsets.only(
                   top: 16.0,
                   bottom: idx == controller.couponList!.length - 1 ? 16 : 0),
-              child: _couponItem(),
+              child: _couponItem(controller.couponList![idx].title, controller.couponList![idx].discount),
             );
           },
           itemCount: controller.couponList!.length,
@@ -70,7 +71,7 @@ class CouponPage extends GetView<CouponController> {
         )),
       );
 
-  Widget _couponItem() => Container(
+  Widget _couponItem(String title, int discount) => Container(
         width: double.infinity,
         height: 120,
         decoration: BoxDecoration(
@@ -83,9 +84,9 @@ class CouponPage extends GetView<CouponController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("회원가입 완료 쿠폰", style: regular12TextStyle.copyWith(color: whiteColor)),
+              Text("$title", style: regular12TextStyle.copyWith(color: whiteColor)),
               const SizedBox(height: 8),
-              Text("3,000원 할인", style: medium24TextStyle.copyWith(fontSize: 30, color: whiteColor, fontWeight: FontWeight.w900)),
+              Text("${NumberFormatUtil.convertNumberFormat(number: discount)}원 할인", style: medium24TextStyle.copyWith(fontSize: 30, color: whiteColor, fontWeight: FontWeight.w900)),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.end,

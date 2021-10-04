@@ -1,5 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/notLoginPagesControllers/useInfoControllers/useInfoPrice_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +12,7 @@ class UseInfoPricePage extends StatelessWidget {
   final UseInfoPriceController controller = Get.put(UseInfoPriceController());
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return GetBuilder<GlobalController>(builder: (_) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
@@ -40,7 +41,7 @@ class UseInfoPricePage extends StatelessWidget {
         const SizedBox(height: 17),
         Obx(() => _careWidget()),
       ],
-    );
+    ));
   }
 
   _careWidget() {
@@ -130,7 +131,7 @@ class UseInfoPricePage extends StatelessWidget {
               itemBuilder: (context, idx) {
                 return _list(
                     controller.globalCtrl.careCategory![0].subCategory[idx].title,
-                    controller.globalCtrl.careCategory![0].subCategory[idx].price,
+                    controller.globalCtrl.careCategory![0].subCategory[idx].price ?? 0,
                     controller.globalCtrl.careCategory![0].subCategory[idx].reMark,
                 );
               },
@@ -186,7 +187,7 @@ class UseInfoPricePage extends StatelessWidget {
               itemBuilder: (context, idx) {
                 return _list(
                   controller.globalCtrl.careCategory![1].subCategory[idx].title,
-                  controller.globalCtrl.careCategory![1].subCategory[idx].price,
+                  controller.globalCtrl.careCategory![1].subCategory[idx].price ?? 0,
                   controller.globalCtrl.careCategory![1].subCategory[idx].reMark,
                 );
               },
@@ -242,7 +243,7 @@ class UseInfoPricePage extends StatelessWidget {
               itemBuilder: (context, idx) {
                 return _list(
                   controller.globalCtrl.careCategory![2].subCategory[idx].title,
-                  controller.globalCtrl.careCategory![2].subCategory[idx].price,
+                  controller.globalCtrl.careCategory![2].subCategory[idx].price ?? 0,
                   controller.globalCtrl.careCategory![2].subCategory[idx].reMark,
                 );
               },

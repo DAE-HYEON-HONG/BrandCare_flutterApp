@@ -85,7 +85,6 @@ class SignUpPage extends GetView<SignUpController> {
                         isShowTitle: true,
                         title: '친구 초대 코드(선택)',
                         hint: '친구에게 받은 초대 코드를 입력해주세요.',
-                        isObscureText: true,
                       ),
                       const SizedBox(height: 16),
                       _itemAgreeContainer(),
@@ -347,6 +346,12 @@ class SignUpPage extends GetView<SignUpController> {
     } else if (emailCheck == SignUpCheckEmail.DUPLICATE) {
       return CustomButtonEmptyBackgroundWidget(
         title: '이미 등록된 계정입니다.',
+        radius: 4,
+        onClick: () {},
+      );
+    }else if(emailCheck == SignUpCheckEmail.ERR){
+      return CustomButtonEmptyBackgroundWidget(
+        title: '사용 불가능한 이메일 입니다.',
         radius: 4,
         onClick: () {},
       );

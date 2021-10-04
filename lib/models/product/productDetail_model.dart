@@ -44,7 +44,7 @@ class ProductDetailModel{
   late String? frontImage;
   late String genuine;
   late int id;
-  late List<IdPathImagesModel>? image;
+  final List<IdPathImagesModel>? image;
   late String? leftImage;
   late String price;
   late String? rightImage;

@@ -16,6 +16,8 @@ class MainAddCareController extends BaseController {
 
   Rx<int> smsTime = 180.obs;
 
+  Timer? timer;
+
   TextEditingController senderName = TextEditingController();
   TextEditingController senderPhNum = TextEditingController();
   TextEditingController authNum = TextEditingController();
@@ -51,37 +53,26 @@ class MainAddCareController extends BaseController {
 
   void chkFill(){
     if(senderName.text.isEmpty){
-      print("이름");
       nextFill.value = false;
     }else if(senderPhNum.text.isEmpty){
-      print("전번");
       nextFill.value = false;
     }else if(phoneChecked.value == false){
-      print("인증");
       nextFill.value = false;
     }else if(senderPostCode.text.isEmpty){
-      print("보우편번호");
       nextFill.value = false;
     }else if(senderAddress.text.isEmpty){
-      print("보주소");
       nextFill.value = false;
     }else if(senderAddressDetailCtrl.text.isEmpty){
-      print("보주자");
       nextFill.value = false;
     }else if(receiverName.text.isEmpty){
-      print("받이");
       nextFill.value = false;
     }else if(receiverPhNum.text.isEmpty){
-      print("밭전");
       nextFill.value = false;
     }else if(receiverPostCode.text.isEmpty){
-      print("받우");
       nextFill.value = false;
     }else if(receiverAddress.text.isEmpty){
-      print('받주');
       nextFill.value = false;
-    }else if(receiverAddressDetailCtrl.text.isEmpty){
-      print("받주자");
+    }else if(receiverAddressDetail.value.isEmpty){
       nextFill.value = false;
     }else{
       nextFill.value = true;
@@ -89,6 +80,10 @@ class MainAddCareController extends BaseController {
   }
 
   void initInfo(){
+    if(timer != null){
+      timer!.cancel();
+    }
+    smsTime.value = 180;
     senderName.text = "";
     senderPhNum.text = "";
     authNum.text = "";
@@ -98,6 +93,7 @@ class MainAddCareController extends BaseController {
     authNumTxt.value = "";
     phAuth = "";
     phoneChecked.value = false;
+    senderNormalAddress.value = false;
     senderPostCode.text = "";
     senderAddress.text = "";
     senderAddressDetailCtrl.text = "";
@@ -112,7 +108,9 @@ class MainAddCareController extends BaseController {
     receiverAddressDetail.value = "";
     receiverNormalAddress.value = false;
     saveReceiverPostChk.value = false;
+    receiverPhNum.text = "";
     receiverPostSet.value = false;
+    update();
   }
 
 
@@ -134,6 +132,9 @@ class MainAddCareController extends BaseController {
           }),
         );
       }else{
+        if(timer != null){
+          timer!.cancel();
+        }
         checkSmsAuthTimer();
         phAuth = res['data'];
         phoneChecked.value = false;
@@ -144,6 +145,14 @@ class MainAddCareController extends BaseController {
   }
 
   void smsAuthChk() {
+    if(smsTime.value == 0) {
+      Get.dialog(
+          CustomDialogWidget(content: '인증시간이 초과되었습니다.\n다시 시도 부탁드립니다.', onClick: (){
+            Get.back();
+          })
+      );
+      return;
+    }
     if(phAuth == authNumTxt.value){
       phoneChecked.value = true;
     }else{
@@ -159,15 +168,19 @@ class MainAddCareController extends BaseController {
   }
 
   checkSmsAuthTimer(){
-    // Duration defaultDuration = Duration(minutes: 3);
+    if(timer != null){
+      timer!.cancel();
+    }
     smsTime.value = 180;
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
       smsTime.value--;
       if(smsTime.value == 0){
         timer.cancel();
+        return;
       }
       if(phoneChecked.value){
         timer.cancel();
+        return;
       }
     });
   }
