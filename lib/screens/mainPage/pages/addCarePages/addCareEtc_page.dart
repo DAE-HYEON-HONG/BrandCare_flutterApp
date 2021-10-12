@@ -114,7 +114,7 @@ class AddCareEtcPage extends GetView<AddCareEtcController> {
                           focusedBorder: InputBorder.none,
                           disabledBorder: InputBorder.none,
                           enabledBorder: InputBorder.none,
-                          hintText: "신청 항목 별로 케어/수선 요청사항을\n자세하게 작성해주세요.",
+                          hintText: "신청 항목의 요청사항을\n자세히 작성해주세요.\n(예. 항목1 - 내용/ 항목2 - 내용)",
                           hintStyle: regular14TextStyle.copyWith(color: gray_999Color),
                         ),
                       ),

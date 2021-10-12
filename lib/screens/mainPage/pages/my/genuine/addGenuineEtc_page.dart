@@ -207,7 +207,7 @@ class AddGenuineEtcPage extends StatelessWidget {
                                 focusedBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
                                 enabledBorder: InputBorder.none,
-                                hintText: "고객님의 요청사항을 작성하세요.",
+                                hintText: "신청 항목의 요청사항을\n자세히 작성해주세요.\n(예. 항목1 - 내용/ 항목2 - 내용)",
                                 hintStyle: regular14TextStyle.copyWith(color: gray_999Color),
                               ),
                             ),

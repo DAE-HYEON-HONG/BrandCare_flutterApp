@@ -24,7 +24,7 @@ class FcmPushMgr {
     //return
   }
 
-  Future<void> _reqPermission() async{
+  Future<void> reqPermission() async{
     NotificationSettings settings = await _firebaseMsg.requestPermission(
       sound: true,
       badge: true,
@@ -37,7 +37,7 @@ class FcmPushMgr {
   }
 
     Future<String> regToken() async{
-    await _reqPermission();
+    // await _reqPermission();
     String fcmToken = "";
     await _firebaseMsg.getToken().then((token) => {
       print("FCM토큰 : $token"),
@@ -58,7 +58,6 @@ class FcmPushMgr {
   }
 
   Future<void> listenBackgroundMessage(RemoteMessage msg) async{
-    await Firebase.initializeApp();
     print("백그라운드 상태에서 문자 받음");
     print("data : ${msg.data}");
     print(msg.messageId);

@@ -148,7 +148,8 @@ class MyProductPage extends GetView<MyProductController> {
                       style: regular12TextStyle.copyWith(color: gray_333Color),
                     ),
                     const Spacer(),
-                    GenuineBoxWidget(isGenuine: genuine.toLowerCase() == 'true'),
+                    if(genuine != "REFUSAL")
+                    GenuineBoxWidget(isGenuine: genuine == "GENUINE" ? true : false),
                   ],
                 ),
                 const SizedBox(

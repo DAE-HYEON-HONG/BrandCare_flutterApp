@@ -1,5 +1,7 @@
+import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/auth/find_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
@@ -54,6 +56,7 @@ class FindIdComponent extends StatelessWidget {
                                       controller: controller.phoneController,
                                       isShowTitle: true,
                                       title: '전화번호',
+                                      readOnly: controller.authCode.isNotEmpty ? true : false,
                                       textInputType: TextInputType.number,
                                     ),
                                   ),
@@ -77,8 +80,23 @@ class FindIdComponent extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                ]),
+                                ],
+                            ),
                             const SizedBox(height: 16,),
+                            if(controller.idState.value == FindIdStateEnum.FIND_ALL_ID)
+                            Row(
+                              children: [
+                                Text("인증번호", style: medium14TextStyle),
+                                const SizedBox(width: 10),
+                                if(!controller.isAuth)
+                                Obx(() => Text(
+                                      '${DateFormatUtil.convertTimer(timer: controller.smsTime.value)}',
+                                      style: medium14TextStyle.copyWith(
+                                          color: redColor),
+                                    )),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
                             if(!controller.isAuth)
                               AnimatedOpacity(
                                 opacity: (controller.idState.value == FindIdStateEnum.FIND_ALL_ID) ? 1.0 : 0.0,
@@ -93,22 +111,17 @@ class FindIdComponent extends StatelessWidget {
                                           },
                                           onSubmit: (value) {},
                                           controller: controller.authCodeController,
-                                          isShowTitle: true,
-                                          title: '인증번호',
+                                          isShowTitle: false,
+                                          title: "",
                                           textInputType: TextInputType.number,
                                         ),
                                       ),
-
                                       Flexible(
                                         flex: 1,
                                         child: Padding(
-                                          padding: const EdgeInsets.only(top: 8.0, left: 8.0),
+                                          padding: const EdgeInsets.only(left: 8.0),
                                           child: Column(
                                             children: [
-                                              Text(
-                                                '',
-                                                style: medium14TextStyle,
-                                              ),
                                               Obx(() => CustomButtonOnOffWidget(
                                                 onClick: () {
                                                   controller.smsAuthChk();

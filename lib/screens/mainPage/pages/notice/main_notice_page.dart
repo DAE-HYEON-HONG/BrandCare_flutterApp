@@ -145,6 +145,7 @@ class MainNoticePage extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 12),
+                  controller.progressNoticeList!.length != 0 ?
                   ListView.separated(
                     padding: const EdgeInsets.only(left: 16, right: 16),
                     physics: NeverScrollableScrollPhysics(),
@@ -162,6 +163,18 @@ class MainNoticePage extends StatelessWidget {
                       height: 0,
                       thickness: 1,
                     ),
+                  ) :
+                  Container(
+                    width: double.infinity,
+                    height: 300,
+                    child: Center(
+                      child: Text(
+                        "도착한 알림이 없어요.",
+                        style: regular14TextStyle.copyWith(
+                          color: gray_999Color,
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 32),
                 ],
@@ -177,6 +190,7 @@ class MainNoticePage extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 12),
+                  controller.productNoticeList!.length != 0 ?
                   ListView.separated(
                     padding: const EdgeInsets.only(left: 16, right: 16),
                     physics: NeverScrollableScrollPhysics(),
@@ -194,6 +208,18 @@ class MainNoticePage extends StatelessWidget {
                       height: 0,
                       thickness: 1,
                     ),
+                  ) :
+                  Container(
+                    width: double.infinity,
+                    height: 300,
+                    child: Center(
+                      child: Text(
+                        "도착한 알림이 없어요.",
+                        style: regular14TextStyle.copyWith(
+                          color: gray_999Color,
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 32),
                 ],
@@ -209,6 +235,7 @@ class MainNoticePage extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 12),
+                  controller.shopNoticeList!.length != 0 ?
                   ListView.separated(
                     padding: const EdgeInsets.only(left: 16, right: 16),
                     physics: NeverScrollableScrollPhysics(),
@@ -226,6 +253,18 @@ class MainNoticePage extends StatelessWidget {
                       height: 0,
                       thickness: 1,
                     ),
+                  ) :
+                  Container(
+                    width: double.infinity,
+                    height: 300,
+                    child: Center(
+                      child: Text(
+                        "도착한 알림이 없어요.",
+                        style: regular14TextStyle.copyWith(
+                          color: gray_999Color,
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 32),
                 ],
@@ -241,6 +280,7 @@ class MainNoticePage extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 12),
+                  controller.inquiryNoticeList!.length != 0 ?
                   ListView.separated(
                     padding: const EdgeInsets.only(left: 16, right: 16),
                     physics: NeverScrollableScrollPhysics(),
@@ -257,6 +297,18 @@ class MainNoticePage extends StatelessWidget {
                     separatorBuilder: (context, idx) => const Divider(
                       height: 0,
                       thickness: 1,
+                    ),
+                  ) :
+                  Container(
+                    width: double.infinity,
+                    height: 300,
+                    child: Center(
+                      child: Text(
+                        "도착한 알림이 없어요.",
+                        style: regular14TextStyle.copyWith(
+                          color: gray_999Color,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 32),

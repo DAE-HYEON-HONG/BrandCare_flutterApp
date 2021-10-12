@@ -34,6 +34,7 @@ class SignUpSocialController extends BaseController {
   RxBool duplicateEmail = false.obs;
 
   Rx<bool> isPhone = false.obs;
+  Rx<bool> isAuthCode = false.obs;
   Rx<String> phoneTxt = ''.obs;
   RxBool phoneChecked = false.obs; // false로 꼭 바꿔주세요.
 
@@ -102,7 +103,8 @@ class SignUpSocialController extends BaseController {
     }
   }
 
-  Future<void> registerChk(String type) async{
+  Future<void> registerChk(String type, context) async{
+    FocusScope.of(context).unfocus();
     if(emailController.text == ""){
       Get.dialog(
           CustomDialogWidget(content: '이메일이 적혀있지 않습니다.', onClick: (){
@@ -201,7 +203,7 @@ class SignUpSocialController extends BaseController {
         update();
         return;
       }else{
-        final response = await AuthProvider().phoneChkAuth(phoneTxt.value);
+        final response = await AuthProvider().smsAuth(phoneTxt.value);
         if(response == null){
           Get.dialog(
             CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
@@ -213,6 +215,7 @@ class SignUpSocialController extends BaseController {
         }
         sendPhoneCode.value = true;
         phoneChecked.value = false;
+        authNumberController.text =  "";
         checkSmsAuthTimer();
         phAuth = response['data'];
         update();
@@ -221,30 +224,32 @@ class SignUpSocialController extends BaseController {
   }
 
   void smsAuthChk() {
-    if(smsTime.value == 0) {
-      Get.dialog(
-          CustomDialogWidget(content: '인증시간이 초과되었습니다.\n다시 시도 부탁드립니다.', onClick: (){
+    if(phoneChecked.value == false){
+      if(smsTime.value == 0) {
+        Get.dialog(
+            CustomDialogWidget(content: '인증시간이 초과되었습니다.\n다시 시도 부탁드립니다.', onClick: (){
+              Get.back();
+            })
+        );
+        return;
+      }
+      if(phAuth == authNumberController.text){
+        phoneChecked.value = true;
+        isPhone.value = true;
+        update();
+      }else{
+        Get.dialog(
+          CustomDialogWidget(content: '인증번호가 올바르지 않습니다.', onClick: (){
             Get.back();
-          })
-      );
-      return;
-    }
-    if(phAuth == authNumberController.text){
-      phoneChecked.value = true;
-      isPhone.value = true;
-      update();
-    }else{
-      Get.dialog(
-        CustomDialogWidget(content: '인증번호가 올바르지 않습니다.', onClick: (){
-          Get.back();
-          update();
-        }),
-      );
-      phoneChecked.value = false;
-      isPhone.value = false;
+            update();
+          }),
+        );
+        phoneChecked.value = false;
+        //isPhone.value = false;
+        update();
+      }
       update();
     }
-    update();
   }
 
   checkSmsAuthTimer(){
@@ -253,7 +258,7 @@ class SignUpSocialController extends BaseController {
     }
     // Duration defaultDuration = Duration(minutes: 3);
     smsTime.value = 180;
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       smsTime.value--;
       if(smsTime.value == 0){
         timer.cancel();

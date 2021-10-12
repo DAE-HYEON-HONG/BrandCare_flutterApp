@@ -94,8 +94,10 @@ class CouponController extends BaseController{
   }
 
   Future<void> couponAdd(String code)async{
+    super.networkState = NetworkStateEnum.LOADING.obs;
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     final res =  await MyProvider().couponAdd(token!, code);
+    super.networkState = NetworkStateEnum.DONE.obs;
     print(res.toString());
     if(res == null){
       Get.dialog(

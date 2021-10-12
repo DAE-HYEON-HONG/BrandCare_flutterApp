@@ -49,7 +49,7 @@ class AddGenuinePaymentController extends BaseController {
       Get.dialog(
         CustomDialogWidget(
           title: '정품인증 신청 주의 사항',
-          content: '요청사항과 신청 항목의 금액으로 주문이 접수 되오니 정확하게 신청해 주시기 바랍니다.\n만약, 첨부사진과 신청항목이 다를 경우 주문이 취소되오니 이점 참고하여 주시기 바랍니다.',
+          content: '요청사항과 신청 항목의 금액으로 주문이 접수 되오니\n정확하게 신청해 주시기 바랍니다.',
           onClick: () async{
             await uploadAdd();
           },
@@ -66,6 +66,7 @@ class AddGenuinePaymentController extends BaseController {
   }
 
   Future<void> uploadAdd() async{
+    super.networkState = NetworkStateEnum.LOADING.obs;
     Map<String, String> addressBody = {
       "city" : addGenuineCtrl.senderAddress.text,
       "street" : addGenuineCtrl.senderAddressDetail.value,
@@ -94,6 +95,7 @@ class AddGenuinePaymentController extends BaseController {
     );
     await saveReceiverAddress();
     await saveSenderAddress();
+    super.networkState = NetworkStateEnum.DONE.obs;
     if(res == null){
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){

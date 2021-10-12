@@ -107,25 +107,27 @@ class MainNoticeController extends BaseController with SingleGetTickerProviderMi
   void tabBarListener(int idx) async {
     print("현재 선택된 탭바 idx: $idx");
     currentPageIdx = idx;
-    progressNoticeList = <MainNoticeModel>[];
-    productNoticeList = <MainNoticeModel>[];
     // shopNoticeList = <MainNoticeModel>[];
-    inquiryNoticeList = <MainNoticeModel>[];
-    if(idx == 0){
-      pageIdx = 1;
-      tabType = "HISTORY";
-      update();
-      await reqAlarmList();
-    }else if(idx == 1){
-      pageIdx = 1;
-      tabType = "CHANGE";
-      update();
-      await reqAlarmList();
-    }else if(idx == 3){
-      pageIdx = 1;
-      tabType = "INQUIRY";
-      update();
-      await reqAlarmList();
+    if(!tabCtrl.indexIsChanging){
+      if(idx == 0){
+        progressNoticeList = <MainNoticeModel>[];
+        pageIdx = 1;
+        tabType = "HISTORY";
+        update();
+        await reqAlarmList();
+      }else if(idx == 1){
+        productNoticeList = <MainNoticeModel>[];
+        pageIdx = 1;
+        tabType = "CHANGE";
+        update();
+        await reqAlarmList();
+      }else if(idx == 3){
+        inquiryNoticeList = <MainNoticeModel>[];
+        pageIdx = 1;
+        tabType = "INQUIRY";
+        update();
+        await reqAlarmList();
+      }
     }
     update();
   }

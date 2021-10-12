@@ -37,7 +37,8 @@ class LoginController extends BaseController {
     { '회원가입': ''},
   ];
 
-  List snsLoginItem = ['login_kakao.svg', 'login_naver.svg', 'login_facebook.svg'];
+  // List snsLoginItem = ['login_kakao.svg', 'login_naver.svg', 'login_facebook.svg']; 페이스북 있는 버전
+  List snsLoginItem = ['login_kakao.svg', 'login_naver.svg']; // 페이스북 없는 버전
 
   void changeAutoLogin() {
     isAutoLogin.value = !isAutoLogin.value;
@@ -138,9 +139,9 @@ class LoginController extends BaseController {
         "KAKAO",
         globalCtrl.fcmToken!,
       );
+      super.networkState.value = NetworkStateEnum.DONE;
       Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
       if(jsonMap['code'] == "R9721"){
-        super.networkState.value = NetworkStateEnum.DONE;
         Get.toNamed(
           '/auth/signupSocial',
           arguments: {
@@ -152,7 +153,6 @@ class LoginController extends BaseController {
           },
         );
       }else{
-        super.networkState.value = NetworkStateEnum.DONE;
         if(isAutoLogin.value){
           SharedTokenUtil.saveBool(true, 'isAutoLogin');
           SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
@@ -199,6 +199,7 @@ class LoginController extends BaseController {
   //네이버 로그인 부분
   Future<void> loginNaver() async {
     try{
+      await FlutterNaverLogin.logOut();
       NaverLoginResult res = await FlutterNaverLogin.logIn();
       NaverAccessToken resAccess = await FlutterNaverLogin.currentAccessToken;
       print("네이버 로그인 상태 ${res.status}");
@@ -216,6 +217,7 @@ class LoginController extends BaseController {
       Map<String, dynamic> jsonMap = jsonDecode(response!.body.toString());
       print(jsonMap.toString());
       if(jsonMap['code'] == "R9721"){
+        await FlutterNaverLogin.logOut();
         super.networkState.value = NetworkStateEnum.DONE;
         Get.toNamed(
             '/auth/signupSocial',
@@ -230,11 +232,13 @@ class LoginController extends BaseController {
       }else{
         super.networkState.value = NetworkStateEnum.DONE;
         if(isAutoLogin.value){
+          await FlutterNaverLogin.logOut();
           SharedTokenUtil.saveBool(true, 'isAutoLogin');
           SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
           globalCtrl.isLoginChk(true);
           Get.offAllNamed('/mainPage');
         }else{
+          await FlutterNaverLogin.logOut();
           SharedTokenUtil.saveBool(false, 'isAutoLogin');
           SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
           globalCtrl.isLoginChk(true);

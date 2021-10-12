@@ -141,6 +141,7 @@ class _AddProductExpansionListFieldState extends State<AddProductExpansionListFi
                         itemCount: widget.items.length,
                         itemBuilder: (context, idx) {
                           return GestureDetector(
+                            behavior: HitTestBehavior.translucent,
                             onTap: () {
                               idxChangeValue(widget.items[idx].id);
                               changeValue(widget.items[idx].title);

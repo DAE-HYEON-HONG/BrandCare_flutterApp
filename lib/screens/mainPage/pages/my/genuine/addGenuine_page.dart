@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:kpostal/kpostal.dart';
+import 'package:flutter/services.dart';
 
 class AddGenuinePage extends StatelessWidget {
   final AddGenuineController controller = Get.put(AddGenuineController());
@@ -182,7 +183,10 @@ class AddGenuinePage extends StatelessWidget {
                     isShowTitle: true,
                     title: "전화번호",
                     hint: "전화번호를 입력하세요.",
-                    textInputType: TextInputType.number,
+                    textInputType: TextInputType.numberWithOptions(decimal: false),
+                    textInputFormatter: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                   ),
                   const SizedBox(height: 24),
                   if(controller.globalCtrl.userInfoModel != null && controller.globalCtrl.userInfoModel!.address != null)
@@ -474,7 +478,7 @@ class AddGenuinePage extends StatelessWidget {
                     onClick: () {
                       controller.smsAuthChk();
                     },
-                    isOn: controller.authNumFill.value)))
+                    isOn: controller.phoneChecked.value ? false : controller.authNumFill.value)))
           ],
         ),
         if(controller.phoneChecked.value)

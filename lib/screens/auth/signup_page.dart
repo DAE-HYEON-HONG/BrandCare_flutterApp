@@ -10,6 +10,7 @@ import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:flutter/services.dart';
 
 class SignUpPage extends GetView<SignUpController> {
   const SignUpPage({Key? key}) : super(key: key);
@@ -87,14 +88,14 @@ class SignUpPage extends GetView<SignUpController> {
                         hint: '친구에게 받은 초대 코드를 입력해주세요.',
                       ),
                       const SizedBox(height: 16),
-                      _itemAgreeContainer(),
+                      _itemAgreeContainer(context),
                       const SizedBox(height: 32),
                     ],
                   ),
                 ),
                 Obx(() => CustomButtonOnOffWidget(
                       title: '회원가입',
-                      onClick: () => controller.registerChk(),
+                      onClick: () => controller.registerChk(context),
                       isOn: controller.allAgree,
                       radius: 0,
                     )),
@@ -125,7 +126,10 @@ class SignUpPage extends GetView<SignUpController> {
                   child: TextFormField(
                     controller: controller.phoneController,
                     style: regular12TextStyle,
-                    keyboardType: TextInputType.phone,
+                    keyboardType: TextInputType.numberWithOptions(decimal: false),
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     onChanged: (value) {
                       controller.phoneTxt.value =
                           controller.phoneController.text;
@@ -197,10 +201,14 @@ class SignUpPage extends GetView<SignUpController> {
                   child: TextFormField(
                     controller: controller.authNumberController,
                     style: regular12TextStyle,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.numberWithOptions(decimal: false),
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     onChanged: (value) {
                       controller.authCodeTxt.value = value;
                     },
+                    readOnly: controller.authCode.value ? true : false,
                     decoration: InputDecoration(
                       isDense: true,
                       contentPadding: const EdgeInsets.all(15),
@@ -228,20 +236,21 @@ class SignUpPage extends GetView<SignUpController> {
                         onClick: () {
                           controller.checkAuthCode();
                         },
-                        isOn: controller.isAuthCode.value)))
+                        isOn: controller.authCode.value ? false : controller.isAuthCode.value,
+                    )))
               ],
             ),
             if(controller.authCode.value)
-            Text(
-              '인증되었습니다.',
-              style: medium14TextStyle.copyWith(color: Color(0xff169F00)),
-              textAlign: TextAlign.start,
-            ),
+              Text(
+                '인증되었습니다.',
+                style: medium14TextStyle.copyWith(color: Color(0xff169F00)),
+                textAlign: TextAlign.start,
+              ),
           ],
         ),
       );
 
-  Widget _itemAgreeContainer() => Container(
+  Widget _itemAgreeContainer(context) => Container(
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
@@ -278,12 +287,12 @@ class SignUpPage extends GetView<SignUpController> {
             const SizedBox(
               height: 27,
             ),
-            Obx(() => _itemAgree(controller.agree.value, '이용약관 동의(필수)')),
+            Obx(() => _itemAgree(controller.agree.value, '이용약관 동의(필수)', context)),
             const SizedBox(
               height: 19,
             ),
             Obx(() =>
-                _itemAgree(controller.privacyAgree.value, '개인정보 취급방침 동의(필수)')),
+                _itemAgree(controller.privacyAgree.value, '개인정보 취급방침 동의(필수)', context)),
             const SizedBox(
               height: 25,
             ),
@@ -291,7 +300,7 @@ class SignUpPage extends GetView<SignUpController> {
         ),
       );
 
-  Widget _itemAgree(bool isChecked, String title) => Container(
+  Widget _itemAgree(bool isChecked, String title, context) => Container(
         padding: const EdgeInsets.only(left: 16, right: 17),
         child: Row(
           children: [
@@ -321,15 +330,25 @@ class SignUpPage extends GetView<SignUpController> {
             GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
+                FocusScope.of(context).unfocus();
                 if (title.contains('이용약관')){
                   Get.toNamed("/main/my/term", arguments: {'title': "이용약관"});
                 } else if (title.contains('개인정보')) {
                   Get.toNamed("/main/my/term", arguments: {'title' : "개인정보 취급방침"});
                 }
               },
-              child: SvgPicture.asset(
-                'assets/icons/btn_arrow_right.svg',
-                color: gray_666Color,
+              child: Container(
+                width: 50,
+                height: 15,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/icons/btn_arrow_right.svg',
+                      color: gray_666Color,
+                    ),
+                  ],
+                )
               ),
             ),
           ],

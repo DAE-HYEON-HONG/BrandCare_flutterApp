@@ -90,7 +90,9 @@ class AddGenuineDetailController extends BaseController {
         mainImgModel.add(IdPathImagesModel(2, model!.product.backImage));
         mainImgModel.add(IdPathImagesModel(3, model!.product.leftImage));
         mainImgModel.add(IdPathImagesModel(4, model!.product.rightImage));
-        certificateList.add(model!.certificateImages);
+        if(model!.certificateImages != null){
+          certificateList.add(model!.certificateImages!);
+        }
         update();
         super.networkState.value = NetworkStateEnum.DONE;
       }

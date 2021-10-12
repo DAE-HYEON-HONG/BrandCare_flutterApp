@@ -7,7 +7,7 @@ part 'genuineDetail_model.g.dart';
 
 @JsonSerializable()
 class GenuineDetailModel {
-  final IdPathImagesModel certificateImages;
+  final IdPathImagesModel? certificateImages;
   final String comment;
   final List<IdPathImagesModel> genuineImages;
   final GenuineDetailProductModel product;

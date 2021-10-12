@@ -158,6 +158,7 @@ class ModifiedProductDesController extends BaseController{
 
   Future<void> uploadAddProduct() async {
     addList();
+    super.networkState = NetworkStateEnum.LOADING.obs;
     UpdateProductModel model = UpdateProductModel(
       title: updateDetailCtrl.titleCtrl.text,
       categoryId: updateDetailCtrl.categoryIdx,
@@ -186,6 +187,7 @@ class ModifiedProductDesController extends BaseController{
       updateImgCtrl.leftImg.value,
       updateImgCtrl.rightImg.value,
     );
+    super.networkState = NetworkStateEnum.DONE.obs;
     if(res == null){
       Get.dialog(
         CustomDialogWidget(content: '네트워크 에러입니다.', onClick: (){

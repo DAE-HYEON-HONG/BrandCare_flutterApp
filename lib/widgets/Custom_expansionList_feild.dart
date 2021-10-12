@@ -120,6 +120,7 @@ class _CustomExpansionListFieldState extends State<CustomExpansionListField> wit
                     itemCount: widget.items.length,
                     itemBuilder: (context, idx) {
                       return GestureDetector(
+                        behavior: HitTestBehavior.translucent,
                         onTap: () {
                           changeValue(widget.items[idx]);
                         },

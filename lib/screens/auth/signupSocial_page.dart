@@ -11,6 +11,7 @@ import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:flutter/services.dart';
 
 class SignUpSocialPage extends GetView<SignUpSocialController> {
   const SignUpSocialPage({Key? key}) : super(key: key);
@@ -33,6 +34,7 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
                         controller.emailTxt.value = controller.emailController.text;
                       },
                       onSubmit: (value) {},
+                      readOnly: true,
                       controller: controller.emailController,
                       isShowTitle: true,
                       title: '아이디(이메일)',
@@ -68,14 +70,14 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
                       hint: '친구에게 받은 초대 코드를 입력해주세요.',
                     ),
                     const SizedBox(height: 16),
-                    _itemAgreeContainer(),
+                    _itemAgreeContainer(context),
                     const SizedBox(height: 32),
                   ],
                 ),
               ),
               Obx(() => CustomButtonOnOffWidget(
                 title: '회원가입',
-                onClick: () => controller.registerChk(controller.socialType),
+                onClick: () => controller.registerChk(controller.socialType, context),
                 isOn: controller.allAgree,
                 radius: 0,
               )),
@@ -104,7 +106,10 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
                   child: TextFormField(
                     controller: controller.phoneController,
                     style: regular12TextStyle,
-                    keyboardType: TextInputType.phone,
+                    keyboardType: TextInputType.numberWithOptions(decimal: false),
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     onChanged: (value) {
                       controller.phoneTxt.value = controller.phoneController.text;
                     },
@@ -174,10 +179,15 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
                   child: TextFormField(
                     controller: controller.authNumberController,
                     style: regular12TextStyle,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.numberWithOptions(decimal: false),
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     onChanged: (value) {
                       controller.authNumTxt.value = value;
+                      controller.update();
                     },
+                    readOnly: controller.phoneChecked.value ? true : false,
                     decoration: InputDecoration(
                       isDense: true,
                       contentPadding: const EdgeInsets.all(15),
@@ -205,7 +215,7 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
                         onClick: () {
                           controller.smsAuthChk();
                         },
-                        isOn: controller.authCode.value)))
+                        isOn: controller.phoneChecked.value ? false : controller.authCode.value)))
               ],
             ),
             if(controller.phoneChecked.value)
@@ -218,7 +228,7 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
         ),
       );
 
-  Widget _itemAgreeContainer() => Container(
+  Widget _itemAgreeContainer(context) => Container(
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
@@ -255,12 +265,12 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
             const SizedBox(
               height: 27,
             ),
-            Obx(() => _itemAgree(controller.agree.value, '이용약관 동의(필수)')),
+            Obx(() => _itemAgree(controller.agree.value, '이용약관 동의(필수)', context)),
             const SizedBox(
               height: 19,
             ),
             Obx(() =>
-                _itemAgree(controller.privacyAgree.value, '개인정보 취급방침 동의(필수)')),
+                _itemAgree(controller.privacyAgree.value, '개인정보 취급방침 동의(필수)', context)),
             const SizedBox(
               height: 25,
             ),
@@ -268,7 +278,7 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
         ),
       );
 
-  Widget _itemAgree(bool isChecked, String title) => Container(
+  Widget _itemAgree(bool isChecked, String title, context) => Container(
         padding: const EdgeInsets.only(left: 16, right: 17),
         child: Row(
           children: [
@@ -296,15 +306,25 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
             GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
+                FocusScope.of(context).unfocus();
                 if (title.contains('이용약관')){
                   Get.toNamed("/main/my/term", arguments: {'title': "이용약관"});
                 } else if (title.contains('개인정보')) {
                   Get.toNamed("/main/my/term", arguments: {'title' : "개인정보 취급방침"});
                 }
               },
-              child: SvgPicture.asset(
-                'assets/icons/btn_arrow_right.svg',
-                color: gray_666Color,
+              child: Container(
+                  width: 50,
+                  height: 15,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/btn_arrow_right.svg',
+                        color: gray_666Color,
+                      ),
+                    ],
+                  )
               ),
             ),
           ],

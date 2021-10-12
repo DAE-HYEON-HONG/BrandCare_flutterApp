@@ -4,7 +4,7 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 class UseInfoDescriptionController extends BaseController{
 
-  Rx<bool> isOpened = false.obs;
+  Rx<bool> isOpened = true.obs;
 
   void openExpansion() {
     isOpened.value = !isOpened.value;

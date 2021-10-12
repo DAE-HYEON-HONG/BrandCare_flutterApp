@@ -128,6 +128,7 @@ class ShopAddProductController extends BaseController{
 
   Future<void> uploadAddProduct() async{
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    super.networkState = NetworkStateEnum.LOADING.obs;
     AddProductShopModel model = AddProductShopModel(
       title: titleCtrl.text,
       productIdx: myProductIdx ?? 0,
@@ -136,6 +137,7 @@ class ShopAddProductController extends BaseController{
       pictures: pickImgList!,
     );
     final res = await ShopProvider().addShopProduct(token: token!, model: model);
+    super.networkState = NetworkStateEnum.DONE.obs;
     if(res == null){
       Get.dialog(
         CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){

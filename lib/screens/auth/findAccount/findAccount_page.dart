@@ -12,35 +12,39 @@ class FindAccountPage extends GetView<FindController> {
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(title: '아이디/비밀번호 찾기',
         child: SafeArea(
-          child: DefaultTabController(
-            length: 2,
-            child: Column(
-              children: [
-                const SizedBox(height: 20,),
-                SizedBox(
-                  height: 48,
-                  child: TabBar(
-                    controller: controller.tabController,
-                      tabs: [
-                    Tab(
-                      text: '아이디 찾기',
+          child: Column(
+            children: [
+              DefaultTabController(
+                length: 2,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20,),
+                    SizedBox(
+                      height: 48,
+                      child: TabBar(
+                          controller: controller.tabController,
+                          tabs: [
+                            Tab(
+                              text: '아이디 찾기',
+                            ),
+                            Tab(
+                                text: '비밀번호 찾기'
+                            )
+                          ]),
                     ),
-                    Tab(
-                      text: '비밀번호 찾기'
-                    )
-                  ]),
+                  ],
                 ),
-                Flexible(
-                  child: TabBarView(
-                      controller: controller.tabController,
-                      children: [
-                    FindIdComponent(),
-                    FindPwComponent()
-                  ]),
-                ),
-              ],
-            ),
-          ),
+              ),
+              Flexible(
+                child: TabBarView(
+                    controller: controller.tabController,
+                    children: [
+                      FindIdComponent(),
+                      FindPwComponent()
+                    ]),
+              ),
+            ],
+          )
         ));
   }
 }

@@ -1,5 +1,7 @@
+import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/auth/find_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
@@ -58,93 +60,108 @@ class FindPwComponent extends StatelessWidget {
                                     const SizedBox(
                                       height: 16,
                                     ),
-                                    Row(children: [
-                                      Flexible(
-                                        flex: 3,
-                                        child: FormInputWidget(
-                                          onChange: (value) {
-                                            controller.phoneTxt.value = value;
-                                          },
-                                          onSubmit: (value) {},
-                                          controller: controller.phoneController,
-                                          isShowTitle: true,
-                                          title: '전화번호',
-                                          textInputType: TextInputType.number,
-                                        ),
-                                      ),
-                                      Obx(() => AnimatedContainer(
-                                        duration: Duration(milliseconds: 500),
-                                        width: ((!controller.isAuth ? 2 : 0) *
-                                            (Get.width - 32)) /
-                                            ((!controller.isAuth ? 2 : 0) + 3),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8.0, left: 8.0),
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                '',
-                                                style: medium14TextStyle,
-                                              ),
-                                              CustomButtonOnOffWidget(
-                                                onClick: () => controller.smsAuth(),
-                                                title: '인증번호 받기',
-                                                radius: 4,
-                                                isOn: controller.isPhone.value,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      )),
-                                    ]),
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    if (!controller.isAuth)
-                                      Row(children: [
+                                    Row(
+                                      children: [
                                         Flexible(
-                                          flex: 2,
+                                          flex: 3,
                                           child: FormInputWidget(
                                             onChange: (value) {
-                                              controller.codeTxt.value = value;
+                                              controller.phoneTxt.value = value;
                                             },
                                             onSubmit: (value) {},
-                                            controller: controller.authCodeController,
+                                            controller:
+                                                controller.phoneController,
                                             isShowTitle: true,
-                                            title: '인증번호',
+                                            title: '전화번호',
                                             textInputType: TextInputType.number,
                                           ),
                                         ),
-                                        Flexible(
-                                          flex: 1,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 8.0, left: 8.0),
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  '',
-                                                  style: medium14TextStyle,
+                                        Obx(() => Container(
+                                              // duration:
+                                              //     Duration(milliseconds: 500),
+                                              width: ((!controller.isAuth ? 2 : 2) * (Get.width - 32)) / ((!controller.isAuth ? 2 : 2) + 3),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8.0, left: 8.0),
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      '',
+                                                      style: medium14TextStyle,
+                                                    ),
+                                                    CustomButtonOnOffWidget(
+                                                      onClick: () =>
+                                                          controller.smsAuth(),
+                                                      title: controller.isAuth ? '재발송' : "인증번호 받기",
+                                                      radius: 4,
+                                                      isOn: controller
+                                                          .isPhone.value,
+                                                    ),
+                                                  ],
                                                 ),
-                                                Obx(() => CustomButtonOnOffWidget(
-                                                  onClick: () {
-                                                    controller.smsAuthChk();
+                                              ),
+                                            )),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      height: 16,
+                                    ),
+                                    if(controller.pwState.value == FindPwStateEnum.DONE)
+                                    Row(
+                                      children: [
+                                        Text("인증번호", style: medium14TextStyle),
+                                        const SizedBox(width: 10),
+                                        if(!controller.isAuth)
+                                          Obx(() => Text(
+                                            '${DateFormatUtil.convertTimer(timer: controller.smsTime.value)}',
+                                            style: medium14TextStyle.copyWith(
+                                                color: redColor),
+                                          )),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    if(!controller.isAuth)
+                                      AnimatedOpacity(
+                                        opacity: (controller.pwState.value == FindPwStateEnum.DONE) ? 1.0 : 0.0,
+                                        duration: Duration(milliseconds: 500),
+                                        child: Row(
+                                            children: [
+                                              Flexible(
+                                                flex: 2,
+                                                child: FormInputWidget(
+                                                  onChange: (value) {
+                                                    controller.codeTxt.value = value;
                                                   },
-                                                  title: '인증확인',
-                                                  radius: 4,
-                                                  isOn: controller.isCode.value,
-                                                )),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ])
-                                    else
-                                      Text(
-                                        '인증되었습니다.',
-                                        style: medium14TextStyle.copyWith(
-                                            color: Color(0xff169F00)),
+                                                  onSubmit: (value) {},
+                                                  controller: controller.authCodeController,
+                                                  isShowTitle: false,
+                                                  title: "",
+                                                  textInputType: TextInputType.number,
+                                                ),
+                                              ),
+                                              Flexible(
+                                                flex: 1,
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(left: 8.0),
+                                                  child: Column(
+                                                    children: [
+                                                      Obx(() => CustomButtonOnOffWidget(
+                                                        onClick: () {
+                                                          controller.smsAuthChk();
+                                                        },
+                                                        title: '인증확인',
+                                                        radius: 4,
+                                                        isOn: controller.isCode.value,
+                                                      )),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+
+                                            ]),
                                       )
+                                    else
+                                      Text('인증되었습니다.', style: medium14TextStyle.copyWith(color: Color(0xff169F00)),)
                                   ],
                                 ),
                               ],
@@ -184,7 +201,8 @@ class FindPwComponent extends StatelessWidget {
                                     isShowTitle: true,
                                     isObscureText: true,
                                   )
-                                ]);
+                                ],
+                            );
                         },
                       ),
                     ),

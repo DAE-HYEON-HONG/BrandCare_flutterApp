@@ -52,11 +52,11 @@ class SignUpDialog extends StatelessWidget {
               onTap: () => controller.loginButton('login_naver.svg'),
               child: _itemSignUpBtn(naverColor, 'join_naver.svg'),
             ),
-            GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: () => controller.loginButton('join_facebook.svg'),
-              child: _itemSignUpBtn(facebookColor, 'join_facebook.svg'),
-            ),
+            // GestureDetector(
+            //   behavior: HitTestBehavior.translucent,
+            //   onTap: () => controller.loginButton('join_facebook.svg'),
+            //   child: _itemSignUpBtn(facebookColor, 'join_facebook.svg'),
+            // ),
             GestureDetector(
               onTap: () => controller.emailJoin(),
               child: _itemSignUpBtn(whiteColor, 'join_email.svg'),

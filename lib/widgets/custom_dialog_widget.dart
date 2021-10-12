@@ -27,6 +27,7 @@ class CustomDialogWidget extends StatelessWidget {
       ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if(title != null)
               Padding(

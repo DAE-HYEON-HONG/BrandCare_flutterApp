@@ -35,7 +35,7 @@ class MyPage extends StatelessWidget {
         const SizedBox(width: 16),
       ],
       isLeadingShow: false,
-      title: '나의 정보',
+      title: '마이페이지',
       child: SingleChildScrollView(
         child: Column(
           children: [

@@ -131,10 +131,7 @@ class LoginPage extends GetView<LoginController> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ...controller.snsLoginItem.map((e) => Padding(
-                                padding: EdgeInsets.only(
-                                    right: controller.snsLoginItem.indexOf(e) != 3
-                                        ? 24
-                                        : 0),
+                                padding: EdgeInsets.only(right: controller.snsLoginItem.indexOf(e) != 2 ? 24 : 0), //나중에 3으로 변경해주세요.
                                 child: _itemSnsLogin(
                                     svgLink: 'assets/icons/$e', onClick: () => controller.loginButton(e)),
                               ))

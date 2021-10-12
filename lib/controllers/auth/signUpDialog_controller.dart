@@ -95,6 +95,7 @@ class SignUpDialogController extends BaseController {
 
   //카카오 로그인 부분
   Future<void> issueAcessToken(String authCode) async {
+    super.networkState.value = NetworkStateEnum.LOADING;
     try{
       var token = await AuthApi.instance.issueAccessToken(authCode);
       AccessTokenStore.instance.toStore(token);
@@ -108,17 +109,24 @@ class SignUpDialogController extends BaseController {
         "KAKAO",
         globalCtrl.fcmToken!,
       );
+      super.networkState.value = NetworkStateEnum.DONE;
       Map<String, dynamic> jsonMap = jsonDecode(res!.body.toString());
       if(jsonMap['code'] == "R9721"){
         Get.toNamed(
-          '/auth/signup/Social',
+          '/auth/signupSocial',
           arguments: {
             "TYPE":"KAKAO",
             "Email" : user.kakaoAccount!.email,
             "nickName" : user.kakaoAccount!.profile!.nickname,
-            "fcm" : globalCtrl.fcmToken!,
+            "sub" : "",
+            "fcm" : globalCtrl.fcmToken,
           },
         );
+      }else{
+        SharedTokenUtil.saveBool(false, 'isAutoLogin');
+        SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");
+        globalCtrl.isLoginChk(true);
+        Get.offAllNamed('/mainPage');
       }
     }catch(e){
       print(e.toString());
@@ -157,6 +165,7 @@ class SignUpDialogController extends BaseController {
   //네이버 로그인 부분
   Future<void> loginNaver() async {
     try{
+      await FlutterNaverLogin.logOut();
       NaverLoginResult res = await FlutterNaverLogin.logIn();
       NaverAccessToken resAccess = await FlutterNaverLogin.currentAccessToken;
       print("네이버 로그인 상태 ${res.status}");
@@ -172,6 +181,7 @@ class SignUpDialogController extends BaseController {
       );
       Map<String, dynamic> jsonMap = jsonDecode(response!.body.toString());
       if(jsonMap['code'] == "R9721"){
+        await FlutterNaverLogin.logOut();
         Get.toNamed(
           '/auth/signup/Social',
           arguments: {

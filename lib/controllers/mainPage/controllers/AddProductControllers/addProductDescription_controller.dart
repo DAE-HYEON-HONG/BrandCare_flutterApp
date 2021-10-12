@@ -130,6 +130,7 @@ class AddProductDescriptionController extends BaseController{
   Future<void> uploadAddProduct() async {
     if(fill.value) {
       addList();
+      super.networkState = NetworkStateEnum.LOADING.obs;
       AddProductModel model = AddProductModel(
           title: mainAddProductCtrl.titleCtrl.text,
           categoryId: mainAddProductCtrl.categoryIdx ?? 0,
@@ -150,6 +151,7 @@ class AddProductDescriptionController extends BaseController{
         addProductImgsCtrl.leftImg.value,
         addProductImgsCtrl.rightImg.value,
       );
+      super.networkState = NetworkStateEnum.DONE.obs;
       if(res == null){
         Get.dialog(
           CustomDialogWidget(content: '네트워크 에러입니다.', onClick: (){

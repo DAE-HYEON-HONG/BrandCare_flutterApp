@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class FormInputWidget extends StatelessWidget {
   const FormInputWidget({Key? key,
@@ -12,7 +13,8 @@ class FormInputWidget extends StatelessWidget {
     this.title,
     this.readOnly = false,
     this.isObscureText = false,
-    this.textInputType = TextInputType.text
+    this.textInputType = TextInputType.text,
+    this.textInputFormatter,
   }) : super(key: key);
 
   final String? hint;
@@ -24,6 +26,7 @@ class FormInputWidget extends StatelessWidget {
   final bool readOnly;
   final bool isObscureText;
   final TextInputType textInputType;
+  final List<TextInputFormatter>? textInputFormatter;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +44,7 @@ class FormInputWidget extends StatelessWidget {
             keyboardType: textInputType,
             onChanged: onChange,
             onFieldSubmitted: onSubmit,
+            inputFormatters: textInputFormatter,
             decoration: InputDecoration(
               isDense: true,
               contentPadding: const EdgeInsets.all(15),

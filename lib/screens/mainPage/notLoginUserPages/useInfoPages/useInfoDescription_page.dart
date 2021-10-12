@@ -100,6 +100,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
                               color: primaryColor,
                               fontWeight: FontWeight.w700,
                               decoration: TextDecoration.underline,
+                              fontSize: 14,
                             ),
                           ),
                           onTap: () {
@@ -109,22 +110,22 @@ class UseInfoDescriptionPage extends StatelessWidget {
                             Get.back();
                           },
                         ),
-                        GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () => controller.openExpansion(),
-                          child: controller.isOpened.value ?
-                          SvgPicture.asset(
-                            "assets/icons/btn_up.svg",
-                            height: 24,
-                          ) : Text(
-                            "자세히 보기",
-                            style: regular10TextStyle.copyWith(
-                              fontSize: 12,
-                              color: gray_8E8F95Color,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ),
+                        // GestureDetector(
+                        //   behavior: HitTestBehavior.translucent,
+                        //   onTap: () => controller.openExpansion(),
+                        //   child: controller.isOpened.value ?
+                        //   SvgPicture.asset(
+                        //     "assets/icons/btn_up.svg",
+                        //     height: 24,
+                        //   ) : Text(
+                        //     "자세히 보기",
+                        //     style: regular10TextStyle.copyWith(
+                        //       fontSize: 12,
+                        //       color: gray_8E8F95Color,
+                        //       decoration: TextDecoration.underline,
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ],
@@ -230,6 +231,7 @@ class UseInfoDescriptionPage extends StatelessWidget {
                     color: primaryColor,
                     fontWeight: FontWeight.w700,
                     decoration: TextDecoration.underline,
+                    fontSize: 14,
                   ),
                 ),
               ),

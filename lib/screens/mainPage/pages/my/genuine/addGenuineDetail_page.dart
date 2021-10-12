@@ -81,6 +81,7 @@ class AddGenuineDetailPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
+                if(controller.certificateList.length != 0)
                 CustomArrowBtn(
                   title: '인증서 확인',
                   onTap: () {

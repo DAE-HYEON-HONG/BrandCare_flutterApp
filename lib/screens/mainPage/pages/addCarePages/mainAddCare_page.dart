@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:kpostal/kpostal.dart';
+import 'package:flutter/services.dart';
 
 class MainAddCarePage extends StatelessWidget {
   final MainAddCareController controller = Get.put(MainAddCareController());
@@ -383,7 +384,6 @@ class MainAddCarePage extends StatelessWidget {
               style: medium14TextStyle,
             )),
         Row(
-
           children: [
             Flexible(
               flex: 3,
@@ -391,7 +391,10 @@ class MainAddCarePage extends StatelessWidget {
                 readOnly: controller.phoneChecked.value ? true : false,
                 controller: controller.senderPhNum,
                 style: regular12TextStyle,
-                keyboardType: TextInputType.phone,
+                keyboardType: TextInputType.numberWithOptions(decimal: false),
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
                 onChanged: (value) {
                   controller.senderPhTxt.value = controller.senderPhNum.text;
                   controller.chkFill();
@@ -449,7 +452,7 @@ class MainAddCarePage extends StatelessWidget {
               Obx(() => Text(
                 '${DateFormatUtil.convertTimer(timer: controller.smsTime.value)}',
                 style: medium14TextStyle.copyWith(color: redColor),
-              ))
+              )),
           ],
         ),
         const SizedBox(
@@ -462,7 +465,10 @@ class MainAddCarePage extends StatelessWidget {
               child: TextFormField(
                 controller: controller.authNum,
                 style: regular12TextStyle,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.numberWithOptions(decimal: false),
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
                 onChanged: (value) {
                   controller.authNumTxt.value = value;
                 },
@@ -493,7 +499,7 @@ class MainAddCarePage extends StatelessWidget {
                     onClick: () {
                       controller.smsAuthChk();
                     },
-                    isOn: controller.authNumFill.value)))
+                    isOn: controller.phoneChecked.value ? false : controller.authNumFill.value)))
           ],
         ),
         if(controller.phoneChecked.value)

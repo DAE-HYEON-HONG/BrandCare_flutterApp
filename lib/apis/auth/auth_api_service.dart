@@ -158,13 +158,16 @@ class AuthApiService {
       if(res.statusCode == 200) {
         return res;
       }
+      if(res.statusCode == 500){
+        return res;
+      }
       if(res.statusCode == 400){
         return res;
       }
     }catch(e){
       print("접속 에러 : ${e.toString()}");
+      return null;
     }
-    return null;
   }
 
   Future<http.Response?> updatePw(dynamic body) async{
@@ -188,7 +191,7 @@ class AuthApiService {
   Future<http.Response?> deleteUser(int userIdx) async {
     try{
       print(userIdx);
-      final uri = Uri.parse("${BaseApiService.baseApi}user/delete/$userIdx");
+      final uri = Uri.parse("${BaseApiService.baseApi}/user/delete/$userIdx");
       final http.Response res = await http.delete(
         uri,
         headers: BaseApiService.headers,

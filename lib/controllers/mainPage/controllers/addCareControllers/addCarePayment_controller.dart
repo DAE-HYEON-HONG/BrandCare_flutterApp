@@ -53,7 +53,7 @@ class AddCarePaymentController extends BaseController {
       Get.dialog(
         CustomDialogWidget(
           title: '케어/수선 신청 주의 사항',
-          content: '요청사항과 신청 항목의\n금액으로 주문이 접수 되오니\n정확하게 신청해 주시기 바랍니다.\n\n만약, 첨부사진과 신청항목이 다를 경우\n주문이 취소되오니 이점\n참고하여 주시기 바랍니다.',
+          content: '요청사항과 신청 항목의\n금액으로 주문이 접수 되오니\n정확하게 신청해 주시기 바랍니다.',
           onClick: () async{
             await uploadAddCare();
           },
@@ -69,6 +69,7 @@ class AddCarePaymentController extends BaseController {
   }
 
   Future<void> uploadAddCare() async{
+    super.networkState = NetworkStateEnum.LOADING.obs;
     Map<String, String> addressBody = {
       "city" : addCareMainCtrl.senderAddress.text,
       "street" : addCareMainCtrl.senderAddressDetail.value,
@@ -96,6 +97,7 @@ class AddCarePaymentController extends BaseController {
     );
     await saveReceiverAddress();
     await saveSenderAddress();
+    super.networkState = NetworkStateEnum.DONE.obs;
     if(res == null){
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){

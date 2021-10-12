@@ -87,8 +87,6 @@ class SplashController extends BaseController {
 
   @override
   void onInit()async{
-    await Firebase.initializeApp();
-    FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
     FcmPushMgr().listenFCM();
     String fcmToken = await FcmPushMgr().regToken();
     globalCtrl.fcmToken = fcmToken;

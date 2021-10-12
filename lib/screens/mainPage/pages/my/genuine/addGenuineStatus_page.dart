@@ -493,7 +493,7 @@ class AddGenuineStatusPage extends StatelessWidget {
                     ),
                     const SizedBox(width: 27),
                     Text(
-                      '${NumberFormatUtil.convertNumberFormat(number: 29000)}원',
+                      '${NumberFormatUtil.convertNumberFormat(number: controller.genuineStatus?.paymentHistoryResponse.price ?? 0)}원',
                       style: medium16TextStyle.copyWith(color: redColor),
                     ),
                   ],
