@@ -5,6 +5,7 @@ import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/change_product_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansion_tile_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
@@ -105,12 +106,9 @@ class ChangeProductApplyChangePage extends StatelessWidget {
                       const SizedBox(height: 34,),
                       CustomButtonEmptyBackgroundWidget(
                         title: '확인 중',
-                        onClick: () async {
+                        onClick: ()  {
                           // Get.back();
-                          if(await controller.cancel(controller.cancelIdx!)){
-                            Get.back();
-                            Get.snackbar('알림', '변경 요청이 취소되었습니다.', snackPosition: SnackPosition.BOTTOM);
-                          }
+                          showConfirmDialog();
                         },
                         radius: 0,
                       ),
@@ -127,6 +125,27 @@ class ChangeProductApplyChangePage extends StatelessWidget {
         return false;
       },
     );
+  }
+
+  showConfirmDialog() async {
+    Get.dialog(
+        CustomDialogWidget(
+      content: '변경 요청을 취소하시겠습니까?',
+      title: '알림',
+      isSingleButton: false,
+      okTxt: '확인',
+      cancelTxt: '취소',
+      onClick: () async {
+        if(await controller.cancel(controller.cancelIdx!)){
+          Get.back();
+          Get.back();
+          Get.snackbar('알림', '변경 요청이 취소되었습니다.', snackPosition: SnackPosition.BOTTOM);
+        }
+      },
+      onCancelClick: () {
+        Get.back();
+      },
+    ));
   }
 
   Widget _my_product() => Container(
