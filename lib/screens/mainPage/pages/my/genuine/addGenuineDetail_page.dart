@@ -89,7 +89,9 @@ class AddGenuineDetailPage extends StatelessWidget {
                     controller.pageNum.value = 0;
                     controller.update();
                   },
-                ),
+                )
+                else
+                  Text("가품인 경우 인증서가 제공되지 않습니다.", style: medium16TextStyle.copyWith(color: gray_999Color)),
                 const SizedBox(height: 16),
               ],
             ),

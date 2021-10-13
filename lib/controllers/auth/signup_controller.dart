@@ -54,6 +54,7 @@ class SignUpController extends BaseController {
   Rx<int> smsTime = 180.obs;
 
   Rx<bool> phoneReadOnly = false.obs;
+  bool duplicateNumber = false;
 
   final _authApiProvider = AuthProvider();
 
@@ -203,7 +204,25 @@ class SignUpController extends BaseController {
         }),
       );
     }else{
-      await addUser();
+      if(duplicateNumber == true){
+        Get.dialog(
+          CustomDialogWidget(
+            title: '중복된 추천인 코드',
+            content: '이미 친구 초대코드를 사용하셨어요.\n회원가입 시 쿠폰 및 포인트가 적립되지 않아요.',
+            onClick: ()async{
+              await addUser();
+            },
+            onCancelClick: () {
+              Get.back();
+            },
+            isSingleButton: false,
+            okTxt: "예",
+            cancelTxt: "아니오",
+          ),
+        );
+      }else{
+        await addUser();
+      }
     }
   }
 
@@ -255,6 +274,11 @@ class SignUpController extends BaseController {
         authNumberController.text = "";
         phoneReadOnly.value = false;
         smsCode = res["data"];
+        if(res['duplicate'] == "Y"){
+          duplicateNumber = false;
+        }else{
+          duplicateNumber = true;
+        }
         checkSmsAuthTimer();
         update();
       }

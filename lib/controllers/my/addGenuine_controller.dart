@@ -209,6 +209,7 @@ class AddGenuineController extends BaseController {
   void receiverSamePost() {
     samePost.value = !samePost.value;
     if(samePost.value){
+      receiverNormalAddress.value = false;
       receiverName.text = senderName.text;
       receiverPhNum.text = senderPhNum.text;
       receiverPostCode.text = senderPostCode.text;

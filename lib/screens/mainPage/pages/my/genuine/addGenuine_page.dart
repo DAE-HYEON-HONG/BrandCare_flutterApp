@@ -247,7 +247,7 @@ class AddGenuinePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Obx(() => FormInputWidget(
-                    readOnly: controller.senderNormalAddress.value,
+                    readOnly: controller.receiverNormalAddress.value,
                     onChange: (value) => controller.senderPostSaveChk(),
                     onSubmit: (value) => controller.senderPostSaveChk(),
                     controller: controller.receiverAddressDetailCtrl,
