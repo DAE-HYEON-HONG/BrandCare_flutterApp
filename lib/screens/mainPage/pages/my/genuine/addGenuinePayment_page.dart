@@ -400,8 +400,8 @@ class AddGenuinePaymentPage extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 12,
-          height: 12,
+          width: 25,
+          height: 25,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: isChecked ? primaryColor : whiteColor,

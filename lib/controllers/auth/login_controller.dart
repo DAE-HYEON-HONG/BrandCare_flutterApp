@@ -31,7 +31,7 @@ class LoginController extends BaseController {
       'argument': "0",
     },
     {
-      '비밀번호 찾기': '/auth/find',
+      '비밀번호 찾기': '/auth/findpw',
       'argument' : "1",
     },
     { '회원가입': ''},

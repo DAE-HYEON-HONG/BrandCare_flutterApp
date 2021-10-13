@@ -69,8 +69,7 @@ class FindPwComponent extends StatelessWidget {
                                               controller.phoneTxt.value = value;
                                             },
                                             onSubmit: (value) {},
-                                            controller:
-                                                controller.phoneController,
+                                            controller: controller.findphoneController,
                                             isShowTitle: true,
                                             title: '전화번호',
                                             textInputType: TextInputType.number,

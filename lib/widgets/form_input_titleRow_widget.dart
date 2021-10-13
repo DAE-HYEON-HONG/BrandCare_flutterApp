@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class FormInputTitleRowWidget extends StatelessWidget {
   const FormInputTitleRowWidget({Key? key,
@@ -13,7 +14,10 @@ class FormInputTitleRowWidget extends StatelessWidget {
     this.subTitle,
     this.readOnly = false,
     this.isObscureText = false,
-    this.textInputType = TextInputType.text
+    this.textInputType = TextInputType.text,
+    this.textInputIsAllow = false,
+    this.textInputFormatter = '',
+    this.maxLength,
   }) : super(key: key);
 
   final String? hint;
@@ -26,6 +30,9 @@ class FormInputTitleRowWidget extends StatelessWidget {
   final bool readOnly;
   final bool isObscureText;
   final TextInputType textInputType;
+  final bool textInputIsAllow;
+  final String textInputFormatter;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +46,17 @@ class FormInputTitleRowWidget extends StatelessWidget {
             obscureText: isObscureText,
             readOnly: readOnly,
             controller: controller,
+            maxLength: maxLength,
+
             style: regular12TextStyle,
             keyboardType: textInputType,
             onChanged: onChange,
             onFieldSubmitted: onSubmit,
+            inputFormatters: <TextInputFormatter>[
+              textInputIsAllow ? FilteringTextInputFormatter.allow(RegExp(textInputFormatter)) : FilteringTextInputFormatter.deny(RegExp(textInputFormatter))
+            ],
             decoration: InputDecoration(
+              counterText: "",
               isDense: true,
               contentPadding: const EdgeInsets.all(15),
               hintText: hint ?? '',

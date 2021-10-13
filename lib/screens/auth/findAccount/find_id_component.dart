@@ -53,7 +53,7 @@ class FindIdComponent extends StatelessWidget {
                                         controller.phoneTxt.value = value;
                                       },
                                       onSubmit: (value) {},
-                                      controller: controller.phoneController,
+                                      controller: controller.findphoneController,
                                       isShowTitle: true,
                                       title: '전화번호',
                                       readOnly: controller.authCode.isNotEmpty ? true : false,

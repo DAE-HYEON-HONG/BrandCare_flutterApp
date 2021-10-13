@@ -408,8 +408,8 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
     return Row(
       children: [
         Container(
-          width: 12,
-          height: 12,
+          width: 15,
+          height: 15,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: isChecked ? primaryColor : whiteColor,

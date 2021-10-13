@@ -72,7 +72,8 @@ class PasswordChangePage extends StatelessWidget {
                         isObscureText: true,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 30),
+                    Text('영문, 숫자, 특수문자로 8~20자리 입력해주세요.')
                   ],
                 ),
               ),
