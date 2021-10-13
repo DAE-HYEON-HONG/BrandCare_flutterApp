@@ -132,7 +132,16 @@ class MainAddCareController extends BaseController {
             update();
           }),
         );
-      }else{
+      }
+      else if(!RegexUtil.checkPhoneRegex(phone: senderPhNum.text)){
+        Get.dialog(
+          CustomDialogWidget(content: '올바른 전화번호 형식을 입력해주세요.', onClick: (){
+            Get.back();
+            update();
+          }),
+        );
+      }
+      else{
         if(timer != null){
           timer!.cancel();
         }
