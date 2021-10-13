@@ -86,33 +86,36 @@ class AddGenuineController extends BaseController {
         checkSmsAuthTimer();
         phAuth = res['data'];
         phoneChecked.value = false;
+        authNum.text = "";
         update();
       }
     }
   }
 
   void smsAuthChk() {
-    if(smsTime.value == 0) {
-      Get.dialog(
-          CustomDialogWidget(content: '인증시간이 초과되었습니다.\n다시 시도 부탁드립니다.', onClick: (){
+    if(!phoneChecked.value){
+      if(smsTime.value == 0) {
+        Get.dialog(
+            CustomDialogWidget(content: '인증시간이 초과되었습니다.\n다시 시도 부탁드립니다.', onClick: (){
+              Get.back();
+            })
+        );
+        return;
+      }
+      if(phAuth == authNumTxt.value){
+        phoneChecked.value = true;
+      }else{
+        Get.dialog(
+          CustomDialogWidget(content: '인증번호가 올바르지 않습니다.', onClick: (){
             Get.back();
-          })
-      );
-      return;
+            update();
+          }),
+        );
+        phoneChecked.value = false;
+      }
+      update();
+      chkFill();
     }
-    if(phAuth == authNumTxt.value){
-      phoneChecked.value = true;
-    }else{
-      Get.dialog(
-        CustomDialogWidget(content: '인증번호가 올바르지 않습니다.', onClick: (){
-          Get.back();
-          update();
-        }),
-      );
-      phoneChecked.value = false;
-    }
-    update();
-    chkFill();
   }
 
   checkSmsAuthTimer(){

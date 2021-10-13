@@ -8,6 +8,7 @@ import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/genuine/ad
 import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:get/get.dart';
+import 'package:iamport_flutter/model/payment_data.dart';
 
 class AddGenuinePaymentController extends BaseController {
   int reqMyPoint = 0;
@@ -50,8 +51,8 @@ class AddGenuinePaymentController extends BaseController {
         CustomDialogWidget(
           title: '정품인증 신청 주의 사항',
           content: '요청사항과 신청 항목의 금액으로 주문이 접수 되오니\n정확하게 신청해 주시기 바랍니다.',
-          onClick: () async{
-            await uploadAdd();
+          onClick: () {
+            payBrandCare();
           },
           onCancelClick: () {
             Get.back();
@@ -109,6 +110,22 @@ class AddGenuinePaymentController extends BaseController {
         careSuccess(int.parse(res['data']));
       }
     }
+  }
+
+  void payBrandCare(){
+    final paymentInfo = PaymentData(
+      pg: "danal_tpay",
+      payMethod: "card",
+      buyerName: addGenuineCtrl.senderName.text,
+      name: "BrandCare 정품인증",
+      merchantUid: 'mid_${DateTime.now().millisecondsSinceEpoch}',
+      // amount: allMountPrice(),
+      amount: 1000,
+      buyerTel: "02-111-1111",
+      appScheme: "brandcare",
+    );
+    Get.back();
+    Get.toNamed("/IamPayment", arguments: {"paymentInfo" : paymentInfo, "type" : "genuine"});
   }
 
   void careSuccess(int idx){

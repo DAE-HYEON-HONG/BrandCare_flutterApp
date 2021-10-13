@@ -4,6 +4,7 @@ import 'package:brandcare_mobile_flutter_v2/bindings/coupon_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/findAccount_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/genuine_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/guide_binding.dart';
+import 'package:brandcare_mobile_flutter_v2/bindings/iamport_payment_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/inquiry_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/invite_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/login_binding.dart';
@@ -62,6 +63,7 @@ import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/question/q
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/setting/setting_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/shopAddProductPages/shopAddProuct_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/shopDetailPages/shopDetail_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/payment/Iamport_payment_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/splash_page.dart';
 import 'package:get/get.dart';
 
@@ -116,4 +118,5 @@ final routes = [
   GetPage(name: '/mainAddCare/add/payment', page: () => AddCarePaymentPage(), binding: MainAddCarePaymentBinding()),
   GetPage(name: '/mainAddCare/add/status', page: () => AddCareStatusPage(), binding: CareStatusBinding()),
   GetPage(name: '/guide', page: () => GuidePage(), binding: GuideBinding()),
+  GetPage(name: '/IamPayment', page: () => IamportPaymentPage(), binding: IamportPaymentBinding()),
 ];

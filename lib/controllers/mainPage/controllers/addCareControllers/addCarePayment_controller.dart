@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/couponPoint/coupon_list_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/care_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/my_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
+import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:get/get.dart';
 import 'addCareEtc_controller.dart';
 import 'mainAddCare_controller.dart';
+import 'package:iamport_flutter/iamport_payment.dart';
+import 'package:iamport_flutter/model/payment_data.dart';
 
 class AddCarePaymentController extends BaseController {
 
@@ -54,8 +59,9 @@ class AddCarePaymentController extends BaseController {
         CustomDialogWidget(
           title: '케어/수선 신청 주의 사항',
           content: '요청사항과 신청 항목의\n금액으로 주문이 접수 되오니\n정확하게 신청해 주시기 바랍니다.',
-          onClick: () async{
-            await uploadAddCare();
+          onClick: (){
+            // await uploadAddCare();
+            payBrandCare();
           },
           onCancelClick: () {
             Get.back();
@@ -67,6 +73,8 @@ class AddCarePaymentController extends BaseController {
       );
     }
   }
+
+
 
   Future<void> uploadAddCare() async{
     super.networkState = NetworkStateEnum.LOADING.obs;
@@ -111,6 +119,22 @@ class AddCarePaymentController extends BaseController {
         careSuccess(int.parse(res['data']));
       }
     }
+  }
+
+  void payBrandCare(){
+    final paymentInfo = PaymentData(
+      pg: "danal_tpay",
+      payMethod: "card",
+      name: "BrandCare 케어신청",
+      buyerName: addCareMainCtrl.senderName.text,
+      merchantUid: 'mid_${DateTime.now().millisecondsSinceEpoch}',
+      // amount: allMountPrice(),
+      amount: 1000,
+      buyerTel: "02-111-1111",
+      appScheme: "brandcare",
+    );
+    Get.back();
+    Get.toNamed("/IamPayment", arguments: {"paymentInfo" : paymentInfo, "type" : "care"});
   }
 
   void careSuccess(int idx){

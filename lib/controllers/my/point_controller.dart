@@ -19,6 +19,7 @@ class PointController extends BaseController{
   ScrollController pagingScroll = ScrollController();
   RxString pointCode = RxString('');
   int page = 1;
+  String? type;
 
   //추가 부분
   RxInt usePoint = 0.obs;
@@ -38,7 +39,8 @@ class PointController extends BaseController{
             usePointCtrl.text = myPoint.value.toString();
             Get.back();
             update();
-          })
+          }),
+        barrierDismissible: true,
       );
       return;
     }
@@ -51,7 +53,7 @@ class PointController extends BaseController{
   }
 
   void addUsePoint(){
-    if(Get.arguments == "care"){
+    if(type == "care"){
       final addCarePaymentCtrl = Get.find<AddCarePaymentController>();
       addCarePaymentCtrl.myPoint.value = canUsePoint();
       addCarePaymentCtrl.pointDiscount.value = usePoint.value;
@@ -120,6 +122,8 @@ class PointController extends BaseController{
 
   @override
   void onInit() async{
+    type = Get.arguments;
+    update();
     await reqPointHistory();
     pagingScroll.addListener(pagingScrollListener);
     super.onInit();

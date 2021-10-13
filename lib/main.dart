@@ -3,19 +3,18 @@ import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/routes.dart';
-import 'package:brandcare_mobile_flutter_v2/utils/FcmPushMgr.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'dart:io';
+import 'package:dart_json_mapper/dart_json_mapper.dart' show JsonMapper, jsonSerializable, JsonProperty;
+import 'main.mapper.g.dart' show initializeJsonMapper;
 
 // Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
 //   await Firebase.initializeApp();
@@ -45,6 +44,7 @@ Future<void> setFCMPermission() async {
 29 ~ 43 FCM 추가부분
 */
 void main() async{
+  initializeJsonMapper();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await setFCMPermission();
