@@ -177,13 +177,13 @@ class SignUpSocialController extends BaseController {
     print(fcm);
     super.networkState.value = NetworkStateEnum.LOADING;
     final addUser = await AuthProvider().registerUserSocial(
-      friendCodeController.text,
+      duplicateNumber == true ? "" : friendCodeController.text,
       emailController.text,
       nameController.text,
       phoneTxt.value,
       type,
       sub!,
-      fcm!
+      fcm!,
     );
     super.networkState.value = NetworkStateEnum.DONE;
     Get.offAndToNamed('/auth/signup/complete');

@@ -229,7 +229,7 @@ class SignUpController extends BaseController {
   Future<void> addUser() async{
     super.networkState.value = NetworkStateEnum.LOADING;
     final addUser = await _authApiProvider.registerUserEmail(
-      friendCodeController.text,
+      duplicateNumber == true ? "" : friendCodeController.text,
       emailController.text,
       nameController.text,
       passwordController.text,
