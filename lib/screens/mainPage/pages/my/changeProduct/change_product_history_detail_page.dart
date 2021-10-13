@@ -5,6 +5,7 @@ import 'package:brandcare_mobile_flutter_v2/controllers/my/change_product_contro
 import 'package:brandcare_mobile_flutter_v2/models/product/product_change_model.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/changeProduct/change_product_enum.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/genuine_box_widget.dart';
@@ -127,10 +128,7 @@ class ChangeProductHistoryDetailPage extends StatelessWidget {
   Widget _btnItem() {
     if(type == ChangeProductEnum.REQUEST){
       return CustomButtonEmptyBackgroundWidget(title: '확인 중', onClick: () async {
-        if(await controller.cancel(controller.historyOnceProductData!.id)){
-        Get.back();
-        Get.snackbar('알림', '변경 요청이 취소되었습니다.', snackPosition: SnackPosition.BOTTOM);
-        }
+        showConfirmDialog();
       });
     }else if(type == ChangeProductEnum.RECEIVED) {
       return Row(
@@ -151,5 +149,29 @@ class ChangeProductHistoryDetailPage extends StatelessWidget {
       );
     }
     return SizedBox();
+  }
+
+  showConfirmDialog() async {
+    Get.dialog(
+        CustomDialogWidget(
+          content: '변경 요청을 취소하시겠습니까?',
+          title: '알림',
+          isSingleButton: false,
+          okTxt: '확인',
+          cancelTxt: '취소',
+          onClick: () async {
+            if(await controller.cancel(controller.cancelIdx!)){
+              Get.back();
+              Get.back();
+              if(await controller.cancel(controller.historyOnceProductData!.id)){
+                Get.snackbar('알림', '변경 요청이 취소되었습니다.', snackPosition: SnackPosition.BOTTOM);
+
+              }
+            }
+          },
+          onCancelClick: () {
+            Get.back();
+          },
+        ));
   }
 }
