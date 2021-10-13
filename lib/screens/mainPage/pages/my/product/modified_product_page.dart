@@ -7,6 +7,7 @@ import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_titleRow_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class ModifiedProductPage extends GetView<ModifiedProductController> {
@@ -85,6 +86,10 @@ class ModifiedProductPage extends GetView<ModifiedProductController> {
                     title: '구입시기',
                     subTitle: "(예>21년 5월경이면, 2105로 입력해주세요)",
                     isShowTitle: true,
+                    textInputType: TextInputType.number,
+                    textInputIsAllow: true,
+                    maxLength: 4,
+                    textInputFormatter: r'[0-9]',
                   ),
                   const SizedBox(height: 16),
                   FormInputTitleRowWidget(
@@ -95,6 +100,7 @@ class ModifiedProductPage extends GetView<ModifiedProductController> {
                     title: '구입금액',
                     subTitle: "구입금액을 입력하세요.(숫자만 입력해주세요)",
                     isShowTitle: true,
+                    textInputType: TextInputType.number,
                   ),
                   const SizedBox(height: 16),
                   FormInputTitleRowWidget(

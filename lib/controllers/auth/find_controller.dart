@@ -15,7 +15,7 @@ enum FindPwStateEnum { NONE, AUTH, DONE }
 
 class FindController extends BaseController with SingleGetTickerProviderMixin {
    TextEditingController emailController = TextEditingController();
-   TextEditingController phoneController = TextEditingController();
+   TextEditingController findphoneController = TextEditingController();
    TextEditingController authCodeController = TextEditingController();
    TextEditingController pwController = TextEditingController();
    TextEditingController rePwController = TextEditingController();
@@ -63,7 +63,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
   Future<void> reqSecureFindId() async{
     try{
       super.networkState.value = NetworkStateEnum.LOADING;
-      final res = await AuthProvider().findId(phoneController.text);
+      final res = await AuthProvider().findId(findphoneController.text);
       if(res == null){
         super.networkState.value = NetworkStateEnum.DONE;
         Get.dialog(
@@ -107,7 +107,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
   }
 
    Future<void> smsAuth() async {
-     if(phoneController.text == ""){
+     if(findphoneController.text == ""){
        Get.dialog(
          CustomDialogWidget(content: '전화번호가 입력되지 않았습니다.', onClick: (){
            Get.back();
@@ -115,7 +115,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
          }),
        );
      }else{
-       final res = await AuthProvider().smsAuth(phoneController.text);
+       final res = await AuthProvider().smsAuth(findphoneController.text);
        if(res == null){
          Get.dialog(
            CustomDialogWidget(content: '서버와의 연결이 원할하지 않습니다.', onClick: (){
@@ -207,7 +207,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
 
  Future<bool> showPwAuthDialog() async{
       super.networkState.value = NetworkStateEnum.LOADING;
-      final res = await AuthProvider().findPw(phoneController.text, emailController.text);
+      final res = await AuthProvider().findPw(findphoneController.text, emailController.text);
       if(res == null){
         Get.dialog(
             CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
@@ -331,7 +331,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
     print(tabController.indexIsChanging);
     if(!tabController.indexIsChanging){
       emailController = TextEditingController();
-      phoneController = TextEditingController();
+      findphoneController = TextEditingController();
       authCodeController = TextEditingController();
       pwController = TextEditingController();
       rePwController = TextEditingController();

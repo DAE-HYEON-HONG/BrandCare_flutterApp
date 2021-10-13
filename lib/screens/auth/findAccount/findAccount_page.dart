@@ -10,38 +10,35 @@ class FindAccountPage extends GetView<FindController> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultAppBarScaffold(title: '아이디/비밀번호 찾기',
+    return DefaultAppBarScaffold(title: '아이디 찾기',
         child: SafeArea(
           child: Column(
             children: [
-              DefaultTabController(
-                length: 2,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20,),
-                    SizedBox(
-                      height: 48,
-                      child: TabBar(
-                          controller: controller.tabController,
-                          tabs: [
-                            Tab(
-                              text: '아이디 찾기',
-                            ),
-                            Tab(
-                                text: '비밀번호 찾기'
-                            )
-                          ]),
-                    ),
-                  ],
-                ),
-              ),
+              // DefaultTabController(
+              //   length: 2,
+              //   child: Column(
+              //     mainAxisSize: MainAxisSize.max,
+              //     children: [
+              //
+              //       // SizedBox(
+              //       //   height: 48,
+              //       //   child: TabBar(
+              //       //       controller: controller.tabController,
+              //       //       tabs: [
+              //       //         Tab(
+              //       //           text: '아이디 찾기',
+              //       //         ),
+              //       //         Tab(
+              //       //             text: '비밀번호 찾기'
+              //       //         )
+              //       //       ]),
+              //       // ),
+              //     ],
+              //   ),
+              // ),
+              const SizedBox(height: 20,),
               Flexible(
-                child: TabBarView(
-                    controller: controller.tabController,
-                    children: [
-                      FindIdComponent(),
-                      FindPwComponent()
-                    ]),
+                child: FindIdComponent(),
               ),
             ],
           )

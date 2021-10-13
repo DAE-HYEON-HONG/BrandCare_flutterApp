@@ -308,8 +308,8 @@ class AddGenuinePage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          width: 12,
-          height: 12,
+          width: 15,
+          height: 15,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(width: 1, color: primaryColor),

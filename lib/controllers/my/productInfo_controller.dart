@@ -1,4 +1,5 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/my_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/my_product_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/productDetail_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
@@ -11,6 +12,7 @@ class ProductInfoDetailController extends BaseController{
   ProductDetailModel? model;
   RxBool downDetail = false.obs;
   MyProductController myProductCtrl = Get.find<MyProductController>();
+  MyController myController = Get.find<MyController>();
 
   Future<void> reqProductInfo()async{
     super.networkState.value = NetworkStateEnum.LOADING;
@@ -63,6 +65,9 @@ class ProductInfoDetailController extends BaseController{
           }else{
             super.networkState.value = NetworkStateEnum.DONE;
             update();
+            await myController.myInfo();
+            myController.myDataInfo();
+            myController.update();
             Get.dialog(
               CustomDialogWidget(content: '삭제되었습니다.', onClick: ()async{
                 Get.back();

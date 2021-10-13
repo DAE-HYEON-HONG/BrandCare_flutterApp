@@ -18,6 +18,7 @@ import 'package:brandcare_mobile_flutter_v2/bindings/mainShop_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/signup_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/bindings/splash_binding.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/findAccount/findAccount_page.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/auth/findAccount/findPW_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/login_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signupSocial_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/auth/signup_complete_page.dart';
@@ -76,6 +77,7 @@ final routes = [
   GetPage(name: '/auth/signup/complete', page: () => SignUpCompletePage(), binding: SignUpBinding()),
   GetPage(name: '/auth/signupSocial', page: () => SignUpSocialPage(), binding: SignUpSocialBinding()),
   GetPage(name: '/auth/find', page: () => FindAccountPage(), binding: FindAccountBinding()),
+  GetPage(name: '/auth/findpw', page: () => FindPWPage(), binding: FindAccountBinding()),
   GetPage(name: '/mainPage', page: () => MainPage(), binding: MainPageBinding()),
   GetPage(name: '/notLoginPage', page: ()=> NotLoginPage()),
   GetPage(name: '/main/my/info', page: () => MyInfoPage()),

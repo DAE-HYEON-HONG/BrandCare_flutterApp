@@ -17,12 +17,21 @@ class MyController extends BaseController {
   final globalCtrl = Get.find<GlobalController>();
   MyProfileInfoModel? myProfileInfoModel;
   List<BannerModel>? bannerList = <BannerModel>[];
-  List<Map<String, int>> myData = [];
+  var myData = <Widget>[].obs;
+  var myProductCount = 0.obs;
+  var myCareCount = 0.obs;
+  var myActivationCount = 0.obs;
 
   void myDataInfo(){
-    myData.add({'등록제품보기': myProfileInfoModel?.productCount ?? 0});
-    myData.add({'케어/수선이력': myProfileInfoModel?.careCount ?? 0});
-    myData.add({'정품인증이력': myProfileInfoModel?.activationCount ?? 0});
+    // myData.clear();
+    myProductCount.value = myProfileInfoModel?.productCount ?? 0;
+    myCareCount.value = myProfileInfoModel?.careCount ?? 0;
+    myActivationCount.value = myProfileInfoModel?.activationCount ?? 0;
+    print('productCount is $myProductCount');
+    // myData.insert(0, {'제품보기': myProfileInfoModel?.productCount ?? 0});
+    // myData.insert(1, {'케어/수선이력': myProfileInfoModel?.careCount ?? 0});
+    // myData.insert(2, {'정품인증이력': myProfileInfoModel?.activationCount ?? 0});
+    update();
   }
   Map<String, String> linkData = {
     '친구 초대 하기': '/main/my/invite',

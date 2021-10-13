@@ -30,10 +30,8 @@ class SignUpPage extends GetView<SignUpController> {
                     children: [
                       FormInputWidget(
                         onChange: (value) {
-                          controller.emailTxt.value =
-                              controller.emailController.text;
-                          controller.duplicateEmail.value =
-                              SignUpCheckEmail.NONE;
+                          controller.emailTxt.value = controller.emailController.text;
+                          controller.duplicateEmail.value = SignUpCheckEmail.NONE;
                         },
                         onSubmit: (value) {},
                         controller: controller.emailController,
