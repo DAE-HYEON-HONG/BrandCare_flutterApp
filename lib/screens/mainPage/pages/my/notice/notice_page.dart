@@ -74,6 +74,7 @@ class NoticePage extends GetView<NoticeController> {
             ),
           ),
           child: Container(
+            width: double.infinity,
             color: whiteColor,
             padding: EdgeInsets.only(left: 16, right: 16, top: 16),
             child: Text(model.content, style: regular14TextStyle.copyWith(color: gray_666Color),),

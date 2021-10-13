@@ -81,7 +81,7 @@ class ChangeProductHistoryDetailPage extends StatelessWidget {
       child: Row(
         children: [
           if(controller.historyOnceProductData != null &&
-              controller.historyOnceProductData!.image != null)
+              controller.historyOnceProductData!.image != "사진없음")
             ExtendedImage.network(GlobalApiService.getImage(
                 controller.historyOnceProductData!.image!),
               width: 72,

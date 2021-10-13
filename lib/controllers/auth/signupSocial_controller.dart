@@ -22,6 +22,7 @@ class SignUpSocialController extends BaseController {
   String? sub;
   String? fcm;
 
+  bool duplicateNumber = false;
   Rx<bool> sendPhoneCode = false.obs;
   Rx<bool> authCode = false.obs;
   RxString authNumTxt = "".obs;
@@ -150,7 +151,25 @@ class SignUpSocialController extends BaseController {
         }),
       );
     }else{
-      await addUser(type);
+      if(duplicateNumber == true){
+        Get.dialog(
+          CustomDialogWidget(
+            title: '중복된 추천인 코드',
+            content: '이미 친구 초대코드를 사용하셨어요.\n회원가입 시 쿠폰 및 포인트가 적립되지 않아요.',
+            onClick: ()async{
+              await addUser(type);
+            },
+            onCancelClick: () {
+              Get.back();
+            },
+            isSingleButton: false,
+            okTxt: "예",
+            cancelTxt: "아니오",
+          ),
+        );
+      }else{
+        await addUser(type);
+      }
     }
   }
 
@@ -218,6 +237,11 @@ class SignUpSocialController extends BaseController {
         authNumberController.text =  "";
         checkSmsAuthTimer();
         phAuth = response['data'];
+        if(response['duplicate'] == "Y"){
+          duplicateNumber = false;
+        }else{
+          duplicateNumber = true;
+        }
         update();
       }
     }
