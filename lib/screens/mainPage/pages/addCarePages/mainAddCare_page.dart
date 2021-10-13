@@ -3,6 +3,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/mainAddCare_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/mainPage_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_chk_address.dart';
@@ -396,6 +397,17 @@ class MainAddCarePage extends StatelessWidget {
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 onChanged: (value) {
+                  if(controller.phAuth != ""){
+                    controller.smsTime.value = 180;
+                    controller.phAuth = "";
+                    controller.phoneChecked.value = false;
+                    controller.authNumTxt.value = '';
+                    controller.authNum.clear();
+                  }
+                  if(!RegexUtil.checkPhoneRegex(phone: value)){
+                    controller.enableTimer.value = false;
+                  }
+
                   controller.senderPhTxt.value = controller.senderPhNum.text;
                   controller.chkFill();
                 },
@@ -424,7 +436,7 @@ class MainAddCarePage extends StatelessWidget {
               // width: ((!controller.authCode.value ? 2 : 0 ) * (Get.width - 32)) / ((!controller.authCode.value ? 2:0) + 3),
               width: (2 * (Get.width - 32)) / (2 + 3),
               child: CustomButtonOnOffWidget(
-                title: controller.phAuth != "" ? '재발송' : '인증번호 받기',
+                title: controller.phAuth != "" ? '재전송' : '인증번호 받기',
                 onClick: () => controller.smsAuth(),
                 isOn: controller.senderPhNumFill.value,
               ),
@@ -448,7 +460,7 @@ class MainAddCarePage extends StatelessWidget {
                   '인증번호',
                   style: medium14TextStyle,
                 )),
-            if(!controller.phoneChecked.value)
+            if(!controller.phoneChecked.value && controller.enableTimer.value)
               Obx(() => Text(
                 '${DateFormatUtil.convertTimer(timer: controller.smsTime.value)}',
                 style: medium14TextStyle.copyWith(color: redColor),
@@ -492,6 +504,7 @@ class MainAddCarePage extends StatelessWidget {
             const SizedBox(
               width: 8,
             ),
+            if(controller.enableTimer.value)
             Flexible(
                 flex: 1,
                 child: Obx(() => CustomButtonOnOffWidget(

@@ -27,6 +27,7 @@ class MainAddCareController extends BaseController {
   RxString authNumTxt = "".obs;
   String phAuth = "";
   RxBool phoneChecked = false.obs;
+  RxBool enableTimer = false.obs;
 
   TextEditingController senderPostCode = TextEditingController();
   TextEditingController senderAddress = TextEditingController();
@@ -136,6 +137,7 @@ class MainAddCareController extends BaseController {
           timer!.cancel();
         }
         checkSmsAuthTimer();
+        enableTimer.value = true;
         phAuth = res['data'];
         phoneChecked.value = false;
         authNum.text = "";
