@@ -60,6 +60,8 @@ dependencies:
   flutter_local_notifications: ^8.2.0
   firebase_analytics: ^8.3.2
   jwt_decoder: ^2.0.1
+  iamport_flutter: ^0.10.0-dev.4
+  dart_json_mapper: ^2.1.1
 
 dev_dependencies:
   flutter_test:

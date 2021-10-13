@@ -208,41 +208,41 @@ class SettingPage extends GetView<SettingController> {
               ),
               const SizedBox(height: 8),
               //shop알림
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        "SHOP 알림",
-                        style: medium14TextStyle.copyWith(
-                          color: controller.isNotification ? Colors.black : gray_666Color,
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        "SHOP 댓글 알림",
-                        style: regular12TextStyle.copyWith(
-                          color: gray_666Color,
-                          fontSize: 10,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Obx(() =>
-                      Transform.scale(
-                        transformHitTests: false,
-                        scale: 0.7, child: CupertinoSwitch(
-                        activeColor: primaryColor,
-                        value: controller.isShopAlarm.value,
-                        onChanged: (value) {
-                          controller.isShopAlarm.value = value;
-                          controller.changeAlarm(3);
-                        },
-                      ),
-                      )),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Row(
+              //       children: [
+              //         Text(
+              //           "SHOP 알림",
+              //           style: medium14TextStyle.copyWith(
+              //             color: controller.isNotification ? Colors.black : gray_666Color,
+              //           ),
+              //         ),
+              //         const SizedBox(width: 5),
+              //         Text(
+              //           "SHOP 댓글 알림",
+              //           style: regular12TextStyle.copyWith(
+              //             color: gray_666Color,
+              //             fontSize: 10,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //     Obx(() =>
+              //         Transform.scale(
+              //           transformHitTests: false,
+              //           scale: 0.7, child: CupertinoSwitch(
+              //           activeColor: primaryColor,
+              //           value: controller.isShopAlarm.value,
+              //           onChanged: (value) {
+              //             controller.isShopAlarm.value = value;
+              //             controller.changeAlarm(3);
+              //           },
+              //         ),
+              //         )),
+              //   ],
+              // ),
               const SizedBox(height: 8),
               //기타알림
               Row(
