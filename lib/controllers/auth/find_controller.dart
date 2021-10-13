@@ -25,11 +25,12 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
 
   int currentIndex = 0;
   String phone = '';
-  String authCode = '';
+  var authCode = ''.obs;
   String email = "";
 
-  bool isAuth = false;
-  bool isPwAuth = false;
+  var isAuth = false.obs;
+  var isPwAuth = false.obs;
+  var isAuthClicked = false.obs;
 
   Rx<bool> isPhone = false.obs;
   Rx<String> phoneTxt = ''.obs;
@@ -46,7 +47,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
   Rx<FindIdStateEnum> idState = FindIdStateEnum.NONE.obs;
   Rx<FindPwStateEnum> pwState = FindPwStateEnum.NONE.obs;
 
-  int nowTab = int.parse(Get.arguments);
+  // int nowTab = int.parse(Get.arguments);
 
   late TabController tabController;
 
@@ -114,7 +115,16 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
            update();
          }),
        );
-     }else{
+     }
+     else if(!RegexUtil.checkPhoneRegex(phone: findphoneController.text)){
+       Get.dialog(
+         CustomDialogWidget(content: '올바른 전화번호 형식을 입력해주세요.', onClick: (){
+           Get.back();
+           update();
+         }),
+       );
+     }
+     else{
        final res = await AuthProvider().smsAuth(findphoneController.text);
        if(res == null){
          Get.dialog(
@@ -125,12 +135,13 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
          );
        }else{
          enableButton.value = false;
-         isAuth = false;
+         isAuth.value = false;
          isCode.value = false;
+         isAuthClicked.value = true;
          authCodeController.text = "";
          idState.value = FindIdStateEnum.FIND_ALL_ID;
          pwState.value = FindPwStateEnum.DONE;
-         authCode = res['data'];
+         authCode.value = res['data'];
          checkSmsAuthTimer();
          update();
        }
@@ -148,7 +159,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
          timer.cancel();
          return;
        }
-       if(isAuth){
+       if(isAuth.value){
          timer.cancel();
          return;
        }
@@ -164,8 +175,8 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
        );
        return;
      }
-     if(authCode == authCodeController.text){
-       isAuth = true;
+     if(authCode.value == authCodeController.text){
+       isAuth.value = true;
        enableButton.value = true;
        _timer!.cancel();
        update();
@@ -176,7 +187,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
            update();
          }),
        );
-       isAuth = false;
+       isAuth.value = false;
      }
      update();
    }
@@ -194,12 +205,14 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
       },
       onCancelClick: () {
         Get.back();
-        tabController.index = 1;
-        emailController.text = email;
-        isAuth = false;
-        _timer!.cancel();
-        smsTime.value = 180;
-        pwState.value = FindPwStateEnum.NONE;
+        Get.back();
+        Get.toNamed('/auth/findpw');
+        // tabController.index = 1;
+        // emailController.text = email;
+        // isAuth.value = false;
+        // _timer!.cancel();
+        // smsTime.value = 180;
+        // pwState.value = FindPwStateEnum.NONE;
         update();
       },
     ));
@@ -231,7 +244,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
           return false;
         }else{
           email = res['email'];
-          isPwAuth = true;
+          isPwAuth.value = true;
           enableButton.value = false;
           pwState.value = FindPwStateEnum.AUTH;
           super.networkState.value = NetworkStateEnum.DONE;
@@ -283,7 +296,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
     if (idState.value == FindIdStateEnum.NONE) {
       await reqSecureFindId();
     } else {
-      if(isAuth){
+      if(isAuth.value){
         showAllFindId();
         return;
       }
@@ -299,7 +312,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
     if(pwState.value == FindPwStateEnum.AUTH){
       await showPwChangeDialog();
     }
-    if(isAuth && emailController.text.isNotEmpty) {
+    if(isAuth.value && emailController.text.isNotEmpty) {
       await showPwAuthDialog();
       return;
     }
@@ -319,7 +332,7 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
   }
 
   void checkAuthCode() {
-    isAuth = true;
+    isAuth.value = true;
     enableButton.value = true;
     update();
   }
@@ -338,9 +351,9 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
       idState.value = FindIdStateEnum.NONE;
       pwState.value = FindPwStateEnum.NONE;
       phone = '';
-      authCode = '';
-      isAuth = false;
-      isPwAuth = false;
+      authCode.value = '';
+      isAuth.value = false;
+      isPwAuth.value = false;
       isPhone = false.obs;
       phoneTxt = ''.obs;
       isCode = false.obs;
@@ -362,16 +375,16 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
   @override
   void onInit() {
     super.onInit();
-    tabController = TabController(length: 2, vsync: this);
-    tabController.index = nowTab;
+    // tabController = TabController(length: 2, vsync: this);
+    // tabController.index = nowTab;
     idState.value = FindIdStateEnum.NONE;
-    tabController.addListener(initTabString);
+    // tabController.addListener(initTabString);
     debounce(phoneTxt, (_) {
       print('debounce');
       isPhone.value = RegexUtil.checkPhoneRegex(phone: phoneTxt.value);
-      if (tabController.index == 0 && idState.value == FindIdStateEnum.NONE) {
-        enableButton.value = isPhone.value;
-      }
+      // if (tabController.index == 0 && idState.value == FindIdStateEnum.NONE) {
+      //   enableButton.value = isPhone.value;
+      // }
     });
     debounce(codeTxt, (_) {
       isCode.value = codeTxt.value.length == 6;
