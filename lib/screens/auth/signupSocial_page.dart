@@ -111,6 +111,14 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
                       FilteringTextInputFormatter.digitsOnly,
                     ],
                     onChanged: (value) {
+                      if(controller.sendPhoneCode.value){
+                        controller.smsTime.value = 180;
+                        controller.sendPhoneCode.value = false;
+                        controller.authCode.value = false;
+                        controller.phoneChecked.value = false;
+                        controller.authNumTxt.value = '';
+                        controller.authNumberController.clear();
+                      }
                       controller.phoneTxt.value = controller.phoneController.text;
                     },
                     decoration: InputDecoration(
@@ -138,7 +146,7 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
                     // width: ((!controller.authCode.value ? 2 : 0 ) * (Get.width - 32)) / ((!controller.authCode.value ? 2:0) + 3),
                     width: (2 * (Get.width - 32)) / (2 + 3),
                     child: CustomButtonOnOffWidget(
-                      title: controller.sendPhoneCode.value ? '재발송' : '인증번호 받기',
+                      title: controller.sendPhoneCode.value ? '재전송' : '인증번호 받기',
                       onClick: () => controller.smsAuth(),
                       isOn: controller.isPhone.value,
                     ),
@@ -162,7 +170,7 @@ class SignUpSocialPage extends GetView<SignUpSocialController> {
                       '인증번호',
                       style: medium14TextStyle,
                     )),
-                if(!controller.phoneChecked.value)
+                if(!controller.phoneChecked.value && controller.sendPhoneCode.value)
                   Obx(() => Text(
                     '${DateFormatUtil.convertTimer(timer: controller.smsTime.value)}',
                     style: medium14TextStyle.copyWith(color: redColor),

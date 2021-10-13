@@ -2,6 +2,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/auth/find_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
@@ -51,6 +52,12 @@ class FindIdComponent extends StatelessWidget {
                                     child: FormInputWidget(
                                       onChange: (value) {
                                         controller.phoneTxt.value = value;
+                                        if(RegexUtil.checkPhoneRegex(phone: value)){
+                                          controller.enableButton.value = true;
+                                        }
+                                        else {
+                                          controller.enableButton.value = false;
+                                        }
                                       },
                                       onSubmit: (value) {},
                                       controller: controller.findphoneController,
@@ -88,7 +95,7 @@ class FindIdComponent extends StatelessWidget {
                               children: [
                                 Text("인증번호", style: medium14TextStyle),
                                 const SizedBox(width: 10),
-                                if(!controller.isAuth)
+                                if(!controller.isAuth.value)
                                 Obx(() => Text(
                                       '${DateFormatUtil.convertTimer(timer: controller.smsTime.value)}',
                                       style: medium14TextStyle.copyWith(
@@ -97,7 +104,7 @@ class FindIdComponent extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 10),
-                            if(!controller.isAuth)
+                            if(!controller.isAuth.value)
                               AnimatedOpacity(
                                 opacity: (controller.idState.value == FindIdStateEnum.FIND_ALL_ID) ? 1.0 : 0.0,
                                 duration: Duration(milliseconds: 500),

@@ -31,6 +31,7 @@ class AddGenuineController extends BaseController {
   RxString authNumTxt = "".obs;
   String phAuth = "";
   RxBool phoneChecked = false.obs;
+  RxBool enableTimer = false.obs;
 
   TextEditingController senderPostCode = TextEditingController();
   TextEditingController senderAddress = TextEditingController();
@@ -84,6 +85,7 @@ class AddGenuineController extends BaseController {
         );
       }else{
         checkSmsAuthTimer();
+        enableTimer.value = true;
         phAuth = res['data'];
         phoneChecked.value = false;
         authNum.text = "";
