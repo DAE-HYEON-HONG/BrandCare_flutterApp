@@ -300,8 +300,18 @@ class MyController extends BaseController {
         return;
       }
       authNum = response['data'];
+      isAuth.value = false;
+      codeController.text = "";
       update();
     }
+  }
+
+  void changeNumberChk(value) {
+    phone.value = value;
+    isAuth.value = false;
+    codeController.text = "";
+    code.value = "";
+    update();
   }
 
   void smsAuthChk() {

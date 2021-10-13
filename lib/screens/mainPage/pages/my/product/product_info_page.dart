@@ -34,25 +34,19 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
               children: [
                 _item("${controller.model?.thumbnail ?? ""}"),
                 const SizedBox(height: 24,),
-                if(controller.model?.genuine == "GENUINE" && controller.model?.genuine == "REFUSAL")
+                if(controller.model?.genuine == "GENUINE" || controller.model?.genuine == "REFUSAL")
                 CustomArrowBtn(title: '정품인증 결과보기', onTap: () {
                   Get.to(() => AddGenuineStatusPage(), arguments: {
                     'back' : true,
                     'idx' : controller.model?.activationId ?? 0,
                   });
                 }),
-                if(controller.model?.genuine != "REFUSAL")
-                controller.model?.genuine != "GOING" ?
+                if(controller.model?.genuine != "GENUINE" && controller.model?.genuine != "REFUSAL" && controller.model?.genuine != "GOING")
                 CustomArrowBtn(title: '정품인증 신청하기', onTap: () {
                   Get.to(() => AddGenuinePage(), arguments: controller.productIdx);
-                }): CustomArrowBtn(title: '정품 확인중', onTap: () {}),
-                if(controller.model?.genuine == "REFUSAL")
-                  CustomArrowBtn(title: '정품인증 결과보기', onTap: () {
-                    Get.to(() => AddGenuineStatusPage(), arguments: {
-                      'back' : true,
-                      'idx' : controller.model?.activationId ?? 0,
-                    });
-                  }),
+                }),
+                if(controller.model?.genuine == "GOING")
+                CustomArrowBtn(title: '정품 확인중', onTap: () {}),
                 const SizedBox(height: 16,),
                 CustomArrowBtn(
                   title: '제품 사용자 변경',

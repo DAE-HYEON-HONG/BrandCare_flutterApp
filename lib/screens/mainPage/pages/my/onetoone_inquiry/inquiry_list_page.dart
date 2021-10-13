@@ -71,7 +71,7 @@ class InquiryListPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                 child: Text(contents,
                     style: regular14TextStyle.copyWith(color: gray_666Color),),
               ),
@@ -88,7 +88,8 @@ class InquiryListPage extends StatelessWidget {
                     SvgPicture.asset('assets/icons/reply.svg'),
                     const SizedBox(width: 12,),
                     Flexible(
-                      child: Text(answer,
+                      child: Text(
+                        answer == "" ? "답변을 기다리는 중이에요." : answer,
                         style: regular14TextStyle.copyWith(color: gray_666Color),),
                     ),
                   ],

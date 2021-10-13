@@ -206,7 +206,7 @@ class SettingPage extends GetView<SettingController> {
                       )),
                 ],
               ),
-              const SizedBox(height: 8),
+              // const SizedBox(height: 8),
               //shop알림
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.spaceBetween,

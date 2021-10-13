@@ -189,7 +189,8 @@ class ProductInfoPage extends GetView<ProductInfoController> {
                     const SizedBox(
                       width: 19,
                     ),
-                    GenuineBoxWidget(isGenuine: true),
+                    if(model?.genuine != "REFUSAL")
+                    GenuineBoxWidget(isGenuine: model?.genuine == "GENUINE" ? true : false),
                   ],
                 ),
                 const SizedBox(

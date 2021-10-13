@@ -15,7 +15,7 @@ class MyProductPage extends GetView<MyProductController> {
   @override
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(
-      title: '나의 제품 전체 보기',
+      title: '등록제품',
       child: Container(
         width: double.infinity,
         height: double.infinity,
@@ -79,7 +79,7 @@ class MyProductPage extends GetView<MyProductController> {
   required String genuine,
   required int idx}) => GestureDetector(
     behavior: HitTestBehavior.translucent,
-    onTap: () => Get.toNamed("/main/my/product/gi/detail", arguments: idx),
+    onTap: () => Get.toNamed("/main/my/product/gi/detail", arguments: {"id" : idx}),
     child: Container(
       padding: const EdgeInsets.all(16),
       child: Row(

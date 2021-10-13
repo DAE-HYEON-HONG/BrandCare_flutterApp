@@ -377,7 +377,11 @@ class AddGenuinePage extends StatelessWidget {
                 readOnly: controller.phoneChecked.value ? true : false,
                 controller: controller.senderPhNum,
                 style: regular12TextStyle,
-                keyboardType: TextInputType.phone,
+                keyboardType: TextInputType.numberWithOptions(decimal: false),
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                //onChanged: (value) => controller.numberChk(),
                 onChanged: (value) {
                   if(controller.phAuth != ""){
                     controller.smsTime.value = 180;

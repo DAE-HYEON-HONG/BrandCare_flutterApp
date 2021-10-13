@@ -53,11 +53,9 @@ class PhoneChangePage extends StatelessWidget {
                                       (Get.width - 32)) /
                                       ((!myController.isAuth.value ? 3 : 1) + (!myController.isAuth.value ? 2 : 0)),
                                   child: FormInputWidget(
-                                    onChange: (value) {
-                                      myController.phone.value = value;
-                                    },
+                                    onChange: (value) => myController.changeNumberChk(value),
                                     onSubmit: (value) {},
-                                    readOnly: myController.isAuth.value,
+                                    //readOnly: myController.isAuth.value,
                                     controller: myController.phoneController,
                                     textInputType: TextInputType.phone,
                                     isShowTitle: true,

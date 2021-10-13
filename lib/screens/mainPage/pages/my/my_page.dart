@@ -210,7 +210,7 @@ class MyPage extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          '제품보기',
+                          '등록제품',
                           style:
                               regular12TextStyle.copyWith(color: gray_333Color),
                         ),
