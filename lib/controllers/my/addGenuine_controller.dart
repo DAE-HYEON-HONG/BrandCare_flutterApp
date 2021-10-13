@@ -92,6 +92,17 @@ class AddGenuineController extends BaseController {
     }
   }
 
+  void numberChk() {
+    senderPhTxt.value = senderPhNum.text;
+    phoneChecked.value = false;
+    authNum.text = "";
+    authNumTxt.value = "";
+    authNumFill.value = false;
+    phAuth = "";
+    update();
+    chkFill();
+  }
+
   void smsAuthChk() {
     if(!phoneChecked.value){
       if(smsTime.value == 0) {

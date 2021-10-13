@@ -376,11 +376,11 @@ class AddGenuinePage extends StatelessWidget {
                 readOnly: controller.phoneChecked.value ? true : false,
                 controller: controller.senderPhNum,
                 style: regular12TextStyle,
-                keyboardType: TextInputType.phone,
-                onChanged: (value) {
-                  controller.senderPhTxt.value = controller.senderPhNum.text;
-                  controller.chkFill();
-                },
+                keyboardType: TextInputType.numberWithOptions(decimal: false),
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                onChanged: (value) => controller.numberChk(),
                 decoration: InputDecoration(
                   isDense: true,
                   contentPadding: const EdgeInsets.all(15),

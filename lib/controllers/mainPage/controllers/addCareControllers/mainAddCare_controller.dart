@@ -352,7 +352,7 @@ class MainAddCareController extends BaseController {
       );
     }else if(receiverName.text.isEmpty){
       Get.dialog(
-        CustomDialogWidget(content: '받는 분의 이름이 없습니다..', onClick: (){
+        CustomDialogWidget(content: '받는 분의 이름이 없습니다.', onClick: (){
           Get.back();
           update();
         }),

@@ -21,7 +21,7 @@ class QuestionPage extends GetView<QuestionController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GetBuilder<QuestionController>(builder: (_) => Flexible(
+              GetBuilder<QuestionController>(builder: (_) => Expanded(
                 child: ListView.separated(
                   controller: controller.pagingScroll,
                     separatorBuilder: (context, idx) {
@@ -49,9 +49,11 @@ class QuestionPage extends GetView<QuestionController> {
 
                     }, itemCount: controller.qnaList?.length ?? 0),
               )),
-              // CustomButtonEmptyBackgroundWidget(title: '1:1 문의', onClick: (){
-              //   Get.offAndToNamed('/main/my/inquiry');
-              // }),
+              Spacer(),
+              if(controller.globalCtrl.isLogin.value)
+              CustomButtonEmptyBackgroundWidget(title: '1:1 문의', onClick: (){
+                Get.offAndToNamed('/main/my/inquiry');
+              }),
             ],
           ),
         ));
@@ -79,9 +81,15 @@ class QuestionPage extends GetView<QuestionController> {
         ),
       ),
       child: Container(
+        width: double.infinity,
         color: whiteColor,
         padding: EdgeInsets.only(left: 16, right: 16, top: 16),
-        child: Text(contents, style: regular14TextStyle.copyWith(color: gray_666Color),),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(contents, style: regular14TextStyle.copyWith(color: gray_666Color),),
+          ],
+        ),
       ),
     ),
   );

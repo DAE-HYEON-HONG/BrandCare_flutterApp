@@ -7,8 +7,11 @@ import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../global_controller.dart';
+
 class QuestionController extends BaseController{
 
+  final globalCtrl = Get.find<GlobalController>();
   Paging? qListPaging;
   List<QuestionListModel>? qnaList = <QuestionListModel>[];
   ScrollController pagingScroll = ScrollController();

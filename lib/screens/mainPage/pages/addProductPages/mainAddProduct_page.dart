@@ -76,7 +76,7 @@ class MainAddProductPage extends StatelessWidget {
                 onChange: (value) => controller.nextBtnFill(),
                 onSubmit: (value) {},
                 controller: controller.titleCtrl,
-                hint: "제품명을 입력하세요.(필수입력)",
+                hint: "제품의 이름을 적어주세요.(필수입력)",
               ),
               const SizedBox(height: 16),
               AddProductExpansionListField(

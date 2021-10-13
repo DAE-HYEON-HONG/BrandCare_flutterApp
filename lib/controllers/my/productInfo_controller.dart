@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 
 class ProductInfoDetailController extends BaseController{
 
-  int productIdx = Get.arguments;
+  int? productIdx;
   ProductDetailModel? model;
   RxBool downDetail = false.obs;
   MyProductController myProductCtrl = Get.find<MyProductController>();
@@ -16,7 +16,7 @@ class ProductInfoDetailController extends BaseController{
 
   Future<void> reqProductInfo()async{
     super.networkState.value = NetworkStateEnum.LOADING;
-    var res = await ProductProvider().productDetail(productIdx);
+    var res = await ProductProvider().productDetail(productIdx!);
     print(res.toString());
     if(res == null){
       Get.dialog(
@@ -53,7 +53,7 @@ class ProductInfoDetailController extends BaseController{
         content: '삭제 시 복구 되지 않습니다.\n정말 삭제 하시겠습니까?',
         onClick: () async{
           super.networkState.value = NetworkStateEnum.LOADING;
-          var res = await ProductProvider().productRemove(productIdx);
+          var res = await ProductProvider().productRemove(productIdx!);
           if(res == null){
             Get.dialog(
                 CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
@@ -99,6 +99,8 @@ class ProductInfoDetailController extends BaseController{
 
   @override
   void onInit() async{
+    productIdx = Get.arguments['id'];
+    update();
     super.onInit();
     await reqProductInfo();
   }

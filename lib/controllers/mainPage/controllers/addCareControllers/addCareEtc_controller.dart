@@ -48,7 +48,7 @@ class AddCareEtcController extends BaseController{
   void removeList(AddCareListModel obj){
     if(addCareList!.length == 1){
       Get.dialog(
-        CustomDialogWidget(content: '1개 이상 부터 삭제 가능합니다.', onClick: (){
+        CustomDialogWidget(content: '2개 이상 부터 삭제 가능합니다.', onClick: (){
           Get.back();
           update();
         }),
