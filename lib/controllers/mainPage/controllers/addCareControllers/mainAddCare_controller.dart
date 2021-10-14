@@ -273,6 +273,7 @@ class MainAddCareController extends BaseController {
   }
 
   void receiverPostSaveChk(){
+    receiverNormalAddress.value = false;
     if (receiverPostCode.text != ""
         || receiverAddress.text != ""
         || receiverAddressDetail.value != ""){
