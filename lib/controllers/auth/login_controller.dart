@@ -23,7 +23,7 @@ class LoginController extends BaseController {
 
   Rx<bool> isAutoLogin = false.obs;
 
-  RxBool isKakaoTalkInstalled = false.obs;
+  RxBool isKakaoTalk = false.obs;
 
   List<Map<String, String>> textList = [
     {
@@ -52,7 +52,8 @@ class LoginController extends BaseController {
 
   void loginButton(String type)async{
     if(type == "login_kakao.svg"){
-      if(isKakaoTalkInstalled.value){
+      await _initKakaoInit();
+      if(isKakaoTalk.value){
         await loginWithTalk();
       }else{
         await loginWithKakao();
@@ -118,7 +119,7 @@ class LoginController extends BaseController {
   _initKakaoInit() async {
     final installed = await isKakaoTalkInstalled();
     print('kakao 설치 : ${installed.toString()}');
-    isKakaoTalkInstalled.value = installed;
+    isKakaoTalk.value = installed;
     update();
   }
 

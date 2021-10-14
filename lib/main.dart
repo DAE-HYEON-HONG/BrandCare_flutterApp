@@ -44,13 +44,13 @@ Future<void> setFCMPermission() async {
 29 ~ 43 FCM 추가부분
 */
 void main() async{
+  KakaoContext.clientId = "20ebd93e838ea02863b6183bbb8f8b96";
+  KakaoContext.javascriptClientId = "9d475981d18440ea00a275bc035dcacf";
   initializeJsonMapper();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await setFCMPermission();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
-  KakaoContext.clientId = "20ebd93e838ea02863b6183bbb8f8b96";
-  KakaoContext.javascriptClientId = "9d475981d18440ea00a275bc035dcacf";
   runApp(MyApp());
 }
 
