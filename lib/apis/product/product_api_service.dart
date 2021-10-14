@@ -119,10 +119,11 @@ class ProductApiService {
           body: json.encode(data)
       );
       print('changeProdyct');
-      print(res.body);
-      if(res.statusCode == 200) {
+      print('res body is ' + res.body);
+      if(res.statusCode == 200 || res.statusCode == 409) {
         return res;
       }
+
     }catch(e){
       print(e);
       return null;

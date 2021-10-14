@@ -73,7 +73,7 @@ class AddGenuinePage extends StatelessWidget {
                             controller.senderNormalAddressSet();
                             controller.chkFill();
                           },
-                          title: '기본주소로 입력 하시겠습니까?',
+                          title: '등록되어 있는 주소를 가져오시겠습니까?',
                           postCode: controller.globalCtrl.userInfoModel!.address!.zipCode,
                           address: controller.globalCtrl.userInfoModel!.address!.city,
                           detail: controller.globalCtrl.userInfoModel!.address!.street,
@@ -99,7 +99,10 @@ class AddGenuinePage extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       _searchPost(
-                          onTap: () => controller.senderPostSaveChk(),
+                          onTap: () {
+                            controller.senderNormalAddress.value = false;
+                            controller.senderPostSaveChk();
+                          },
                           search: true,
                           title: '주소검색',
                           type: "sender"
@@ -116,9 +119,10 @@ class AddGenuinePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Obx(() => FormInputWidget(
-                    readOnly: controller.senderNormalAddress.value,
                     onChange: (value) {
+                      controller.senderNormalAddress.value = false;
                       controller.senderAddressDetail.value = controller.senderAddressDetailCtrl.text;
+                      controller.samePost.value = false;
                       controller.chkFill();
                     },
                     onSubmit: (value) => controller.senderPostSaveChk(),
@@ -127,7 +131,7 @@ class AddGenuinePage extends StatelessWidget {
                   )),
                   const SizedBox(height: 8),
                   Obx(() => Container(
-                    child: controller.saveSenderPostChk.value ?
+                    child: controller.saveSenderPostChk.value && !controller.senderNormalAddress.value?
                     CustomChkAddress(
                       onTap: () => controller.senderPostSave(),
                       title: '위 주소를 마이페이지에 등록하시겠습니까?',
@@ -202,7 +206,7 @@ class AddGenuinePage extends StatelessWidget {
                                 controller.receiverNormalAddressSet();
                                 controller.chkFill();
                               },
-                              title: '기본주소로 입력 하시겠습니까?',
+                              title: '등록되어 있는 주소를 가져오시겠습니까?',
                               postCode: controller.globalCtrl.userInfoModel?.address!.zipCode ?? '',
                               address: controller.globalCtrl.userInfoModel?.address!.city ?? '',
                               detail: controller.globalCtrl.userInfoModel?.address!.street ?? '',
@@ -230,7 +234,10 @@ class AddGenuinePage extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       _searchPost(
-                          onTap: () => controller.receiverPostSaveChk(),
+                          onTap: () {
+                            controller.receiverNormalAddress.value = false;
+                            controller.receiverPostSaveChk();
+                          },
                           search: true,
                           title: '주소검색',
                           type: "receiver"
@@ -247,15 +254,20 @@ class AddGenuinePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Obx(() => FormInputWidget(
-                    readOnly: controller.receiverNormalAddress.value,
-                    onChange: (value) => controller.senderPostSaveChk(),
+                    //readOnly: controller.receiverNormalAddress.value,
+                    onChange: (value) {
+                      controller.receiverNormalAddress.value = false;
+                      controller.receiverAddressDetail.value = controller.receiverAddressDetailCtrl.text;
+                      controller.samePost.value = false;
+                      controller.senderPostSaveChk();
+                    },
                     onSubmit: (value) => controller.senderPostSaveChk(),
                     controller: controller.receiverAddressDetailCtrl,
                     hint: "나머지 주소를 입력해주세요.",
                   )),
                   const SizedBox(height: 8),
                   Obx(() => Container(
-                    child: controller.saveReceiverPostChk.value ?
+                    child: controller.saveReceiverPostChk.value && !controller.receiverNormalAddress.value ?
                     CustomChkAddress(
                       onTap: () => controller.receiverPostSave(),
                       title: '위 주소를 마이페이지에 등록하시겠습니까?',
@@ -326,19 +338,37 @@ class AddGenuinePage extends StatelessWidget {
   _searchPost({required Function onTap, required bool search, required String title, required String type}){
     return GestureDetector(
       onTap: () {
-        if(!controller.senderNormalAddress.value || controller.samePost.value || !controller.receiverNormalAddress.value){
+        //if(!controller.senderNormalAddress.value || controller.samePost.value || !controller.receiverNormalAddress.value){
+        if(controller.samePost.value){
+          if(search){
+            Get.to(KpostalView(
+              callback: (Kpostal result){
+                controller.changeSenderPost(result.postCode, result.address);
+                controller.chkFill();
+                controller.changeReceiverPost(result.postCode, result.address);
+                controller.chkFill();
+                controller.samePost.value = false;
+                onTap();
+              },
+            ));
+          }
+        }
+        else {
           if(search){
             Get.to(KpostalView(
               callback: (Kpostal result){
                 if (type == "sender"){
                   controller.changeSenderPost(result.postCode, result.address);
+                  controller.chkFill();
                 }else{
                   controller.changeReceiverPost(result.postCode, result.address);
+                  controller.chkFill();
                 }
                 onTap();
               },
             ));
           }
+
         }
       },
       child: Container(
@@ -374,7 +404,7 @@ class AddGenuinePage extends StatelessWidget {
             Flexible(
               flex: 3,
               child: TextFormField(
-                readOnly: controller.phoneChecked.value ? true : false,
+                //readOnly: controller.phoneChecked.value ? true : false,
                 controller: controller.senderPhNum,
                 style: regular12TextStyle,
                 keyboardType: TextInputType.numberWithOptions(decimal: false),

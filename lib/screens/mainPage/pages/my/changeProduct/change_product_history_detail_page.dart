@@ -128,7 +128,28 @@ class ChangeProductHistoryDetailPage extends StatelessWidget {
   Widget _btnItem() {
     if(type == ChangeProductEnum.REQUEST){
       return CustomButtonEmptyBackgroundWidget(title: '확인 중', onClick: () async {
-        showConfirmDialog();
+        Get.dialog(
+            CustomDialogWidget(
+              content: '변경 요청을 취소하시겠습니까?',
+              title: '알림',
+              isSingleButton: false,
+              okTxt: '확인',
+              cancelTxt: '취소',
+              onClick: () async {
+                if(await controller.cancel(controller.cancelIdx!)){
+                  Get.back();
+                  Get.back();
+                  if(await controller.cancel(controller.historyOnceProductData!.id)){
+                    Get.snackbar('알림', '변경 요청이 취소되었습니다.', snackPosition: SnackPosition.BOTTOM);
+
+                  }
+                }
+              },
+              onCancelClick: () {
+                Get.back();
+              },
+            ));
+
       });
     }else if(type == ChangeProductEnum.RECEIVED) {
       return Row(
@@ -151,27 +172,6 @@ class ChangeProductHistoryDetailPage extends StatelessWidget {
     return SizedBox();
   }
 
-  showConfirmDialog() async {
-    Get.dialog(
-        CustomDialogWidget(
-          content: '변경 요청을 취소하시겠습니까?',
-          title: '알림',
-          isSingleButton: false,
-          okTxt: '확인',
-          cancelTxt: '취소',
-          onClick: () async {
-            if(await controller.cancel(controller.cancelIdx!)){
-              Get.back();
-              Get.back();
-              if(await controller.cancel(controller.historyOnceProductData!.id)){
-                Get.snackbar('알림', '변경 요청이 취소되었습니다.', snackPosition: SnackPosition.BOTTOM);
+  // showConfirmDialog() async {
 
-              }
-            }
-          },
-          onCancelClick: () {
-            Get.back();
-          },
-        ));
-  }
 }

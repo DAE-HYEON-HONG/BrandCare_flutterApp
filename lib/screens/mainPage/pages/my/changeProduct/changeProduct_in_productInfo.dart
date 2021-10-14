@@ -7,6 +7,7 @@ import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/change_product_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/productInfo_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/product_model.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_expansion_tile_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
@@ -59,7 +60,12 @@ class ChangeProductInProductInfo extends StatelessWidget {
                     FormInputWidget(
                       onChange: (value) {
                         controller.userEmail.value = value;
-                        print(controller.userEmail.value);
+                        if(RegexUtil.checkEmailRegex(email: value)){
+                          controller.emailCheck.value = true;
+                        }
+                        else {
+                          controller.emailCheck.value = false;
+                        }
                       },
                       onSubmit: (value) {},
                       controller: controller.emailTextCtrl,
@@ -84,9 +90,9 @@ class ChangeProductInProductInfo extends StatelessWidget {
                     CustomButtonOnOffWidget(
                       title: '확인',
                       onClick: () {
-                        controller.changeProductOwnerInfoPage(Get.arguments);
+                        controller.changeProductOwnerInfoPage(Get.arguments['idx']);
                       },
-                      isOn: controller.isOn,
+                      isOn: controller.emailCheck.value,
                       radius: 0,
                     ),)
             ),

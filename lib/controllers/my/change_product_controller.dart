@@ -20,7 +20,7 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
   RxInt selectIdx = RxInt(-1);
   Rx<String> userEmail = ''.obs;
   Rx<bool> isChange = false.obs;
-
+  Rx<bool> emailCheck = false.obs;
   List<ProductModel> myProductData = <ProductModel>[];
   ProductModel? selectProductModel;
   int? cancelIdx;
@@ -109,6 +109,7 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
           })
       );
     }else{
+      print('dialog');
       Get.dialog(
           CustomDialogWidget(content: '변경할 사용자에게 모든 제품 정보가\n이동되며 복구할 수 없습니다.\n제품 사용자 변경을 진행 하시겠습니까?',
             onClick: (){
@@ -131,6 +132,7 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
     if(json != null) {
       final list = (json['list'] as List).map((e) => ProductModel.fromJson(e)).toList();
       myProductData = list;
+      selectMyProduct(myProductData[0]);
       update();
     }
 
@@ -146,13 +148,22 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
     var json = await _productProvider.changeProduct({'email': userEmail.value, 'productId': selectProductModel!.id});
     print(json);
     super.networkState.value = NetworkStateEnum.DONE;
-    if(json != null) {
+    if(json != null && json['data'] != null) {
       cancelIdx = int.parse(json['data']);
       Get.snackbar('알림', '제품 변경 신청되었습니다.', snackPosition: SnackPosition.BOTTOM);
       getChangeProductList();
       Get.offNamed('/main/my/change_product/apply/complete',);
       return;
-    }else{
+    }else if(json != null && json['code'] == "CP001") {
+      Get.dialog(
+          CustomDialogWidget(content: '해당 상품으로 제품 사용자 변경이 진행 중 입니다.', onClick: (){
+            Get.back();
+            Get.back();
+          })
+      );
+    }
+
+    else{
       Get.dialog(
           CustomDialogWidget(content: '해당 이메일이 존재하지 않습니다.', onClick: (){
             Get.back();
@@ -166,11 +177,22 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
     var json = await _productProvider.changeProduct({'email': userEmail.value, 'productId': idx});
     print(json);
     super.networkState.value = NetworkStateEnum.DONE;
-    if(json != null && json['data'] == 'Y') {
+    if(json != null && json['data'] != null) {
+      cancelIdx = int.parse(json['data']);
       Get.snackbar('알림', '제품 변경 신청되었습니다.', snackPosition: SnackPosition.BOTTOM);
+      getChangeProductList();
       Get.offNamed('/main/my/change_product/apply/complete');
       return;
-    }else{
+    } else if(json != null && json['code'] == "CP001") {
+      Get.dialog(
+          CustomDialogWidget(content: '해당 상품으로 제품 사용자 변경이 진행 중 입니다.', onClick: (){
+            Get.back();
+            Get.back();
+          })
+      );
+    }
+
+    else{
       Get.dialog(
           CustomDialogWidget(content: '해당 이메일이 존재하지 않습니다.', onClick: (){
             Get.back();
