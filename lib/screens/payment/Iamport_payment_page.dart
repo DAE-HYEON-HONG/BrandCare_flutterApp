@@ -28,6 +28,7 @@ class IamportPaymentPage extends GetView<IamportPaymentController> {
       userCode: "imp27305896",
       data: Get.arguments['paymentInfo'],
       callback: (Map<String, String> result) async {
+        print(result.toString());
         if(result['success'] == "true"){
           if(Get.arguments['type'] == "care"){
             final carePayCtrl = Get.find<AddCarePaymentController>();
