@@ -118,7 +118,7 @@ class AddGenuinePage extends StatelessWidget {
                     hint: "주소를 입력하세요.",
                   ),
                   const SizedBox(height: 8),
-                  Obx(() => FormInputWidget(
+                  FormInputWidget(
                     onChange: (value) {
                       controller.senderNormalAddress.value = false;
                       controller.senderAddressDetail.value = controller.senderAddressDetailCtrl.text;
@@ -128,7 +128,7 @@ class AddGenuinePage extends StatelessWidget {
                     onSubmit: (value) => controller.senderPostSaveChk(),
                     controller: controller.senderAddressDetailCtrl,
                     hint: "나머지 주소를 입력해주세요.",
-                  )),
+                  ),
                   const SizedBox(height: 8),
                   Obx(() => Container(
                     child: controller.saveSenderPostChk.value && !controller.senderNormalAddress.value?
@@ -253,7 +253,7 @@ class AddGenuinePage extends StatelessWidget {
                     hint: "주소를 입력하세요.",
                   ),
                   const SizedBox(height: 8),
-                  Obx(() => FormInputWidget(
+                  FormInputWidget(
                     //readOnly: controller.receiverNormalAddress.value,
                     onChange: (value) {
                       controller.receiverNormalAddress.value = false;
@@ -264,7 +264,7 @@ class AddGenuinePage extends StatelessWidget {
                     onSubmit: (value) => controller.senderPostSaveChk(),
                     controller: controller.receiverAddressDetailCtrl,
                     hint: "나머지 주소를 입력해주세요.",
-                  )),
+                  ),
                   const SizedBox(height: 8),
                   Obx(() => Container(
                     child: controller.saveReceiverPostChk.value && !controller.receiverNormalAddress.value ?

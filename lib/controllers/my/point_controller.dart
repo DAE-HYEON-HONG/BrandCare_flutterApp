@@ -11,6 +11,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class PointController extends BaseController{
+
+  AddCarePaymentController addCarePaymentController = Get.find<AddCarePaymentController>();
+
   RxInt myPoint = 0.obs;
   Paging? pointListPaging;
   PointListModel? model;
@@ -47,7 +50,11 @@ class PointController extends BaseController{
   }
 
   void allUsePoint(){
-    usePoint.value = myPoint.value;
+    if(addCarePaymentController.allMountPrice() < myPoint.value){
+      usePoint.value = addCarePaymentController.allMountPrice();
+    } else {
+      usePoint.value = myPoint.value;
+    }
     usePointCtrl.text = usePoint.value.toString();
     update();
   }

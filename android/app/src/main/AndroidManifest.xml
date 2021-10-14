@@ -18,6 +18,7 @@
 
     <queries>
         <!-- If your app opens https URLs -->
+        <package android:name="com.kakao.talk" />
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="https" />
