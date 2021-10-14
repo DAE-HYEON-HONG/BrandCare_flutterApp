@@ -1,11 +1,9 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/point_controller.dart';
-import 'package:brandcare_mobile_flutter_v2/models/mypage/point/pointList_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/point/point_list_info_model.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
-import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_empty_background_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -39,14 +37,14 @@ class PointPage extends GetView<PointController> {
                   ],
                 ),
               ),
-              CustomButtonEmptyBackgroundWidget(
-                  title: '+ 포인트 등록하기',
-                  onClick: () {
-                    Get.toNamed('/main/my/point/add');
-                  }),
-              const SizedBox(
-                height: 32,
-              ),
+              // CustomButtonEmptyBackgroundWidget(
+              //     title: '+ 포인트 등록하기',
+              //     onClick: () {
+              //       Get.toNamed('/main/my/point/add');
+              //     }),
+              // const SizedBox(
+              //   height: 32,
+              // ),
               Text(
                 '포인트 이용내역',
                 style: medium14TextStyle,

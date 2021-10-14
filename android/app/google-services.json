@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:804740475110:android:27cfc71f1546dcce44b327",
+        "mobilesdk_app_id": "1:804740475110:android:db829323ccd09ef744b327",
         "android_client_info": {
-          "package_name": "com.laonstory.brand_care_app"
+          "package_name": "com.laonstory.brandcare"
         }
       },
       "oauth_client": [

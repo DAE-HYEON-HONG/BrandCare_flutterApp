@@ -1,4 +1,4 @@
-package com.laonstory.brand_care_app
+package com.laonstory.brandcare
 
 import io.flutter.app.FlutterApplication
 import io.flutter.plugin.common.PluginRegistry
