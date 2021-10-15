@@ -136,7 +136,7 @@ class SignUpSocialController extends BaseController {
           update();
         }),
       );
-    } else if (phoneChecked == false) {
+    } else if (phoneChecked.value == false) {
       Get.dialog(
         CustomDialogWidget(content: '전화번호가 확인되지 않았습니다.', onClick: (){
           Get.back();
