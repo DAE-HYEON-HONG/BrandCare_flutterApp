@@ -10,7 +10,6 @@ import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:get/get.dart';
 import 'addCareEtc_controller.dart';
 import 'mainAddCare_controller.dart';
-import 'package:iamport_flutter/iamport_payment.dart';
 import 'package:iamport_flutter/model/payment_data.dart';
 
 class AddCarePaymentController extends BaseController {

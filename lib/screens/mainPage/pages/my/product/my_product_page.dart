@@ -49,7 +49,8 @@ class MyProductPage extends GetView<MyProductController> {
             ),
             Flexible(
               child: GetBuilder<MyProductController>(
-                builder: (_) => ListView.separated(
+                builder: (_) => controller.myProductList?.length != 0 ?
+                ListView.separated(
                   controller: controller.pagingScroll,
                   shrinkWrap: true,
                   itemBuilder: (context, idx) => _item(
@@ -62,9 +63,21 @@ class MyProductPage extends GetView<MyProductController> {
                   ),
                   separatorBuilder: (context, idx) => const Divider(height: 0, thickness: 1,),
                   itemCount: controller.myProductList?.length ?? 0,
+                ) :
+                Container(
+                  width: double.infinity,
+                  height: 150,
+                  child: Center(
+                    child: Text(
+                      "등록된 제품이 없어요.",
+                      style: regular14TextStyle.copyWith(
+                        color: gray_999Color,
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

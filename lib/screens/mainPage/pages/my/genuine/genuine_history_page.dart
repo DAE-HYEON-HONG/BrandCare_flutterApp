@@ -54,7 +54,8 @@ class GenuineHistoryPage extends GetView<GenuineController> {
                 thickness: 1,
               ),
               Flexible(
-                  child: GetBuilder<GenuineController>(builder: (_) => ListView.separated(
+                  child: GetBuilder<GenuineController>(builder: (_) => controller.genuineList!.length != 0 ?
+                  ListView.separated(
                     controller: controller.pagingScroll,
                     itemBuilder: (context, idx) => _item(
                       productIdx: controller.genuineList![idx].id,
@@ -67,11 +68,25 @@ class GenuineHistoryPage extends GetView<GenuineController> {
                     ),
                     separatorBuilder: (context, idx) => const Divider(height: 0, thickness: 1,),
                     itemCount: controller.genuineList!.length,
-                  )),
+                  ) :
+                  Container(
+                    width: double.infinity,
+                    height: 150,
+                    child: Center(
+                      child: Text(
+                        "정품인증하신 제품이 없어요.",
+                        style: regular14TextStyle.copyWith(
+                          color: gray_999Color,
+                        ),
+                      ),
+                    ),
+                  ),
+                  ),
               ),
             ],
           ),
-        ));
+        ),
+    );
   }
 
   Widget _renderProfile() => Container(

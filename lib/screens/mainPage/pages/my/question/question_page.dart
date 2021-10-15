@@ -22,7 +22,8 @@ class QuestionPage extends GetView<QuestionController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GetBuilder<QuestionController>(builder: (_) => Expanded(
-                child: ListView.separated(
+                child: controller.qnaList?.length != 0 ?
+                ListView.separated(
                   controller: controller.pagingScroll,
                     separatorBuilder: (context, idx) {
                       return Divider(
@@ -47,7 +48,20 @@ class QuestionPage extends GetView<QuestionController> {
                         ),
                       );
 
-                    }, itemCount: controller.qnaList?.length ?? 0),
+                    }, itemCount: controller.qnaList?.length ?? 0
+                ):
+                Container(
+                  width: double.infinity,
+                  height: 150,
+                  child: Center(
+                    child: Text(
+                      "자주묻는 질문이 없어요.",
+                      style: regular14TextStyle.copyWith(
+                        color: gray_999Color,
+                      ),
+                    ),
+                  ),
+                ),
               )),
               Spacer(),
               if(controller.globalCtrl.isLogin.value)

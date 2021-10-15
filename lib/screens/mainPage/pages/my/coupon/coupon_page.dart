@@ -46,9 +46,9 @@ class CouponPage extends GetView<CouponController> {
                       : Expanded(
                           child: Center(
                               child: Text(
-                          '등록된 쿠폰이 없습니다.',
-                          style: medium16TextStyle.copyWith(
-                            color: gray_666Color,
+                          '등록된 쿠폰이 없어요.',
+                          style: regular14TextStyle.copyWith(
+                            color: gray_999Color,
                           ),
                         ))),
                 ],

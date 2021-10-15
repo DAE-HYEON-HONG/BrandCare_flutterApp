@@ -55,6 +55,7 @@ class PointPage extends GetView<PointController> {
                 thickness: 1,
                 color: gray_F1F3F5Color,
               ),
+              controller.list?.length != 0 ?
               Flexible(
                   child: GetBuilder<PointController>(builder: (_) => ListView.separated(
                     controller: controller.pagingScroll,
@@ -68,6 +69,18 @@ class PointPage extends GetView<PointController> {
                     ),
                     itemCount: controller.list?.length ?? 0,
                   )),
+              ):
+              Container(
+                width: double.infinity,
+                height: 150,
+                child: Center(
+                  child: Text(
+                    "사용하신 포인트 이용내역이 없어요.",
+                    style: regular14TextStyle.copyWith(
+                      color: gray_999Color,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
