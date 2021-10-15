@@ -25,7 +25,8 @@ class NoticePage extends GetView<NoticeController> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GetBuilder<NoticeController>(builder: (_) => ListView.separated(
+                GetBuilder<NoticeController>(builder: (_) => controller.noticeList!.length != 0 ?
+                ListView.separated(
                     physics: NeverScrollableScrollPhysics(),
                     separatorBuilder: (context, idx) {
                       return Divider(
@@ -41,7 +42,22 @@ class NoticePage extends GetView<NoticeController> {
                         child: _item(controller.noticeList![idx]),
                       );
 
-                    }, itemCount: controller.noticeList!.length)),
+                    },
+                    itemCount: controller.noticeList?.length ?? 0
+                ) :
+                Container(
+                  width: double.infinity,
+                  height: 150,
+                  child: Center(
+                    child: Text(
+                      "도착한 공지사항이 없어요.",
+                      style: regular14TextStyle.copyWith(
+                        color: gray_999Color,
+                      ),
+                    ),
+                  ),
+                ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 16, top: 50, bottom: 40),
                   child: Text('Copyright © 2021 BrandCare Inc. All Rights Reserved.', style: regular10TextStyle.copyWith(color: gray_999Color),),

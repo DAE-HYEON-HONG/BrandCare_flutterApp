@@ -41,7 +41,8 @@ class ChangeProductHistoryPage extends StatelessWidget {
               controller: controller.tabController,
               children: [
                 GetBuilder<ChangeProductController>(
-                  builder: (_) => ListView.separated(
+                  builder: (_) => controller.sendProductChangeList.length != 0 ?
+                  ListView.separated(
                     itemBuilder: (context, idx) => GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
@@ -55,10 +56,23 @@ class ChangeProductHistoryPage extends StatelessWidget {
                     ),
                     itemCount: controller.sendProductChangeList.length,
                     shrinkWrap: true,
+                  ) :
+                  Container(
+                    width: double.infinity,
+                    height: 150,
+                    child: Center(
+                      child: Text(
+                        "보낸요청이 없어요.",
+                        style: regular14TextStyle.copyWith(
+                          color: gray_999Color,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 GetBuilder<ChangeProductController>(
-                  builder: (_) => ListView.separated(
+                  builder: (_) => controller.receiveProductChangeList.length != 0 ?
+                  ListView.separated(
                     itemBuilder: (context, idx) => GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
@@ -72,10 +86,22 @@ class ChangeProductHistoryPage extends StatelessWidget {
                     ),
                     itemCount: controller.receiveProductChangeList.length,
                     shrinkWrap: true,
+                  ) : Container(
+                    width: double.infinity,
+                    height: 150,
+                    child: Center(
+                      child: Text(
+                        "받은요청이 없어요.",
+                        style: regular14TextStyle.copyWith(
+                          color: gray_999Color,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 GetBuilder<ChangeProductController>(
-                  builder: (_) => ListView.separated(
+                  builder: (_) => controller.completeProductChangeList.length != 0 ?
+                  ListView.separated(
                     itemBuilder: (context, idx) => GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
@@ -89,10 +115,22 @@ class ChangeProductHistoryPage extends StatelessWidget {
                     ),
                     itemCount: controller.completeProductChangeList.length,
                     shrinkWrap: true,
+                  ) : Container(
+                    width: double.infinity,
+                    height: 150,
+                    child: Center(
+                      child: Text(
+                        "변경완료된 상품이 없어요.",
+                        style: regular14TextStyle.copyWith(
+                          color: gray_999Color,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 GetBuilder<ChangeProductController>(
-                  builder: (_) => ListView.separated(
+                  builder: (_) => controller.cancelProductChangeList.length != 0 ?
+                  ListView.separated(
                     itemBuilder: (context, idx) =>
                         _item(controller.cancelProductChangeList[idx]),
                     separatorBuilder: (context, idx) => const Divider(
@@ -101,8 +139,19 @@ class ChangeProductHistoryPage extends StatelessWidget {
                     ),
                     itemCount: controller.cancelProductChangeList.length,
                     shrinkWrap: true,
+                  ) : Container(
+                    width: double.infinity,
+                    height: 150,
+                    child: Center(
+                      child: Text(
+                        "취소된 상품이 없어요.",
+                        style: regular14TextStyle.copyWith(
+                          color: gray_999Color,
+                        ),
+                      ),
+                    ),
                   ),
-                )
+                ),
               ],
             )),
           ],

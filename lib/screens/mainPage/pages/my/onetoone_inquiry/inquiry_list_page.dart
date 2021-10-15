@@ -12,22 +12,37 @@ class InquiryListPage extends StatelessWidget {
   InquiryController controller = Get.find<InquiryController>();
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: gray_F1F3F5Color,
-      child: ListView.builder(
-        itemBuilder: (context, idx) {
-          return Padding(
-            padding: EdgeInsets.only(left: 16, right: 16, bottom: 24, top: idx == 0 ? 24 : 0),
-            child: _item(
-              controller.inquiryList![idx].createdDate,
-              controller.inquiryList![idx].title,
-              controller.inquiryList![idx].content,
-              controller.inquiryList?[idx].answer ?? "",
+    return GetBuilder<InquiryController>(
+      builder: (_) => controller.inquiryList!.length != 0 ?
+      Container(
+        color: gray_F1F3F5Color,
+        child: ListView.builder(
+          itemBuilder: (context, idx) {
+            return Padding(
+              padding: EdgeInsets.only(left: 16, right: 16, bottom: 24, top: idx == 0 ? 24 : 0),
+              child: _item(
+                controller.inquiryList![idx].createdDate,
+                controller.inquiryList![idx].title,
+                controller.inquiryList![idx].content,
+                controller.inquiryList?[idx].answer ?? "",
+              ),
+            );
+          },
+          itemCount: controller.inquiryList!.length,
+          shrinkWrap: true,
+        ),
+      ) :
+      Container(
+        width: double.infinity,
+        height: double.infinity,
+        child: Center(
+          child: Text(
+            "문의하신 내용이 없어요.",
+            style: regular14TextStyle.copyWith(
+              color: gray_999Color,
             ),
-          );
-        },
-        itemCount: controller.inquiryList!.length,
-        shrinkWrap: true,
+          ),
+        ),
       ),
     );
   }

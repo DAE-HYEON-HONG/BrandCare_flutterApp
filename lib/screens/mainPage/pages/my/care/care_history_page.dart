@@ -54,7 +54,8 @@ class CareHistoryPage extends GetView<CareHistoryController> {
               ),
               Flexible(
                   child: GetBuilder<CareHistoryController>(
-                    builder: (_) => ListView.separated(
+                    builder: (_) => controller.careList!.length != 0 ?
+                    ListView.separated(
                       controller: controller.pagingScroll,
                       itemBuilder: (context, idx) => GestureDetector(
                         behavior: HitTestBehavior.translucent,
@@ -71,6 +72,18 @@ class CareHistoryPage extends GetView<CareHistoryController> {
                       ),
                       separatorBuilder: (context, idx) => const Divider(height: 0, thickness: 1,),
                       itemCount: controller.careList!.length,
+                    ) :
+                    Container(
+                      width: double.infinity,
+                      height: 150,
+                      child: Center(
+                        child: Text(
+                          "케어신청하신 제품이 없어요.",
+                          style: regular14TextStyle.copyWith(
+                            color: gray_999Color,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
               ),

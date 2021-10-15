@@ -12,8 +12,6 @@ import 'package:get/get.dart';
 
 class PointController extends BaseController{
 
-  AddCarePaymentController addCarePaymentController = Get.find<AddCarePaymentController>();
-
   RxInt myPoint = 0.obs;
   Paging? pointListPaging;
   PointListModel? model;
@@ -50,6 +48,7 @@ class PointController extends BaseController{
   }
 
   void allUsePoint(){
+    AddCarePaymentController addCarePaymentController = Get.find<AddCarePaymentController>();
     if(addCarePaymentController.allMountPrice() < myPoint.value){
       usePoint.value = addCarePaymentController.allMountPrice();
     } else {
@@ -96,8 +95,10 @@ class PointController extends BaseController{
   bool get isValidPointCode => pointCode.value != '' && pointCode.value.isNotEmpty && pointCode.value.length == 11;
 
   Future<void> reqPointHistory() async {
+    super.networkState.value = NetworkStateEnum.LOADING;
     final String? token = await SharedTokenUtil.getToken('userLogin_token');
     final res = await MyProvider().reqPoint(token!, page);
+    super.networkState.value = NetworkStateEnum.DONE;
     if(res == null){
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
