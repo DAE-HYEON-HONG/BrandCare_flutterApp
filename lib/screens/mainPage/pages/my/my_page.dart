@@ -330,44 +330,52 @@ class MyPage extends StatelessWidget {
   }
 
   Widget _renderAdBox() => GetBuilder<MyController>(
-      builder: (_) => Container(
-            margin:
-                const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 49),
-            height: 92,
-            width: double.infinity,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: ExtendedImage.network(
-                BaseApiService.imageApi +
-                    myController.bannerList![0].image.path!,
-                fit: BoxFit.cover,
-                cache: true,
-                width: double.infinity,
-                height: double.infinity,
-                // ignore: missing_return
-                loadStateChanged: (ExtendedImageState state) {
-                  switch (state.extendedImageLoadState) {
-                    case LoadState.loading:
-                      break;
-                    case LoadState.completed:
-                      break;
-                    case LoadState.failed:
-                      return GestureDetector(
-                        child: Center(
-                          child: Container(
-                            width: 100,
-                            height: 100,
-                            color: primaryColor,
+      builder: (_) => GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          if(myController.bannerList![0].isUrl){
+            myController.launchURL(myController.bannerList![0].url);
+          }
+        },
+        child: Container(
+              margin:
+                  const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 49),
+              height: 92,
+              width: double.infinity,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: ExtendedImage.network(
+                  BaseApiService.imageApi +
+                      myController.bannerList![0].image.path!,
+                  fit: BoxFit.cover,
+                  cache: true,
+                  width: double.infinity,
+                  height: double.infinity,
+                  // ignore: missing_return
+                  loadStateChanged: (ExtendedImageState state) {
+                    switch (state.extendedImageLoadState) {
+                      case LoadState.loading:
+                        break;
+                      case LoadState.completed:
+                        break;
+                      case LoadState.failed:
+                        return GestureDetector(
+                          child: Center(
+                            child: Container(
+                              width: 100,
+                              height: 100,
+                              color: primaryColor,
+                            ),
                           ),
-                        ),
-                        onTap: () {
-                          state.reLoadImage();
-                        },
-                      );
-                      break;
-                  }
-                },
+                          onTap: () {
+                            state.reLoadImage();
+                          },
+                        );
+                        break;
+                    }
+                  },
+                ),
               ),
             ),
-          ));
+      ));
 }

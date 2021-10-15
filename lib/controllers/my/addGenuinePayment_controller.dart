@@ -51,8 +51,13 @@ class AddGenuinePaymentController extends BaseController {
         CustomDialogWidget(
           title: '정품인증 신청 주의 사항',
           content: '요청사항과 신청 항목의 금액으로 주문이 접수 되오니\n정확하게 신청해 주시기 바랍니다.',
-          onClick: () {
-            payBrandCare();
+          onClick: () async {
+            if(allMountPrice() != 0){
+              payBrandCare();
+              return;
+            }
+            await uploadAdd();
+            return;
           },
           onCancelClick: () {
             Get.back();
@@ -64,6 +69,10 @@ class AddGenuinePaymentController extends BaseController {
         barrierDismissible: false,
       );
     }
+  }
+
+  int allMountPrice () {
+    return addGenuineEtcCtrl.addPrices() - pointDiscount.value - couponDiscount.value;
   }
 
   Future<void> uploadAdd() async{
@@ -81,7 +90,7 @@ class AddGenuinePaymentController extends BaseController {
     final res = await ProductProvider().addGenuine(
       address: addressBody,
       list: addGenuineEtcCtrl.priceList,
-      paymentAmount: addGenuineEtcCtrl.addPrices(),
+      paymentAmount: addGenuineEtcCtrl.addPrices() - pointDiscount.value - couponDiscount.value,
       phone: addGenuineCtrl.senderPhNum.text,
       receiverPhone: addGenuineCtrl.receiverPhNum.text,
       receiverName: addGenuineCtrl.receiverName.text,
