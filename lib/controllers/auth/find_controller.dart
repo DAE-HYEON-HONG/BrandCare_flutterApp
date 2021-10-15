@@ -254,6 +254,12 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
       }
   }
 
+   bool validateStructure(String value){
+     String  pattern = r'^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+     RegExp regExp = new RegExp(pattern);
+     return regExp.hasMatch(value);
+   }
+
    Future<void> showPwChangeDialog() async {
      if(pwTxt.value != rePwTxt.value){
        Get.dialog(
@@ -262,7 +268,16 @@ class FindController extends BaseController with SingleGetTickerProviderMixin {
            update();
          }),
        );
-     }else{
+     }else if(!validateStructure(pwTxt.value)){
+       Get.dialog(
+         CustomDialogWidget(content: '비밀번호는 소문자, 숫자, 특수문자를 포함해야 합니다.', onClick: () {
+           Get.back();
+           update();
+         }),
+       );
+     }
+
+     else{
        final res = await AuthProvider().updatePw(email, pwTxt.value);
        if(res != null){
          print(res.toString());
