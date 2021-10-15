@@ -59,9 +59,13 @@ class AddCarePaymentController extends BaseController {
         CustomDialogWidget(
           title: '케어/수선 신청 주의 사항',
           content: '요청사항과 신청 항목의\n금액으로 주문이 접수 되오니\n정확하게 신청해 주시기 바랍니다.',
-          onClick: (){
-            // await uploadAddCare();
-            payBrandCare();
+          onClick: ()async{
+            if(allMountPrice() != 0){
+              payBrandCare();
+              return;
+            }
+            await uploadAddCare();
+            return;
           },
           onCancelClick: () {
             Get.back();

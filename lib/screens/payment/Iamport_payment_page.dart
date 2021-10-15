@@ -29,7 +29,7 @@ class IamportPaymentPage extends GetView<IamportPaymentController> {
       data: Get.arguments['paymentInfo'],
       callback: (Map<String, String> result) async {
         print(result.toString());
-        if(result['success'] == "true"){
+        if(result['imp_success'] == "true"){
           if(Get.arguments['type'] == "care"){
             final carePayCtrl = Get.find<AddCarePaymentController>();
             await carePayCtrl.uploadAddCare();

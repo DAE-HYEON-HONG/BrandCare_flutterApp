@@ -23,84 +23,99 @@ class CouponUsePage extends GetView<CouponController> {
         width: double.infinity,
         height: double.infinity,
         color: Colors.white,
-        child: Stack(
+        child: Column(
           children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              controller: controller.pagingScroll,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16),
-                child: GetBuilder<CouponController>(builder: (_) => Column(
-                  children: [
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 2,
-                          child: FormInputWidget(onChange: (value){
-                            controller.couponCode.value = value;
-                          }, onSubmit: (value){}, controller: TextEditingController(),
-                            textInputType: TextInputType.number,
-                            hint: '쿠폰 코드 번호를 입력해주세요.',
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Flexible(
-                          flex: 1,
-                          child: Obx(() => CustomButtonOnOffWidget(title: '등록', onClick: (){
-                            controller.couponAddPayment(controller.couponCode.value);
-                          }, isOn: controller.isValidCouponCode)),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    const Divider(
-                      height: 0,
-                      thickness: 1,
-                      color: gray_F1F3F5Color,
-                    ),
-                    controller.couponList!.isNotEmpty ?
-                    ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (_, idx) {
-                        return _couponItem(idx);
-                      },
-                      itemCount: controller.couponList!.length,
-                      shrinkWrap: true,
-                    ) : Container(
-                      width: double.infinity,
-                      height: 150,
-                      child: Center(
-                        child: Text(
-                          '등록된 쿠폰이 없습니다.',
-                          style: medium16TextStyle.copyWith(
-                            color: gray_666Color,
-                          ),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: FormInputWidget(
+                          onChange: (value){controller.couponCode.value = value;},
+                          onSubmit: (value){},
+                          controller: TextEditingController(),
+                          textInputType: TextInputType.number,
+                          hint: '쿠폰 코드 번호를 입력해주세요.',
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 60,
-                    ),
-                  ],
-                )),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Obx(() => CustomButtonOnOffWidget(title: '등록', onClick: (){
+                          controller.couponAddPayment(controller.couponCode.value);
+                        }, isOn: controller.isValidCouponCode)),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  const Divider(
+                    height: 0,
+                    thickness: 1,
+                    color: gray_F1F3F5Color,
+                  ),
+                ],
               ),
             ),
-            if(MediaQuery.of(context).viewInsets.bottom == 0)
-            Obx(() => Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: CustomButtonOnOffWidget(
-                title: '적용하기',
-                onClick: () => controller.couponAddWhere(),
-                isOn: controller.couponId.value != 0,
+            Expanded(
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    controller: controller.pagingScroll,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16, top: 32),
+                      child: GetBuilder<CouponController>(builder: (_) => Column(
+                        children: [
+                          controller.couponList!.isNotEmpty ?
+                          ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (_, idx) {
+                              return _couponItem(idx);
+                            },
+                            itemCount: controller.couponList!.length,
+                            shrinkWrap: true,
+                          ) : Container(
+                            width: double.infinity,
+                            height: 150,
+                            child: Center(
+                              child: Text(
+                                '등록된 쿠폰이 없습니다.',
+                                style: medium16TextStyle.copyWith(
+                                  color: gray_666Color,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 60,
+                          ),
+                        ],
+                      )),
+                    ),
+                  ),
+                  if(MediaQuery.of(context).viewInsets.bottom == 0)
+                    Obx(() => Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: CustomButtonOnOffWidget(
+                        title: '적용하기',
+                        onClick: () => controller.couponAddWhere(),
+                        isOn: controller.couponId.value != 0,
+                      ),
+                    )),
+                ],
               ),
-            )),
+            ),
           ],
         ),
       ),

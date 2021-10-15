@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
 import '../global_controller.dart';
 
@@ -21,6 +22,14 @@ class MyController extends BaseController {
   var myProductCount = 0.obs;
   var myCareCount = 0.obs;
   var myActivationCount = 0.obs;
+
+  void launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   void myDataInfo(){
     // myData.clear();
