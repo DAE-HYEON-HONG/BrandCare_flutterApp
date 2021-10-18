@@ -61,6 +61,7 @@ class MainNoticeController extends BaseController with SingleGetTickerProviderMi
     super.networkState.value = NetworkStateEnum.LOADING;
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     final res =  await MyProvider().alarmList(token!, tabType, pageIdx);
+    super.networkState.value = NetworkStateEnum.DONE;
     if(res == null){
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
@@ -69,7 +70,6 @@ class MainNoticeController extends BaseController with SingleGetTickerProviderMi
           })
       );
     }else{
-      super.networkState.value = NetworkStateEnum.DONE;
       final list = (res['list'] as List).map((e) => MainNoticeModel.fromJson(e)).toList();
       if(tabType == "HISTORY"){
         if (pageIdx == 1) {

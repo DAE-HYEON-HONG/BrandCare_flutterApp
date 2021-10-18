@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:brandcare_mobile_flutter_v2/apis/my/my_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
-import 'package:brandcare_mobile_flutter_v2/models/mypage/banner/banner_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/mypage/myInfo/myProfileInfo_model.dart';
 
 class MyProvider{

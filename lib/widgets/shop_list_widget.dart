@@ -80,8 +80,8 @@ class ShopListWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: Text(this.title, style: medium16TextStyle),
-                      )
+                        child: Text(this.title, style: medium16TextStyle, maxLines: 1, overflow: TextOverflow.ellipsis),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 5),

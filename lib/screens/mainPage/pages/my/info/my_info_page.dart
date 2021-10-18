@@ -168,9 +168,24 @@ class MyInfoPage extends StatelessWidget {
             style: medium14TextStyle,
           ),
           const SizedBox(width: 10),
-          Expanded(
-            child: Text(globalCtrl.userInfoModel?.email ?? '', style: regular14TextStyle.copyWith(color: gray_999Color),),
-          ),
+          if(globalCtrl.userInfoModel?.socialType == "KAKAO")
+            ClipOval(
+              child: SvgPicture.asset("assets/icons/btn_kakao.svg", height: 24),
+            ),
+          if(globalCtrl.userInfoModel?.socialType == "FACEBOOK")
+            ClipOval(
+              child: SvgPicture.asset("assets/icons/btn_facebook.svg", height: 24),
+            ),
+          if(globalCtrl.userInfoModel?.socialType == "APPLE")
+            ClipOval(
+              child: SvgPicture.asset("assets/icons/btn_apple.svg", height: 24),
+            ),
+          if(globalCtrl.userInfoModel?.socialType == "NAVER")
+            ClipOval(
+              child: SvgPicture.asset("assets/icons/btn_naver.svg", height: 24),
+            ),
+          const Spacer(),
+          Text(globalCtrl.userInfoModel?.email ?? '', style: regular14TextStyle.copyWith(color: gray_999Color),),
         ],
       ),
     ), );
