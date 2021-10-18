@@ -3,6 +3,7 @@ import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/addCareEtc_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/addCarePayment_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/mainAddCare_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/point_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
@@ -13,6 +14,7 @@ import 'package:get/get.dart';
 class AddCarePaymentPage extends GetView<AddCarePaymentController> {
   final addCareMainCtrl = Get.find<MainAddCareController>();
   final addCareEtcCtrl = Get.find<AddCareEtcController>();
+
   @override
   Widget build(BuildContext context) {
     return DefaultAppBarScaffold(
@@ -216,6 +218,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                       Expanded(
                         child: Obx(() => _saleTile(
                           onTap: (){
+
                             Get.toNamed("/main/my/coupon/use", arguments: {
                               "type" : "care",
                               "couponId" : controller.couponIdx,
@@ -244,10 +247,11 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                   const SizedBox(height: 16),
                   Obx(() => _saleTile(
                     onTap: (){
-                      if(controller.myPoint.value != 0){
-                        Get.toNamed("/main/my/point/use", arguments: "care");
-                      }
-                      // Get.toNamed("/main/my/point/use", arguments: "care");
+                      // if(controller.myPoint.value != 0){
+                      //   Get.toNamed("/main/my/point/use", arguments: "care");
+                      // }
+                      // pointController.removePoints();
+                      Get.toNamed("/main/my/point/use", arguments: "care");
                     },
                     title: '브랜드케어 포인트',
                     subTitle: '${controller.myPoint}P 사용가능',
@@ -340,7 +344,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                           height: 1,
                           color: gray_D5D7DBColor,
                         ),
-                        GetBuilder<AddCarePaymentController>(builder: (_) => Padding(
+                        Obx(() => Padding(
                           padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 18),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

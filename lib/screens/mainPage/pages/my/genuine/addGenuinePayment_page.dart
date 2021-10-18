@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuinePayment_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/my/point_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
@@ -207,6 +208,7 @@ class AddGenuinePaymentPage extends StatelessWidget {
                       Expanded(
                         child: Obx(() => _saleTile(
                           onTap: (){
+
                             Get.toNamed("/main/my/coupon/use", arguments: {
                               "type" : "genuine",
                               "couponId" : controller.couponIdx,
@@ -235,10 +237,11 @@ class AddGenuinePaymentPage extends StatelessWidget {
                   const SizedBox(height: 16),
                   Obx(() => _saleTile(
                     onTap: (){
-                      if(controller.reqMyPoint != 0){
-                        Get.toNamed("/main/my/point/use", arguments: "genuine");
-                      }
-                      // Get.toNamed("/main/my/point", arguments: "genuine");
+                      // if(controller.reqMyPoint != 0){
+                      //   Get.toNamed("/main/my/point/use", arguments: "genuine");
+                      // }
+                      Get.toNamed("/main/my/point", arguments: "genuine");
+                      // pointController.removePoints();
                     },
                     title: '브랜드케어 포인트',
                     subTitle: '${controller.myPoint.value}P 사용가능',
@@ -331,7 +334,7 @@ class AddGenuinePaymentPage extends StatelessWidget {
                           height: 1,
                           color: gray_D5D7DBColor,
                         ),
-                        GetBuilder<AddGenuinePaymentController>(builder: (_) => Padding(
+                        Obx(() => Padding(
                           padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 18),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
