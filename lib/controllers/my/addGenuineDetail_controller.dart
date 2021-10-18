@@ -28,12 +28,12 @@ class AddGenuineDetailController extends BaseController {
   //   update();
   // }
 
-  Future<String> getFileName() async {
-    Directory appDocumentDirectory = await getApplicationSupportDirectory();
-    String appDocumentsPath = appDocumentDirectory.path;
-    String filePath = '$appDocumentsPath';
-    return filePath;
-  }
+  // Future<String> getFileName() async {
+  //   Directory appDocumentDirectory = await getApplicationSupportDirectory();
+  //   String appDocumentsPath = appDocumentDirectory.path;
+  //   String filePath = '$appDocumentsPath';
+  //   return filePath;
+  // }
 
   void saveFile() async {
     int i = 0;
@@ -41,9 +41,7 @@ class AddGenuineDetailController extends BaseController {
       i += 1;
       var url = Uri.parse(GlobalApiService.getImage(file.path!));
       var res = await http.get(url);
-      String directoryName = await getFileName();
       String imgName = "${model!.product.createdDate}$i";
-      final localPath = path.join(directoryName, imgName);
       final result = await ImageGallerySaver.saveImage(
         Uint8List.fromList(res.bodyBytes),
         quality: 100,
