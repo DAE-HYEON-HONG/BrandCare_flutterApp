@@ -82,7 +82,7 @@ class LoginController extends BaseController {
     super.networkState.value = NetworkStateEnum.LOADING;
     final res = await AuthProvider().registerUserSocialChk(
       credential.userIdentifier.toString(),
-      "",
+      payload['email'],
       "APPLE",
       globalCtrl.fcmToken!,
     );
