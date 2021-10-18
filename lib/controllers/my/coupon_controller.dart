@@ -115,7 +115,7 @@ class CouponController extends BaseController{
       );
     }else if(res == "already"){
       Get.dialog(
-          CustomDialogWidget(content: '이미 등록하신 쿠폰입니다.', onClick: (){
+          CustomDialogWidget(content: '이미 등록되거나 사용된 쿠폰입니다.', onClick: (){
             Get.back();
             update();
           })
@@ -143,7 +143,15 @@ class CouponController extends BaseController{
             update();
           })
       );
-    }else if (res == null){
+    } else if(res == "already"){
+      Get.dialog(
+          CustomDialogWidget(content: '이미 등록되거나 사용된 쿠폰입니다.', onClick: (){
+            Get.back();
+            update();
+          })
+      );
+    }
+    else if (res == null){
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
             Get.back();

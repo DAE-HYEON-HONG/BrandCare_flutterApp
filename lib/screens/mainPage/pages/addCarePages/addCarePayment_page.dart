@@ -244,10 +244,10 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                   const SizedBox(height: 16),
                   Obx(() => _saleTile(
                     onTap: (){
-                      // if(controller.myPoint.value != 0){
-                      //   Get.toNamed("/main/my/point/use", arguments: "care");
-                      // }
-                      Get.toNamed("/main/my/point/use", arguments: "care");
+                      if(controller.myPoint.value != 0){
+                        Get.toNamed("/main/my/point/use", arguments: "care");
+                      }
+                      // Get.toNamed("/main/my/point/use", arguments: "care");
                     },
                     title: '브랜드케어 포인트',
                     subTitle: '${controller.myPoint}P 사용가능',

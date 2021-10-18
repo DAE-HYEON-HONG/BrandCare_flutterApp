@@ -33,29 +33,92 @@ class PointController extends BaseController{
   }
 
   void chkPoint(){
-    if(myPoint.value < usePoint.value){
-      Get.dialog(
-          CustomDialogWidget(content: '사용가능 포인트 보다 많습니다.', onClick: (){
-            usePoint.value = myPoint.value;
-            usePointCtrl.text = myPoint.value.toString();
+    if(type == "care") {
+      AddCarePaymentController addCarePaymentController = Get.find<AddCarePaymentController>();
+      if (myPoint.value < usePoint.value) {
+        Get.dialog(
+          CustomDialogWidget(content: '사용가능 포인트 보다 많습니다.', onClick: () {
+            usePoint.value = addCarePaymentController.allMountPrice();
+            usePointCtrl.text = usePoint.value.toString();
             Get.back();
             update();
           }),
-        barrierDismissible: true,
-      );
-      return;
+          barrierDismissible: true,
+        );
+        return;
+      }
+      else if (addCarePaymentController.allMountPrice() < usePoint.value) {
+        print(addCarePaymentController.allMountPrice().toString() + ' / ' + usePoint.value.toString());
+        Get.dialog(
+          CustomDialogWidget(content: '사용가능 포인트 보다 많습니다.', onClick: () {
+            usePoint.value = addCarePaymentController.allMountPrice();
+            usePointCtrl.text = usePoint.value.toString();
+            Get.back();
+            update();
+          }),
+          barrierDismissible: true,
+        );
+        return;
+      }
+    }
+    else {
+      AddGenuinePaymentController addGenuinePaymentController = Get.find<AddGenuinePaymentController>();
+      if (myPoint.value < usePoint.value) {
+        Get.dialog(
+          CustomDialogWidget(content: '사용가능 포인트 보다 많습니다.', onClick: () {
+            usePoint.value = addGenuinePaymentController.allMountPrice();
+            usePointCtrl.text = usePoint.value.toString();
+            Get.back();
+            update();
+          }),
+          barrierDismissible: true,
+        );
+        return;
+      }
+      else if (addGenuinePaymentController.allMountPrice() < usePoint.value) {
+        print(addGenuinePaymentController.allMountPrice().toString() + ' / ' + usePoint.value.toString());
+        Get.dialog(
+          CustomDialogWidget(content: '사용가능 포인트 보다 많습니다.', onClick: () {
+            usePoint.value = addGenuinePaymentController.allMountPrice();
+            usePointCtrl.text = usePoint.value.toString();
+            Get.back();
+            update();
+          }),
+          barrierDismissible: true,
+        );
+        return;
+      }
     }
   }
 
   void allUsePoint(){
-    AddCarePaymentController addCarePaymentController = Get.find<AddCarePaymentController>();
-    if(addCarePaymentController.allMountPrice() < myPoint.value){
-      usePoint.value = addCarePaymentController.allMountPrice();
-    } else {
-      usePoint.value = myPoint.value;
+    if(type == "care") {
+      AddCarePaymentController addCarePaymentController = Get.find<AddCarePaymentController>();
+      if(addCarePaymentController.allMountPrice() < myPoint.value){
+        usePoint.value = addCarePaymentController.allMountPrice();
+        addCarePaymentController.pointDiscount.value = usePoint.value;
+      } else {
+        usePoint.value = myPoint.value;
+        addCarePaymentController.pointDiscount.value = usePoint.value;
+      }
+      usePointCtrl.text = usePoint.value.toString();
+      addCarePaymentController.update();
+      update();
     }
-    usePointCtrl.text = usePoint.value.toString();
-    update();
+    else {
+      AddGenuinePaymentController addGenuinePaymentController = Get.find<AddGenuinePaymentController>();
+      if(addGenuinePaymentController.allMountPrice() < myPoint.value){
+        usePoint.value = addGenuinePaymentController.allMountPrice();
+        addGenuinePaymentController.pointDiscount.value = usePoint.value;
+      }
+      else {
+        usePoint.value = myPoint.value;
+        addGenuinePaymentController.pointDiscount.value = usePoint.value;
+      }
+      usePointCtrl.text = usePoint.value.toString();
+      addGenuinePaymentController.update();
+      update();
+    }
   }
 
   void addUsePoint(){
@@ -63,20 +126,28 @@ class PointController extends BaseController{
       final addCarePaymentCtrl = Get.find<AddCarePaymentController>();
       addCarePaymentCtrl.myPoint.value = canUsePoint();
       addCarePaymentCtrl.pointDiscount.value = usePoint.value;
-      if(addCarePaymentCtrl.allMountPrice() <  usePoint.value){
-        addCarePaymentCtrl.pointDiscount.value = addCarePaymentCtrl.addPrices();
-        addCarePaymentCtrl.myPoint.value = myPoint.value - addCarePaymentCtrl.addPrices();
-      }
+      // if(addCarePaymentCtrl.allMountPrice() < usePoint.value){
+      //   addCarePaymentCtrl.pointDiscount.value = addCarePaymentCtrl.addPrices();
+      //   addCarePaymentCtrl.myPoint.value = myPoint.value - addCarePaymentCtrl.addPrices();
+      // }
+      /*else if (addCarePaymentCtrl.allMountPrice() < myPoint.value){
+        usePoint.value = addCarePaymentCtrl.allMountPrice();
+        addCarePaymentCtrl.pointDiscount.value = usePoint.value;
+      }*/
       addCarePaymentCtrl.update();
       Get.back();
     }else{
       final addGenuinePaymentCtrl = Get.find<AddGenuinePaymentController>();
       addGenuinePaymentCtrl.myPoint.value = canUsePoint();
       addGenuinePaymentCtrl.pointDiscount.value = usePoint.value;
-      if(addGenuinePaymentCtrl.allPrice() <  usePoint.value){
-        addGenuinePaymentCtrl.pointDiscount.value = addGenuinePaymentCtrl.allPrice();
-        addGenuinePaymentCtrl.myPoint.value = myPoint.value - addGenuinePaymentCtrl.allPrice();
-      }
+      // if(addGenuinePaymentCtrl.allPrice() <  usePoint.value){
+      //   addGenuinePaymentCtrl.pointDiscount.value = addGenuinePaymentCtrl.allPrice();
+      //   addGenuinePaymentCtrl.myPoint.value = myPoint.value - addGenuinePaymentCtrl.allPrice();
+      // }
+      // else if (addGenuinePaymentCtrl.allMountPrice() < myPoint.value){
+      //   usePoint.value = addGenuinePaymentCtrl.allMountPrice();
+      //   addGenuinePaymentCtrl.pointDiscount.value = usePoint.value;
+      // }
       addGenuinePaymentCtrl.update();
       Get.back();
     }
@@ -128,12 +199,31 @@ class PointController extends BaseController{
     update();
   }
 
+  void removePoints(){
+    if(usePoint.value >0){
+      if(type == "care") {
+        AddCarePaymentController addCarePaymentController = Get.find<AddCarePaymentController>();
+        addCarePaymentController.myPoint.value = canUsePoint();
+        addCarePaymentController.pointDiscount.value = 0;
+        update();
+      }
+      else {
+        final addGenuinePaymentCtrl = Get.find<AddGenuinePaymentController>();
+        addGenuinePaymentCtrl.myPoint.value = canUsePoint();
+        addGenuinePaymentCtrl.pointDiscount.value = 0;
+        update();
+      }
+    }
+  }
+
   @override
   void onInit() async{
     type = Get.arguments;
-    update();
+    usePoint.value = 0;
+    removePoints();
     await reqPointHistory();
     pagingScroll.addListener(pagingScrollListener);
+    update();
     super.onInit();
   }
 

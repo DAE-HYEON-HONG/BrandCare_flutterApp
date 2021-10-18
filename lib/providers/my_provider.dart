@@ -138,7 +138,8 @@ class MyProvider{
     Map<String, dynamic> json = jsonDecode(res.body.toString());
     if(json['code'] == "CP001"){
       return "notCoupon";
-    }else if(json['code'] == "C004"){
+    }
+    else if(json['code'] == "C004"){
       return "already";
     } else{
       return true;

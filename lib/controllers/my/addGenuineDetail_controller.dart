@@ -47,6 +47,7 @@ class AddGenuineDetailController extends BaseController {
         quality: 100,
         name: imgName,
       );
+      print(imgName);
       print("${result.toString()} 이미지 다운로드");
       Get.back();
       Get.snackbar(

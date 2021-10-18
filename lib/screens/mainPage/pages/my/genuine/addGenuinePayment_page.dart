@@ -236,9 +236,7 @@ class AddGenuinePaymentPage extends StatelessWidget {
                   Obx(() => _saleTile(
                     onTap: (){
                       if(controller.reqMyPoint != 0){
-                        Get.toNamed("/main/my/point/use", arguments: {
-                        "type" : "genuine",
-                        });
+                        Get.toNamed("/main/my/point/use", arguments: "genuine");
                       }
                       // Get.toNamed("/main/my/point", arguments: "genuine");
                     },
