@@ -167,7 +167,7 @@ class MyInfoPage extends StatelessWidget {
             title,
             style: medium14TextStyle,
           ),
-          const SizedBox(width: 10),
+          const Spacer(),
           if(globalCtrl.userInfoModel?.socialType == "KAKAO")
             ClipOval(
               child: SvgPicture.asset("assets/icons/btn_kakao.svg", height: 24),
@@ -184,7 +184,7 @@ class MyInfoPage extends StatelessWidget {
             ClipOval(
               child: SvgPicture.asset("assets/icons/btn_naver.svg", height: 24),
             ),
-          const Spacer(),
+          const SizedBox(width: 10),
           Text(globalCtrl.userInfoModel?.email ?? '', style: regular14TextStyle.copyWith(color: gray_999Color),),
         ],
       ),
