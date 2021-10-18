@@ -6,6 +6,7 @@ import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_widget.
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class PhoneChangePage extends StatelessWidget {
@@ -61,6 +62,9 @@ class PhoneChangePage extends StatelessWidget {
                                     isShowTitle: true,
                                     title: '전화번호 변경',
                                     hint: '전화번호를 입력하세요',
+                                    textInputFormatter: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                    ],
                                   ),
                                 ),
                                 AnimatedContainer(
