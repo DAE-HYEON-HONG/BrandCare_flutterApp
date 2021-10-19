@@ -409,4 +409,22 @@ class MyApiService{
       return null;
     }
   }
+
+  Future<http.Response?> sendFileEmail(dynamic headers, String email) async {
+    try{
+      final uri = Uri.parse("${BaseApiService.baseApi}/genuine/email?=$email");
+      final http.Response res = await http.post(
+        uri,
+        headers: headers,
+      );
+      print(res.body.toString());
+      if(res.statusCode == 404 || res.statusCode == 500){
+        return null;
+      }
+      return res;
+    }catch(e){
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
 }

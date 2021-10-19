@@ -43,7 +43,7 @@ android {
         applicationId "com.laonstory.brandcare"
 //        minSdkVersion 16
         minSdkVersion 20
-        targetSdkVersion 30
+        targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true

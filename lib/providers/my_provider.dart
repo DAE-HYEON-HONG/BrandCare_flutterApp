@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:brandcare_mobile_flutter_v2/apis/my/my_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/models/mypage/myInfo/myProfileInfo_model.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 
 class MyProvider{
   final MyApiService _myApiService = MyApiService();
@@ -269,6 +270,17 @@ class MyProvider{
     if(res == null) {
       return null;
     }else{
+      Map<String, dynamic> json = jsonDecode(res.body.toString());
+      return json;
+    }
+  }
+
+  Future<dynamic> sendFileEmail({required String email}) async{
+    String? token = await SharedTokenUtil.getToken("userLogin_token");
+    var res = await _myApiService.sendFileEmail(BaseApiService.authHeaders(token!), email);
+    if(res == null) {
+      return null;
+    }else {
       Map<String, dynamic> json = jsonDecode(res.body.toString());
       return json;
     }
