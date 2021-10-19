@@ -24,60 +24,12 @@ class AddGenuineDetailController extends BaseController {
   List<IdPathImagesModel> mainImgModel = <IdPathImagesModel>[];
   Rx<int> pageNum = 0.obs;
 
-  void saveFileAndroid() async {
-    final savePath = "/storage/emulated/0/Pictures/BrandCare";
-    final Directory directory = Directory("$savePath");
-    print("저장소 유무 : ${await directory.exists()}");
-    if(await directory.exists() != true){
-      final Directory _appDocDirNewFolder = await directory.create(recursive: true);
-      print("저장소 유무 : ${await directory.exists()}");
-      print(_appDocDirNewFolder.path);
-    }
-    int i = 0;
-    for(var file in certificateList){
-      i += 1;
-      var url = Uri.parse(GlobalApiService.getImage(file.path!));
-      var res = await http.get(url);
-      String imgName = "${model!.product.createdDate}$i.jpg";
-      File saveImg = new File('${directory.path}/$imgName');
-      await saveImg.writeAsBytes(Uint8List.fromList(res.bodyBytes));
-    }
-    Get.back();
-    Get.snackbar(
-      '테스트 저장', '인증서가 다운로드 되었습니다.',
-      snackPosition: SnackPosition.BOTTOM,
-      duration: const Duration(milliseconds: 1200),
-    );
-  }
 
   void launchURL(url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
       throw 'Could not launch $url';
-    }
-  }
-
-  void saveFileIos() async {
-    int i = 0;
-    for(var file in certificateList){
-      i += 1;
-      var url = Uri.parse(GlobalApiService.getImage(file.path!));
-      var res = await http.get(url);
-      String imgName = "${model!.product.createdDate}$i";
-      final result = await ImageGallerySaver.saveImage(
-        Uint8List.fromList(res.bodyBytes),
-        quality: 100,
-        name: imgName,
-      );
-      print(imgName);
-      print("${result.toString()} 이미지 다운로드");
-      Get.back();
-      Get.snackbar(
-        '저장', '인증서가 다운로드 되었습니다.',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(milliseconds: 1200),
-      );
     }
   }
 
@@ -97,24 +49,6 @@ class AddGenuineDetailController extends BaseController {
     }catch(e){
       print(e.toString());
     }
-  }
-
-  void cameraPermissionChk()async{
-    if(await Permission.manageExternalStorage.request().isGranted && await Permission.storage.request().isGranted){
-      if(Platform.isIOS){
-        saveFileIos();
-      }else{
-        saveFileAndroid();
-      }
-      return;
-    }
-    Get.snackbar(
-      '권한 알림', '갤러리 저장 권한이 필요합니다.',
-      snackPosition: SnackPosition.BOTTOM,
-      duration: const Duration(milliseconds: 1200),
-    );
-    Future.delayed(Duration(milliseconds: 1200), () => Get.back());
-    return;
   }
 
   Future<void> reqGenuineDetailStatus() async {
