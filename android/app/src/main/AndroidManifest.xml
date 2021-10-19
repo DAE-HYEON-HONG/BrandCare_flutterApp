@@ -19,7 +19,7 @@
     </queries>
 
     <application
-        android:label="brandcare_mobile_flutter_v2"
+        android:label="브랜드케어"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
         >
