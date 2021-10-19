@@ -38,7 +38,7 @@ class PointController extends BaseController{
       if (myPoint.value < usePoint.value) {
         Get.dialog(
           CustomDialogWidget(content: '사용가능 포인트 보다 많습니다.', onClick: () {
-            usePoint.value = addCarePaymentController.allMountPrice();
+            usePoint.value = myPoint.value;
             usePointCtrl.text = usePoint.value.toString();
             Get.back();
             update();
@@ -66,7 +66,7 @@ class PointController extends BaseController{
       if (myPoint.value < usePoint.value) {
         Get.dialog(
           CustomDialogWidget(content: '사용가능 포인트 보다 많습니다.', onClick: () {
-            usePoint.value = addGenuinePaymentController.allMountPrice();
+            usePoint.value = myPoint.value;
             usePointCtrl.text = usePoint.value.toString();
             Get.back();
             update();
@@ -200,17 +200,20 @@ class PointController extends BaseController{
   }
 
   void removePoints(){
-    if(usePoint.value >0){
+    print('gogo');
+    if(usePoint.value >=0){
       if(type == "care") {
         AddCarePaymentController addCarePaymentController = Get.find<AddCarePaymentController>();
         addCarePaymentController.myPoint.value = canUsePoint();
         addCarePaymentController.pointDiscount.value = 0;
+        usePoint.value = 0;
         update();
       }
       else {
         final addGenuinePaymentCtrl = Get.find<AddGenuinePaymentController>();
         addGenuinePaymentCtrl.myPoint.value = canUsePoint();
         addGenuinePaymentCtrl.pointDiscount.value = 0;
+        usePoint.value = 0;
         update();
       }
     }
@@ -219,9 +222,8 @@ class PointController extends BaseController{
   @override
   void onInit() async{
     type = Get.arguments;
-    usePoint.value = 0;
-    removePoints();
     await reqPointHistory();
+    removePoints();
     pagingScroll.addListener(pagingScrollListener);
     update();
     super.onInit();

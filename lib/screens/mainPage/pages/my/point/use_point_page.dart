@@ -16,7 +16,7 @@ class PointUsePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final controller = Get.find<PointController>();
+    PointController controller = Get.put(PointController());
     TextEditingController _textEditingController = TextEditingController();
     return DefaultAppBarScaffold(
       title: '포인트',
