@@ -43,20 +43,20 @@ class PointController extends BaseController{
             Get.back();
             update();
           }),
-          barrierDismissible: true,
+          barrierDismissible: false,
         );
         return;
       }
       else if (addCarePaymentController.allMountPrice() < usePoint.value) {
         print(addCarePaymentController.allMountPrice().toString() + ' / ' + usePoint.value.toString());
+        usePoint.value = addCarePaymentController.allMountPrice();
+        usePointCtrl.text = usePoint.value.toString();
         Get.dialog(
           CustomDialogWidget(content: '사용가능 포인트 보다 많습니다.', onClick: () {
-            usePoint.value = addCarePaymentController.allMountPrice();
-            usePointCtrl.text = usePoint.value.toString();
             Get.back();
             update();
           }),
-          barrierDismissible: true,
+          barrierDismissible: false,
         );
         return;
       }
@@ -64,27 +64,27 @@ class PointController extends BaseController{
     else {
       AddGenuinePaymentController addGenuinePaymentController = Get.find<AddGenuinePaymentController>();
       if (myPoint.value < usePoint.value) {
+        usePoint.value = myPoint.value;
+        usePointCtrl.text = usePoint.value.toString();
         Get.dialog(
           CustomDialogWidget(content: '사용가능 포인트 보다 많습니다.', onClick: () {
-            usePoint.value = myPoint.value;
-            usePointCtrl.text = usePoint.value.toString();
             Get.back();
             update();
           }),
-          barrierDismissible: true,
+          barrierDismissible: false,
         );
         return;
       }
       else if (addGenuinePaymentController.allMountPrice() < usePoint.value) {
         print(addGenuinePaymentController.allMountPrice().toString() + ' / ' + usePoint.value.toString());
+        usePoint.value = addGenuinePaymentController.allMountPrice();
+        usePointCtrl.text = usePoint.value.toString();
         Get.dialog(
           CustomDialogWidget(content: '사용가능 포인트 보다 많습니다.', onClick: () {
-            usePoint.value = addGenuinePaymentController.allMountPrice();
-            usePointCtrl.text = usePoint.value.toString();
             Get.back();
             update();
           }),
-          barrierDismissible: true,
+          barrierDismissible: false,
         );
         return;
       }

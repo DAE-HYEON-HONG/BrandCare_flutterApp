@@ -240,7 +240,7 @@ class AddGenuinePaymentPage extends StatelessWidget {
                       // if(controller.reqMyPoint != 0){
                       //   Get.toNamed("/main/my/point/use", arguments: "genuine");
                       // }
-                      Get.toNamed("/main/my/point", arguments: "genuine");
+                      Get.toNamed("/main/my/point/use", arguments: "genuine");
                       // pointController.removePoints();
                     },
                     title: '브랜드케어 포인트',
