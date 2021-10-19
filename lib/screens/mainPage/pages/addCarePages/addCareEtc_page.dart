@@ -8,37 +8,74 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'dart:io';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 
 class AddCareEtcPage extends GetView<AddCareEtcController> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      //resizeToAvoidBottomInset: false,
-      backgroundColor: whiteColor,
-      appBar: AppBar(
-        leading: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () => controller.backModified(),
-          child: Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: SvgPicture.asset('assets/icons/btn_arrow_left.svg', width: 18, height: 18,),
-          ),
-        ),
-        title: Text("케어/수선 신청",style: medium16TextStyle.copyWith(color: primaryColor)),
-        titleSpacing: 0,
-        centerTitle: true,
-        titleTextStyle: medium16TextStyle.copyWith(color: primaryColor),
+    return WillPopScope(
+      onWillPop: () {
+        Get.dialog(CustomDialogWidget(
+          isSingleButton: false,
+          content: '케어/수선 요청사항 작성을 취소하시겠습니까?',
+          okTxt: '확인',
+          cancelTxt: '취소',
+          onClick: () {
+            Get.back();
+            controller.backModified();
+            return Future(() => true);
+          },
+          onCancelClick: () {
+            Get.back();
+            return Future(() => false);
+          },
+        ));
+
+        return Future(() => false);
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        //resizeToAvoidBottomInset: false,
         backgroundColor: whiteColor,
-        elevation: 4,
-        shadowColor: blackColor.withOpacity(0.05),
-        automaticallyImplyLeading: false,
-      ),
-      body: _renderBody(context),
-    );
+        appBar: AppBar(
+          leading: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              Get.dialog(CustomDialogWidget(
+                isSingleButton: false,
+                content: '케어/수선 요청사항 작성을 취소하시겠습니까?',
+                okTxt: '확인',
+                cancelTxt: '취소',
+                onClick: () {
+                  Get.back();
+                  controller.backModified();
+                },
+                onCancelClick: () {
+                  Get.back();
+                },
+              ));
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: SvgPicture.asset(
+                'assets/icons/btn_arrow_left.svg', width: 18, height: 18,),
+            ),
+          ),
+          title: Text("케어/수선 신청",
+              style: medium16TextStyle.copyWith(color: primaryColor)),
+          titleSpacing: 0,
+          centerTitle: true,
+          titleTextStyle: medium16TextStyle.copyWith(color: primaryColor),
+          backgroundColor: whiteColor,
+          elevation: 4,
+          shadowColor: blackColor.withOpacity(0.05),
+          automaticallyImplyLeading: false,
+        ),
+        body: _renderBody(context),
+      ),);
   }
 
-  _renderBody(context){
+  _renderBody(context) {
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -55,10 +92,11 @@ class AddCareEtcPage extends GetView<AddCareEtcController> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GetBuilder<AddCareEtcController>(builder: (_) => Text(
-                        '${controller.addCareList!.length}개의 케어/수선 진행',
-                        style: medium14TextStyle,
-                      )),
+                      GetBuilder<AddCareEtcController>(builder: (_) =>
+                          Text(
+                            '${controller.addCareList!.length}개의 케어/수선 진행',
+                            style: medium14TextStyle,
+                          )),
                       GestureDetector(
                         onTap: () => Get.to(() => AddCareAddListPage()),
                         child: Text(
@@ -70,20 +108,21 @@ class AddCareEtcPage extends GetView<AddCareEtcController> {
                       ),
                     ],
                   ),
-                  GetBuilder<AddCareEtcController>(builder: (_) => ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: controller.addCareList!.length,
-                    itemBuilder: (context, idx){
-                      return _careProduct(
-                        controller.addCareList![idx],
-                        controller.addCareList![idx].picture,
-                        controller.addCareList![idx].category,
-                        controller.addCareList![idx].secondCategory,
-                        idx,
-                      );
-                    },
-                  )),
+                  GetBuilder<AddCareEtcController>(builder: (_) =>
+                      ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: controller.addCareList!.length,
+                        itemBuilder: (context, idx) {
+                          return _careProduct(
+                            controller.addCareList![idx],
+                            controller.addCareList![idx].picture,
+                            controller.addCareList![idx].category,
+                            controller.addCareList![idx].secondCategory,
+                            idx,
+                          );
+                        },
+                      )),
                   const SizedBox(height: 24),
                   Text(
                     '케어/수선 요청사항',
@@ -108,14 +147,16 @@ class AddCareEtcPage extends GetView<AddCareEtcController> {
                         onChanged: (value) => controller.fillChange(),
                         maxLines: null,
                         controller: controller.etcDescription,
-                        style: regular14TextStyle.copyWith(color: gray_999Color),
+                        style: regular14TextStyle.copyWith(
+                            color: gray_999Color),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           focusedBorder: InputBorder.none,
                           disabledBorder: InputBorder.none,
                           enabledBorder: InputBorder.none,
                           hintText: "신청 항목의 요청사항을\n자세히 작성해주세요.\n(예. 항목1 - 내용/ 항목2 - 내용)",
-                          hintStyle: regular14TextStyle.copyWith(color: gray_999Color),
+                          hintStyle: regular14TextStyle.copyWith(
+                              color: gray_999Color),
                         ),
                       ),
                     ),
@@ -127,23 +168,28 @@ class AddCareEtcPage extends GetView<AddCareEtcController> {
               ),
             ),
           ),
-          if(MediaQuery.of(context).viewInsets.bottom == 0)
-          Obx(()=> Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: CustomFormSubmit(
-              title: "다음",
-              onTab: () => controller.nextLevel(),
-              fill: controller.fill.value,
-            ),
-          )),
+          if(MediaQuery
+              .of(context)
+              .viewInsets
+              .bottom == 0)
+            Obx(() =>
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: CustomFormSubmit(
+                    title: "다음",
+                    onTab: () => controller.nextLevel(),
+                    fill: controller.fill.value,
+                  ),
+                )),
         ],
       ),
     );
   }
 
-  _careProduct(dynamic idx, File img, String category, String options, int idxNum){
+  _careProduct(dynamic idx, File img, String category, String options,
+      int idxNum) {
     print(idxNum);
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 24),
@@ -165,20 +211,21 @@ class AddCareEtcPage extends GetView<AddCareEtcController> {
                 Container(
                   width: 88,
                   height: 88,
-                  child: Image.file(img,fit: BoxFit.cover),
+                  child: Image.file(img, fit: BoxFit.cover),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(category, style: medium14TextStyle.copyWith(fontWeight: FontWeight.w700)),
-                    const SizedBox(height: 10),
-                    Expanded(
-                      child: Text("- $options", style: regular14TextStyle),
-                    ),
-                   ],
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(category, style: medium14TextStyle.copyWith(
+                          fontWeight: FontWeight.w700)),
+                      const SizedBox(height: 10),
+                      Expanded(
+                        child: Text("- $options", style: regular14TextStyle),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -198,7 +245,9 @@ class AddCareEtcPage extends GetView<AddCareEtcController> {
                 GestureDetector(
                   onTap: () => controller.removeList(idx),
                   child: Text('삭제하기', style: medium14TextStyle.copyWith(
-                      color: controller.addCareList!.length > 1 ? Colors.black : gray_D5D7DBColor,
+                    color: controller.addCareList!.length > 1
+                        ? Colors.black
+                        : gray_D5D7DBColor,
                   )),
                 ),
                 const SizedBox(width: 8),

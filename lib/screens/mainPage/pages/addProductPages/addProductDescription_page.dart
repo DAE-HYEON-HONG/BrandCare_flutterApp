@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/AddProductControllers/addProductDescription_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +11,35 @@ import 'package:get/get.dart';
 class AddProductDescriptionPage extends GetView<AddProductDescriptionController> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return WillPopScope(
+        onWillPop: () {
+      Get.dialog(CustomDialogWidget(
+        isSingleButton: false,
+        content: '제품 추가정보 등록을 취소하시겠습니까?',
+        okTxt: '확인',
+        cancelTxt: '취소',
+        onClick: () {
+          Get.back();
+          Get.back();
+          return Future(() => true);
+        },
+        onCancelClick: () {
+          Get.back();
+          return Future(() => false);
+        },
+      ));
+
+      return Future(() => false);
+    },
+    child: GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: DefaultAppBarScaffold(
         title: "제품 등록",
         child: _renderBody(context),
+        backButtonDialog: true,
+        backButtonDialogText: '제품 추가정보 등록을 취소하시겠습니까?',
       ),
-    );
+    ),);
   }
 
   _renderBody(context) {

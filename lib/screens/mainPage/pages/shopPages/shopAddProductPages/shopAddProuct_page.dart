@@ -12,16 +12,39 @@ import 'package:get/get.dart';
 import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 
 class ShopAddProductPage extends GetView<ShopAddProductController> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return WillPopScope(
+        onWillPop: () {
+      Get.dialog(CustomDialogWidget(
+        isSingleButton: false,
+        content: '게시물 등록을 취소하시겠습니까?',
+        okTxt: '확인',
+        cancelTxt: '취소',
+        onClick: () {
+          Get.back();
+          Get.back();
+          return Future(() => true);
+        },
+        onCancelClick: () {
+          Get.back();
+          return Future(() => false);
+        },
+      ));
+
+      return Future(() => false);
+    },
+    child: SafeArea(
       child: DefaultAppBarScaffold(
         title: "글쓰기",
         child: _renderBody(context),
+        backButtonDialog: true,
+        backButtonDialogText: '게시물 등록을 취소하시겠습니까?',
       ),
-    );
+    ),);
   }
 
   _photoApply() {

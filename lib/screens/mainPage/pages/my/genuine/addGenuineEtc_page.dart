@@ -7,18 +7,41 @@ import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 
 class AddGenuineEtcPage extends StatelessWidget {
   final AddGenuineEtcController controller = Get.put(AddGenuineEtcController());
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return WillPopScope(
+        onWillPop: () {
+      Get.dialog(CustomDialogWidget(
+        isSingleButton: false,
+        content: '정품인증 요청사항 작성을 취소하시겠습니까?',
+        okTxt: '확인',
+        cancelTxt: '취소',
+        onClick: () {
+          Get.back();
+          Get.back();
+          return Future(() => true);
+        },
+        onCancelClick: () {
+          Get.back();
+          return Future(() => false);
+        },
+      ));
+
+      return Future(() => false);
+    },
+    child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: DefaultAppBarScaffold(
           title: "정품인증 신청",
           child: _renderBody(context),
+          backButtonDialog: true,
+          backButtonDialogText: '정품인증 요청사항 작성을 취소하시겠습니까?',
         )
-    );
+    ),);
   }
 
   _renderBody(BuildContext context){
@@ -207,7 +230,7 @@ class AddGenuineEtcPage extends StatelessWidget {
                                 focusedBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
                                 enabledBorder: InputBorder.none,
-                                hintText: "신청 항목의 요청사항을\n자세히 작성해주세요.\n(예. 항목1 - 내용/ 항목2 - 내용)",
+                                hintText: "요청사항을 작성해주세요.",
                                 hintStyle: regular14TextStyle.copyWith(color: gray_999Color),
                               ),
                             ),

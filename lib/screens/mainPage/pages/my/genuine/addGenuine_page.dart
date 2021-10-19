@@ -16,18 +16,41 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:kpostal/kpostal.dart';
 import 'package:flutter/services.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 
 class AddGenuinePage extends StatelessWidget {
   final AddGenuineController controller = Get.put(AddGenuineController());
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return WillPopScope(
+        onWillPop: () {
+      Get.dialog(CustomDialogWidget(
+        isSingleButton: false,
+        content: '정품인증 신청을 취소하시겠습니까?',
+        okTxt: '확인',
+        cancelTxt: '취소',
+        onClick: () {
+          Get.back();
+          Get.back();
+          return Future(() => true);
+        },
+        onCancelClick: () {
+          Get.back();
+          return Future(() => false);
+        },
+      ));
+
+      return Future(() => false);
+    },
+    child: GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: DefaultAppBarScaffold(
         title: "정품인증 신청",
         child: _renderBody(context),
+        backButtonDialog: true,
+        backButtonDialogText: '정품인증 신청을 취소하시겠습니까?',
       )
-    );
+        ),);
   }
 
   _renderBody(BuildContext context){
