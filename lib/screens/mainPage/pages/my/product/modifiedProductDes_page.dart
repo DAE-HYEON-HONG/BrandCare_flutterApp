@@ -133,7 +133,7 @@ class ModifiedProductDesPage extends StatelessWidget {
             bottom: 0,
             child: Obx(() => CustomFormSubmit(
               title: "확인",
-              onTab: () async => await controller.uploadAddProduct(),
+              onTab: () => controller.reallyAdd(okTap: () async => await controller.uploadAddProduct()),
               fill: controller.fill.value,
             )),
           )

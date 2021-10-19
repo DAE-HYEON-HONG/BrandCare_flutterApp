@@ -104,7 +104,25 @@ class ShopAddProductController extends BaseController{
       customDialogShow(title: "내용이 입력되지 않았습니다.",context: context);
       return;
     }
-    await uploadAddProduct();
+    reallyAdd();
+  }
+
+  void reallyAdd(){
+    Get.dialog(
+      CustomDialogWidget(
+        title: '알림',
+        content: '등록 하시겠습니까?',
+        onClick: ()async{
+          await uploadAddProduct();
+        },
+        onCancelClick: () {
+          Get.back();
+        },
+        isSingleButton: false,
+        okTxt: "확인",
+        cancelTxt: "취소",
+      ),
+    );
   }
 
   void chkField() {
@@ -127,42 +145,46 @@ class ShopAddProductController extends BaseController{
 
 
   Future<void> uploadAddProduct() async{
-    final String? token = await SharedTokenUtil.getToken("userLogin_token");
-    super.networkState = NetworkStateEnum.LOADING.obs;
-    AddProductShopModel model = AddProductShopModel(
-      title: titleCtrl.text,
-      productIdx: myProductIdx ?? 0,
-      price: int.parse(priceCtrl.text),
-      content: bodyCtrl.text,
-      pictures: pickImgList!,
-    );
-    final res = await ShopProvider().addShopProduct(token: token!, model: model);
-    super.networkState = NetworkStateEnum.DONE.obs;
-    if(res == null){
-      Get.dialog(
-        CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
-          Get.back();
-          update();
-        }),
+    if(fill.value){
+      fill.value = false;
+      final String? token = await SharedTokenUtil.getToken("userLogin_token");
+      super.networkState = NetworkStateEnum.LOADING.obs;
+      AddProductShopModel model = AddProductShopModel(
+        title: titleCtrl.text,
+        productIdx: myProductIdx ?? 0,
+        price: int.parse(priceCtrl.text),
+        content: bodyCtrl.text,
+        pictures: pickImgList!,
       );
-    }else{
-      print(res['data']);
-      if(res['data'] == "Y"){
+      final res = await ShopProvider().addShopProduct(token: token!, model: model);
+      super.networkState = NetworkStateEnum.DONE.obs;
+      fill.value = true;
+      if(res == null){
         Get.dialog(
-          CustomDialogWidget(content: '등록되었습니다.', onClick: ()async{
+          CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
             Get.back();
-            Get.back();
-            if(mainShopCtrl.currentPageIdx == 0){
-              await mainShopCtrl.shopListAllCtrl.reqShopList();
-            }else if(mainShopCtrl.currentPageIdx == 1){
-              await mainShopCtrl.shopListMineCtrl.reqShopList();
-            }else{
-              await mainShopCtrl.shopListInstCtrl.reqShopList();
-            }
             update();
           }),
-          barrierDismissible: false,
         );
+      }else{
+        print(res['data']);
+        if(res['data'] == "Y"){
+          Get.dialog(
+            CustomDialogWidget(content: '등록되었습니다.', onClick: ()async{
+              Get.back();
+              Get.back();
+              if(mainShopCtrl.currentPageIdx == 0){
+                await mainShopCtrl.shopListAllCtrl.reqShopList();
+              }else if(mainShopCtrl.currentPageIdx == 1){
+                await mainShopCtrl.shopListMineCtrl.reqShopList();
+              }else{
+                await mainShopCtrl.shopListInstCtrl.reqShopList();
+              }
+              update();
+            }),
+            barrierDismissible: false,
+          );
+        }
       }
     }
   }

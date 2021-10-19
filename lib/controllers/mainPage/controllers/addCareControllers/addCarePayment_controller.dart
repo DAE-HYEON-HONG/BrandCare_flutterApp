@@ -80,46 +80,50 @@ class AddCarePaymentController extends BaseController {
 
 
   Future<void> uploadAddCare() async{
-    super.networkState = NetworkStateEnum.LOADING.obs;
-    Map<String, String> addressBody = {
-      "city" : addCareMainCtrl.senderAddress.text,
-      "street" : addCareMainCtrl.senderAddressDetail.value,
-      "zipCode" : addCareMainCtrl.senderPostCode.text,
-    };
-    Map<String, String> returnAddress = {
-      "receiveCity" : addCareMainCtrl.receiverAddress.text,
-      "receiveStreet" : addCareMainCtrl.receiverAddressDetail.value,
-      "receiveZipCode" : addCareMainCtrl.receiverPostCode.text,
-    };
-    final res = await CareProvider().addCare(
-      address: addressBody,
-      list: addCareEtcCtrl.addCareList!,
-      paymentAmount: allMountPrice(),
-      phone: addCareMainCtrl.senderPhNum.text,
-      receiverPhone: addCareMainCtrl.receiverPhNum.text,
-      receiverName: addCareMainCtrl.receiverName.text,
-      request_term: addCareEtcCtrl.etcDescription.text,
-      returnAddress: returnAddress,
-      senderName: addCareMainCtrl.senderName.text,
-      usePointAmount: pointDiscount.value,
-      couponId: couponIdx,
-      returnType: addCareMainCtrl.returnReceiver.value ? "RECEIVER" : "SENDER",
-      price: allMountPrice(),
-    );
-    await saveReceiverAddress();
-    await saveSenderAddress();
-    super.networkState = NetworkStateEnum.DONE.obs;
-    if(res == null){
-      Get.dialog(
+    if(fill.value){
+      fill.value = false;
+      super.networkState = NetworkStateEnum.LOADING.obs;
+      Map<String, String> addressBody = {
+        "city" : addCareMainCtrl.senderAddress.text,
+        "street" : addCareMainCtrl.senderAddressDetail.value,
+        "zipCode" : addCareMainCtrl.senderPostCode.text,
+      };
+      Map<String, String> returnAddress = {
+        "receiveCity" : addCareMainCtrl.receiverAddress.text,
+        "receiveStreet" : addCareMainCtrl.receiverAddressDetail.value,
+        "receiveZipCode" : addCareMainCtrl.receiverPostCode.text,
+      };
+      final res = await CareProvider().addCare(
+        address: addressBody,
+        list: addCareEtcCtrl.addCareList!,
+        paymentAmount: allMountPrice(),
+        phone: addCareMainCtrl.senderPhNum.text,
+        receiverPhone: addCareMainCtrl.receiverPhNum.text,
+        receiverName: addCareMainCtrl.receiverName.text,
+        request_term: addCareEtcCtrl.etcDescription.text,
+        returnAddress: returnAddress,
+        senderName: addCareMainCtrl.senderName.text,
+        usePointAmount: pointDiscount.value,
+        couponId: couponIdx,
+        returnType: addCareMainCtrl.returnReceiver.value ? "RECEIVER" : "SENDER",
+        price: allMountPrice(),
+      );
+      await saveReceiverAddress();
+      await saveSenderAddress();
+      super.networkState = NetworkStateEnum.DONE.obs;
+      fill.value = true;
+      if(res == null){
+        Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
             Get.back();
             update();
           }),
-      );
-    }else{
-      print(res['data']);
-      if(res['data'] != ""){
-        careSuccess(int.parse(res['data']));
+        );
+      }else{
+        print(res['data']);
+        if(res['data'] != ""){
+          careSuccess(int.parse(res['data']));
+        }
       }
     }
   }

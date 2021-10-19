@@ -85,7 +85,7 @@ class PasswordChangePage extends StatelessWidget {
               bottom: 0,
               child: GetBuilder<MyController>(builder: (_) =>CustomButtonOnOffWidget(
                 title: '확인',
-                onClick: () async => myController.changePassword(),
+                onClick: ()  => myController.reallyAdd(okTap: () => myController.changePassword()),
                 isOn: myController.changeColor(),
               )),
             ),

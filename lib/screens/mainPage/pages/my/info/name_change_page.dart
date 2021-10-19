@@ -48,7 +48,7 @@ class NameChangePage extends StatelessWidget {
               if(MediaQuery.of(context).viewInsets.bottom == 0)
               GetBuilder<MyController>(builder: (_) =>CustomButtonOnOffWidget(
                   title: '확인',
-                  onClick: () async => await myController.changeNickName(myController.nickNameController.text),
+                  onClick: () => myController.reallyAdd(okTap: () => myController.changeNickName(myController.nickNameController.text)),
                   isOn: myController.changeColor(),
               )),
             ],

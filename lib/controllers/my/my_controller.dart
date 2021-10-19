@@ -8,6 +8,7 @@ import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kpostal/kpostal.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
@@ -137,13 +138,34 @@ class MyController extends BaseController {
     else if(password.value.isNotEmpty && rePassword.value.isNotEmpty){
       return true;
     }
-    else if(phoneController.text.isNotEmpty && codeController.text.isNotEmpty && isAuth.value){
+    else if(phoneController.text.trim().isNotEmpty && codeController.text.trim().isNotEmpty && isAuth.value){
       return true;
     }
-    else if(addressController.text.isNotEmpty && addressDetailController.text.isNotEmpty && postCodeController.text.isNotEmpty){
+    else if(addressController.text.trim().isNotEmpty && addressDetailController.text.trim().isNotEmpty && postCodeController.text.trim().isNotEmpty){
       return true;
     }
     return false;
+  }
+
+  void reallyAdd({required Function okTap}){
+    if(changeColor()){
+      Get.dialog(
+        CustomDialogWidget(
+          title: '알림',
+          content: '등록 하시겠습니까?',
+          onClick: ()async{
+            Get.back();
+            await okTap();
+          },
+          onCancelClick: () {
+            Get.back();
+          },
+          isSingleButton: false,
+          okTxt: "확인",
+          cancelTxt: "취소",
+        ),
+      );
+    }
   }
 
   Future<bool> permissionChk() async{
@@ -214,6 +236,7 @@ class MyController extends BaseController {
             Get.back();
             update();
           }),
+          barrierDismissible: false,
         );
         update();
       }else{
@@ -227,8 +250,53 @@ class MyController extends BaseController {
     }
   }
 
+  void kpostalView() async{
+    if(postCodeController.text.trim().isNotEmpty){
+      Get.dialog(
+        CustomDialogWidget(
+          title: '알림',
+          content: '수정 하시겠습니까?',
+          onClick: ()async{
+            Get.back();
+            await Get.to(() => KpostalView(
+              callback: (Kpostal result){
+                print(result.address);
+                addressController.text = result.address;
+                city.value = result.sido;
+                sigungu.value = result.sigungu;
+                street.value = result.roadAddress;
+                address.value = result.address;
+                postCodeController.text = result.postCode;
+                postcode.value = result.postCode;
+              },
+            ));
+          },
+          onCancelClick: () {
+            Get.back();
+          },
+          isSingleButton: false,
+          okTxt: "확인",
+          cancelTxt: "취소",
+        ),
+      );
+      return;
+    }
+    await Get.to(() => KpostalView(
+      callback: (Kpostal result){
+        print(result.address);
+        addressController.text = result.address;
+        city.value = result.sido;
+        sigungu.value = result.sigungu;
+        street.value = result.roadAddress;
+        address.value = result.address;
+        postCodeController.text = result.postCode;
+        postcode.value = result.postCode;
+      },
+    ));
+  }
+
   bool validateStructure(String value){
-    String  pattern = r'^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    String pattern = r'^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,20}$';
     RegExp regExp = new RegExp(pattern);
     return regExp.hasMatch(value);
   }

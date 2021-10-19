@@ -58,10 +58,6 @@ class NoticePage extends GetView<NoticeController> {
                   ),
                 ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16, top: 50, bottom: 40),
-                  child: Text('Copyright © 2021 BrandCare Inc. All Rights Reserved.', style: regular10TextStyle.copyWith(color: gray_999Color),),
-                )
               ],
             ),
           ),

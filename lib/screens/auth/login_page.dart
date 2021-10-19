@@ -106,37 +106,42 @@ class LoginPage extends GetView<LoginController> {
                           const SizedBox(
                             height: 24,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              ...controller.textList.map((e) => Row(
-                                mainAxisSize: MainAxisSize.min,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  _itemTextButton(
-                                      title: e.keys.first, link: e.values.first, argument: e.values.last),
-                                  if (controller.textList.indexOf(e) != 2)
-                                    Container(
-                                      width: 1,
-                                      height: 13.w,
-                                      color: gray_D5D7DBColor,
-                                    )
+                                  ...controller.textList.map((e) => Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      _itemTextButton(
+                                          title: e.keys.first, link: e.values.first, argument: e.values.last),
+                                      if (controller.textList.indexOf(e) != 2)
+                                        Container(
+                                          width: 1,
+                                          height: 13.w,
+                                          color: gray_D5D7DBColor,
+                                        )
+                                    ],
+                                  )),
                                 ],
-                              ))
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ...controller.snsLoginItem.map((e) => Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                                    child: _itemSnsLogin(
+                                        svgLink: 'assets/icons/$e', onClick: () => controller.loginButton(e)),
+                                  ))
+                                ],
+                              ),
                             ],
                           ),
                           const SizedBox(
                             height: 32,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ...controller.snsLoginItem.map((e) => Padding(
-                                padding: EdgeInsets.only(right: controller.snsLoginItem.indexOf(e) != 2 ? 24 : 0), //나중에 3으로 변경해주세요.
-                                child: _itemSnsLogin(
-                                    svgLink: 'assets/icons/$e', onClick: () => controller.loginButton(e)),
-                              ))
-                            ],
                           ),
                         ],
                       ),

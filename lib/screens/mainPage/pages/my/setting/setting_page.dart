@@ -34,7 +34,7 @@ class SettingPage extends GetView<SettingController> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    '앱 버전 정보 1.0.0+02',
+                    '앱 버전 정보 1.0.0.10',
                     style: regular14TextStyle.copyWith(color: gray_666Color),
                   ),
                 ),
@@ -66,6 +66,12 @@ class SettingPage extends GetView<SettingController> {
                         ),
                       ),
                     ))),
+                const SizedBox(height: 15),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text('Copyright © 2021 BrandCare Inc. All Rights Reserved.', style: regular10TextStyle.copyWith(color: gray_999Color)),
+                ),
+                const SizedBox(height: 15),
               ],
             ),
           ),

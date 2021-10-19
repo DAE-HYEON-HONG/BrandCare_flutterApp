@@ -8,9 +8,12 @@ import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../global_controller.dart';
+
 class ChangeProductController extends BaseController with SingleGetTickerProviderMixin{
 
   late TabController tabController;
+  final globalController = Get.find<GlobalController>();
 
   String _requestString = '변경할 사용자의 확인을 기다리는 중입니다.\n"확인 중" 버튼을 누를 시 변경 요청이 취소 됩니다.';
   String _receivedString = '상대방이 확인을 기다리는 중입니다.\n"확인"을 누를 시 제품 사용자 변경이 완료 됩니다.';
@@ -108,7 +111,13 @@ class ChangeProductController extends BaseController with SingleGetTickerProvide
             Get.back();
           })
       );
-    }else{
+    }else if(globalController.userInfoModel?.email == userEmail.value){
+      Get.dialog(
+          CustomDialogWidget(content: '사용자의 아이디(이메일)과 동일한 아이디로\n변경 신청이 불가능합니다.', onClick: (){
+            Get.back();
+          })
+      );
+    } else{
       print('dialog');
       Get.dialog(
           CustomDialogWidget(content: '변경할 사용자에게 모든 제품 정보가\n이동되며 복구할 수 없습니다.\n제품 사용자 변경을 진행 하시겠습니까?',

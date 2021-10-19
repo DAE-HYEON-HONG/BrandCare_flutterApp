@@ -61,6 +61,25 @@ class InquiryController extends BaseController with SingleGetTickerProviderMixin
     update();
   }
 
+  void reallyAdd({required Function okTap}){
+    Get.dialog(
+      CustomDialogWidget(
+        title: '알림',
+        content: '등록 하시겠습니까?',
+        onClick: ()async{
+          Get.back();
+          await okTap();
+        },
+        onCancelClick: () {
+          Get.back();
+        },
+        isSingleButton: false,
+        okTxt: "확인",
+        cancelTxt: "취소",
+      ),
+    );
+  }
+
   Future<void> addInquiry(context) async {
     if(title.value == ""){
       Get.dialog(
@@ -77,6 +96,7 @@ class InquiryController extends BaseController with SingleGetTickerProviderMixin
           })
       );
     }else{
+      super.networkState = NetworkStateEnum.LOADING.obs;
       final String? token = await SharedTokenUtil.getToken("userLogin_token");
       final res =  await MyProvider().addInquiry(token!, title.value, content.value);
       title.value = "";
@@ -84,6 +104,7 @@ class InquiryController extends BaseController with SingleGetTickerProviderMixin
       titleCtrl.text = "";
       contentsCtrl.text = "";
       await reqQnaList();
+      super.networkState = NetworkStateEnum.DONE.obs;
       update();
       if(res == null){
         Get.dialog(
