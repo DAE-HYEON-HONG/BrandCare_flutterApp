@@ -339,90 +339,106 @@ class AddGenuineDetailPage extends StatelessWidget {
     return Get.dialog(
       GetBuilder<AddGenuineDetailController>(builder: (_) =>
           Dialog(
-            child: InkWell(
-              onTap: () => Get.back(),
+            child: Container(
+              color: Colors.black,
+              width: double.infinity,
+              height: double.infinity,
               child: Container(
-                color: Colors.black,
                 width: double.infinity,
-                height: double.infinity,
-                child: Container(
-                  width: double.infinity,
-                  child: Stack(
-                    children: [
-                      Center(
-                        child: CarouselSlider(
-                          options: CarouselOptions(
-                              height: 360,
-                              aspectRatio: 16 / 9,
-                              initialPage: 0,
-                              enableInfiniteScroll: false,
-                              autoPlay: true,
-                              reverse: false,
-                              autoPlayInterval: Duration(seconds: 5),
-                              autoPlayCurve: Curves.fastOutSlowIn,
-                              scrollDirection: Axis.horizontal,
-                              viewportFraction: 1,
-                              onPageChanged: (index, reason) {
-                                controller.pageNum.value = index;
-                                controller.update();
-                              }),
-                          items: (imgList).map((e) {
-                            return Builder(
-                              builder: (context) {
-                                return Container(
-                                  width: double.infinity,
-                                  height: 360,
-                                  child: e.path == "" ?
-                                  Container(
-                                    width: 300,
-                                    height: 300,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: gray_999Color),
-                                    ),
-                                    child: Center(
-                                      child: SvgPicture.asset(
-                                        "assets/icons/header_title_logo.svg",
-                                        height: 10,
-                                      ),
-                                    ),
-                                  ):
-                                  ExtendedImage.network(
-                                    BaseApiService.imageApi+e.path!,
-                                    fit: BoxFit.fitWidth,
-                                    cache: true,
+                child: Stack(
+                  children: [
+                    Center(
+                      child: CarouselSlider(
+                        options: CarouselOptions(
+                            height: 360,
+                            aspectRatio: 16 / 9,
+                            initialPage: 0,
+                            enableInfiniteScroll: false,
+                            autoPlay: true,
+                            reverse: false,
+                            autoPlayInterval: Duration(seconds: 5),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            scrollDirection: Axis.horizontal,
+                            viewportFraction: 1,
+                            onPageChanged: (index, reason) {
+                              controller.pageNum.value = index;
+                              controller.update();
+                            }),
+                        items: (imgList).map((e) {
+                          return Builder(
+                            builder: (context) {
+                              return Container(
+                                width: double.infinity,
+                                height: 360,
+                                child: e.path == "" ?
+                                Container(
+                                  width: 300,
+                                  height: 300,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: gray_999Color),
                                   ),
-                                );
-                              },
-                            );
-                          }).toList(),
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      "assets/icons/header_title_logo.svg",
+                                      height: 10,
+                                    ),
+                                  ),
+                                ):
+                                ExtendedImage.network(
+                                  BaseApiService.imageApi+e.path!,
+                                  fit: BoxFit.fitWidth,
+                                  cache: true,
+                                ),
+                              );
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 15,
+                      child: Container(
+                        width: double.infinity,
+                        child: Center(
+                          child: Obx(() => Container(
+                            width: 40,
+                            height: 18,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.6),
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "${controller.pageNum.value+1}/${imgList.length}",
+                                style: regular12TextStyle.copyWith(color: whiteColor),
+                              ),
+                            ),
+                          )),
                         ),
                       ),
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        bottom: 15,
-                        child: Container(
-                          width: double.infinity,
-                          child: Center(
-                            child: Obx(() => Container(
-                              width: 40,
-                              height: 18,
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.6),
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "${controller.pageNum.value+1}/${imgList.length}",
-                                  style: regular12TextStyle.copyWith(color: whiteColor),
-                                ),
-                              ),
-                            )),
+                    ),
+                    Positioned(
+                      right: 20,
+                      top: 20,
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: redColor.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.clear_sharp,
+                            color: whiteColor,
+                            size: 30,
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

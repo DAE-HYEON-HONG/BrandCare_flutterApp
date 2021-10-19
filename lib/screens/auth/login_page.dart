@@ -108,6 +108,7 @@ class LoginPage extends GetView<LoginController> {
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               ...controller.textList.map((e) => Row(
                                 mainAxisSize: MainAxisSize.min,

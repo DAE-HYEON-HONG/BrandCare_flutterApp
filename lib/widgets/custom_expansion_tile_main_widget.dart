@@ -61,7 +61,7 @@ class _CustomExpansionTileMainState extends State<CustomExpansionTileMain> with 
                   widget.title,
                   const Spacer(),
                   RotationTransition(
-                    turns: Tween(begin: 0.0, end: 0.5).animate(_aniController),
+                    turns: Tween(begin: 0.5, end: 0.0).animate(_aniController),
                     child: SvgPicture.asset('assets/icons/btn_up.svg', color: gray_999Color,),
                   ),
                 ],

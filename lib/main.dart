@@ -37,7 +37,7 @@ Future<void> setFCMPermission() async {
     provisional: false,
   );
   if(settings.authorizationStatus == AuthorizationStatus.denied){
-    AppSettings.openNotificationSettings();
+    //AppSettings.openNotificationSettings();
   }
 }
 /*

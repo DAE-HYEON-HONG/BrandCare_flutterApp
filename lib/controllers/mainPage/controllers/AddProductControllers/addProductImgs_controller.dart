@@ -109,17 +109,13 @@ class AddProductImgsController extends BaseController {
   }
 
   void cameraPermissionChk()async{
-    await Permission.camera.request();
-    await Permission.photos.request();
-    var _cameraStatus = await Permission.camera.status.isGranted;
-    var _galleryStatus = await Permission.photos.isGranted;
-    if(_cameraStatus == false || _galleryStatus == false){
+    if(await Permission.camera.request().isGranted == false && await Permission.photos.request().isGranted == false){
+      Get.back();
       Get.snackbar(
         '권한 알림', '카메라 및 갤러리 권한이 필요합니다.',
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(milliseconds: 1200),
       );
-      Future.delayed(Duration(milliseconds: 1200), () => Get.back());
     }
   }
 
