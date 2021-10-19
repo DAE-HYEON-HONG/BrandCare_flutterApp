@@ -156,59 +156,82 @@ class ModifiedProductDesController extends BaseController{
     }
   }
 
-  Future<void> uploadAddProduct() async {
-    addList();
-    super.networkState = NetworkStateEnum.LOADING.obs;
-    UpdateProductModel model = UpdateProductModel(
-      title: updateDetailCtrl.titleCtrl.text,
-      categoryId: updateDetailCtrl.categoryIdx,
-      brandId: updateDetailCtrl.brandCategoryIdx,
-      etc: desBody.text,
-      price: updateDetailCtrl.buyPriceCtrl.text != "" ? int.parse(updateDetailCtrl.buyPriceCtrl.text) : 0,
-      serialCode: updateDetailCtrl.serialCtrl.text,
-      buyRoute: updateDetailCtrl.buyRouteCtrl.text,
-      buyDate: updateDetailCtrl.buyDateCtrl.text,
-      conditionId: conditionId,
-      additionId: additionalId,
-      id: productInfoDetailCtrl.model!.id,
-      deleteImageId: updateImgCtrl.removeImgIdx!,
-      deleteStr: updateImgCtrl.removeMainImg!,
-    );
-    print(model.toString());
-    List<File> images = <File>[];
-    for(var file in updateImgCtrl.imgList!){
-      images.add(file.file!);
-    }
-    final res = await ProductProvider().productUpdate(
-      model,
-      images,
-      updateImgCtrl.frontImg.value,
-      updateImgCtrl.backImg.value,
-      updateImgCtrl.leftImg.value,
-      updateImgCtrl.rightImg.value,
-    );
-    super.networkState = NetworkStateEnum.DONE.obs;
-    if(res == null){
-      Get.dialog(
-        CustomDialogWidget(content: '네트워크 에러입니다.', onClick: (){
+  void reallyAdd({required Function okTap}){
+    Get.dialog(
+      CustomDialogWidget(
+        title: '알림',
+        content: '수정 하시겠습니까?',
+        onClick: ()async{
           Get.back();
-          update();
-        }),
+          await okTap();
+        },
+        onCancelClick: () {
+          Get.back();
+        },
+        isSingleButton: false,
+        okTxt: "확인",
+        cancelTxt: "취소",
+      ),
+    );
+  }
+
+  Future<void> uploadAddProduct() async {
+    if(fill.value){
+      fill.value = false;
+      addList();
+      super.networkState = NetworkStateEnum.LOADING.obs;
+      UpdateProductModel model = UpdateProductModel(
+        title: updateDetailCtrl.titleCtrl.text,
+        categoryId: updateDetailCtrl.categoryIdx,
+        brandId: updateDetailCtrl.brandCategoryIdx,
+        etc: desBody.text,
+        price: updateDetailCtrl.buyPriceCtrl.text != "" ? int.parse(updateDetailCtrl.buyPriceCtrl.text) : 0,
+        serialCode: updateDetailCtrl.serialCtrl.text,
+        buyRoute: updateDetailCtrl.buyRouteCtrl.text,
+        buyDate: updateDetailCtrl.buyDateCtrl.text,
+        conditionId: conditionId,
+        additionId: additionalId,
+        id: productInfoDetailCtrl.model!.id,
+        deleteImageId: updateImgCtrl.removeImgIdx!,
+        deleteStr: updateImgCtrl.removeMainImg!,
       );
-    }else{
-      if(res['data'] == "Y"){
-        ProductInfoDetailController productInfoDetailCtrl = Get.find<ProductInfoDetailController>();
+      print(model.toString());
+      List<File> images = <File>[];
+      for(var file in updateImgCtrl.imgList!){
+        images.add(file.file!);
+      }
+      final res = await ProductProvider().productUpdate(
+        model,
+        images,
+        updateImgCtrl.frontImg.value,
+        updateImgCtrl.backImg.value,
+        updateImgCtrl.leftImg.value,
+        updateImgCtrl.rightImg.value,
+      );
+      super.networkState = NetworkStateEnum.DONE.obs;
+      fill.value = true;
+      if(res == null){
         Get.dialog(
-          CustomDialogWidget(content: '제품수정이 완료되었습니다.', onClick: ()async{
-            await productInfoDetailCtrl.reqProductInfo();
-            Get.back();
-            Get.back();
-            Get.back();
+          CustomDialogWidget(content: '네트워크 에러입니다.', onClick: (){
             Get.back();
             update();
           }),
-          barrierDismissible: false,
         );
+      }else{
+        if(res['data'] == "Y"){
+          ProductInfoDetailController productInfoDetailCtrl = Get.find<ProductInfoDetailController>();
+          Get.dialog(
+            CustomDialogWidget(content: '제품수정이 완료되었습니다.', onClick: ()async{
+              await productInfoDetailCtrl.reqProductInfo();
+              Get.back();
+              Get.back();
+              Get.back();
+              Get.back();
+              update();
+            }),
+            barrierDismissible: false,
+          );
+        }
       }
     }
   }

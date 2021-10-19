@@ -58,10 +58,6 @@ class InquiryPage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 28, bottom: 32),
-                        child: Text('Copyright © 2021 BrandCare Inc. All Rights Reserved.', style: regular10TextStyle.copyWith(color: gray_999Color),),
-                      ),
                       GetBuilder<InquiryController>(
                           builder: (_) => SizedBox(height: controller.autoHeight(context))),
                     ],
@@ -73,7 +69,14 @@ class InquiryPage extends StatelessWidget {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                child: Obx(() => CustomButtonOnOffWidget(title: '문의하기', onClick: () async => await controller.addInquiry(context), isOn: controller.isOn, radius: 0,)))
+                child: Obx(() =>
+                    CustomButtonOnOffWidget(
+                      title: '문의하기',
+                      onClick: () => controller.reallyAdd(okTap: () async => await controller.addInquiry(context)),
+                      isOn: controller.isOn,
+                      radius: 0,
+                    ),
+                )),
           ],
         ),
       ),

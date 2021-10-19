@@ -422,18 +422,22 @@ class AddGenuineDetailPage extends StatelessWidget {
                     Positioned(
                       right: 20,
                       top: 20,
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: redColor.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.clear_sharp,
-                            color: whiteColor,
-                            size: 30,
+                      child: GestureDetector(
+                        onTap: () => Get.back(),
+                        behavior: HitTestBehavior.translucent,
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: redColor.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.clear_sharp,
+                              color: whiteColor,
+                              size: 30,
+                            ),
                           ),
                         ),
                       ),

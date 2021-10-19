@@ -35,6 +35,7 @@ class AddressChangePage extends StatelessWidget {
                 Flexible(
                   flex: 3,
                   child: FormInputWidget(
+                    onTap: () => myController.kpostalView(),
                     onChange: (value) {
                     },
                     onSubmit: (value) {},
@@ -57,21 +58,9 @@ class AddressChangePage extends StatelessWidget {
                         ),
                         CustomButtonEmptyBackgroundWidget(
                           radius: 4,
-                            title: '주소검색', onClick: () async {
-                            print(123);
-                            await Get.to(() => KpostalView(
-                              callback: (Kpostal result){
-                                print(result.address);
-                                myController.addressController.text = result.address;
-                                myController.city.value = result.sido;
-                                myController.sigungu.value = result.sigungu;
-                                myController.street.value = result.roadAddress;
-                                myController.address.value = result.address;
-                                myController.postCodeController.text = result.postCode;
-                                myController.postcode.value = result.postCode;
-                              },
-                            ));
-                        }),
+                          title: '주소검색',
+                          onClick: () => myController.kpostalView(),
+                        ),
                       ],
                     ),
                   ),
@@ -82,6 +71,8 @@ class AddressChangePage extends StatelessWidget {
               height: 12,
             ),
             FormInputWidget(
+              onTap: () => myController.kpostalView(),
+              readOnly: true,
               onChange: (value) {
               },
               onSubmit: (value) {},
@@ -126,9 +117,7 @@ class AddressChangePage extends StatelessWidget {
                 bottom: 0,
                 child: Obx(() => CustomButtonOnOffWidget(
                       title: '확인',
-                      onClick: () async {
-                        await myController.changeAddress(context);
-                      },
+                      onClick: () => myController.reallyAdd(okTap: () async => await myController.changeAddress(context)),
                       isOn: myController.isAddress
                 )),
           ),
@@ -183,7 +172,7 @@ class AddressChangePage extends StatelessWidget {
           bottom: 0,
           child: Obx(() =>CustomButtonOnOffWidget(
             title: '확인',
-            onClick: () async => await myController.changeAddress(context),
+            onClick: () => myController.reallyAdd(okTap: () async => await myController.changeAddress(context)),
             isOn: myController.isAddress,
           )),
         )

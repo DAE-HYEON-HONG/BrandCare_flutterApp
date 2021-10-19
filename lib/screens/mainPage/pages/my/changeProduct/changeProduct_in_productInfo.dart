@@ -24,6 +24,7 @@ class ChangeProductInProductInfo extends StatelessWidget {
   final controller = Get.put(ChangeProductController());
   final globalController = Get.find<GlobalController>();
   final productInfoCtrl = Get.find<ProductInfoDetailController>();
+  int? productIdx = Get.arguments['idx'];
       //late Widget customExpansionTile;
   late BuildContext context;
 
@@ -90,7 +91,7 @@ class ChangeProductInProductInfo extends StatelessWidget {
                     CustomButtonOnOffWidget(
                       title: '확인',
                       onClick: () {
-                        controller.changeProductOwnerInfoPage(Get.arguments['idx']);
+                        controller.changeProductOwnerInfoPage(productIdx!);
                       },
                       isOn: controller.emailCheck.value,
                       radius: 0,

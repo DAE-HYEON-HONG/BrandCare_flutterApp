@@ -152,7 +152,7 @@ class PhoneChangePage extends StatelessWidget {
                     bottom: 0,
                     child: GetBuilder<MyController>(builder: (_) => CustomButtonOnOffWidget(
                       title: '확인',
-                      onClick: () async => await myController.changePhone(),
+                      onClick: () => myController.reallyAdd(okTap: () async => await myController.changePhone()),
                       isOn: myController.changeColor(),
                     )),
                   ),

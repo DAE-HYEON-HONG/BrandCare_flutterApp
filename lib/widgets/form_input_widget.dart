@@ -9,6 +9,7 @@ class FormInputWidget extends StatelessWidget {
     required this.onChange,
     required this.onSubmit,
     required this.controller,
+    this.onTap,
     this.isShowTitle=false,
     this.title,
     this.readOnly = false,
@@ -17,6 +18,7 @@ class FormInputWidget extends StatelessWidget {
     this.textInputFormatter,
   }) : super(key: key);
 
+  final Function()? onTap;
   final String? hint;
   final Function(String value) onChange;
   final Function(String value) onSubmit;
@@ -37,6 +39,11 @@ class FormInputWidget extends StatelessWidget {
         children: [
           if(isShowTitle) _itemTitleWidget(),
           TextFormField(
+            onTap: () {
+              if(readOnly && onTap != null){
+                onTap!();
+              }
+            },
             obscureText: isObscureText,
             readOnly: readOnly,
             controller: controller,
