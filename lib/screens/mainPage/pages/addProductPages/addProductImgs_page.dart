@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/AddProductControllers/addProductImgs_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -14,9 +15,32 @@ import 'package:image_picker/image_picker.dart';
 class AddProductImgsPage extends GetView<AddProductImgsController> {
   @override
   Widget build(BuildContext context) {
-    return DefaultAppBarScaffold(
+    return WillPopScope(
+      onWillPop: () {
+        Get.dialog(CustomDialogWidget(
+          isSingleButton: false,
+          content: '제품 이미지 등록을 취소하시겠습니까?',
+          okTxt: '확인',
+          cancelTxt: '취소',
+          onClick: () {
+            Get.back();
+            Get.back();
+            return Future(() => true);
+          },
+          onCancelClick: () {
+            Get.back();
+            return Future(() => false);
+          },
+        ));
+
+        return Future(() => false);
+      },
+      child: DefaultAppBarScaffold(
         title: "제품 등록",
         child: _renderBody(),
+        backButtonDialog: true,
+        backButtonDialogText: '제품 이미지 등록을 취소하시겠습니까?',
+      ),
     );
   }
 
@@ -77,7 +101,7 @@ class AddProductImgsPage extends GetView<AddProductImgsController> {
                         mainAxisSpacing: 32,
                         crossAxisSpacing: 8,
                       ),
-                      itemBuilder: (context, idx){
+                      itemBuilder: (context, idx) {
                         return _photoListApply(idx);
                       },
                     ),
@@ -104,189 +128,198 @@ class AddProductImgsPage extends GetView<AddProductImgsController> {
 
   _photoApply(Rx<File> img, String chkImg, String title) {
     return Obx(() => SizedBox(
-      height: 180,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: regular14TextStyle,
-          ),
-          const SizedBox(height: 8),
-          Expanded(
-            child: img.value.path == "" ?
-            GestureDetector(
-              onTap: () => _normalMode(chkImg),
-              child: Container(
-                width: double.infinity,
-                height: 160,
-                child: DottedBorder(
-                  color: gray_D5D7DBColor,
-                  strokeWidth: 1,
-                  child: Container(
-                    width: double.infinity,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        SvgPicture.asset(
-                          "assets/icons/add_image.svg",
-                          height: 31,
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          "이미지 추가",
-                          style: medium14TextStyle.copyWith(color: primaryColor),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+          height: 180,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: regular14TextStyle,
               ),
-            ):
-            Container(
-              width: double.infinity,
+              const SizedBox(height: 8),
+              Expanded(
+                child: img.value.path == ""
+                    ? GestureDetector(
+                        onTap: () => _normalMode(chkImg),
+                        child: Container(
+                          width: double.infinity,
+                          height: 160,
+                          child: DottedBorder(
+                            color: gray_D5D7DBColor,
+                            strokeWidth: 1,
+                            child: Container(
+                              width: double.infinity,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  SvgPicture.asset(
+                                    "assets/icons/add_image.svg",
+                                    height: 31,
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    "이미지 추가",
+                                    style: medium14TextStyle.copyWith(
+                                        color: primaryColor),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        width: double.infinity,
+                        height: 180,
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: 190,
+                              child: Image.file(File(img.value.path),
+                                  fit: BoxFit.cover, height: 160),
+                            ),
+                            Positioned(
+                              top: 8,
+                              right: 8,
+                              child: GestureDetector(
+                                onTap: () => controller.removeImg(chkImg),
+                                child: SvgPicture.asset(
+                                  "assets/icons/btn_x.svg",
+                                  height: 16,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+              ),
+            ],
+          ),
+        ));
+  }
+
+  _photoListApply(int idx) {
+    return GetBuilder<AddProductImgsController>(
+        builder: (_) => Container(
               height: 180,
-              child: Stack(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: 190,
-                    child: Image.file(File(img.value.path), fit: BoxFit.cover, height: 160),
-                  ),
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: GestureDetector(
-                      onTap: () => controller.removeImg(chkImg),
-                      child: SvgPicture.asset(
-                        "assets/icons/btn_x.svg",
-                        height: 16,
+              child: controller.pickImgList!.length < idx + 1
+                  ? GestureDetector(
+                      onTap: () => _listMode(),
+                      child: Container(
+                        width: double.infinity,
+                        height: 160,
+                        child: DottedBorder(
+                          color: gray_D5D7DBColor,
+                          strokeWidth: 1,
+                          child: Container(
+                            width: double.infinity,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                SvgPicture.asset(
+                                  "assets/icons/add_image.svg",
+                                  height: 31,
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  "이미지 추가",
+                                  style: medium14TextStyle.copyWith(
+                                      color: primaryColor),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(
+                      width: double.infinity,
+                      height: 180,
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            child: Image.file(
+                                File(controller.pickImgList![idx].path),
+                                fit: BoxFit.cover),
+                          ),
+                          Positioned(
+                            top: 8,
+                            right: 8,
+                            child: GestureDetector(
+                              onTap: () => controller.removeListAssets(
+                                  controller.pickImgList![idx]),
+                              child: SvgPicture.asset(
+                                "assets/icons/btn_x.svg",
+                                height: 16,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
+            ));
+  }
+
+  _normalMode(String chkImg) {
+    return Get.bottomSheet(
+      Container(
+        width: double.infinity,
+        height: 150,
+        color: whiteColor,
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              onTap: () async =>
+                  await controller.loadAssets(chkImg, ImageSource.camera),
+              title: Text(
+                "직접 촬영",
+                style: medium14TextStyle,
               ),
+            ),
+            ListTile(
+              onTap: () async =>
+                  await controller.loadAssets(chkImg, ImageSource.gallery),
+              title: Text(
+                "갤러리에서 사진 선택",
+                style: medium14TextStyle,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _listMode() {
+    return Get.bottomSheet(Container(
+      width: double.infinity,
+      height: 150,
+      color: whiteColor,
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            onTap: () async =>
+                await controller.loadMoreAssets(ImageSource.camera),
+            title: Text(
+              "직접 촬영",
+              style: medium14TextStyle,
+            ),
+          ),
+          ListTile(
+            onTap: () async =>
+                await controller.loadMoreAssets(ImageSource.gallery),
+            title: Text(
+              "갤러리에서 사진 선택",
+              style: medium14TextStyle,
             ),
           ),
         ],
       ),
     ));
-  }
-
-  _photoListApply(int idx){
-    return GetBuilder<AddProductImgsController>(builder: (_) => Container(
-      height: 180,
-      child: controller.pickImgList!.length < idx + 1 ?
-      GestureDetector(
-        onTap: () => _listMode(),
-        child: Container(
-          width: double.infinity,
-          height: 160,
-          child: DottedBorder(
-            color: gray_D5D7DBColor,
-            strokeWidth: 1,
-            child: Container(
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SvgPicture.asset(
-                    "assets/icons/add_image.svg",
-                    height: 31,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    "이미지 추가",
-                    style: medium14TextStyle.copyWith(color: primaryColor),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ):
-      Container(
-        width: double.infinity,
-        height: 180,
-        child: Stack(
-          children: [
-            Container(
-              width: double.infinity,
-              height: double.infinity,
-              child: Image.file(File(controller.pickImgList![idx].path), fit: BoxFit.cover),
-            ),
-            Positioned(
-              top: 8,
-              right: 8,
-              child: GestureDetector(
-                onTap: () => controller.removeListAssets(controller.pickImgList![idx]),
-                child: SvgPicture.asset(
-                  "assets/icons/btn_x.svg",
-                  height: 16,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ));
-  }
-
-  _normalMode(String chkImg){
-    return Get.bottomSheet(
-      Container(
-        width: double.infinity,
-        height: 150,
-        color: whiteColor,
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              onTap: () async => await controller.loadAssets(chkImg, ImageSource.camera),
-              title: Text(
-                "직접 촬영",
-                style: medium14TextStyle,
-              ),
-            ),
-            ListTile(
-              onTap: () async => await controller.loadAssets(chkImg, ImageSource.gallery),
-              title: Text(
-                "갤러리에서 사진 선택",
-                style: medium14TextStyle,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  _listMode(){
-    return Get.bottomSheet(
-      Container(
-        width: double.infinity,
-        height: 150,
-        color: whiteColor,
-        child: Column(
-          children: <Widget>[
-            ListTile(
-              onTap: () async => await controller.loadMoreAssets(ImageSource.camera),
-              title: Text(
-                "직접 촬영",
-                style: medium14TextStyle,
-              ),
-            ),
-            ListTile(
-              onTap: () async => await controller.loadMoreAssets(ImageSource.gallery),
-              title: Text(
-                "갤러리에서 사진 선택",
-                style: medium14TextStyle,
-              ),
-            ),
-          ],
-        ),
-      )
-    );
   }
 }

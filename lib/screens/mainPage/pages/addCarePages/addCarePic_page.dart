@@ -10,14 +10,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 
 class AddCarePicPage extends GetView<AddCarePicController> {
   @override
   Widget build(BuildContext context) {
     controller.initInfo();
-    return DefaultAppBarScaffold(
+    return WillPopScope(
+        onWillPop: () {
+      Get.dialog(CustomDialogWidget(
+        isSingleButton: false,
+        content: '케어/수선 이미지 등록을 취소하시겠습니까?',
+        okTxt: '확인',
+        cancelTxt: '취소',
+        onClick: () {
+          Get.back();
+          Get.back();
+          return Future(() => true);
+        },
+        onCancelClick: () {
+          Get.back();
+          return Future(() => false);
+        },
+      ));
+
+      return Future(() => false);
+    },
+    child: DefaultAppBarScaffold(
       title: "케어/수선 신청",
       child: _renderBody(),
+      backButtonDialog: true,
+      backButtonDialogText: '케어/수선 이미지 등록을 취소하시겠습니까?',
+    ),
     );
   }
 
