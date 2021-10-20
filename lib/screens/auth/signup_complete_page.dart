@@ -32,7 +32,8 @@ class SignUpCompletePage extends StatelessWidget {
               child: CustomButtonEmptyBackgroundWidget(
                 title: '확인',
                 onClick: (){
-                    Get.offAndToNamed('/auth/login');
+                  Get.offAllNamed('/auth/login');
+                    //Get.offAndToNamed('/auth/login');
                 },
               ),
             )
