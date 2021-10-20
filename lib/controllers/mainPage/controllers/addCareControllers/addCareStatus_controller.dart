@@ -22,6 +22,9 @@ class AddCareStatusController extends BaseController {
     for(var i = 0; i < length; i++){
       price += careStatus?.careProduct[i].price ?? 0;
     }
+    int coupon = careStatus?.paymentHistoryResponse.useCouponDisCount.toInt() ?? 0;
+    int point = careStatus?.paymentHistoryResponse.usePoint.toInt() ?? 0;
+    price = price - coupon - point;
     return price;
   }
 

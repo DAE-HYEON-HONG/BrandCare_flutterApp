@@ -9,9 +9,14 @@ import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class PointUsePage extends StatelessWidget {
   const PointUsePage({Key? key}) : super(key: key);
+
+  static const _locale = 'ko';
+  String _formatNumber(String s) => NumberFormat.decimalPattern(_locale).format(int.parse(s));
+  String get _currency => NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol;
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +79,15 @@ class PointUsePage extends StatelessWidget {
                     const SizedBox(height: 24,),
                     FormInputWidget(
                       onChange: (value){
-                        controller.usePoint.value =
-                            value == "" ? 0 : int.parse(value);
+                        if(value.length > 0) {
+                          value = '${_formatNumber(value.replaceAll(',', ''))}';
+                          controller.usePointCtrl.value = TextEditingValue(
+                            text: value,
+                            selection: TextSelection.collapsed(offset: value
+                                .length),
+                          );
+                        }
+                        controller.usePoint.value = value == "" ? 0 : int.parse(value.replaceAll(',', ''));
                         controller.update();
                         controller.chkPoint();
                         controller.canUsePoint();

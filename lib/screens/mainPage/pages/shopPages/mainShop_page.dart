@@ -86,15 +86,16 @@ class MainShopPage extends StatelessWidget{
                       onTap: () => controller.chkMyProduct(),
                       child: Container(
                         width: 72,
-                        height: 24,
+                        height: 30,
                         decoration: BoxDecoration(
+                            color: primaryColor,
                             borderRadius: BorderRadius.circular(24),
-                            border: Border.all(color: primaryColor, width: 1)
+                            border: Border.all(color: Colors.white, width: 1)
                         ),
                         child: Center(
                           child: Text(
                             "글쓰기",
-                            style: regular12TextStyle.copyWith(color: primaryColor),
+                            style: regular12TextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
                           ),
                         ),
                       ),

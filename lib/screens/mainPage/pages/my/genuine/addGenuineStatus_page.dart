@@ -423,7 +423,7 @@ class AddGenuineStatusPage extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '+ ${NumberFormatUtil.convertNumberFormat(number: 29000)}원',
+                          '+ ${NumberFormatUtil.convertNumberFormat(number: controller.genuineStatus?.paymentHistoryResponse.price ?? 0)}원',
                           style: medium14TextStyle,
                         ),
                       ],
@@ -493,7 +493,7 @@ class AddGenuineStatusPage extends StatelessWidget {
                     ),
                     const SizedBox(width: 27),
                     Text(
-                      '${NumberFormatUtil.convertNumberFormat(number: controller.genuineStatus?.paymentHistoryResponse.price ?? 0)}원',
+                      '${NumberFormatUtil.convertNumberFormat(number: (controller.genuineStatus?.paymentHistoryResponse.price ?? 0) - (controller.genuineStatus?.paymentHistoryResponse.usePoint ?? 0) - (controller.genuineStatus?.paymentHistoryResponse.useCouponDisCount ?? 0))}원',
                       style: medium16TextStyle.copyWith(color: redColor),
                     ),
                   ],

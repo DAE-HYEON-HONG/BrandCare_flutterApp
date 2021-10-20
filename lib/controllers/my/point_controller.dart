@@ -9,6 +9,7 @@ import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class PointController extends BaseController{
 
@@ -21,6 +22,11 @@ class PointController extends BaseController{
   RxString pointCode = RxString('');
   int page = 1;
   String? type;
+
+
+  static const _locale = 'ko';
+  String _formatNumber(String s) => NumberFormat.decimalPattern(_locale).format(int.parse(s));
+  String get _currency => NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol;
 
   //추가 부분
   RxInt usePoint = 0.obs;
@@ -39,7 +45,17 @@ class PointController extends BaseController{
         Get.dialog(
           CustomDialogWidget(content: '사용가능 포인트 보다 많습니다.', onClick: () {
             usePoint.value = myPoint.value;
+            usePointCtrl.text = '${_formatNumber(usePointCtrl.text.replaceAll(',', ''))}';
             usePointCtrl.text = usePoint.value.toString();
+
+            //포인트 자릿수 추가
+            usePointCtrl.text = '${_formatNumber(usePointCtrl.text.replaceAll(',', ''))}';
+            usePointCtrl.value = TextEditingValue(
+              text: usePointCtrl.text ,
+              selection: TextSelection.collapsed(offset: usePointCtrl.text
+                  .length),
+            );
+
             Get.back();
             update();
           }),
@@ -51,6 +67,15 @@ class PointController extends BaseController{
         print(addCarePaymentController.allMountPrice().toString() + ' / ' + usePoint.value.toString());
         usePoint.value = addCarePaymentController.allMountPrice();
         usePointCtrl.text = usePoint.value.toString();
+
+        //포인트 자릿수 추가
+        usePointCtrl.text = '${_formatNumber(usePointCtrl.text.replaceAll(',', ''))}';
+        usePointCtrl.value = TextEditingValue(
+          text: usePointCtrl.text ,
+          selection: TextSelection.collapsed(offset: usePointCtrl.text
+              .length),
+        );
+
         Get.dialog(
           CustomDialogWidget(content: '사용가능 포인트 보다 많습니다.', onClick: () {
             Get.back();
@@ -66,6 +91,15 @@ class PointController extends BaseController{
       if (myPoint.value < usePoint.value) {
         usePoint.value = myPoint.value;
         usePointCtrl.text = usePoint.value.toString();
+
+        //포인트 자릿수 추가
+        usePointCtrl.text = '${_formatNumber(usePointCtrl.text.replaceAll(',', ''))}';
+        usePointCtrl.value = TextEditingValue(
+          text: usePointCtrl.text ,
+          selection: TextSelection.collapsed(offset: usePointCtrl.text
+              .length),
+        );
+
         Get.dialog(
           CustomDialogWidget(content: '사용가능 포인트 보다 많습니다.', onClick: () {
             Get.back();
@@ -79,6 +113,15 @@ class PointController extends BaseController{
         print(addGenuinePaymentController.allMountPrice().toString() + ' / ' + usePoint.value.toString());
         usePoint.value = addGenuinePaymentController.allMountPrice();
         usePointCtrl.text = usePoint.value.toString();
+
+        //포인트 자릿수 추가
+        usePointCtrl.text = '${_formatNumber(usePointCtrl.text.replaceAll(',', ''))}';
+        usePointCtrl.value = TextEditingValue(
+          text: usePointCtrl.text ,
+          selection: TextSelection.collapsed(offset: usePointCtrl.text
+              .length),
+        );
+
         Get.dialog(
           CustomDialogWidget(content: '사용가능 포인트 보다 많습니다.', onClick: () {
             Get.back();
@@ -102,6 +145,15 @@ class PointController extends BaseController{
         addCarePaymentController.pointDiscount.value = usePoint.value;
       }
       usePointCtrl.text = usePoint.value.toString();
+
+      //포인트 자릿수 추가
+      usePointCtrl.text = '${_formatNumber(usePointCtrl.text.replaceAll(',', ''))}';
+      usePointCtrl.value = TextEditingValue(
+        text: usePointCtrl.text ,
+        selection: TextSelection.collapsed(offset: usePointCtrl.text
+            .length),
+      );
+
       addCarePaymentController.update();
       update();
     }
@@ -116,6 +168,15 @@ class PointController extends BaseController{
         addGenuinePaymentController.pointDiscount.value = usePoint.value;
       }
       usePointCtrl.text = usePoint.value.toString();
+
+      //포인트 자릿수 추가
+      usePointCtrl.text = '${_formatNumber(usePointCtrl.text.replaceAll(',', ''))}';
+      usePointCtrl.value = TextEditingValue(
+        text: usePointCtrl.text ,
+        selection: TextSelection.collapsed(offset: usePointCtrl.text
+            .length),
+      );
+
       addGenuinePaymentController.update();
       update();
     }

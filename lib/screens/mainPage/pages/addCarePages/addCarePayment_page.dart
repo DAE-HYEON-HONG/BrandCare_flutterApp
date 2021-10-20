@@ -254,7 +254,7 @@ class AddCarePaymentPage extends GetView<AddCarePaymentController> {
                       Get.toNamed("/main/my/point/use", arguments: "care");
                     },
                     title: '브랜드케어 포인트',
-                    subTitle: '${controller.myPoint}P 사용가능',
+                    subTitle: '${NumberFormatUtil.convertNumberFormat(number: controller.myPoint.value)}P 사용가능',
                   )),
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),

@@ -18,6 +18,7 @@ class CouponController extends BaseController{
   RxString couponCode = RxString('');
   RxInt myPoint = 0.obs;
   RxInt countCoupon = 0.obs;
+  RxString pageType = ''.obs;
 
   // 추가부분
   RxInt couponId = 0.obs;
@@ -72,7 +73,7 @@ class CouponController extends BaseController{
 
   void couponAddWhere(){
     if(couponId.value != 0 && couponDiscount.value != 0){
-      if(Get.arguments['type'] == "care"){
+      if(pageType.value == "care"){
         final AddCarePaymentController addCarePayCtrl = Get.find<AddCarePaymentController>();
         addCarePayCtrl.couponDiscount.value = couponDiscount.value;
         addCarePayCtrl.couponIdx = couponId.value;
@@ -184,6 +185,7 @@ class CouponController extends BaseController{
     await reqCouponList();
     giveCouponIdx();
     pagingScroll.addListener(pagingScrollListener);
+    pageType.value = Get.arguments['type'] ?? pageType.value;
     super.onInit();
   }
 

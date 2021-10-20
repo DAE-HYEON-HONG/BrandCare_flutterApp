@@ -11,11 +11,17 @@ import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class MainAddProductPage extends StatelessWidget {
   final MainAddProductController controller =
       Get.put(MainAddProductController());
   int? brandIdx;
+
+
+  static const _locale = 'ko';
+  String _formatNumber(String s) => NumberFormat.decimalPattern(_locale).format(int.parse(s));
+  String get _currency => NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol;
 
   @override
   //textFormField랑 textEditingctrl은 stless에서 사용 시 rebuild를 하게 됩니다.
@@ -158,7 +164,20 @@ class MainAddProductPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 FormInputWidget(
-                  onChange: (value) => controller.nextBtnFill(),
+                  maxLength: 11,
+                  onChange: (value) {
+                    if(value.length > 0) {
+                      value = '${_formatNumber(value.replaceAll(',', ''))}';
+                      controller.priceCtrl.value = TextEditingValue(
+                        text: value,
+                        selection: TextSelection.collapsed(offset: value
+                            .length),
+                      );
+
+                    }
+                    controller.nextBtnFill();
+
+                  },
                   onSubmit: (value) {},
                   controller: controller.priceCtrl,
                   hint: "구입금액을 입력하세요.(숫자만 입력해주세요.)",

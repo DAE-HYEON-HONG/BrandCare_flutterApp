@@ -157,7 +157,7 @@ class AddProductDescriptionController extends BaseController{
           categoryId: mainAddProductCtrl.categoryIdx ?? 0,
           brandId: mainAddProductCtrl.brandCategoryIdx ?? 0,
           etc: desBody.text,
-          price: mainAddProductCtrl.priceCtrl.text != "" ? int.parse(mainAddProductCtrl.priceCtrl.text) : 0,
+          price: mainAddProductCtrl.priceCtrl.text != "" ? int.parse(mainAddProductCtrl.priceCtrl.text.replaceAll(',', '')) : 0,
           serialCode: mainAddProductCtrl.serialCtrl.text,
           buyRoute: mainAddProductCtrl.connectBuyCtrl.text,
           buyDate: mainAddProductCtrl.sinceBuyCtrl.text,

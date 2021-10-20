@@ -100,7 +100,7 @@ class AddGenuinePaymentController extends BaseController {
       usePointAmount: pointDiscount.value,
       couponId: couponIdx,
       returnType: addGenuineCtrl.returnReceiver.value ? "RECEIVER" : "SENDER",
-      price: allPrice(),
+      price: addGenuineEtcCtrl.addPrices(),
       productId: addGenuineCtrl.productIdx,
     );
     await saveReceiverAddress();

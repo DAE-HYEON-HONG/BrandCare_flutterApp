@@ -35,6 +35,7 @@ class AddCarePaymentController extends BaseController {
   }
 
   int allMountPrice() {
+    print('addPrices : ' + addPrices().toString() + '/ coupon : ' + couponDiscount.value.toString() + '/ point : ' + pointDiscount.value.toString());
    int price = addPrices() - couponDiscount.value - pointDiscount.value;
    if(price < 0){
      return 0;
@@ -106,7 +107,7 @@ class AddCarePaymentController extends BaseController {
         usePointAmount: pointDiscount.value,
         couponId: couponIdx,
         returnType: addCareMainCtrl.returnReceiver.value ? "RECEIVER" : "SENDER",
-        price: allMountPrice(),
+        price: addPrices(),
       );
       await saveReceiverAddress();
       await saveSenderAddress();

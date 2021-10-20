@@ -16,6 +16,7 @@ class FormInputWidget extends StatelessWidget {
     this.isObscureText = false,
     this.textInputType = TextInputType.text,
     this.textInputFormatter,
+    this.maxLength = 5000
   }) : super(key: key);
 
   final Function()? onTap;
@@ -29,6 +30,7 @@ class FormInputWidget extends StatelessWidget {
   final bool isObscureText;
   final TextInputType textInputType;
   final List<TextInputFormatter>? textInputFormatter;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,7 @@ class FormInputWidget extends StatelessWidget {
                 onTap!();
               }
             },
+            maxLength: maxLength,
             obscureText: isObscureText,
             readOnly: readOnly,
             controller: controller,
@@ -53,6 +56,7 @@ class FormInputWidget extends StatelessWidget {
             onFieldSubmitted: onSubmit,
             inputFormatters: textInputFormatter,
             decoration: InputDecoration(
+              counterText: "",
               isDense: true,
               contentPadding: const EdgeInsets.all(15),
               hintText: hint ?? '',

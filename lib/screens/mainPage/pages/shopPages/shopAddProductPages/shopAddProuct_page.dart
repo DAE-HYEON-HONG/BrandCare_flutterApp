@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopAddProductController/shopAddProduct_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/addShop_expansionList_feild.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
@@ -13,8 +14,15 @@ import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
+import 'package:intl/intl.dart';
 
 class ShopAddProductPage extends GetView<ShopAddProductController> {
+
+  static const _locale = 'ko';
+  String _formatNumber(String s) => NumberFormat.decimalPattern(_locale).format(int.parse(s));
+  String get _currency => NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol;
+
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -177,11 +185,23 @@ class ShopAddProductPage extends GetView<ShopAddProductController> {
                     ),
                     const SizedBox(height: 12),
                     FormInputWidget(
-                      onChange: (value) {},
+                      maxLength: 11,
+                      onChange: (value) {
+                        if(value.length > 0) {
+                          value = '${_formatNumber(value.replaceAll(',', ''))}';
+                          controller.priceCtrl.value = TextEditingValue(
+                            text: value,
+                            selection: TextSelection.collapsed(offset: value
+                                .length),
+                          );
+
+                        }
+                      },
                       onSubmit: (value) => controller.chkField(),
                       controller: controller.priceCtrl,
                       textInputType: TextInputType.numberWithOptions(signed: false, decimal: false),
                       hint: "가격",
+
                     ),
                     const SizedBox(height: 12),
                     Container(

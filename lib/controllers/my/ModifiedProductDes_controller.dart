@@ -185,7 +185,7 @@ class ModifiedProductDesController extends BaseController{
         categoryId: updateDetailCtrl.categoryIdx,
         brandId: updateDetailCtrl.brandCategoryIdx,
         etc: desBody.text,
-        price: updateDetailCtrl.buyPriceCtrl.text != "" ? int.parse(updateDetailCtrl.buyPriceCtrl.text) : 0,
+        price: updateDetailCtrl.buyPriceCtrl.text != "" ? int.parse(updateDetailCtrl.buyPriceCtrl.text.replaceAll(',', '')) : 0,
         serialCode: updateDetailCtrl.serialCtrl.text,
         buyRoute: updateDetailCtrl.buyRouteCtrl.text,
         buyDate: updateDetailCtrl.buyDateCtrl.text,

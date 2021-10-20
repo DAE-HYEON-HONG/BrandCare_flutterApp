@@ -234,7 +234,8 @@ class AddGenuineDetailPage extends StatelessWidget {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('제품사진'),
+        Text('정품인증 완료 사진'),
+        SizedBox(height: 10,),
         GridView.builder(
           physics: NeverScrollableScrollPhysics(),
           itemCount: controller.model?.genuineImages.length ?? 0,

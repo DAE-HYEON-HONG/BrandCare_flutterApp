@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuineEtc_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/payment/genuine_price_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/number_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
@@ -11,11 +12,13 @@ import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 
 class AddGenuineEtcPage extends StatelessWidget {
   final AddGenuineEtcController controller = Get.put(AddGenuineEtcController());
+  final genuinePriceController = Get.find<GenuinePriceController>();
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () {
-      Get.dialog(CustomDialogWidget(
+      Get.dialog(
+          CustomDialogWidget(
         isSingleButton: false,
         content: '정품인증 요청사항 작성을 취소하시겠습니까?',
         okTxt: '확인',
@@ -30,8 +33,7 @@ class AddGenuineEtcPage extends StatelessWidget {
           return Future(() => false);
         },
       ));
-
-      return Future(() => false);
+      return Future(() => true);
     },
     child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -137,13 +139,13 @@ class AddGenuineEtcPage extends StatelessWidget {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              '${idx+1}. ${controller.priceList[idx].title}',
+                                              '정품인증',
                                               style: medium14TextStyle,
                                             ),
                                             Row(
                                               children: [
                                                 Text(
-                                                  '+ ${NumberFormatUtil.convertNumberFormat(number: controller.priceList[idx].price)}원',
+                                                  '+ ${NumberFormatUtil.convertNumberFormat(number: genuinePriceController.genuinePrice.value)}원',
                                                   style: medium14TextStyle,
                                                 ),
                                                 // const SizedBox(width: 15),
@@ -177,7 +179,8 @@ class AddGenuineEtcPage extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      '${controller.priceList.length}개 선택됨',
+                                      // '${controller.priceList.length}개 선택됨',
+                                      '',
                                       style: medium14TextStyle,
                                     ),
                                     Row(
@@ -189,7 +192,7 @@ class AddGenuineEtcPage extends StatelessWidget {
                                         ),
                                         const SizedBox(width: 27),
                                         Text(
-                                          '${NumberFormatUtil.convertNumberFormat(number: controller.addPrices())}원',
+                                          '${NumberFormatUtil.convertNumberFormat(number: genuinePriceController.genuinePrice.value)}원',
                                           style: medium16TextStyle.copyWith(color: redColor),
                                         ),
                                       ],

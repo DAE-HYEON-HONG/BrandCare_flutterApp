@@ -152,7 +152,7 @@ class ShopAddProductController extends BaseController{
       AddProductShopModel model = AddProductShopModel(
         title: titleCtrl.text,
         productIdx: myProductIdx ?? 0,
-        price: int.parse(priceCtrl.text),
+        price: int.parse(priceCtrl.text.replaceAll(',', '')),
         content: bodyCtrl.text,
         pictures: pickImgList!,
       );

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/payment/genuine_price_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/auth_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/genuine/addGenuineEtc_page.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
@@ -14,6 +15,7 @@ class AddGenuineController extends BaseController {
 
   final globalCtrl = Get.find<GlobalController>();
 
+  final GenuinePriceController priceController = Get.put(GenuinePriceController());
   int productIdx = Get.arguments;
 
   RxBool nextFill = false.obs;
@@ -378,7 +380,7 @@ class AddGenuineController extends BaseController {
     }
   }
 
-  void nextLevel(){
+  Future<void> nextLevel() async {
     if(senderName.text.isEmpty){
       Get.dialog(
         CustomDialogWidget(content: '보내는 분의 이름이 없습니다.', onClick: (){
@@ -457,7 +459,8 @@ class AddGenuineController extends BaseController {
         }),
       );
     }else{
-      Get.to(AddGenuineEtcPage());
+      await priceController.getGenuinePrice();
+      Get.to(() => AddGenuineEtcPage());
     }
   }
 

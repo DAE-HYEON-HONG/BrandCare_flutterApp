@@ -44,7 +44,7 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                         height: 240,
                         aspectRatio: 16/9,
                         initialPage: 0,
-                        enableInfiniteScroll: true,
+                        enableInfiniteScroll: controller.model?.images.length == 1 ? false : true,
                         autoPlay: true,
                         reverse: false,
                         autoPlayInterval: Duration(seconds: 5),
@@ -56,24 +56,27 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                       items: (controller.model?.images ?? controller.testBanner).map((e) {
                         return Builder(
                           builder: (context){
-                            return Container(
-                              width: double.infinity,
-                              height: 360,
-                              child: ExtendedImage.network(
-                                BaseApiService.imageApi+e.path!,
-                                fit: BoxFit.cover,
-                                cache: true,
-                                // ignore: missing_return
-                                loadStateChanged: (ExtendedImageState state) {
-                                  switch(state.extendedImageLoadState) {
-                                    case LoadState.loading :
-                                      break;
-                                    case LoadState.completed :
-                                      break;
-                                    case LoadState.failed :
-                                      break;
-                                  }
-                                },
+                            return InkWell(
+                              onTap: () => Get.to(ImageDetailScreen()),
+                              child: Container(
+                                width: double.infinity,
+                                height: 360,
+                                child: ExtendedImage.network(
+                                  BaseApiService.imageApi+e.path!,
+                                  fit: BoxFit.cover,
+                                  cache: true,
+                                  // ignore: missing_return
+                                  loadStateChanged: (ExtendedImageState state) {
+                                    switch(state.extendedImageLoadState) {
+                                      case LoadState.loading :
+                                        break;
+                                      case LoadState.completed :
+                                        break;
+                                      case LoadState.failed :
+                                        break;
+                                    }
+                                  },
+                                ),
                               ),
                             );
                           },
@@ -318,4 +321,170 @@ class ShopDetailPage extends GetView<ShopDetailController> {
       )),
     );
   }
+}
+
+class ImageDetailScreen extends GetView<ShopDetailController> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        elevation: 0.0,
+      ),
+      body: Container(
+          color: Colors.black,
+        width: double.infinity,
+        height: double.infinity,
+        child: Center(
+          child: Stack(
+            children: [
+              if(controller.model?.images.length != 0)
+                CarouselSlider(
+                  carouselController: controller.slideCtrlBtn,
+                  options: CarouselOptions(
+                    height: double.infinity,
+                    initialPage: 0,
+                    enableInfiniteScroll: false,
+                    autoPlay: false,
+                    reverse: false,
+                    autoPlayInterval: Duration(seconds: 5),
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    scrollDirection: Axis.horizontal,
+                    viewportFraction: 1,
+                    onPageChanged: (index, reason) => controller.pageChanged(index),
+                  ),
+                  items: (controller.model?.images ?? controller.testBanner).map((e) {
+                    return Builder(
+                      builder: (context){
+                        return Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            child: ExtendedImage.network(
+                              BaseApiService.imageApi+e.path!,
+                              fit: BoxFit.fitWidth,
+                              cache: true,
+                              // ignore: missing_return
+                              loadStateChanged: (ExtendedImageState state) {
+                                switch(state.extendedImageLoadState) {
+                                  case LoadState.loading :
+                                    break;
+                                  case LoadState.completed :
+                                    break;
+                                  case LoadState.failed :
+                                    break;
+                                }
+                              },
+                            ),
+
+                        );
+                      },
+                    );
+                  }).toList(),
+                ),
+              if(controller.model?.images.length != 0)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    height: 50,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 18,
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.6),
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Obx(() => Center(
+                            child: Text(
+                              "${controller.pageNum.value+1}/${controller.model?.images.length ?? 0}",
+                              style: regular12TextStyle.copyWith(color: whiteColor),
+                            ),
+                          )),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              if(controller.model?.images.length != 0)
+                Positioned(
+                  bottom: 0,
+                  top: 0,
+                  left: 15,
+                  child: InkWell(
+                    onTap: () => controller.slideCtrlBtn.previousPage(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    ),
+                    child: Container(
+                      height: double.infinity,
+                      width: 25,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Transform.rotate(
+                            angle: 180* pi / 180,
+                            child: SvgPicture.asset('assets/icons/slider_next.svg', height: 25),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              if(controller.model?.images.length != 0)
+                Positioned(
+                  bottom: 0,
+                  top: 0,
+                  right: 15,
+                  child: InkWell(
+                    onTap: () => controller.slideCtrlBtn.nextPage(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    ),
+                    child: Container(
+                      height: double.infinity,
+                      width: 25,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset('assets/icons/slider_next.svg', height: 25),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              if(controller.model?.images.length == 0)
+                Container(
+                  width: double.infinity,
+                  height: 240,
+                  color: gray_CCCColor,
+                  child: Center(
+                    child: SvgPicture.asset(
+                      "assets/icons/header_title_logo.svg",
+                      height: 40,
+                    ),
+                  ),
+                ),
+              if(controller.model?.gi != "REFUSAL" && controller.model?.gi != "GOING")
+                Positioned(
+                  right: 15,
+                  top: 15,
+                  child: GenuineLogo(genuine: controller.model?.gi == "UNCERTIFIED" ? false : controller.model?.gi == "REJECT" ? false : true),
+                ),
+            ],
+          ),
+        ),
+        ),
+
+    );
+  }
+
 }

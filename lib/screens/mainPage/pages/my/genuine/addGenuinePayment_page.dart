@@ -150,7 +150,7 @@ class AddGenuinePaymentPage extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        '${idx+1}. ${controller.addGenuineEtcCtrl.priceList[idx].title}',
+                                        '${controller.addGenuineEtcCtrl.priceList[idx].title}',
                                         style: medium14TextStyle,
                                       ),
                                       Text(
@@ -176,7 +176,8 @@ class AddGenuinePaymentPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '${controller.addGenuineEtcCtrl.priceList.length}개 선택됨',
+                                //'${controller.addGenuineEtcCtrl.priceList.length}개 선택됨',
+                                '',
                                 style: medium14TextStyle,
                               ),
                               Row(
@@ -244,7 +245,7 @@ class AddGenuinePaymentPage extends StatelessWidget {
                       // pointController.removePoints();
                     },
                     title: '브랜드케어 포인트',
-                    subTitle: '${controller.myPoint.value}P 사용가능',
+                    subTitle: '${NumberFormatUtil.convertNumberFormat(number: controller.myPoint.value)}P 사용가능',
                   )),
                   const SizedBox(height: 16),
                   const Divider(color: gray_f5f6f7Color, height: 1),
