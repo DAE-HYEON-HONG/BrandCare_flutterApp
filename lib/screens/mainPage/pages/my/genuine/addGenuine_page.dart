@@ -111,6 +111,7 @@ class AddGenuinePage extends StatelessWidget {
                     children: [
                       Expanded(
                         child: FormInputWidget(
+                          //onTap: () => controller.searchAddressSender(),
                           readOnly: true,
                           onChange: (value) => controller.senderPostSaveChk(),
                           onSubmit: (value) => controller.senderPostSaveChk(),
@@ -134,6 +135,7 @@ class AddGenuinePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   FormInputWidget(
+                    //onTap: () => controller.searchAddressSender(),
                     readOnly: true,
                     onChange: (value) => controller.senderPostSaveChk(),
                     onSubmit: (value) => controller.senderPostSaveChk(),
@@ -391,7 +393,6 @@ class AddGenuinePage extends StatelessWidget {
               },
             ));
           }
-
         }
       },
       child: Container(

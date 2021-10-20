@@ -174,7 +174,7 @@ class ShopDetailPage extends GetView<ShopDetailController> {
                     Positioned(
                       right: 15,
                       top: 15,
-                      child: GenuineLogo(genuine: controller.model?.gi == "UNCERTIFIED" ? false : true),
+                      child: GenuineLogo(genuine: controller.model?.gi == "UNCERTIFIED" ? false : controller.model?.gi == "REJECT" ? false : true),
                     ),
                   ],
                 ),

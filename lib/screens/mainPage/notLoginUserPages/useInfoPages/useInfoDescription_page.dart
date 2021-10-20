@@ -48,10 +48,9 @@ class UseInfoDescriptionPage extends StatelessWidget {
               // ),
             ],
           ), (){
-          mainPageCtrl.selectedIdx.value = 1;
-          mainPageCtrl.update();
-          mainPageCtrl.onItemTaped(1);
           Get.back();
+          mainPageCtrl.onItemTaped(1);
+          mainPageCtrl.update();
         },
         ),
         const SizedBox(height: 8),
@@ -104,10 +103,9 @@ class UseInfoDescriptionPage extends StatelessWidget {
                             ),
                           ),
                           onTap: () {
-                            mainPageCtrl.selectedIdx.value = 2;
+                            Get.back();
                             mainPageCtrl.update();
                             mainPageCtrl.onItemTaped(2);
-                            Get.back();
                           },
                         ),
                         // GestureDetector(
@@ -183,9 +181,9 @@ class UseInfoDescriptionPage extends StatelessWidget {
               // ),
             ],
           ),(){
-          mainPageCtrl.selectedIdx.value = 3;
-          mainPageCtrl.update();
           Get.back();
+          mainPageCtrl.onItemTaped(3);
+          mainPageCtrl.update();
         },
         ),
         const SizedBox(height: 50),

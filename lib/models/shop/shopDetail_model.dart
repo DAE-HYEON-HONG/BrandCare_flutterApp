@@ -8,7 +8,8 @@ class ShopDetailModel {
 
   ShopDetailModel(this.brand, this.category, this.createdDate, this.gi,
       this.hasLike, this.images, this.nickName, this.price, this.shopId,
-      this.title, this.userProfile, this.content, this.productImages);
+      this.title, this.userProfile, this.content, this.productImages,
+      this.frontImage, this.backImage, this.leftImage, this.rightImage);
 
   late String category;
   late String createdDate;
@@ -21,6 +22,10 @@ class ShopDetailModel {
   late int shopId;
   late String title;
   late String? userProfile;
+  final String? frontImage;
+  final String? backImage;
+  final String? leftImage;
+  final String? rightImage;
   late List<IdPathImagesModel>? productImages;
 
   factory ShopDetailModel.fromJson(Map<String, dynamic> json) => _$ShopDetailModelFromJson(json);

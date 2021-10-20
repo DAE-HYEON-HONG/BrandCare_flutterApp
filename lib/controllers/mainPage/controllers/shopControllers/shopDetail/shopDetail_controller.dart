@@ -61,6 +61,18 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
       );
     }else{
       model = res;
+      if(model!.frontImage != null){
+        model!.images.add(IdPathImagesModel(0, model!.frontImage));
+      }
+      if(model!.backImage != null){
+        model!.images.add(IdPathImagesModel(0, model!.backImage));
+      }
+      if(model!.leftImage != null){
+        model!.images.add(IdPathImagesModel(0, model!.leftImage));
+      }
+      if(model!.rightImage != null){
+        model!.images.add(IdPathImagesModel(0, model!.rightImage));
+      }
       if(model!.productImages != null){
         for(var img in model!.productImages!){
           model!.images.add(img);

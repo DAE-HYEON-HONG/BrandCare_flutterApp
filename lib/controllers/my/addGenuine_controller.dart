@@ -8,6 +8,7 @@ import 'package:brandcare_mobile_flutter_v2/utils/regex_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kpostal/kpostal.dart';
 
 class AddGenuineController extends BaseController {
 
@@ -55,6 +56,77 @@ class AddGenuineController extends BaseController {
 
   RxBool returnSender = true.obs;
   RxBool returnReceiver = false.obs;
+
+  // void searchAddressSender() {
+  //   if(senderPostCode.text.isNotEmpty){
+  //     Get.dialog(
+  //       CustomDialogWidget(
+  //         title: "알림",
+  //         content: "수정하시겠습니까?",
+  //         onClick: () {
+  //           Get.back();
+  //           addressSender();
+  //         },
+  //         isSingleButton: false,
+  //         cancelTxt: "취소",
+  //         okTxt: "확인",
+  //       )
+  //     );
+  //   }else{
+  //     addressSender();
+  //   }
+  // }
+
+  // void addressSender({required bool search, required String type}) {
+  //   if(samePost.value){
+  //     if(search){
+  //       Get.to(KpostalView(
+  //         callback: (Kpostal result){
+  //           changeSenderPost(result.postCode, result.address);
+  //           chkFill();
+  //           changeReceiverPost(result.postCode, result.address);
+  //           chkFill();
+  //           samePost.value = false;
+  //         },
+  //       ));
+  //     }
+  //   }
+  //   else {
+  //     if(search){
+  //       Get.to(KpostalView(
+  //         callback: (Kpostal result){
+  //           if (type == "sender"){
+  //             changeSenderPost(result.postCode, result.address);
+  //             chkFill();
+  //           }else{
+  //             changeReceiverPost(result.postCode, result.address);
+  //             chkFill();
+  //           }
+  //         },
+  //       ));
+  //     }
+  //   }
+  // }
+
+  // void searchAddressReceiver() {
+  //   if(senderPostCode.text.isNotEmpty){
+  //     Get.dialog(
+  //         CustomDialogWidget(
+  //           title: "알림",
+  //           content: "수정하시겠습니까?",
+  //           onClick: () {
+  //             Get.back();
+  //             addressSender();
+  //           },
+  //           isSingleButton: false,
+  //           cancelTxt: "취소",
+  //           okTxt: "확인",
+  //         )
+  //     );
+  //   }else{
+  //     addressSender();
+  //   }
+  // }
 
   void chkNormalAddress() {
     if(globalCtrl.userInfoModel != null){

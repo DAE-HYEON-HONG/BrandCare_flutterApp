@@ -40,7 +40,8 @@ class NotLoginPage extends StatelessWidget {
             Text('브랜드케어', style: medium12TextStyle.copyWith(color: gray_999Color),),
             const SizedBox(height: 12,),
             Text(desc,
-            style: regular10TextStyle.copyWith(color: gray_999Color),)
+            style: regular10TextStyle.copyWith(color: gray_999Color),),
+            const SizedBox(height: 30),
           ],
         ),
       ),

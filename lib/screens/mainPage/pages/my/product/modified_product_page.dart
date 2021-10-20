@@ -5,7 +5,6 @@ import 'package:brandcare_mobile_flutter_v2/widgets/addProduct_expansionList_fei
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_form_submit.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/form_input_titleRow_widget.dart';
-import 'package:brandcare_mobile_flutter_v2/widgets/form_input_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';

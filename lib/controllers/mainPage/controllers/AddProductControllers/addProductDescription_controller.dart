@@ -128,21 +128,23 @@ class AddProductDescriptionController extends BaseController{
   }
 
   void reallyAdd(){
-    Get.dialog(
-      CustomDialogWidget(
-        title: '알림',
-        content: '등록 하시겠습니까?',
-        onClick: ()async{
-          await uploadAddProduct();
-        },
-        onCancelClick: () {
-          Get.back();
-        },
-        isSingleButton: false,
-        okTxt: "확인",
-        cancelTxt: "취소",
-      ),
-    );
+    if(fill.value){
+      Get.dialog(
+        CustomDialogWidget(
+          title: '알림',
+          content: '등록 하시겠습니까?',
+          onClick: ()async{
+            await uploadAddProduct();
+          },
+          onCancelClick: () {
+            Get.back();
+          },
+          isSingleButton: false,
+          okTxt: "확인",
+          cancelTxt: "취소",
+        ),
+      );
+    }
   }
 
   Future<void> uploadAddProduct() async {

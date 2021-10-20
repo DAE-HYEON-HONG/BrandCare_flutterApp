@@ -35,13 +35,16 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
                 _item("${controller.model?.thumbnail ?? ""}"),
                 const SizedBox(height: 24,),
                 if(controller.model?.genuine == "GENUINE" || controller.model?.genuine == "REFUSAL")
-                CustomArrowBtn(title: '정품인증 결과보기', onTap: () {
+                CustomArrowBtn(title: '정품인증 현황보기', onTap: () {
                   Get.to(() => AddGenuineStatusPage(), arguments: {
                     'back' : true,
                     'idx' : controller.model?.activationId ?? 0,
                   });
                 }),
-                if(controller.model?.genuine != "GENUINE" && controller.model?.genuine != "REFUSAL" && controller.model?.genuine != "GOING")
+                if(controller.model?.genuine != "GENUINE" &&
+                    controller.model?.genuine != "REFUSAL" &&
+                    controller.model?.genuine != "GOING" &&
+                    controller.model?.genuine == "REJECT")
                 CustomArrowBtn(title: '정품인증 신청하기', onTap: () {
                   Get.to(() => AddGenuinePage(), arguments: controller.productIdx);
                 }),
@@ -148,7 +151,7 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
                             : []),
                     const SizedBox(height: 30,),
                     _productAddInfo(
-                        '제품 컨디션',
+                        '제품 구성품',
                         controller.model != null
                             ? controller.model!.additionList
                             .map((e) => e.title)
