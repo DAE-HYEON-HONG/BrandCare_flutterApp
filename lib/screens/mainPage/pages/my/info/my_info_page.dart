@@ -19,6 +19,7 @@ class MyInfoPage extends StatelessWidget {
   final myController = Get.find<MyController>();
   @override
   Widget build(BuildContext context) {
+    print("소셜 타입 ${globalCtrl.userInfoModel?.socialType}");
     return DefaultAppBarScaffold(
         title: '내 정보',
         child: SingleChildScrollView(
@@ -27,22 +28,42 @@ class MyInfoPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
-                ...myController.infoLinkData.entries.map((e){
-                  if(e.value == 'profile') return _renderProfileContainer(e.key);
-                  else if(e.value == 'email') return _renderEmailContainer(e.key);
-                  return Container(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                width: 1,
-                                color: gray_F5F6F7Color
-                            )
-                        )
-                    ),
-                    child: RouteContainerWidget(title: e.key, route: e.value, onTap: () {myController.initMyController();},),
-                  );
-                }),
+                if(globalCtrl.userInfoModel?.socialType != "KAKAO" &&
+                    globalCtrl.userInfoModel?.socialType != "NAVER" &&
+                    globalCtrl.userInfoModel?.socialType != "APPLE")
+                  ...myController.infoLinkData.entries.map((e){
+                    if(e.value == 'profile') return _renderProfileContainer(e.key);
+                    else if(e.value == 'email') return _renderEmailContainer(e.key);
+                    return Container(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  width: 1,
+                                  color: gray_F5F6F7Color
+                              )
+                          )
+                      ),
+                      child: RouteContainerWidget(title: e.key, route: e.value, onTap: () {myController.initMyController();},),
+                    );
+                  })
+                else
+                  ...myController.infoSocialLinkData.entries.map((e){
+                    if(e.value == 'profile') return _renderProfileContainer(e.key);
+                    else if(e.value == 'email') return _renderEmailContainer(e.key);
+                    return Container(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  width: 1,
+                                  color: gray_F5F6F7Color
+                              )
+                          )
+                      ),
+                      child: RouteContainerWidget(title: e.key, route: e.value, onTap: () {myController.initMyController();},),
+                    );
+                  }),
               ],
             ),
           ),
@@ -171,10 +192,6 @@ class MyInfoPage extends StatelessWidget {
           if(globalCtrl.userInfoModel?.socialType == "KAKAO")
             ClipOval(
               child: SvgPicture.asset("assets/icons/btn_kakao.svg", height: 24),
-            ),
-          if(globalCtrl.userInfoModel?.socialType == "FACEBOOK")
-            ClipOval(
-              child: SvgPicture.asset("assets/icons/btn_facebook.svg", height: 24),
             ),
           if(globalCtrl.userInfoModel?.socialType == "APPLE")
             ClipOval(

@@ -149,6 +149,22 @@ class ShopListWidget extends StatelessWidget {
                             ),
                           ),
                         ),
+                        if(this.genuine == "REJECT")
+                          Container(
+                            width: 72,
+                            height: 24,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(24),
+                              color: Color(0xffAFAFAF),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "미인증",
+                                style: medium12TextStyle.copyWith(
+                                    color: whiteColor),
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                   ),

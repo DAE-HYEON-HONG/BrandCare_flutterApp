@@ -65,7 +65,7 @@ class ModifiedProductDesPage extends StatelessWidget {
                   Divider(height: 1, color: gray_f5f6f7Color),
                   const SizedBox(height: 16),
                   Text(
-                    "제품 컨디션(중복 선택 가능)",
+                    "제품 구성품(중복 선택 가능)",
                     style: medium14TextStyle,
                   ),
                   const SizedBox(height: 15),

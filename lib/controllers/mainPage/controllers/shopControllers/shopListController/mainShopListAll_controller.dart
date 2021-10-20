@@ -30,6 +30,7 @@ class MainShopListAllController extends BaseController{
     print("검색되는 단어 : ${searchWordCtrl.text}");
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     final res =  await ShopProvider().shopList(token!, currentPage, searchWordCtrl.text, "ALL");
+    print(res.toString());
     if(res == null){
       Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){

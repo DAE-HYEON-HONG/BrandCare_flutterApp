@@ -10,10 +10,10 @@ class GuideController extends BaseController {
   CarouselController sliderCtrl = CarouselController();
 
   List<String> bannerList = [
-    "assets/guide/guide1.png",
-    "assets/guide/guide2.png",
-    "assets/guide/guide3.png",
-    "assets/guide/guide4.png",
+    "assets/guide/guide_01.svg",
+    "assets/guide/guide_02.svg",
+    "assets/guide/guide_03.svg",
+    "assets/guide/guide_04.svg",
   ];
 
   void changeBannerImg(int idx) {

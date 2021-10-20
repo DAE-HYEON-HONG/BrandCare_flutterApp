@@ -40,7 +40,7 @@ class GuidePage extends GetView<GuideController> {
                     return Container(
                       width: double.infinity,
                       height: double.infinity,
-                      child: Image.asset(
+                      child: SvgPicture.asset(
                         e,
                         fit: BoxFit.fitWidth,
                       )

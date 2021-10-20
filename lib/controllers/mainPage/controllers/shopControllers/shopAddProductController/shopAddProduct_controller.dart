@@ -173,6 +173,7 @@ class ShopAddProductController extends BaseController{
             CustomDialogWidget(content: '등록되었습니다.', onClick: ()async{
               Get.back();
               Get.back();
+              Get.back();
               if(mainShopCtrl.currentPageIdx == 0){
                 await mainShopCtrl.shopListAllCtrl.reqShopList();
               }else if(mainShopCtrl.currentPageIdx == 1){

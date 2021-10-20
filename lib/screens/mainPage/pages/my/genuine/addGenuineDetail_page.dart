@@ -6,7 +6,6 @@ import 'package:brandcare_mobile_flutter_v2/controllers/my/addGenuineStatus_cont
 import 'package:brandcare_mobile_flutter_v2/utils/date_format_util.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/status_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/button/customArrowBtn.dart';
-import 'package:brandcare_mobile_flutter_v2/widgets/button/custom_button_onoff_widget.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/default_appbar_scaffold.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:extended_image/extended_image.dart';
