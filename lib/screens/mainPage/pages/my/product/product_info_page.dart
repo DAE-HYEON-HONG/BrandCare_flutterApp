@@ -44,7 +44,9 @@ class ProductGiDetailPage extends GetView<ProductInfoDetailController> {
                 if(controller.model?.genuine != "GENUINE" &&
                     controller.model?.genuine != "REFUSAL" &&
                     controller.model?.genuine != "GOING" &&
-                    controller.model?.genuine == "REJECT")
+                    controller.model?.genuine == "REJECT" ||
+                  controller.model?.genuine == "UNCERTIFIED"
+                )
                 CustomArrowBtn(title: '정품인증 신청하기', onTap: () {
                   Get.to(() => AddGenuinePage(), arguments: controller.productIdx);
                 }),
