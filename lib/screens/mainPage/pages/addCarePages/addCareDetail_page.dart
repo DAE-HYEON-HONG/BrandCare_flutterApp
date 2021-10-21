@@ -82,7 +82,7 @@ class AddCareDetailPage extends StatelessWidget {
                     child: TextFormField(
                       maxLines: null,
                       readOnly: true,
-                      controller: TextEditingController(text: "${_.model?.comment ?? "로딩중"}"),
+                      controller: TextEditingController(text: "${_.model?.comment ?? "없음"}"),
                       style: regular14TextStyle.copyWith(color: gray_999Color),
                       decoration: InputDecoration(
                         border: InputBorder.none,
