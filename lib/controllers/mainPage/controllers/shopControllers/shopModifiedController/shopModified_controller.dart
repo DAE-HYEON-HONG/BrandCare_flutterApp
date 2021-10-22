@@ -1,8 +1,10 @@
+import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopDetail/shopDetail_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/mypage/product/myProduct_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/paging_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/shop/addProductShop_model.dart';
+import 'package:brandcare_mobile_flutter_v2/models/shop/modProductShop_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/my_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/shop_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
@@ -15,20 +17,20 @@ import 'dart:io';
 
 import '../mainShop_controller.dart';
 
-class ShopAddProductController extends BaseController{
+class ShopModifiedController extends BaseController{
 
   late TextEditingController titleCtrl;
   late TextEditingController priceCtrl;
   late TextEditingController bodyCtrl;
-  Rx<bool> fill = false.obs;
+  Rx<bool> fill = true.obs;
   Rx<bool> categoryModel = false.obs;
   MainShopController mainShopCtrl = Get.find<MainShopController>();
+  final shopDetailController = Get.find<ShopDetailController>();
 
   late Paging productListPaging;
   List<MyProduct> myProductList = <MyProduct>[];
   ScrollController pagingScroll = ScrollController();
   int currentPage = 1;
-  int? myProductIdx;
   int? currentIdx;
   RxString sort = "LATEST".obs;
 
@@ -92,10 +94,6 @@ class ShopAddProductController extends BaseController{
       customDialogShow(title: "제목이 입력되지 않았습니다.", context: context);
       return;
     }
-    if(myProductIdx == null){
-      customDialogShow(title: "제품이 선택되지 않았습니다.", context: context);
-      return;
-    }
     if(priceCtrl.text == ""){
       customDialogShow(title: "가격이 입력되지 않았습니다.", context: context);
       return;
@@ -111,7 +109,7 @@ class ShopAddProductController extends BaseController{
     Get.dialog(
       CustomDialogWidget(
         title: '알림',
-        content: '등록 하시겠습니까?',
+        content: '수정 하시겠습니까?',
         onClick: ()async{
           await uploadAddProduct();
         },
@@ -126,7 +124,7 @@ class ShopAddProductController extends BaseController{
   }
 
   void chkField() {
-    if(titleCtrl.text != "" && myProductIdx != null && priceCtrl.text != "" && bodyCtrl.text != ""){
+    if(titleCtrl.text != "" && priceCtrl.text != "" && bodyCtrl.text != ""){
       this.fill.value = true;
     }
   }
@@ -149,14 +147,16 @@ class ShopAddProductController extends BaseController{
       fill.value = false;
       final String? token = await SharedTokenUtil.getToken("userLogin_token");
       super.networkState = NetworkStateEnum.LOADING.obs;
-      AddProductShopModel model = AddProductShopModel(
+      ModProductShopModel model = ModProductShopModel(
         title: titleCtrl.text,
-        productIdx: myProductIdx ?? 0,
+        productIdx: shopDetailController.modModel!.productId,
         price: int.parse(priceCtrl.text.replaceAll(',', '')),
         content: bodyCtrl.text,
         pictures: pickImgList!,
+        id: shopDetailController.idx.toString(),
+
       );
-      final res = await ShopProvider().addShopProduct(token: token!, model: model);
+      final res = await ShopProvider().modShopProduct(token: token!, model: model);
       super.networkState = NetworkStateEnum.DONE.obs;
       fill.value = true;
       if(res == null){
@@ -170,7 +170,8 @@ class ShopAddProductController extends BaseController{
         print(res['data']);
         if(res['data'] == "Y"){
           Get.dialog(
-            CustomDialogWidget(content: '등록되었습니다.', onClick: ()async{
+            CustomDialogWidget(content: '수정되었습니다.', onClick: ()async{
+              Get.back();
               Get.back();
               Get.back();
               Get.back();
@@ -191,7 +192,7 @@ class ShopAddProductController extends BaseController{
   }
 
   void changeProductIdx(int idx){
-    myProductIdx = idx;
+    shopDetailController.idx = idx;
     print("idx");
     update();
   }
@@ -242,14 +243,46 @@ class ShopAddProductController extends BaseController{
     }
   }
 
+  void initiateTextData(){
+    titleCtrl = TextEditingController(text: shopDetailController.modModel!.title);
+    priceCtrl = TextEditingController(text: shopDetailController.modModel!.price.toString());
+    bodyCtrl = TextEditingController(text: shopDetailController.modModel!.content);
+  }
+
+  void getImageListOnCache(){
+    try {
+      var x = 0;
+      if(shopDetailController.modModel!.leftImage != null){
+        x++;
+      }
+      if(shopDetailController.modModel!.rightImage != null){
+        x++;
+      }
+      if(shopDetailController.modModel!.frontImage != null){
+        x++;
+      }
+      if(shopDetailController.modModel!.backImage != null){
+        x++;
+      }
+      print(shopDetailController.modModel!.images.length);
+      for (int i = 0; i < shopDetailController.modModel!.images.length - x; i++) {
+        pickImgList!.add(File('/data/user/0/com.laonstory.brandcare/cache/' + shopDetailController.modModel!.images[i].path!.split('/').last));
+        print(pickImgList![i]);
+      }
+    }
+    catch (e){
+      printError();
+    }
+  }
+
   @override
   void onInit() async{
-    titleCtrl = TextEditingController();
-    priceCtrl = TextEditingController();
-    bodyCtrl = TextEditingController();
-    // titleCtrl = TextEditingController(text: shopDetailController.model!.title);
-    // priceCtrl = TextEditingController(text: shopDetailController.model!.price.toString());
-    // bodyCtrl = TextEditingController(text: shopDetailController.model!.content);
+
+  // titleCtrl = TextEditingController();
+    // priceCtrl = TextEditingController();
+    // bodyCtrl = TextEditingController();
+    getImageListOnCache();
+    initiateTextData();
     cameraPermissionChk();
     await reqProductList();
     pagingScroll.addListener(pagingScrollListener);

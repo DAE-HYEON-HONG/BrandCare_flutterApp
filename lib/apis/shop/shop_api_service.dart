@@ -36,6 +36,7 @@ class ShopApiService {
       );
       for (var file in images) {
         List<int> imageData = file.readAsBytesSync();
+        print(file.path);
         req.files.add(
           http.MultipartFile.fromBytes(
             'images',
@@ -59,6 +60,69 @@ class ShopApiService {
       return null;
     }
   }
+
+  Future<dynamic> delShopProduct(dynamic headers, int id) async {
+    try {
+      final uri = Uri.parse("${BaseApiService.baseApi}/shop/$id");
+      final http.Response res = await http.delete(
+        uri,
+        headers: headers,
+      );
+      if (res.statusCode == 200) {
+        return res;
+      } else {
+        print(res.statusCode);
+        return null;
+      }
+    } catch (e) {
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<dynamic> modShopProduct(dynamic headers, List<File> images, dynamic body) async {
+    try {
+      final uri = Uri.parse("${BaseApiService.baseApi}/shop/");
+      var req = http.MultipartRequest('PUT', uri);
+      req.files.add(
+        http.MultipartFile.fromBytes(
+          'dto',
+          utf8.encode(body),
+          contentType: MediaType(
+            'application',
+            'json',
+            {'charset': 'utf-8'},
+          ),
+        ),
+      );
+      for (var file in images) {
+        List<int> imageData = file.readAsBytesSync();
+        req.files.add(
+          http.MultipartFile.fromBytes(
+            'images',
+            imageData,
+            filename: file.path
+                .split("/")
+                .last,
+          ),
+        );
+      }
+      req.headers.addAll(headers);
+      http.StreamedResponse res = await req.send();
+      final resReturn = await res.stream.bytesToString();
+      if (res.statusCode == 200) {
+        return resReturn;
+      } else {
+        print(res.statusCode);
+        return null;
+      }
+    } catch (e) {
+      print("접속 에러 : ${e.toString()}");
+      return null;
+    }
+  }
+
+
 
   Future<http.Response?> shopDetail(dynamic headers, int idx)async{
     try{

@@ -103,8 +103,7 @@ class MyPage extends StatelessWidget {
                             width: 50,
                             height: 50,
                             child: Center(
-                              child: myController.myProfileInfoModel!.profile ==
-                                      null
+                              child: myController.myProfileInfoModel!.profile == null
                                   ? SvgPicture.asset(
                                       'assets/icons/mypage_on.svg',
                                       width: 25,
@@ -115,9 +114,7 @@ class MyPage extends StatelessWidget {
                                       height: double.infinity,
                                       child: ClipOval(
                                         child: ExtendedImage.network(
-                                          BaseApiService.imageApi +
-                                              myController
-                                                  .myProfileInfoModel!.profile!,
+                                          BaseApiService.imageApi + myController.myProfileInfoModel!.profile!,
                                           fit: BoxFit.cover,
                                           cache: true,
                                           // ignore: missing_return

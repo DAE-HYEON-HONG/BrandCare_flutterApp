@@ -148,7 +148,7 @@ class AddCarePaymentController extends BaseController {
   void careSuccess(int idx){
     Get.dialog(
       CustomDialogWidget(
-        content: '신청이 완료되었습니다.',
+        content: '신청이 완료되었습니다. \n 신청일로부터 2주이내에 제품 발송을 하지 않을 시 주문이 취소됩니다.',
         onClick: (){
           Get.toNamed('/mainAddCare/add/status', arguments: {
             "idx" : idx,

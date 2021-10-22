@@ -25,6 +25,7 @@ class InquiryListPage extends StatelessWidget {
                 controller.inquiryList![idx].title,
                 controller.inquiryList![idx].content,
                 controller.inquiryList?[idx].answer ?? "",
+                controller.inquiryList?[idx].answerCreatedDate ?? ""
               ),
             );
           },
@@ -46,7 +47,7 @@ class InquiryListPage extends StatelessWidget {
       ),
     );
   }
-  Widget _item(String time, String title, String contents, String answer){
+  Widget _item(String time, String title, String contents, String answer, String answerDate){
     return Container(
       decoration: BoxDecoration(
         color: whiteColor,
@@ -109,7 +110,19 @@ class InquiryListPage extends StatelessWidget {
                     ),
                   ],
                 ),
-              )
+              ),
+              answerDate != "" ? Container(
+                width: double.infinity,
+                child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          DateFormatUtil.convertDateFormat(date: answerDate, format: "MM.dd hh:mm a"),
+                          style: regular14TextStyle.copyWith(color: gray_666Color, fontSize: 10),),
+                      ),
+                    ),
+              ) : Container()
             ],
           ),
         ),

@@ -9,8 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-class MainShopPage extends StatelessWidget{
+class MainShopPage extends StatelessWidget {
   final MainShopController controller = Get.put(MainShopController());
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -34,11 +35,12 @@ class MainShopPage extends StatelessWidget{
     final mainPageCtrl = Get.find<MainPageController>();
     return AppBar(
       leading: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: (){},
-          child: Container(),
+        behavior: HitTestBehavior.translucent,
+        onTap: () {},
+        child: Container(),
       ),
-      title: Text("SHOP", style: medium16TextStyle.copyWith(color: primaryColor)),
+      title: Text(
+          "SHOP", style: medium16TextStyle.copyWith(color: primaryColor)),
       titleSpacing: 0,
       centerTitle: true,
       titleTextStyle: medium16TextStyle.copyWith(color: primaryColor),
@@ -48,7 +50,7 @@ class MainShopPage extends StatelessWidget{
       automaticallyImplyLeading: false,
       actions: [
         GestureDetector(
-          onTap: (){
+          onTap: () {
             mainPageCtrl.onItemTaped(5);
           },
           child: SvgPicture.asset('assets/icons/mainNotice.svg', height: 19,),
@@ -61,18 +63,23 @@ class MainShopPage extends StatelessWidget{
   _renderBody() {
     return NestedScrollView(
       controller: controller.scrollViewCtrl,
-      headerSliverBuilder: (context, bool innerBoxIsScrolled){
+      headerSliverBuilder: (context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
             backgroundColor: whiteColor,
-            toolbarHeight: 0.0, //이게 타이틀 height 값임.
+            toolbarHeight: 0.0,
+            //이게 타이틀 height 값임.
             forceElevated: innerBoxIsScrolled,
             elevation: 1.0,
             automaticallyImplyLeading: false,
-            pinned: true, //bottom 고정
-            snap: false, //위로 스크롤 시 다시 뜨게 함.
-            floating: false, //계속 뜨게 함
-            expandedHeight: 180, //최대 어디까지 늘어날 것인지에 대한 값
+            pinned: true,
+            //bottom 고정
+            snap: false,
+            //위로 스크롤 시 다시 뜨게 함.
+            floating: false,
+            //계속 뜨게 함
+            expandedHeight: 180,
+            //최대 어디까지 늘어날 것인지에 대한 값
             flexibleSpace: FlexibleSpaceBar( //늘어난 공간에 집어넣을 위젯을 설정
               collapseMode: CollapseMode.pin,
               centerTitle: true,
@@ -95,7 +102,10 @@ class MainShopPage extends StatelessWidget{
                         child: Center(
                           child: Text(
                             "글쓰기",
-                            style: regular12TextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                            style: regular12TextStyle.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14),
                           ),
                         ),
                       ),
@@ -120,10 +130,17 @@ class MainShopPage extends StatelessWidget{
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Flexible(
-                            flex: 2,
-                            child: TextFormField(
+                            child: Obx(() => TextFormField(
                               controller: controller.searchWord,
-                              style: regular12TextStyle.copyWith(color: gray_999Color),
+                              style: regular12TextStyle.copyWith(
+                                  color: gray_999Color),
+                              onChanged: (value){
+                                if(value.length > 0){
+                                  controller.isfillText.value = true;
+                                } else {
+                                  controller.isfillText.value = false;
+                                }
+                              },
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 focusedBorder: InputBorder.none,
@@ -131,11 +148,19 @@ class MainShopPage extends StatelessWidget{
                                 enabledBorder: InputBorder.none,
                                 hintText: "검색어를 입력하세요",
                                 hintStyle: regular12TextStyle.copyWith(color: gray_999Color),
+                                suffixIcon: !controller.isfillText.value ? IconButton(onPressed: (){}, icon: Icon(Icons.clear, color: Colors.white,),) : IconButton(
+                                  onPressed: () {
+                                    controller.clearSearchText();
+                                    controller.tabCtrl.index = 0;
+                                    controller.tabBarListener(0);
+                                  },
+                                  icon: Icon(Icons.clear, color: Colors.grey,),
+                                ),
                               ),
                             ),
+                            ),
                           ),
-                          Flexible(
-                            flex: 1,
+                          Container(
                             child: InkWell(
                               onTap: () => controller.reqSearchWord(),
                               child: SvgPicture.asset(
@@ -161,7 +186,8 @@ class MainShopPage extends StatelessWidget{
               controller: controller.tabCtrl,
               physics: NeverScrollableScrollPhysics(),
               unselectedLabelColor: Color(0xff999999),
-              unselectedLabelStyle: regular14TextStyle.copyWith(color: gray_333Color),
+              unselectedLabelStyle: regular14TextStyle.copyWith(
+                  color: gray_333Color),
               indicatorColor: primaryColor,
               labelColor: primaryColor,
               labelStyle: regular14TextStyle,
@@ -184,7 +210,7 @@ class MainShopPage extends StatelessWidget{
     );
   }
 
-  _tabBarText(String title){
+  _tabBarText(String title) {
     return Center(
       child: Text(
         title,

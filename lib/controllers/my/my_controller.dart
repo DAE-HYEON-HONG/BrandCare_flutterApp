@@ -194,6 +194,7 @@ class MyController extends BaseController {
   }
 
   Future<void> myInfo() async{
+    print('myinfo--------------------------------------------------------------');
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     final res = await MyProvider().chkMyProfile(token!);
     final resAuth = await AuthProvider().loginToken(token);

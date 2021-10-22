@@ -7,8 +7,8 @@ class ShopDetailModel {
   late String brand;
 
   ShopDetailModel(this.brand, this.category, this.createdDate, this.gi,
-      this.hasLike, this.images, this.nickName, this.price, this.shopId,
-      this.title, this.userProfile, this.content, this.productImages,
+      this.hasLike, this.images, this.nickName, this.price, this.shopId, this.productId,
+      this.title, this.userProfile, this.content, this.productImages, this.email,
       this.frontImage, this.backImage, this.leftImage, this.rightImage);
 
   late String category;
@@ -20,6 +20,8 @@ class ShopDetailModel {
   final String content;
   late int? price;
   late int shopId;
+  late int productId;
+  late String email;
   late String title;
   late String? userProfile;
   final String? frontImage;

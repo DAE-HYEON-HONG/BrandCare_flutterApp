@@ -348,7 +348,16 @@ class LoginController extends BaseController {
             }),
           );
           super.networkState.value = NetworkStateEnum.DONE;
-        }else{
+        } else  if(jsonMap['code'] == "CP001"){
+          Get.dialog(
+            CustomDialogWidget(content: '탈퇴한 회원입니다.', onClick: (){
+              Get.back();
+              update();
+            }),
+          );
+          super.networkState.value = NetworkStateEnum.DONE;
+        }
+        else{
           if(isAutoLogin.value){
             SharedTokenUtil.saveBool(true, 'isAutoLogin');
             SharedTokenUtil.saveToken(jsonMap['token']['token'], "userLogin_token");

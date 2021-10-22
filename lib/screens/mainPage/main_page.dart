@@ -2,6 +2,7 @@
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/mainPage_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/mainHome_page.dart';
+import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,7 +32,46 @@ class MainPage extends GetView<MainPageController> {
             }else{
               return Future.value(true);
             }
-          }else{
+          } else if(controller.selectedIdx.value == 1){
+            Get.dialog(CustomDialogWidget(
+              isSingleButton: false,
+              content: '제품 등록 진행을 취소하시겠습니까?',
+              okTxt: '확인',
+              cancelTxt: '취소',
+              onClick: () {
+                print('ok');
+                Get.back();
+                controller.onItemTaped(0);
+                Get.back();
+                return Future(() => true);
+              },
+              onCancelClick: () {
+                Get.back();
+                return Future(() => false);
+              },
+            ));
+
+            return Future(() => true);
+          } else if(controller.selectedIdx.value == 2){
+              Get.dialog(CustomDialogWidget(
+                isSingleButton: false,
+                content: '케어/수선 등록을 취소하시겠습니까?',
+                okTxt: '확인',
+                cancelTxt: '취소',
+                onClick: () {
+                  Get.back();
+                  controller.onItemTaped(0);
+                  Get.back();
+                  return Future(() => true);
+                },
+                onCancelClick: () {
+                  Get.back();
+                  return Future(() => false);
+                },
+              ));
+              return Future(() => true);
+          }
+          else{
             controller.backHome();
             return Future.value(false);
           }

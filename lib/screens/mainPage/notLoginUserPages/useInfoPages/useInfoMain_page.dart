@@ -1,5 +1,6 @@
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/notLoginPagesControllers/useInfoControllers/useInfoMain_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/notLoginUserPages/useInfoPages/useInfoDelivery_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/notLoginUserPages/useInfoPages/useInfoDescription_page.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 
 class UseInfoMainPage extends GetView<UseInfoMainController> {
 
+  GlobalController _globalController = Get.find<GlobalController>();
   @override
   Widget build(BuildContext context) {
     controller.currentPageIdx.value = Get.arguments['index'] ?? 0;
@@ -74,7 +76,11 @@ class UseInfoMainPage extends GetView<UseInfoMainController> {
   _useInfomation(int idx, String imgAdds, String title) {
     return Expanded(
       child: GestureDetector(
-        onTap: () => controller.changeWidget(idx, title),
+        onTap: () {
+          if(!_globalController.isLogin.value && idx == 0){
+            Get.toNamed('/notLoginPage');
+          } else controller.changeWidget(idx, title);
+        },
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,4 +1,5 @@
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopListController/mainShopListInst_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/shopControllers/shopListController/mainShopListMine_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/idPathImages_model.dart';
@@ -13,15 +14,29 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 class ShopDetailController extends BaseController with SingleGetTickerProviderMixin{
 
   CarouselController slideCtrlBtn = CarouselController();
+  final GlobalController globalController = Get.find<GlobalController>();
   Rx<int> pageNum = 0.obs;
   bool isLiked = false;
   int idx = Get.arguments;
-  ShopDetailModel? model;
+  ShopDetailModel? model, modModel;
   MainShopListInstController mainShopListInstCtrl = Get.find<MainShopListInstController>();
+
+  RxBool isMyShop = false.obs;
+
 
   List<IdPathImagesModel> testBanner = [
     IdPathImagesModel(0, ""),
   ];
+
+  void checkMyShop(String shopEmail){
+    if(shopEmail == globalController.userInfoModel!.email){
+      isMyShop.value = true;
+    }
+    else {
+      isMyShop.value = false;
+    }
+  }
+
 
   void pageChanged(int idx){
     pageNum.value = idx;
@@ -48,6 +63,17 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
     update();
   }
 
+  Future<bool> delShopDetail() async {
+    final String? token = await SharedTokenUtil.getToken("userLogin_token");
+    var res = await ShopProvider().delShopProduct(token!, idx);
+    print(res.toString());
+    if(res == null){
+      return false;
+    }else {
+      return true;
+    }
+  }
+
   Future<void> reqShopDetail() async {
     final String? token = await SharedTokenUtil.getToken("userLogin_token");
     var res = await ShopProvider().shopDetail(token!, idx);
@@ -61,6 +87,7 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
       );
     }else{
       model = res;
+      modModel = res;
       if(model!.frontImage != null){
         model!.images.add(IdPathImagesModel(0, model!.frontImage));
       }
@@ -86,6 +113,7 @@ class ShopDetailController extends BaseController with SingleGetTickerProviderMi
   @override
   void onInit() async{
     await reqShopDetail();
+    checkMyShop(model!.email);
     super.onInit();
   }
 }

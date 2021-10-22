@@ -9,10 +9,11 @@ class InquiryListModel{
   final String? answerer;
   final String content;
   final String createdDate;
+  final String? answerCreatedDate;
   final int id;
   final String title;
 
-  InquiryListModel(this.answer, this.answerer, this.content, this.createdDate,
+  InquiryListModel(this.answer, this.answerer, this.content, this.createdDate, this.answerCreatedDate,
       this.id, this.title);
 
   factory InquiryListModel.fromJson(Map<String, dynamic> json) => _$InquiryListModelFromJson(json);

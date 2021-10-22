@@ -16,7 +16,7 @@ class FormInputWidget extends StatelessWidget {
     this.isObscureText = false,
     this.textInputType = TextInputType.text,
     this.textInputFormatter,
-    this.maxLength = 5000
+    this.maxLength = 5000,
   }) : super(key: key);
 
   final Function()? onTap;

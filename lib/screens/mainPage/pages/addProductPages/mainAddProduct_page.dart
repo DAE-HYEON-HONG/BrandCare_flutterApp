@@ -16,43 +16,28 @@ import 'package:intl/intl.dart';
 class MainAddProductPage extends StatelessWidget {
   final MainAddProductController controller =
       Get.put(MainAddProductController());
+
+  //final MainPageController mainPageController = Get.find<MainPageController>();
   int? brandIdx;
 
-
   static const _locale = 'ko';
-  String _formatNumber(String s) => NumberFormat.decimalPattern(_locale).format(int.parse(s));
-  String get _currency => NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol;
+
+  String _formatNumber(String s) =>
+      NumberFormat.decimalPattern(_locale).format(int.parse(s));
+
+  String get _currency =>
+      NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol;
 
   @override
   //textFormField랑 textEditingctrl은 stless에서 사용 시 rebuild를 하게 됩니다.
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        Get.dialog(CustomDialogWidget(
-          isSingleButton: false,
-          content: '제품 등록 진행을 취소하시겠습니까?',
-          okTxt: '확인',
-          cancelTxt: '취소',
-          onClick: () {
-            Get.back();
-            Get.back();
-            return Future(() => true);
-          },
-          onCancelClick: () {
-            Get.back();
-            return Future(() => false);
-          },
-        ));
-
-        return Future(() => false);
-      },
-      child: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-          appBar: _appBar(),
-          body: _body(context),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: _appBar(),
+        body:  _body(context),
         ),
-      ),
+
     );
   }
 
@@ -166,17 +151,15 @@ class MainAddProductPage extends StatelessWidget {
                 FormInputWidget(
                   maxLength: 11,
                   onChange: (value) {
-                    if(value.length > 0) {
+                    if (value.length > 0) {
                       value = '${_formatNumber(value.replaceAll(',', ''))}';
                       controller.priceCtrl.value = TextEditingValue(
                         text: value,
-                        selection: TextSelection.collapsed(offset: value
-                            .length),
+                        selection:
+                            TextSelection.collapsed(offset: value.length),
                       );
-
                     }
                     controller.nextBtnFill();
-
                   },
                   onSubmit: (value) {},
                   controller: controller.priceCtrl,

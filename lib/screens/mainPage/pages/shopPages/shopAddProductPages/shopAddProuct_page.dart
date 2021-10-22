@@ -18,6 +18,7 @@ import 'package:intl/intl.dart';
 
 class ShopAddProductPage extends GetView<ShopAddProductController> {
 
+
   static const _locale = 'ko';
   String _formatNumber(String s) => NumberFormat.decimalPattern(_locale).format(int.parse(s));
   String get _currency => NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol;

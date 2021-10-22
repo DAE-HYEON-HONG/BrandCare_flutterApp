@@ -1,6 +1,7 @@
 import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/colors.dart';
 import 'package:brandcare_mobile_flutter_v2/consts/text_styles.dart';
+import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/home/mainHome_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/mainPage_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/image_util.dart';
@@ -17,6 +18,8 @@ class MainHomePage extends StatelessWidget {
   final MainHomeController controller = Get.put(MainHomeController());
   final String expansionTitle = "고객님의 소중한 명품의 가치를 더욱 높여드립니다.\n오랫동안 간직하고 관리할 수 있는 방법은 브랜드케어입니다.";
   final String expansionDescription = "서울특별시 구로구 디지털로 33길 28, 1211호\n사업자등록 번호: 816-81-02299\n통신판매업신고번호: 제2021-서울구로-0433호";
+  GlobalController _globalController = Get.find<GlobalController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -306,7 +309,9 @@ class MainHomePage extends StatelessWidget {
     return Expanded(
       child: InkWell(
         onTap: () {
-          controller.useInfo(idx, title);
+          if(!_globalController.isLogin.value && idx == 0){
+            Get.toNamed('/notLoginPage');
+          } else controller.useInfo(idx, title);
         },
         child: Column(
           mainAxisSize: MainAxisSize.max,
