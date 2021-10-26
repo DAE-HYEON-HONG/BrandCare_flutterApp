@@ -1,3 +1,4 @@
+import 'package:brandcare_mobile_flutter_v2/apis/base_api_service.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/global_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/AddProductControllers/mainAddProduct_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/addCareControllers/mainAddCare_controller.dart';
@@ -9,10 +10,12 @@ import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/mainHome_page
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/notice/main_notice_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/shopPages/mainShop_page.dart';
 import 'package:brandcare_mobile_flutter_v2/screens/mainPage/pages/my/my_page.dart';
+import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import "package:get/get.dart";
 import 'package:flutter/material.dart';
 import 'package:brandcare_mobile_flutter_v2/controllers/base_controller.dart';
+import 'package:http/http.dart' as http;
 
 class MainPageController extends BaseController {
 
@@ -44,6 +47,21 @@ class MainPageController extends BaseController {
       ];
     }
   }
+
+  Future<void> checkLog() async {
+    if(_globalController.isLogin.value){
+      try{
+        final String? token = await SharedTokenUtil.getToken("userLogin_token");
+        final uri = Uri.parse("${BaseApiService.baseApi}/user/history");
+        final http.Response res = await http.post(uri, headers: BaseApiService.authHeaders(token!));
+        print(res.body);
+      }catch(e){
+        return null;
+      }
+    }
+  }
+
+
 
   void backHome(){
     selectedIdx.value = 0;
@@ -125,6 +143,7 @@ class MainPageController extends BaseController {
   }
   @override
   void onInit() async{
+    checkLog();
     addPages();
     super.onInit();
   }

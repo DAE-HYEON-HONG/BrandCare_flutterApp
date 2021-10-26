@@ -150,6 +150,7 @@ class MainShopPage extends StatelessWidget {
                                 hintStyle: regular12TextStyle.copyWith(color: gray_999Color),
                                 suffixIcon: !controller.isfillText.value ? IconButton(onPressed: (){}, icon: Icon(Icons.clear, color: Colors.white,),) : IconButton(
                                   onPressed: () {
+                                    controller.isfillText.value = false;
                                     controller.clearSearchText();
                                     controller.tabCtrl.index = 0;
                                     controller.tabBarListener(0);

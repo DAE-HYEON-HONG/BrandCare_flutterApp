@@ -5,6 +5,7 @@ import 'package:brandcare_mobile_flutter_v2/models/paging_model.dart';
 import 'package:brandcare_mobile_flutter_v2/models/shop/addProductShop_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/my_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/shop_provider.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/main_page.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ import '../mainShop_controller.dart';
 
 class ShopAddProductController extends BaseController{
 
+  MainPage mainPage = MainPage();
   late TextEditingController titleCtrl;
   late TextEditingController priceCtrl;
   late TextEditingController bodyCtrl;
@@ -31,6 +33,7 @@ class ShopAddProductController extends BaseController{
   int? myProductIdx;
   int? currentIdx;
   RxString sort = "LATEST".obs;
+  RxBool runningServer = false.obs;
 
   final ImagePicker imgPicker = ImagePicker();
   dynamic imgPickerErr;
@@ -112,8 +115,16 @@ class ShopAddProductController extends BaseController{
       CustomDialogWidget(
         title: '알림',
         content: '등록 하시겠습니까?',
-        onClick: ()async{
-          await uploadAddProduct();
+        onClick: () async{
+          Get.back();
+          runningServer.value = true;
+          super.networkState = NetworkStateEnum.LOADING.obs;
+          DateTime now = DateTime.now();
+          if(mainPage.currentBackPressTime == null ||
+              now.difference(mainPage.currentBackPressTime!) > Duration(seconds: 2)){
+            mainPage.currentBackPressTime = now;
+            await uploadAddProduct();
+          }
         },
         onCancelClick: () {
           Get.back();
@@ -160,6 +171,7 @@ class ShopAddProductController extends BaseController{
       super.networkState = NetworkStateEnum.DONE.obs;
       fill.value = true;
       if(res == null){
+        runningServer.value = false;
         Get.dialog(
           CustomDialogWidget(content: '서버와 접속이 원할 하지 않습니다.', onClick: (){
             Get.back();
@@ -167,6 +179,7 @@ class ShopAddProductController extends BaseController{
           }),
         );
       }else{
+        runningServer.value = false;
         print(res['data']);
         if(res['data'] == "Y"){
           Get.dialog(

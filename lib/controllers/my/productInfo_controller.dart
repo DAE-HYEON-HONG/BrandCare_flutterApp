@@ -64,10 +64,11 @@ class ProductInfoDetailController extends BaseController{
             super.networkState.value = NetworkStateEnum.ERROR;
           }else{
             super.networkState.value = NetworkStateEnum.DONE;
-            update();
+            myProductCtrl.reqProductList();
             await myController.myInfo();
             myController.myDataInfo();
             myController.update();
+            update();
             Get.dialog(
               CustomDialogWidget(content: '삭제되었습니다.', onClick: ()async{
                 Get.back();

@@ -34,7 +34,7 @@ class SettingPage extends GetView<SettingController> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    '앱 버전 정보 1.0.0.10',
+                    '앱 버전 정보 1.0.0.12',
                     style: regular14TextStyle.copyWith(color: gray_666Color),
                   ),
                 ),

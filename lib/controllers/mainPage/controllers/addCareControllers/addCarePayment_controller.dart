@@ -142,7 +142,8 @@ class AddCarePaymentController extends BaseController {
       appScheme: "brandcare",
     );
     Get.back();
-    Get.toNamed("/IamPayment", arguments: {"paymentInfo" : paymentInfo, "type" : "care"});
+    Get.toNamed("/IamPayment",
+         arguments: {"paymentInfo" : paymentInfo, "type" : "care"});
   }
 
   void careSuccess(int idx){

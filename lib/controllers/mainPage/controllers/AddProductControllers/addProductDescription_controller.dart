@@ -3,6 +3,7 @@ import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/Add
 import 'package:brandcare_mobile_flutter_v2/controllers/mainPage/controllers/AddProductControllers/mainAddProduct_controller.dart';
 import 'package:brandcare_mobile_flutter_v2/models/product/addProduct_model.dart';
 import 'package:brandcare_mobile_flutter_v2/providers/product_provider.dart';
+import 'package:brandcare_mobile_flutter_v2/screens/mainPage/main_page.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,8 @@ class AddProductDescriptionController extends BaseController{
 
   final mainAddProductCtrl = Get.find<MainAddProductController>();
   final addProductImgsCtrl = Get.find<AddProductImgsController>();
+
+  MainPage mainPage = MainPage();
 
   TextEditingController desBody = TextEditingController();
 
@@ -29,6 +32,7 @@ class AddProductDescriptionController extends BaseController{
   bool description = false;
 
   RxBool fill = false.obs;
+  RxBool runningServer = false.obs;
 
   double autoHeight (BuildContext context){
     double height = MediaQuery.of(context).viewInsets.bottom == 0 ? 0 : 200;
@@ -134,7 +138,15 @@ class AddProductDescriptionController extends BaseController{
           title: '알림',
           content: '등록 하시겠습니까?',
           onClick: ()async{
-            await uploadAddProduct();
+            Get.back();
+            runningServer.value = true;
+            super.networkState = NetworkStateEnum.LOADING.obs;
+            DateTime now = DateTime.now();
+            if(mainPage.currentBackPressTime == null ||
+                now.difference(mainPage.currentBackPressTime!) > Duration(seconds: 2)){
+              mainPage.currentBackPressTime = now;
+              await uploadAddProduct();
+            }
           },
           onCancelClick: () {
             Get.back();
@@ -173,8 +185,9 @@ class AddProductDescriptionController extends BaseController{
         addProductImgsCtrl.rightImg.value,
       );
       super.networkState = NetworkStateEnum.DONE.obs;
-      fill.value = true;
       if(res == null){
+        fill.value = true;
+        runningServer.value = false;
         Get.dialog(
           CustomDialogWidget(content: '네트워크 에러입니다.', onClick: (){
             Get.back();
@@ -182,6 +195,7 @@ class AddProductDescriptionController extends BaseController{
           }),
         );
       }else{
+        runningServer.value = false;
         if(res['data'] == "Y"){
           Get.dialog(
             CustomDialogWidget(content: '제품등록이 완료되었습니다.', onClick: (){
