@@ -10,10 +10,14 @@ import 'package:brandcare_mobile_flutter_v2/providers/shop_provider.dart';
 import 'package:brandcare_mobile_flutter_v2/utils/shared_token_util.dart';
 import 'package:brandcare_mobile_flutter_v2/widgets/custom_dialog_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'dart:math';
 
 import '../mainShop_controller.dart';
 
@@ -36,7 +40,7 @@ class ShopModifiedController extends BaseController{
 
   final ImagePicker imgPicker = ImagePicker();
   dynamic imgPickerErr;
-  List<File>? pickImgList = <File>[];
+  RxList<File>? pickImgList = <File>[].obs;
 
   double autoHeight (BuildContext context){
     double height = MediaQuery.of(context).viewInsets.bottom == 0 ? 0 : 200;
@@ -249,7 +253,7 @@ class ShopModifiedController extends BaseController{
     bodyCtrl = TextEditingController(text: shopDetailController.modModel!.content);
   }
 
-  void getImageListOnCache(){
+  Future<void> getImageListOnCache() async {
     try {
       var x = 0;
       if(shopDetailController.modModel!.leftImage != null){
@@ -266,13 +270,39 @@ class ShopModifiedController extends BaseController{
       }
       print(shopDetailController.modModel!.images.length);
       for (int i = 0; i < shopDetailController.modModel!.images.length - x; i++) {
-        pickImgList!.add(File('/data/user/0/com.laonstory.brandcare/cache/' + shopDetailController.modModel!.images[i].path!.split('/').last));
+        print('image url : ' + 'http://api.leadgo.oig.kr/api/brc/image?path=' + shopDetailController.modModel!.images[i].path!);
+        File imageFileUrl = await urlToFile('http://api.leadgo.oig.kr/api/brc/image?path=' + shopDetailController.modModel!.images[i].path!);
+        pickImgList!.add(imageFileUrl);
+        // if(Platform.isAndroid){
+        //   pickImgList!.add(File('/data/user/0/com.laonstory.brandcare/cache/' + shopDetailController.modModel!.images[i].path!.split('/').last));
+        // }
+        // else if(Platform.isIOS){
+        //   pickImgList!.add(File('/private/var/mobile/Containers/Data/Application/3CC8E19F-7DA4-4A18-BBFE-01D5BCF67F16/tmp/' + shopDetailController.modModel!.images[i].path!.split('/').last));
+        // }
         print(pickImgList![i]);
       }
     }
     catch (e){
       printError();
     }
+  }
+
+  Future<File> urlToFile(String imageUrl) async {
+// generate random number.
+    var rng = new Random();
+// get temporary directory of device.
+    Directory tempDir = await getTemporaryDirectory();
+// get temporary path from temporary directory.
+    String tempPath = tempDir.path;
+// create a new file in temporary path with random file name.
+    File file = new File('$tempPath'+ (rng.nextInt(100)).toString() +'.png');
+// call http.get method and pass imageUrl into it to get response.
+    http.Response response = await http.get(Uri.parse(imageUrl));
+// write bodyBytes received in response to file.
+    await file.writeAsBytes(response.bodyBytes);
+// now return the file which is created with random name in
+// temporary directory and image bytes from response is written to // that file.
+    return file;
   }
 
   @override

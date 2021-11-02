@@ -90,41 +90,46 @@ class ShopModifiedPage extends GetView<ShopModifiedController> {
                                   "assets/icons/camera.svg",
                                   height: 31,
                                 ),
-                                Text(
-                                  "${controller.pickImgList?.length}/10",
-                                  style: medium14TextStyle.copyWith(
-                                      color: primaryColor),
+                                Obx(
+                                  () => Text(
+                                    "${controller.pickImgList?.length}/10",
+                                    style: medium14TextStyle.copyWith(
+                                        color: primaryColor),
+                                  ),
                                 ),
                               ],
                             ),
                           )),
                     ),
                   ),
-                  Row(
-                    children: controller.pickImgList!.map((e) {
-                      return Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(right: 15),
-                            child: SizedBox(
-                              width: 80,
-                              height: 80,
-                              child: Image.file(File(e.path), fit: BoxFit.fill),
+                  Obx(
+                    () => Row(
+                      children: controller.pickImgList!.map((e) {
+                        return Stack(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(right: 15),
+                              child: SizedBox(
+                                width: 80,
+                                height: 80,
+                                child:
+                                    Image.file(File(e.path), fit: BoxFit.fill),
+                              ),
                             ),
-                          ),
-                          Positioned(
-                              top: 8,
-                              right: 8,
-                              child: GestureDetector(
-                                onTap: () => controller.removePics(obj: e),
-                                child: SvgPicture.asset(
-                                  "assets/icons/btn_x.svg",
-                                  height: 16,
-                                ),
-                              )),
-                        ],
-                      );
-                    }).toList(),
+                            Positioned(
+                                top: 8,
+                                right: 8,
+                                child: GestureDetector(
+                                  onTap: () => controller.removePics(obj: e),
+                                  child: SvgPicture.asset(
+                                    "assets/icons/btn_x.svg",
+                                    height: 16,
+                                  ),
+                                )),
+                          ],
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ],
               ),

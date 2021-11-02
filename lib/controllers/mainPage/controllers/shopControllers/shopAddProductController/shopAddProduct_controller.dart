@@ -55,6 +55,7 @@ class ShopAddProductController extends BaseController{
           preferredCameraDevice: CameraDevice.rear,
         );
         pickImgList!.add(File(pickedFile!.path));
+        print(pickedFile.path);
         Get.back();
         update();
       }else{
@@ -65,6 +66,7 @@ class ShopAddProductController extends BaseController{
         );
         for(var file in pickedFileList!){
           pickImgList!.add(File(file.path));
+          print(file.path);
         }
         Get.back();
         update();
