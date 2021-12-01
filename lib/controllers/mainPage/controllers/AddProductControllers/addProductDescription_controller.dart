@@ -12,6 +12,7 @@ class AddProductDescriptionController extends BaseController{
 
   final mainAddProductCtrl = Get.find<MainAddProductController>();
   final addProductImgsCtrl = Get.find<AddProductImgsController>();
+  DateTime? currentBackPressTime;
 
   MainPage mainPage = MainPage();
 
@@ -185,9 +186,8 @@ class AddProductDescriptionController extends BaseController{
         addProductImgsCtrl.rightImg.value,
       );
       super.networkState = NetworkStateEnum.DONE.obs;
+      fill.value = true;
       if(res == null){
-        fill.value = true;
-        runningServer.value = false;
         Get.dialog(
           CustomDialogWidget(content: '네트워크 에러입니다.', onClick: (){
             Get.back();
@@ -195,7 +195,6 @@ class AddProductDescriptionController extends BaseController{
           }),
         );
       }else{
-        runningServer.value = false;
         if(res['data'] == "Y"){
           Get.dialog(
             CustomDialogWidget(content: '제품등록이 완료되었습니다.', onClick: (){
