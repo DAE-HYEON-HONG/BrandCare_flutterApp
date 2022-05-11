@@ -2,8 +2,8 @@
 
 class BaseApiService {
 
-  static String baseApi = "http://api.leadgo.oig.kr/api/brc";
-  static String imageApi = "http://api.leadgo.oig.kr/api/brc/image?path=";
+  static String baseApi = "http://api.test.org.kr/api/brc";
+  static String imageApi = "http://api.test.org.kr/api/brc/image?path=";
   static Map<String, String> headers = {
     'Content-Type' : 'application/json',
   };
